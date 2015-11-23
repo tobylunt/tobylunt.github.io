@@ -3,10 +3,10 @@
 # # # # # # # #
 
 # Basic
-name:               "Kiko"
+name:               "TV"
 
 # URL
-baseurl:            "/Kiko"
+baseurl:            "/TV"
 #baseurl:            "" #For Root Domain
 permalink:          /:year/:month/:day/:title.html
 
