@@ -38,3 +38,8 @@ defaults:
       type:         "posts"
     values:
       layout:       "post"
+
+include: [
+  ".htaccess",
+  ".htpasswd"
+]

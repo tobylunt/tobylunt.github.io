@@ -10,6 +10,8 @@ The blog was built using Jekyll and Github Pages, with a simple theme called <a 
 
 > Jekyll is a simple, blog aware, static site generator. It takes a template directory [...] and spits out a complete, static website suitable for serving with Apache or your favorite web server. This is also the engine behind GitHub Pages, which you can use to host your project’s page or blog right here from GitHub.
 
+It's a pretty powerful tool, at least for particular applications. Very good for making a minimalistic blog like this one.
+
 This concludes our first post. Nerd fingers. Thanks for visiting, and keep coming back for more substantive updates. Maybe at some point we'll create an RSS feed that you can subscribe to, but for now, this is what we've got.
 
 With Love,
