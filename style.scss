@@ -51,7 +51,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: 4rem;
 }
 
 h2 {
@@ -278,7 +278,7 @@ tbody tr:nth-child(odd) th {
       
       &:hover,
       &:focus {
-        text-decoration: none;
+        text-decoration: overline;
       }
     }
     
@@ -305,7 +305,7 @@ tbody tr:nth-child(odd) th {
   }
   
   .masthead-nav {
-    margin-bottom: 2rem;
+    margin-bottom: 5rem;
     
     a {
       color: #aaa;
