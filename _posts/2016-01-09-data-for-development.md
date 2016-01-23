@@ -3,9 +3,9 @@ title: Data For Development
 permalink: /data-for-development/
 ---
 
-
 ![data]({{ teamtvblogs.github.io }}/assets/data.png "Datums")
 
+_image source: http://research.kraeutli.com/_
 > This is an older post originally written for the <a href="iacmadison.org">International Agriculture Colloquium</a> - a student organization at the University of Wisconsin-Madison.
 
 I’ve been thinking a bit about data. In agricultural development, much like nearly anything else, data-driven approaches are gaining increasing traction and are becoming essential prerequisites for funding and project success at nearly any scale. This being said, there are multiple significant challenges that sidecar our burgeoning capacity for generating and analyzing data. Today I’d like to talk about three of them.
