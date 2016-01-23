@@ -13,6 +13,21 @@ body {
   padding: 0;
 }
 
+// Font variables
+$font-name: "CaviarDreams";
+$font-path-file-name: {{ baseurl }}/assets/fonts/caviardreams_regular_macroman/CaviarDreams-webfont;
+
+// font_name font
+@font-face {
+  font-family: $font-name;
+  src: url($font-path-file-name+'.eot'); /* IE9 Compat Modes */
+  src: url($font-path-file-name+'.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url($font-path-file-name+'.woff2') format('woff2'), /* Super Modern Browsers */
+       url($font-path-file-name+'.woff') format('woff'), /* Pretty Modern Browsers */
+       url($font-path-file-name+'.ttf')  format('truetype'), /* Safari, Android, iOS */
+       url($font-path-file-name+'.svg#font_name') format('svg'); /* Legacy iOS */
+}
+
 html {
   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 18px;
@@ -41,7 +56,31 @@ a {
   }
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1 {
+  font-family: "CaviarDreams", Helvetica, Arial, sans-serif;
+  //font-family: "Amatic SC", Helvetica, Arial, sans-serif;
+  //font-family: "Quicksand", Helvetica, Arial, sans-serif;
+  margin-top: 0;
+  margin-bottom: .5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #333;
+  letter-spacing: -.025rem;
+}
+
+h2 {
+  font-family: "CaviarDreams", Helvetica, Arial, sans-serif;
+  //font-family: "Amatic SC", Helvetica, Arial, sans-serif;
+  //font-family: "Quicksand", Helvetica, Arial, sans-serif;
+  margin-top: 0;
+  margin-bottom: .5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #333;
+  letter-spacing: -.025rem;
+}
+
+h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: .5rem;
   font-weight: 600;
@@ -278,7 +317,7 @@ tbody tr:nth-child(odd) th {
       
       &:hover,
       &:focus {
-        text-decoration: overline;
+        text-decoration: none;
       }
     }
     
@@ -290,7 +329,7 @@ tbody tr:nth-child(odd) th {
   
   &-title--small {
     margin-bottom: .75rem;
-    font-size: .75rem;
+    font-size: 1rem;
     font-weight: 600;
     text-transform: uppercase;
     
@@ -299,6 +338,7 @@ tbody tr:nth-child(odd) th {
       
       &:hover,
       &:focus {
+        color: #ddd;
         text-decoration: none;
       }
     }
@@ -318,7 +358,7 @@ tbody tr:nth-child(odd) th {
       &:hover,
       &:focus {
         color: #333;
-        text-decoration: none;
+        text-decoration: overline;
       }
 
       + a {
@@ -332,6 +372,7 @@ tbody tr:nth-child(odd) th {
 .page {
   &-title {
     margin-bottom: 2rem;
+    margin-top: 2rem;
   }
 }
 
@@ -341,6 +382,7 @@ tbody tr:nth-child(odd) th {
   }
   &-date {
     margin-bottom: 2rem;
+    margin-top: 1rem;
     font-size: .75rem;
     text-transform: uppercase;
   }
@@ -356,6 +398,7 @@ tbody tr:nth-child(odd) th {
       &:hover,
       &:focus {
         text-decoration: none;
+        color: #A00;
       }
     }
   }
