@@ -9,12 +9,17 @@ layout: default
     {% for nav in site.nav %}
     <a href="{{ nav.href }}">{{ nav.name }}</a>
     {% endfor %}
-    <a href="https://twitter.com/tobylunt">
+    <a href="https://twitter.com/tobylunt" target="_blank">
       <i class="fa fa-twitter"></i>
     </a>
   </nav>
 </header>
 <ul></ul>
+
+<div class="recent-posts">
+<post-header>recent blog posts</post-header>
+</div>
+
 <div class="content list">
 {% if site.posts.size == 0 %}
   <h2>No post found</h2>

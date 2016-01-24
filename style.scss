@@ -7,15 +7,26 @@
           box-sizing: border-box;
 }
 
+
+// Font variables
+$font-name: "CaviarDreams";
+$font-path-file-name: {{ baseurl }}/assets/fonts/caviardreams_regular_macroman/CaviarDreams-webfont;
+
+$font-name: "Arizona";
+$font-path-file-name: {{ baseurl }}/assets/fonts/arizona/arizonia-regular-webfont;
+
+
+
+
 html,
 body {
   margin: 0;
   padding: 0;
 }
 
-// Font variables
-$font-name: "CaviarDreams";
-$font-path-file-name: {{ baseurl }}/assets/fonts/caviardreams_regular_macroman/CaviarDreams-webfont;
+
+
+
 
 // font_name font
 @font-face {
@@ -27,6 +38,66 @@ $font-path-file-name: {{ baseurl }}/assets/fonts/caviardreams_regular_macroman/C
        url($font-path-file-name+'.ttf')  format('truetype'), /* Safari, Android, iOS */
        url($font-path-file-name+'.svg#font_name') format('svg'); /* Legacy iOS */
 }
+
+// Social sharing icons SCSS
+
+
+.soc {
+  display: block;
+  font-size: 0;
+  list-style: none;
+  margin: 0;
+  padding: 48px;
+  padding: 2rem;
+  text-align: center;
+  li {
+    display: inline-block;
+    margin: 12px;
+    margin: 0rem;
+  }
+  a, svg {
+    display: block;
+  }
+  a {
+    position: relative;
+    height: 96px;
+    height: 4rem;
+    width: 96px;
+    width: 4rem;
+      &:hover {
+          border-radius: 100%;
+          transform: scale(1.25);
+          transition: background-color 0.5s, transform 0.5s ease-out;
+      }
+  }
+  svg {
+    height: 100%;
+    width: 100%;
+      
+  }
+// IE8:
+  em {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: -0.75em;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+}    
+
+// TESTING HOVER FIXES 
+ .icon-social-twitter:hover svg path {
+ fill: #268bd2;
+ }
+.icon-social-facebook:hover svg path {
+ fill: #3b5998;
+ }
+// END TESTING
+    
 
 html {
   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -56,13 +127,30 @@ a {
   }
 }
 
+post-header {
+  font-family: "Arizona", Helvetica, Arial, sans-serif;
+  //font-family: "Amatic SC", Helvetica, Arial, sans-serif;
+  //font-family: "Quicksand", Helvetica, Arial, sans-serif;
+  font-size: 3rem;
+  margin-top: 0;
+  margin-bottom: .5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #333;
+  letter-spacing: -.025rem;
+    a:hover, a:focus {
+    color: #4458C5;
+    text-decoration: none;
+}
+}
+    
 h1 {
   font-family: "CaviarDreams", Helvetica, Arial, sans-serif;
   //font-family: "Amatic SC", Helvetica, Arial, sans-serif;
   //font-family: "Quicksand", Helvetica, Arial, sans-serif;
   margin-top: 0;
   margin-bottom: .5rem;
-  font-weight: 600;
+  font-weight: 300;
   line-height: 1.1;
   color: #333;
   letter-spacing: -.025rem;
@@ -74,7 +162,7 @@ h2 {
   //font-family: "Quicksand", Helvetica, Arial, sans-serif;
   margin-top: 0;
   margin-bottom: .5rem;
-  font-weight: 600;
+  font-weight: 300;
   line-height: 1.1;
   color: #333;
   letter-spacing: -.025rem;
@@ -83,7 +171,7 @@ h2 {
 h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: .5rem;
-  font-weight: 600;
+  font-weight: 300;
   line-height: 1.1;
   color: #333;
   letter-spacing: -.025rem;
@@ -296,6 +384,12 @@ tbody tr:nth-child(odd) th {
   font-size: 1.25rem;
 }
 
+.lead2 {
+  font-size: 1.25rem;
+  margin-top: 2rem;
+  margin-bottom: 0rem;
+}
+
 .container {
   max-width: 38rem;
   padding: 2rem 1.5rem;
@@ -305,6 +399,10 @@ tbody tr:nth-child(odd) th {
   @media (min-width: 38rem){
     padding: 5rem 1rem;
   }
+}
+
+.recent-posts {
+    margin-bottom: 2rem;
 }
 
 .masthead {
@@ -330,7 +428,7 @@ tbody tr:nth-child(odd) th {
   &-title--small {
     margin-bottom: .75rem;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 300;
     text-transform: uppercase;
     
     a {
@@ -345,7 +443,7 @@ tbody tr:nth-child(odd) th {
   }
   
   .masthead-nav {
-    margin-bottom: 5rem;
+    margin-bottom: 3rem;
     
     a {
       color: #aaa;
@@ -398,7 +496,7 @@ tbody tr:nth-child(odd) th {
       &:hover,
       &:focus {
         text-decoration: none;
-        color: #A00;
+        color: #9EC6E2 ;
       }
     }
   }
@@ -476,4 +574,67 @@ tbody tr:nth-child(odd) th {
 .highlight .vg { color: #008080 } /* Name.Variable.Global */
 .highlight .vi { color: #008080 } /* Name.Variable.Instance */
 .highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+
+.bootstrap-frm {
+    margin-left:none;
+    margin-right:auto;
+    max-width: 400px;
+    background: #FFF;
+    padding: 20px 30px 20px 30px;
+    font: 12px "CaviarDreams", Helvetica, Arial, sans-serif;
+    color: #888;
+    text-shadow: 1px 1px 1px #FFF;
+    border:1px solid #DDD;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
+.bootstrap-frm input[type="text"], .bootstrap-frm input[type="email"], .bootstrap-frm textarea, .bootstrap-frm select{
+    border: 1px solid #CCC;
+    color: #888;
+    height: 20px;
+    line-height:15px;
+    margin-bottom: 16px;
+    margin-right: 6px;
+    margin-top: 2px;
+    outline: 0 none;
+    padding: 5px 0px 5px 5px;
+    width: 100%;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;    
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+.bootstrap-frm select {
+    background: #FFF url('down-arrow.png') no-repeat right;
+    background: #FFF url('down-arrow.png') no-repeat right;
+    appearance:none;
+    -webkit-appearance:none; 
+    -moz-appearance: none;
+    text-indent: 0.01px;
+    text-overflow: '';
+    width: 100%;
+    height: 35px;
+    line-height:15px;
+}
+.bootstrap-frm textarea{
+    height:100px;
+    padding: 5px 0px 0px 5px;
+    width: 100%;
+}
+
+input[type=submit] {
+                position:relative;
+                padding:6px 15px;
+                border:2px solid #207cca;
+                background-color:#207cca;
+                color:#fafafa;
+    &:hover {
+    background-color:#fafafa;
+                color:#207cca;
+}
+}
 

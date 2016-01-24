@@ -3,7 +3,7 @@ title: Data For Development
 permalink: /data-for-development/
 ---
 
-![data]({{ teamtvblogs.github.io }}/assets/data.png "Datums")
+![data]({{ teamtvblogs.github.io }}/assets/img/data.png "Datums")
 
 _image source: http://research.kraeutli.com/_
 > This is an older post originally written for the <a href="iacmadison.org">International Agriculture Colloquium</a> - a student organization at the University of Wisconsin-Madison.
