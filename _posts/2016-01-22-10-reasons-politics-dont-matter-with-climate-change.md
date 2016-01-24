@@ -3,7 +3,7 @@ title: Climate Change is Apolitical
 permalink: /10-reasons/
 ---
 
-
+![donkeyphant]({{ teamtvblogs.github.io }}/assets/img/donkeyphant.png "Donkeyphant")
 
 _10 reasons you need to care about climate change – regardless of your politics_
 

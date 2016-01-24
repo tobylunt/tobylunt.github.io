@@ -7,11 +7,19 @@ name:               "TOBIAS"
 
 # URL
 baseurl:            ""
+url: ""
 #baseurl:            "" #For Root Domain
 permalink:          /:year/:month/:day/:title.html
 
 # Social Media
 twitter_username: tobylunt
+
+# Assets
+assets:
+  sources:
+    - _assets/fonts
+    - _assets/font-awesome-4.3.0
+    - _assets/img
 
 # Markdown
 markdown:           rdiscount

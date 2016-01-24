@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>¯\_(ツ)_/¯</title>
+  <title>CONTACT</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,600">
   <!--<link href='https://fonts.googleapis.com/css?family=Amatic+SC:400,700' rel='stylesheet' type='text/css'>-->
   <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
@@ -23,8 +23,25 @@
   
 </header>      
 <div class="content page">
-  <h1 class="page-title">¯\_(ツ)_/¯</h1>
-  <p>Sorry, but the page you were trying to view does not exist.</p>
+  <h1 class="page-title">CONTACT</h1>
+  <p><form id="contactform" method="POST" class="bootstrap-frm">
+    <div>
+        <input type="email" name="_replyto" placeholder="Your email">
+        <input type="hidden" name="_subject" value="Website contact" />
+        <input type="hidden" name="_next" value="/thank-you/" />
+        <textarea name="message" placeholder="Your message"></textarea>
+        <input type="text" name="_gotcha" style="display:none" />
+    </div>
+    <input type="submit" value="Submit">
+</form></p>
+
+<script>
+    var contactform =  document.getElementById('contactform');
+    contactform.setAttribute('action', '//formspree.io/' + 'toby.lunt' + '@' + 'gmail' + '.' + 'com');
+</script>
+
+
+<p></p>
 
 </div>
 

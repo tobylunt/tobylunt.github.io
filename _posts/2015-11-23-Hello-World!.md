@@ -1,8 +1,10 @@
 ---
 title: Hello World!
+shortUrl: http://goo.gl/EVFAHz
+permalink: /hello-world/
 ---
 
-![Elephants]({{ teamtvblogs.github.io }}/assets/elephants.jpg "Elephants are so quiet!")
+![Elephants]({{ teamtvblogs.github.io }}/assets/img/elephants.jpg "Elephants are so quiet!")
 
 <p class="lead">Elephants!</p>
 

@@ -7,7 +7,9 @@
 		
 			<item>
 				<title>Climate Change is Apolitical</title>
-        <description>&lt;p&gt;&lt;em&gt;10 reasons you need to care about climate change – regardless of your politics&lt;/em&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;img src=&quot;/assets/img/donkeyphant.png&quot; title=&quot;Donkeyphant&quot; alt=&quot;donkeyphant&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;10 reasons you need to care about climate change – regardless of your politics&lt;/em&gt;&lt;/p&gt;
 
 &lt;blockquote&gt;&lt;p&gt;Moving into the New Year, the global climate is in a state of disarray and uncertainty. 2015 looks to be the hottest year on record by a considerable margin, followed by 2014, with all of the top ten occurring post-1998. A powerful El Niño is already contributing to fierce droughts in southern and eastern Africa, while the UK and the Midwestern United States are submerged by extreme floods. On Christmas Eve, Central Park in New York City reached a high temperature of 72 degrees. Climate change is here.&lt;/p&gt;&lt;/blockquote&gt;
 
@@ -64,7 +66,7 @@
 		
 			<item>
 				<title>Data For Development</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/assets/data.png&quot; title=&quot;Datums&quot; alt=&quot;data&quot; /&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;img src=&quot;/assets/img/data.png&quot; title=&quot;Datums&quot; alt=&quot;data&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;image source: http://research.kraeutli.com/&lt;/em&gt;&lt;/p&gt;
 
@@ -118,7 +120,7 @@
 		
 			<item>
 				<title>Hello World!</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/assets/elephants.jpg&quot; title=&quot;Elephants are so quiet!&quot; alt=&quot;Elephants&quot; /&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;img src=&quot;/assets/img/elephants.jpg&quot; title=&quot;Elephants are so quiet!&quot; alt=&quot;Elephants&quot; /&gt;&lt;/p&gt;
 
 &lt;p class=&quot;lead&quot;&gt;Elephants!&lt;/p&gt;
 
@@ -132,8 +134,8 @@
 &lt;p&gt;Thanks for visiting, and keep coming back for more substantive updates. Maybe at some point we&#39;ll add some new functionality, but for now, this is what we&#39;ve got.&lt;/p&gt;
 </description>
 				<pubDate>Mon, 23 Nov 2015 00:00:00 +0200</pubDate>
-				<link>/2015/11/23/Hello-World!.html</link>
-				<guid isPermaLink="true">/2015/11/23/Hello-World!.html</guid>
+				<link>/hello-world/</link>
+				<guid isPermaLink="true">/hello-world/</guid>
 			</item>
 		
 	</channel>
