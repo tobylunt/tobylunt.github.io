@@ -9,11 +9,11 @@
 
 
 // Font variables
-$font-name: "CaviarDreams";
-$font-path-file-name: {{ baseurl }}/assets/fonts/caviardreams_regular_macroman/CaviarDreams-webfont;
+$font-name1: "Arizona";
+$font-path-file-name1: {{ baseurl }}/assets/fonts/arizona/arizonia-regular-webfont;
 
-$font-name: "Arizona";
-$font-path-file-name: {{ baseurl }}/assets/fonts/arizona/arizonia-regular-webfont;
+$font-name2: "CaviarDreams";
+$font-path-file-name2: {{ baseurl }}/assets/fonts/caviardreams_regular_macroman/CaviarDreams-webfont;
 
 
 
@@ -30,13 +30,23 @@ body {
 
 // font_name font
 @font-face {
-  font-family: $font-name;
-  src: url($font-path-file-name+'.eot'); /* IE9 Compat Modes */
-  src: url($font-path-file-name+'.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url($font-path-file-name+'.woff2') format('woff2'), /* Super Modern Browsers */
-       url($font-path-file-name+'.woff') format('woff'), /* Pretty Modern Browsers */
-       url($font-path-file-name+'.ttf')  format('truetype'), /* Safari, Android, iOS */
-       url($font-path-file-name+'.svg#font_name') format('svg'); /* Legacy iOS */
+  font-family: $font-name1;
+  src: url($font-path-file-name1+'.eot'); /* IE9 Compat Modes */
+  src: url($font-path-file-name1+'.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url($font-path-file-name1+'.woff2') format('woff2'), /* Super Modern Browsers */
+       url($font-path-file-name1+'.woff') format('woff'), /* Pretty Modern Browsers */
+       url($font-path-file-name1+'.ttf')  format('truetype'), /* Safari, Android, iOS */
+       url($font-path-file-name1+'.svg#font_name') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: $font-name2;
+  src: url($font-path-file-name2+'.eot'); /* IE9 Compat Modes */
+  src: url($font-path-file-name2+'.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url($font-path-file-name2+'.woff2') format('woff2'), /* Super Modern Browsers */
+       url($font-path-file-name2+'.woff') format('woff'), /* Pretty Modern Browsers */
+       url($font-path-file-name2+'.ttf')  format('truetype'), /* Safari, Android, iOS */
+       url($font-path-file-name2+'.svg#font_name') format('svg'); /* Legacy iOS */
 }
 
 // Social sharing icons SCSS

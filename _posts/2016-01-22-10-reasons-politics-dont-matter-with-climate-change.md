@@ -1,6 +1,7 @@
 ---
 title: Climate Change is Apolitical
 permalink: /10-reasons/
+shortUrl: http://goo.gl/EVFAHz
 ---
 
 ![donkeyphant]({{ teamtvblogs.github.io }}/assets/img/donkeyphant.png "Donkeyphant")

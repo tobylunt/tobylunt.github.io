@@ -1,6 +1,7 @@
 ---
 title: Data For Development
 permalink: /data-for-development/
+shortUrl: http://goo.gl/WxGYN0
 ---
 
 ![data]({{ teamtvblogs.github.io }}/assets/img/data.png "Datums")
