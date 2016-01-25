@@ -9,11 +9,11 @@
 
 
 // Font variables
-$font-name: "CaviarDreams";
-$font-path-file-name: {{ baseurl }}/assets/fonts/caviardreams_regular_macroman/CaviarDreams-webfont;
+$font-name1: "Arizona";
+$font-path-file-name1: {{ baseurl }}/assets/fonts/arizona/arizonia-regular-webfont;
 
-$font-name: "Arizona";
-$font-path-file-name: {{ baseurl }}/assets/fonts/arizona/arizonia-regular-webfont;
+$font-name2: "CaviarDreams";
+$font-path-file-name2: {{ baseurl }}/assets/fonts/caviardreams_regular_macroman/CaviarDreams-webfont;
 
 
 
@@ -25,18 +25,30 @@ body {
 }
 
 
-
-
+// font awesome check w/ circle 
+.fa-stack-1x, .fa-stack-2x {
+    color:cornflowerblue;
+}
 
 // font_name font
 @font-face {
-  font-family: $font-name;
-  src: url($font-path-file-name+'.eot'); /* IE9 Compat Modes */
-  src: url($font-path-file-name+'.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url($font-path-file-name+'.woff2') format('woff2'), /* Super Modern Browsers */
-       url($font-path-file-name+'.woff') format('woff'), /* Pretty Modern Browsers */
-       url($font-path-file-name+'.ttf')  format('truetype'), /* Safari, Android, iOS */
-       url($font-path-file-name+'.svg#font_name') format('svg'); /* Legacy iOS */
+  font-family: $font-name1;
+  src: url($font-path-file-name1+'.eot'); /* IE9 Compat Modes */
+  src: url($font-path-file-name1+'.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url($font-path-file-name1+'.woff2') format('woff2'), /* Super Modern Browsers */
+       url($font-path-file-name1+'.woff') format('woff'), /* Pretty Modern Browsers */
+       url($font-path-file-name1+'.ttf')  format('truetype'), /* Safari, Android, iOS */
+       url($font-path-file-name1+'.svg#font_name') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: $font-name2;
+  src: url($font-path-file-name2+'.eot'); /* IE9 Compat Modes */
+  src: url($font-path-file-name2+'.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url($font-path-file-name2+'.woff2') format('woff2'), /* Super Modern Browsers */
+       url($font-path-file-name2+'.woff') format('woff'), /* Pretty Modern Browsers */
+       url($font-path-file-name2+'.ttf')  format('truetype'), /* Safari, Android, iOS */
+       url($font-path-file-name2+'.svg#font_name') format('svg'); /* Legacy iOS */
 }
 
 // Social sharing icons SCSS
@@ -575,6 +587,9 @@ tbody tr:nth-child(odd) th {
 .highlight .vi { color: #008080 } /* Name.Variable.Instance */
 .highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
 
+
+// contact form styling
+
 .bootstrap-frm {
     margin-left:none;
     margin-right:auto;
@@ -591,9 +606,11 @@ tbody tr:nth-child(odd) th {
 }
 
 .bootstrap-frm input[type="text"], .bootstrap-frm input[type="email"], .bootstrap-frm textarea, .bootstrap-frm select{
+    font-family:"Caviar Dreams"; 
+    font-size: 15px;
     border: 1px solid #CCC;
     color: #888;
-    height: 20px;
+    height: 30px;
     line-height:15px;
     margin-bottom: 16px;
     margin-right: 6px;
@@ -608,18 +625,7 @@ tbody tr:nth-child(odd) th {
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
-.bootstrap-frm select {
-    background: #FFF url('down-arrow.png') no-repeat right;
-    background: #FFF url('down-arrow.png') no-repeat right;
-    appearance:none;
-    -webkit-appearance:none; 
-    -moz-appearance: none;
-    text-indent: 0.01px;
-    text-overflow: '';
-    width: 100%;
-    height: 35px;
-    line-height:15px;
-}
+
 .bootstrap-frm textarea{
     height:100px;
     padding: 5px 0px 0px 5px;
@@ -627,6 +633,8 @@ tbody tr:nth-child(odd) th {
 }
 
 input[type=submit] {
+                font-family:"Caviar Dreams";
+                font-size:20px;
                 position:relative;
                 padding:6px 15px;
                 border:2px solid #207cca;
