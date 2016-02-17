@@ -6,7 +6,7 @@ shortUrl: http://goo.gl/iBc6i1
 
 ![climate conservatives]({{ teamtvblogs.github.io }}/assets/img/climateconservatives.jpg)
 
-> This is a post  written for the [Huffington Post](http://www.huffingtonpost.com/tobias-lunt/conservatives-want-to-fix_b_9123716.html).
+> This is an article  written for the [Huffington Post](http://www.huffingtonpost.com/tobias-lunt/conservatives-want-to-fix_b_9123716.html).
 
 Donald Trump may not like it, but addressing climate change is an issue that fits perfectly within Republican ideology.
 
