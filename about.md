@@ -3,7 +3,7 @@ title: ABOUT
 permalink: /about/
 ---
 
-<p class="lead">This is my <a href="{{ site.baseurl }}/2015/11/23/Hello-World!.html">website</a>. </p>
+<p class="lead">This is my <a href="{{ site.baseurl }}/hello-world/">website</a>. </p>
 ![America]({{ teamtvblogs.github.io }}/assets/img/headshot.jpg "Draped in America")
 
 > I believe that we can make the world even more amazing through attentiveness, genuine collaboration, equality, and training. 
