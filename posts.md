@@ -1,0 +1,14 @@
+---
+title: POSTS
+permalink: /posts/
+---
+
+
+<ul>
+  {% for post in site.posts %}
+    <li>
+      <a href="{{ post.url }}">{{ post.title }}</a>
+      <time>{{ post.date | date_to_string }}</time>
+    </li>
+  {% endfor %}
+</ul>
