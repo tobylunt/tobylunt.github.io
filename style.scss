@@ -80,6 +80,7 @@ body {
           border-radius: 100%;
           transform: scale(1.25);
           transition: background-color 0.5s, transform 0.5s ease-out;
+          border-top:none;
       }
   }
   svg {
@@ -130,12 +131,14 @@ body {
 }
 
 a {
-  color: #268bd2;
+  color: #7ca5c1;
   text-decoration: none;
   
   &:hover,
   &:focus {
-    text-decoration: underline;
+    color: #4458C5;
+    text-decoration:none;
+    border-top: 1px solid;
   }
 }
 
@@ -153,6 +156,7 @@ post-header {
     a:hover, a:focus {
     color: #4458C5;
     text-decoration: none;
+    border-top: none;
 }
 }
     
@@ -166,6 +170,11 @@ h1 {
   line-height: 1.1;
   color: #333;
   letter-spacing: -.025rem;
+    a:hover, a:focus {
+    color: #58ad92;
+    text-decoration: none;
+    border-top: none;
+}
 }
 
 h2 {
@@ -223,7 +232,7 @@ dd {
 }
 
 ul {
-  list-style: inside circle;
+  list-style: inside cjk-ideographic;
   padding-left: 0;
   
   li {
@@ -637,12 +646,12 @@ input[type=submit] {
                 font-size:20px;
                 position:relative;
                 padding:6px 15px;
-                border:2px solid #207cca;
-                background-color:#207cca;
+                border:1px solid #9EC6E2;
+                background-color:#9EC6E2;
                 color:#fafafa;
     &:hover {
     background-color:#fafafa;
-                color:#207cca;
+                color:#618db3;
 }
 }
 

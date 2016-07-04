@@ -1,5 +1,6 @@
 ---
 title: Conservatives And The Climate
+excerpt_separator: <!--more-->
 permalink: /conservatives-and-the-climate/
 shortUrl: http://goo.gl/iBc6i1
 ---
@@ -12,6 +13,7 @@ Donald Trump may not like it, but addressing climate change is an issue that fit
 
 Let me tell you why.
 
+<!--more-->
 First, acting on Climate Change is a religious no-brainer. American conservatives are strongly religious, with a highly influential [Christian base](https://www.washingtonpost.com/news/monkey-cage/wp/2015/09/04/how-democrats-became-secular-and-republicans-became-religious-its-not-what-you-think/). Organized religions (and most secular moral codes) agree on the essential human imperative to lend a hand to people in dire straits. Climate change is creating conditions of utmost economic, social and physical distress, disproportionately affecting the most vulnerable people around the world - small subsistence farmers earning a dollar or two per day, dependent on the weather to eke out a living. In a twisted turn of fate, the parts of the globe feeling the strongest effects of climate change, and forecast to bear the brunt of future climate extremes, are areas with the [fewest resources available](http://www.theguardian.com/environment/climate-consensus-97-per-cent/2015/jan/26/climate-change-could-impact-poor-much-more-than-previously-thought) to prepare themselves for what is coming.
 
 We live in a global community, linked more tightly and comprehensively than ever before. Because of modern communication technology, we can no longer feign ignorance when our neighbors starve or are forced to take desperate measures to ensure the survival of their families. Coming to the aid of the world's most vulnerable citizens against the ravages of climate change is a goal perfectly in line with the Conservative Christian moral code. In fact, it would be disingenuous not to intervene.

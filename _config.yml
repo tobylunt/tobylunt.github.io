@@ -5,6 +5,11 @@
 # Basic
 name:               "TOBIAS"
 
+# Pagination
+paginate: 4
+excerpt_separator: <!--more-->
+
+
 # URL
 baseurl:            ""
 url: ""
@@ -54,3 +59,6 @@ include: [
   ".htaccess",
   ".htpasswd"
 ]
+
+# Gems
+gems: [jekyll-paginate]

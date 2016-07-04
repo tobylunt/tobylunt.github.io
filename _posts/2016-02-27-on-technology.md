@@ -6,8 +6,9 @@ shortUrl: http://goo.gl/AwvXUz
 
 Is new technology a panacea for solving global hunger, malnutrition, and poverty? Or is it shortsighted, wishful thinking to believe that humankind will develop technological solutions to free ourselves of our most intractable problems?
 
-Many conversations that I have about the future, and the develoment of future technologies, wind their way towards one of these two extremes. This is counterproductive, and it colors over the nuances that will help to shape our future century. 
+Many conversations that I have about the future, and the development of future technologies, wind their way towards one of these two extremes. This is counterproductive, and it colors over the nuances that will help to shape our future century. 
 
+<!--more-->
 Technological solutions themselves do not usually pose instrinsic problems simply through their existence, unless they come with inherent existential risks, like the development of the hydrogen bomb. The challenges presented by new technologies, such as the disenfranchisement of vulnerable populations, narrowing of choices through oligopoly, and environmental and social externalities, are products of underlying <i>power structures</i>. Namely: who gets to choose what technologies are developed, and how they are applied?
 
 When thinking about future technology within the frame of power dynamics, the way we consider these issues shifts in subtle but meaningful ways. Demonizing individual technologies is no longer fruitful. Instead, we ask ourselves: what are the structural determinants of how solutions to global problems are developed? What are the institutionalized patterns (formal or informal) that are leading to improper or unjust application of particular technologies? How can we as a global society push our processes of technological development to maximize equity and productivity? How can we expand the principles of open-source?
