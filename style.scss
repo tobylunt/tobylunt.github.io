@@ -231,8 +231,13 @@ dd {
   margin-bottom: .5rem;
 }
 
+#postlist {
+    list-style: inside cjk-ideographic;
+    padding-left: 0;
+}
+
 ul {
-  list-style: inside cjk-ideographic;
+  list-style: inside square;
   padding-left: 0;
   
   li {
