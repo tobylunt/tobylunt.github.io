@@ -8,7 +8,7 @@ name:               "TOBIAS"
 # Pagination
 paginate: 4
 excerpt_separator: <!--more-->
-
+paginate_path: "blog/page:num/"
 
 # URL
 baseurl:            ""
@@ -31,8 +31,8 @@ markdown:           rdiscount
 
 # Navigation
 nav:
-  - name:           "About"
-    href:           "/about"
+  - name:           "Blog"
+    href:           "/blog"
   - name:           "CV"
     href:           "/cv"
 
@@ -54,7 +54,7 @@ defaults:
       type:         "posts"
     values:
       layout:       "post"
-      
+
 include: [
   ".htaccess",
   ".htpasswd"
