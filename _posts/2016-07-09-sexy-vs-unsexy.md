@@ -2,6 +2,7 @@
 title: Sexy vs. Unsexy
 permalink: /sexy-vs-unsexy/
 shortUrl: http://goo.gl/AwvXUz
+comments: true
 ---
 
 ![boredom]({{ teamtvblogs.github.io }}/assets/img/boredface.png)
