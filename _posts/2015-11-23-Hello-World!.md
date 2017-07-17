@@ -2,6 +2,7 @@
 title: Hello World!
 permalink: /hello-world/
 shortUrl: http://goo.gl/EVFAHz
+comments: false
 ---
 
 ![Elephants]({{ teamtvblogs.github.io }}/assets/img/elephants.jpg "Elephants are so quiet!")
