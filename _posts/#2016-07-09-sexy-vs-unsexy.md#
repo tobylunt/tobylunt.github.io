@@ -1,0 +1,24 @@
+---
+title: Sexy vs. Unsexy
+permalink: /sexy-vs-unsexy/
+shortUrl: http://goo.gl/AwvXUz
+---
+
+![boredom]({{ teamtvblogs.github.io }}/assets/img/boredface.png)
+
+<i>Or: why clickbait is destroying our civilization</i>
+
+Well, it's possible that clickbait isn't destroying our civilization, at least not as much as it's destroying my productivity. It's becoming clear, however, that the culture of instant gratification and avoidance of boredom is as dangerous as it is understandable.
+
+<!--more-->
+I'll let the behavioral psychologists explain how our wiring causes us to seek gratification for the reward centers of our brains, and how the explosion of technology is affecting the way we live our lives. Multitasking and context-switching have become ubiquitous elements of modern culture, where fast-cut filmmaking, twitter feeds, and even our eating habits are designed to give us repeated hits of pleasure, sending happy chemicals through our nervous system.
+
+As access to information and media explodes across the globe, the North American attention span is shrinking with equal aplomb. One study estimated that Canadian attention span had shrunk from 12 to 8 seconds in the past 14 years – and concluded that our attention span is now shorter than that of a goldfish. While I imagine that there are a wide range of benign and not-so-benign consequences to this type of human evolution, one ripple effect is particularly nefarious – the most important issues in human society are often the least sexy ones, and the least worthy of our attention at first glance.
+
+We all have a limited amount of time, energy, and brain space to engage with what is happening in the world. Consequently, we develop and inherit a set of filters that determine what is deserving of our attention and what we let pass by unobserved and unconsidered. Michael Bell, a professor of rural sociology at the University of Wisconsin-Madison, calls this the "cultivation of the ignorable" – internal choices of what information is trustworthy, interesting, or to be disregarded. The cultivation of the ignorable is inevitable, as human beings have limited processing power, and limited time to devote to causes other than caring for themselves and their loved ones.
+
+Multitasking behavior, and the underlying limitations to what we are capable of processing, are dangerous because they can be exploited. As John Oliver said, "If you want to do something evil, put it inside something boring." Consider how some of the most important elements of our lives are often governed by complex documents that most of us cannot adequately understand without, if we can afford it, hiring expensive advisors – this includes mortgage contracts, health insurance agreements, and the fine print of the laws that govern how we vote, do business, and build our families. 
+
+If we lose our attention spans, we simultaneously erode our collective ability to identify and call out inegalitarian structures within the tax code. If we exclusively heed the siren song of all the shiny things and cat videos on the internet, we don't learn about the vast, cascading effects of campaign financing upon how policy is made in America. If we reach for our smartphones during every waking moment, we may miss out on our chance to catch the next pernicious financial instrument before it causes widespread harm in our society. These issues – alongside trade protectionism and food aid, interest rates, fossil fuel subsidies, insurance contracts, and countless others – are undeniably unsexy. Unfortunately, they also shape the entire world in which we live. They determine who gains, retains, and loses power, both politically and economically. They determine which populations are marginalized (and many are currently marginalized), and they govern the level and distribution of human rights. These are the issues that determine whether or not America is a just and prosperous society, where all citizens can equally enjoy life, liberty, and the pursuit of happiness.
+
+In a democratic system of governance, justice and equality are dependent upon the involvement of an informed and motivated public. As individuals, we are not capable of fixing every issue that matters to us, but we need to recognize the importance of unsexy issues and illuminate dark legislative corners under the spotlight of scrutiny and debate. Without this attention, those with the resources to create complex contracts, laws, and financial instruments will continue to do as they please; even if most are honest and good, all it takes is a few rogue agents to hide something self-servingly evil and destructive within something boring. So by all means, continue to enjoy twitter and the occasional sensational headline – I know I will – but don’t forget that worlds are constructed using materials that are much more dull, and vote accordingly.

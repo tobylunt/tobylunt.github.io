@@ -18,6 +18,9 @@ layout: default
   </div>
   {{ content }}
 </div>
+{% if site.disqus.shortname %}
+  {% include disqus_comments.html %}
+{% endif %}
 <!--
 <div class="social-share">
     {% capture url %}{{ site.url }}{{ page.url }}{% endcapture %}
