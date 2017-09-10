@@ -20,7 +20,7 @@ Using bootstraps of our own data, as well as available external information, we 
 
 The integration of Shiny with my existing model was pretty simple, given the extensive documentation online and the fact that our output was limited to a single grouped boxplot and results table:
 
-![Shiny-app]({{ teamtvblogs.github.io }}/assets/img/shiny-app.png)
+[![Shiny-app]({{ teamtvblogs.github.io }}/assets/img/shiny-app.png)](https://tobylunt.shinyapps.io/shinyapp/)
 
 For an interactive version hosted (for free!) at shinyapps.io, [head this way](https://tobylunt.shinyapps.io/shinyapp/). Despite the limitations both in form and function of this app, it was enough to demonstrate the amazing power not only for sharing information - but also for uncovering patterns and trends that would be more difficult to discern without good visualization.  
 <br/>
