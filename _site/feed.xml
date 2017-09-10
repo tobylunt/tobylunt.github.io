@@ -7,9 +7,9 @@
 		
 			<item>
 				<title>Whitman Bot</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/assets/img/whitman-archive.png&quot; alt=&quot;Whitman&quot; /&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;a href=&quot;/whitman-bot/&quot;&gt;&lt;img src=&quot;/assets/img/whitman-archive.png&quot; alt=&quot;Whitman&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Machine learning amazes me - and so does my brother in law &lt;a href=http://aaronmoe.com&gt;Aaron Moe&lt;/a&gt;, professor of English, literature genius, and ecopoeticist. Whenever I hang out with Aaron, I learn something. Among many things, Aaron is an expert on E.E. Cummings and the works of Walt Whitman. One of our conversations led to an idea: what if we were to adapt &lt;a href=&quot;https://karpathy.github.io/2015/05/21/rnn-effectiveness/&quot;&gt;some&lt;/a&gt; of the &lt;a href=&quot;https://www.engadget.com/2015/12/02/neural-network-journalism-philip-k-dick/&quot;&gt;advances&lt;/a&gt; of leading machine learning engineers to mimic the prose of Whitman? You could feed the bot a &quot;seed&quot; of a few words, and then see how Walt might finish your sentence.&lt;/p&gt;
+&lt;p&gt;Machine learning amazes me - and so does my brother in law &lt;a href=&quot;http://aaronmoe.com&quot;&gt;Aaron Moe&lt;/a&gt;, professor of English, literature genius, and ecopoeticist. Whenever I hang out with Aaron, I learn something. Among many things, Aaron is an expert on E.E. Cummings and the works of Walt Whitman. One of our conversations led to an idea: what if we were to adapt &lt;a href=&quot;https://karpathy.github.io/2015/05/21/rnn-effectiveness/&quot;&gt;some&lt;/a&gt; of the &lt;a href=&quot;https://www.engadget.com/2015/12/02/neural-network-journalism-philip-k-dick/&quot;&gt;advances&lt;/a&gt; of leading machine learning engineers to mimic the prose of Whitman? You could feed the bot a &quot;seed&quot; of a few words, and then see how Walt might finish your sentence.&lt;/p&gt;
 
 &lt;!--more--&gt;
 
@@ -24,7 +24,7 @@
 		
 			<item>
 				<title>Shiny Potatoes</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/assets/img/shiny-header.png&quot; alt=&quot;Shiny&quot; /&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;a href=&quot;/shiny-potatoes/&quot;&gt;&lt;img src=&quot;/assets/img/shiny-header.png&quot; alt=&quot;Shiny&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;In an effort to explore the vast possibilities of R Shiny, I built a very simple Shiny app using data from a survey designed and conducted with colleagues in Ethiopia. The data explores the relationships between different seed potato storage technologies (which turn out to be very important!) under different hypothetical future conditions.&lt;/p&gt;
 
@@ -41,7 +41,7 @@
 
 &lt;p&gt;The integration of Shiny with my existing model was pretty simple, given the extensive documentation online and the fact that our output was limited to a single grouped boxplot and results table:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/img/shiny-app.png&quot; alt=&quot;Shiny-app&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://tobylunt.shinyapps.io/shinyapp/&quot;&gt;&lt;img src=&quot;/assets/img/shiny-app.png&quot; alt=&quot;Shiny-app&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;For an interactive version hosted (for free!) at shinyapps.io, &lt;a href=&quot;https://tobylunt.shinyapps.io/shinyapp/&quot;&gt;head this way&lt;/a&gt;. Despite the limitations both in form and function of this app, it was enough to demonstrate the amazing power not only for sharing information - but also for uncovering patterns and trends that would be more difficult to discern without good visualization.&lt;br/&gt;
 &lt;br/&gt;&lt;/p&gt;
@@ -53,7 +53,7 @@
 		
 			<item>
 				<title>Beautiful Disaster</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/assets/img/ariadne.jpg&quot; title=&quot;Ariadne&quot; alt=&quot;Ariadne&quot; /&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;a href=&quot;/beautiful-disaster/&quot;&gt;&lt;img src=&quot;/assets/img/ariadne.png&quot; title=&quot;Ariadne&quot; alt=&quot;Ariadne&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Alright, it&#39;s finally become clear: I might not be totally right in the head. I, along with my two closest friends, just bought a 90 year old wooden boat. Ariadne needs a lot of work. We are planning for a 3-5 year restoration before she returns to her normal self. I&#39;ll try to record some of the process in periodic blog posts.&lt;/p&gt;
 
@@ -62,11 +62,11 @@
 
 &lt;p&gt;Sailing (rightfully) has a reputation for exclusivity, whiteness, and general doucheyness. Some of this will never change, because fancy boats are expensive and serve as giant proxy phalluses for the rich. This is unfortunate on so many levels. On the positive side, sailing is a powerful way to be in the natural world - to learn how to work with the weather and to respect nature, to build self-reliance and self-confidence, to learn the skills of a craftsperson (in this case woodworking and composites), and to witness and appreciate the diversity and beauty of the natural world. But yes, you have to have a boat to go sailing, and somebody to teach you the basics really helps. I&#39;m very grateful to have had the privilege of both these things in my youth.&lt;/p&gt;
 
-&lt;p&gt;My buddies Jay and Scott and I have decided to become stewards of Ariadne, a wooden boat built almost entirely of Mahogany in the late 1920s in Sweden. The boat was owned by a neighbor of ours who rescued it from ruin in the 1980s, and kept it alive until his death about five years ago. It was a labor of love for him, as it will be for us. The boat has next to no financial value, despite her great beauty and pedigree. We were granted the stewardship of Ariadne for $1 with the pretext that we would respect and revitalize Ariadne, consistent with the memory of her previous owner. This is our dream and our intention.&lt;/p&gt;
+&lt;p&gt;My buddies Jay and Scott and I have decided to become stewards of Ariadne, a wooden boat built almost entirely of mahogany in the late 1920s in Sweden. The boat was owned by a neighbor of ours who rescued it from ruin in the 1980s, and kept it alive until his death about five years ago. It was a labor of love for him, as it will be for us. The boat has next to no financial value, despite her great beauty and pedigree. We were granted the stewardship of Ariadne for $1 with the pretext that we would respect and revitalize Ariadne, consistent with the memory of her previous owner. This is our dream and our intention.&lt;/p&gt;
 
 &lt;p&gt;There&#39;s no such thing as a free boat. But the three of us decided to take on this project as a way to strengthen our friendship in the face of the pressures of adulthood, and to keep this boat as a centerpiece for our community in the years to come. We estimate it will take us about five years and a lot of elbow grease to get her back on the water. Anyone is welcome to come help with the woodworking, or come for a ride when she&#39;s back in action.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/img/ariadne.png&quot; title=&quot;Ariadne&quot; alt=&quot;Ariadne&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/ariadne-2.png&quot; title=&quot;Ariadne&quot; alt=&quot;Ariadne&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;br/&gt;&lt;/p&gt;
 </description>
