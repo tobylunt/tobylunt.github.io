@@ -12,7 +12,7 @@ Clearly we didn't expect to create anything that would be an actual replacement 
 <br/>
 
 <hr>
-![Ariadne]({{ teamtvblogs.github.io }}/assets/img/ariadne.jpg "Ariadne")
+![Ariadne]({{ teamtvblogs.github.io }}/assets/img/ariadne.png "Ariadne")
 
 Alright, it's finally become clear: I might not be totally right in the head. I, along with my two closest friends, just bought a 90 year old wooden boat. Ariadne needs a lot of work. We are planning for a 3-5 year restoration before she returns to her normal self. I'll try to record some of the process in periodic blog posts, but for now, enjoy this [first one]({{ teamtvblogs.github.io }}/beautiful-disaster/).
 
