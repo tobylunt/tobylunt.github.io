@@ -21,7 +21,7 @@ disqus:
     # Leave shortname blank to disable comments site-wide.
     # Disable comments for any post by adding `comments: false` to that post's YAML Front Matter.
     shortname: tobias-lunt
-    
+
 # Social Media
 twitter_username: tobylunt
 
@@ -37,10 +37,16 @@ markdown:           rdiscount
 
 # Navigation
 nav:
+  - name:           "About"
+    href:           "/about-me"
   - name:           "Blog"
     href:           "/blog"
+  - name:           "Contact"
+    href:           "/contact"
   - name:           "CV"
-    href:           "/cv"
+    href:           "/assets/cv.pdf"
+  - name:           "Projects"
+    href:           "/projects"
 
 # Sass
 sass:

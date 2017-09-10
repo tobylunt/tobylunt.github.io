@@ -6,6 +6,76 @@
 		<atom:link href="/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Whitman Bot</title>
+        <description>&lt;p&gt;&lt;img src=&quot;/assets/img/whitman-archive.png&quot; alt=&quot;Whitman&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Machine learning amazes me - and so does my brother in law &lt;a href=http://aaronmoe.com&gt;Aaron Moe&lt;/a&gt;, professor of English, literature genius, and ecopoeticist. Whenever I hang out with Aaron, I learn something. Among many things, Aaron is an expert on E.E. Cummings and the works of Walt Whitman. One of our conversations led to an idea: what if we were to adapt &lt;a href=https://karpathy.github.io/2015/05/21/rnn-effectiveness/&gt;some&lt;/a&gt; of the &lt;a href=https://www.engadget.com/2015/12/02/neural-network-journalism-philip-k-dick/&gt;advances&lt;/a&gt; by leading machine learning engineers to mimic the prose of Whitman? You could feed the bot a &quot;seed&quot; of a few words, and then see how Walt might finish your sentence.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+
+&lt;p&gt;This project is in the early stages of development. Check back in here for updates, or &lt;a href=/contact&gt;shoot me a message&lt;/a&gt; - I&#39;d love to chat about it, or other cool new ideas or potential collaborations!&lt;br/&gt;
+&lt;br/&gt;&lt;/p&gt;
+</description>
+				<pubDate>Sun, 10 Sep 2017 00:00:00 -0400</pubDate>
+				<link>/whitman-bot/</link>
+				<guid isPermaLink="true">/whitman-bot/</guid>
+			</item>
+		
+			<item>
+				<title>Shiny Potatoes</title>
+        <description>&lt;p&gt;&lt;img src=&quot;/assets/img/shiny-header.png&quot; alt=&quot;Shiny&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In an effort to explore the vast possibilities of R Shiny, I built a very simple Shiny app using data from a survey designed and conducted with colleagues in Ethiopia. The data explores the relationships between different seed potato storage technologies (which turn out to be very important!) under different hypothetical future conditions.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+
+&lt;p&gt;The goal of this particular analysis was to explore the impact of a low-tech seed potato storage technology called Diffuse Light Storehouses (DLS), which allow rural Ethiopian farmers to dramatically improve their yields. This is because potatoes are planted from the tubers of the last growing season, not from &quot;seed&quot; as we know it. These tubers are much more sensitive than true seed, and require good storage conditions to meet their yield potential.&lt;/p&gt;
+
+&lt;p&gt;Consequently, we compared the profitability of building DLS independently, building DLS with the support of an NGO program which subsidized construction, and traditional storage methods. Profitability depends on a variety of future conditions including labor wage rates, materials costs, sale and purchase prices, and yields. Many of these variables vary year-to-year in a way that depends on the previous year - e.g. the wage rate in time t+1 depends on wages in time t. We can model these changes over time using Markov Chain processes - I chose geometric brownian motion (the image shows an example of this).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/gbm.png&quot; alt=&quot;GBM&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Using bootstraps of our own data, as well as available external information, we created three plausble scenarios for the next 10 years for potato growers: optimistic, medium, and pessimistic. We then estimated profitability across our three farmer types (NGO-supported DLS, independent DLS, and traditional) for each of the three scenarios. Shiny provided a way to visualize the impact of different assumed discount rates, which can be highly variable in developing country situations.&lt;/p&gt;
+
+&lt;p&gt;The integration of Shiny with my existing model was pretty simple, given the extensive documentation online and the fact that our output was limited to a single grouped boxplot and results table:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/shiny-app.png&quot; alt=&quot;Shiny-app&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;For an interactive version hosted (for free!) at shinyapps.io, &lt;a href=https://tobylunt.shinyapps.io/shinyapp/&gt;head this way&lt;/a&gt;. Despite the limitations both in form and function of this app, it was enough to demonstrate the amazing power not only for sharing information - but also for uncovering patterns and trends that would be more difficult to discern without good visualization.&lt;br/&gt;
+&lt;br/&gt;&lt;/p&gt;
+</description>
+				<pubDate>Sun, 10 Sep 2017 00:00:00 -0400</pubDate>
+				<link>/shiny-potatoes/</link>
+				<guid isPermaLink="true">/shiny-potatoes/</guid>
+			</item>
+		
+			<item>
+				<title>Beautiful Disaster</title>
+        <description>&lt;p&gt;&lt;img src=&quot;/assets/img/ariadne.jpg&quot; title=&quot;Ariadne&quot; alt=&quot;Ariadne&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Alright, it&#39;s finally become clear: I might not be totally right in the head. I, along with my two closest friends, just bought a 90 year old wooden boat. Ariadne needs a lot of work. We are planning for a 3-5 year restoration before she returns to her normal self. I&#39;ll try to record some of the process in periodic blog posts, but for now, enjoy this &lt;a href=/beautiful-disaster/&gt;first one&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+
+&lt;p&gt;Sailing (rightfully) has a reputation for exclusivity, whiteness, and general doucheyness. Some of this will never change, because fancy boats are expensive and serve as giant proxy phalluses for the rich. This is unfortunate on so many levels. On the positive side, sailing is a powerful way to be in the natural world - to learn how to work with the weather and to respect nature, to build self-reliance and self-confidence, to learn the skills of a craftsperson (in this case woodworking and composites), and to witness and appreciate the diversity and beauty of the natural world. But yes, you have to have a boat to go sailing, and somebody to teach you the basics really helps. I&#39;m very grateful to have had the privilege of both these things in my youth.&lt;/p&gt;
+
+&lt;p&gt;My buddies Jay and Scott and I have decided to become stewards of Ariadne, a wooden boat built almost entirely of Mahogany in the late 1920s in Sweden. The boat was owned by a neighbor of ours who rescued it from ruin in the 1980s, and kept it alive until his death about five years ago. It was a labor of love for him, as it will be for us. The boat has next to no financial value, despite her great beauty and pedigree. We were granted the stewardship of Ariadne for $1 with the pretext that we would respect and revitalize Ariadne, consistent with the memory of her previous owner. This is our dream and our intention.&lt;/p&gt;
+
+&lt;p&gt;There&#39;s no such thing as a free boat. But the three of us decided to take on this project as a way to strengthen our friendship in the face of the pressures of adulthood, and to keep this boat as a centerpiece for our community in the years to come. We estimate it will take us about five years and a lot of elbow grease to get her back on the water. Anyone is welcome to come help with the woodworking, or come for a ride when she&#39;s back in action.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/ariadne.png&quot; title=&quot;Ariadne&quot; alt=&quot;Ariadne&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
+</description>
+				<pubDate>Sun, 10 Sep 2017 00:00:00 -0400</pubDate>
+				<link>/beautiful-disaster/</link>
+				<guid isPermaLink="true">/beautiful-disaster/</guid>
+			</item>
+		
+			<item>
 				<title>Sexy vs. Unsexy</title>
         <description>&lt;p&gt;&lt;img src=&quot;/assets/img/boredface.png&quot; alt=&quot;boredom&quot; /&gt;&lt;/p&gt;
 
@@ -28,7 +98,7 @@
 
 &lt;p&gt;In a democratic system of governance, justice and equality are dependent upon the involvement of an informed and motivated public. As individuals, we are not capable of fixing every issue that matters to us, but we need to recognize the importance of unsexy issues and illuminate dark legislative corners under the spotlight of scrutiny and debate. Without this attention, those with the resources to create complex contracts, laws, and financial instruments will continue to do as they please; even if most are honest and good, all it takes is a few rogue agents to hide something self-servingly evil and destructive within something boring. So by all means, continue to enjoy twitter and the occasional sensational headline – I know I will – but don’t forget that worlds are constructed using materials that are much more dull, and vote accordingly.&lt;/p&gt;
 </description>
-				<pubDate>Sat, 09 Jul 2016 00:00:00 -0500</pubDate>
+				<pubDate>Sat, 09 Jul 2016 00:00:00 -0400</pubDate>
 				<link>/sexy-vs-unsexy/</link>
 				<guid isPermaLink="true">/sexy-vs-unsexy/</guid>
 			</item>
@@ -57,7 +127,7 @@ William Easterly – Tyranny of Experts (p15)&lt;/p&gt;
 
 &lt;p&gt;Our technologies reflect our collective values. We should strive for the tools we use to express values that we are proud of, not to perpetuate inequality and hardship.&lt;/p&gt;
 </description>
-				<pubDate>Sat, 27 Feb 2016 00:00:00 -0600</pubDate>
+				<pubDate>Sat, 27 Feb 2016 00:00:00 -0500</pubDate>
 				<link>/on-technology/</link>
 				<guid isPermaLink="true">/on-technology/</guid>
 			</item>
@@ -89,7 +159,7 @@ William Easterly – Tyranny of Experts (p15)&lt;/p&gt;
 
 &lt;p&gt;Maybe climate change should be a Republican issue in 2016 after all.&lt;/p&gt;
 </description>
-				<pubDate>Tue, 09 Feb 2016 00:00:00 -0600</pubDate>
+				<pubDate>Tue, 09 Feb 2016 00:00:00 -0500</pubDate>
 				<link>/conservatives-and-the-climate/</link>
 				<guid isPermaLink="true">/conservatives-and-the-climate/</guid>
 			</item>
@@ -151,7 +221,7 @@ William Easterly – Tyranny of Experts (p15)&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;If you get involved, you can help tip the balance from apathy and failure, to active and passionate success. Your involvement – yes, you – is the key to a world without hunger and with equal opportunity for all.&lt;/em&gt;&lt;/p&gt;
 </description>
-				<pubDate>Fri, 22 Jan 2016 00:00:00 -0600</pubDate>
+				<pubDate>Fri, 22 Jan 2016 00:00:00 -0500</pubDate>
 				<link>/10-reasons/</link>
 				<guid isPermaLink="true">/10-reasons/</guid>
 			</item>
@@ -208,7 +278,7 @@ William Easterly – Tyranny of Experts (p15)&lt;/p&gt;
 
 &lt;p&gt;This stuff is complex. That’s why we haven’t been very successful so far. But we are learning from our mistakes and have greater awareness, humility and access to powerful technological tools than ever before. If we’re careful and collaborative, we can levy these strengths into transformative improvements at home and abroad.&lt;/p&gt;
 </description>
-				<pubDate>Sat, 09 Jan 2016 00:00:00 -0600</pubDate>
+				<pubDate>Sat, 09 Jan 2016 00:00:00 -0500</pubDate>
 				<link>/data-for-development/</link>
 				<guid isPermaLink="true">/data-for-development/</guid>
 			</item>
@@ -228,7 +298,7 @@ William Easterly – Tyranny of Experts (p15)&lt;/p&gt;
 
 &lt;p&gt;Thanks for visiting, and keep coming back for more substantive updates. Maybe at some point we&#39;ll add some new functionality, but for now, this is what we&#39;ve got.&lt;/p&gt;
 </description>
-				<pubDate>Mon, 23 Nov 2015 00:00:00 -0600</pubDate>
+				<pubDate>Mon, 23 Nov 2015 00:00:00 -0500</pubDate>
 				<link>/hello-world/</link>
 				<guid isPermaLink="true">/hello-world/</guid>
 			</item>

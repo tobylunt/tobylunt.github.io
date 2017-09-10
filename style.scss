@@ -25,7 +25,7 @@ body {
 }
 
 
-// font awesome check w/ circle 
+// font awesome check w/ circle
 .fa-stack-1x, .fa-stack-2x {
     color:cornflowerblue;
 }
@@ -86,7 +86,7 @@ body {
   svg {
     height: 100%;
     width: 100%;
-      
+
   }
 // IE8:
   em {
@@ -100,9 +100,9 @@ body {
     bottom: 0;
     left: 0;
   }
-}    
+}
 
-// TESTING HOVER FIXES 
+// TESTING HOVER FIXES
  .icon-social-twitter:hover svg path {
  fill: #268bd2;
  }
@@ -110,14 +110,14 @@ body {
  fill: #3b5998;
  }
 // END TESTING
-    
+
 
 html {
   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 18px;
   font-weight: 300;
   line-height: 1.6;
-  
+
   @media (min-width: 38em) {
     font-size: 20px;
   }
@@ -133,7 +133,7 @@ body {
 a {
   color: #7ca5c1;
   text-decoration: none;
-  
+
   &:hover,
   &:focus {
     color: #4458C5;
@@ -159,7 +159,25 @@ post-header {
     border-top: none;
 }
 }
-    
+
+post-header-lg {
+  font-family: "Arizona", Helvetica, Arial, sans-serif;
+  //font-family: "Amatic SC", Helvetica, Arial, sans-serif;
+  //font-family: "Quicksand", Helvetica, Arial, sans-serif;
+  font-size: 6rem;
+  margin-top: 0;
+  margin-bottom: .5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #333;
+  letter-spacing: -.025rem;
+    a:hover, a:focus {
+    color: #4458C5;
+    text-decoration: none;
+    border-top: none;
+}
+}
+
 h1 {
   font-family: "CaviarDreams", Helvetica, Arial, sans-serif;
   //font-family: "Amatic SC", Helvetica, Arial, sans-serif;
@@ -239,11 +257,11 @@ dd {
 ul {
   list-style: inside square;
   padding-left: 0;
-  
+
   li {
     margin-bottom: .25rem;
   }
-  
+
   ul,
   ol {
     margin-top: .25rem;
@@ -254,11 +272,11 @@ ul {
 ol {
   list-style: inside decimal;
   padding-left: 0;
-  
+
   li {
     margin-bottom: .25rem;
   }
-  
+
   ul,
   ol {
     margin-top: .25rem;
@@ -307,7 +325,7 @@ blockquote {
   margin: 0 2rem 1rem 0;
   color: #999;
   border-left: .5rem solid #e5e5e5;
-  
+
   p:last-child {
     margin-bottom: 0;
   }
@@ -421,7 +439,7 @@ tbody tr:nth-child(odd) th {
   padding: 2rem 1.5rem;
   margin-left:  auto;
   margin-right: auto;
-  
+
   @media (min-width: 38rem){
     padding: 5rem 1rem;
   }
@@ -435,31 +453,31 @@ tbody tr:nth-child(odd) th {
 
   &-title {
     font-weight: 300;
-    
+
     a {
       color: #333;
-      
+
       &:hover,
       &:focus {
         text-decoration: none;
       }
     }
-    
+
     span {
       color: #ddd;
     }
-    
+
   }
-  
+
   &-title--small {
     margin-bottom: .75rem;
     font-size: 1rem;
     font-weight: 300;
     text-transform: uppercase;
-    
+
     a {
       color: #333;
-      
+
       &:hover,
       &:focus {
         color: #ddd;
@@ -467,10 +485,33 @@ tbody tr:nth-child(odd) th {
       }
     }
   }
-  
+
   .masthead-nav {
     margin-bottom: 3rem;
-    
+
+    a {
+      color: #aaa;
+      font-weight: 300;
+      text-transform: lowercase;
+      -webkit-transition: all .2s ease;
+         -moz-transition: all .2s ease;
+              transition: all .2s ease;
+
+      &:hover,
+      &:focus {
+        color: #333;
+        text-decoration: overline;
+      }
+
+      + a {
+        margin-left: .25rem;
+      }
+    }
+  }
+
+  .masthead-nav-blog {
+    margin-bottom: 2rem;
+
     a {
       color: #aaa;
       font-weight: 300;
@@ -515,10 +556,10 @@ tbody tr:nth-child(odd) th {
 .list {
   &-post-title {
     margin-bottom: .25rem;
-    
+
     a {
       color: #333;
-      
+
       &:hover,
       &:focus {
         text-decoration: none;
@@ -620,7 +661,7 @@ tbody tr:nth-child(odd) th {
 }
 
 .bootstrap-frm input[type="text"], .bootstrap-frm input[type="email"], .bootstrap-frm textarea, .bootstrap-frm select{
-    font-family:"Caviar Dreams"; 
+    font-family:"Caviar Dreams";
     font-size: 15px;
     border: 1px solid #CCC;
     color: #888;
@@ -634,7 +675,7 @@ tbody tr:nth-child(odd) th {
     width: 100%;
     border-radius: 4px;
     -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;    
+    -moz-border-radius: 4px;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -659,4 +700,3 @@ input[type=submit] {
                 color:#618db3;
 }
 }
-

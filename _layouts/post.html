@@ -4,12 +4,18 @@ layout: default
 
 <header class="masthead">
   <h1 class="masthead-title--small">
-    <a href="{{ site.baseurl }}/">{{ site.name }}</a>
-    <a href="https://twitter.com/tobylunt">
+    <a href="{{ site.baseurl }}/">HOME</a>
+    <p> </p>
+    <nav class="masthead-nav">
+      {% for nav in site.nav %}
+      <a href="{{ nav.href }}">{{ nav.name }}</a>
+      {% endfor %}
+      <a href="https://twitter.com/tobylunt" target="_blank">
         <i class="fa fa-twitter"></i>
-    </a>
+      </a>
+    </nav>
   </h1>
-</header> 
+</header>
 
 <div class="content post">
   <h1 class="post-title">{{ page.title }}</h1>
@@ -32,6 +38,7 @@ layout: default
 </div>
 -->
 
+<!-- CUTTING OUT SOCIAL SHARING FOOTER...bc social media is dumb.
 <ul class="soc">
     <li>
       <a href="https://twitter.com/intent/tweet?text=Blog post: {{ page.title }}&url={{ page.shortUrl }}&via=tobylunt"
@@ -54,3 +61,4 @@ layout: default
       </a>
     </li>
 </ul>
+-->
