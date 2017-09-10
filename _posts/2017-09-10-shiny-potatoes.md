@@ -22,5 +22,5 @@ The integration of Shiny with my existing model was pretty simple, given the ext
 
 ![Shiny-app]({{ teamtvblogs.github.io }}/assets/img/shiny-app.png)
 
-For an interactive version hosted (for free!) at shinyapps.io, <a href=https://tobylunt.shinyapps.io/shinyapp/>head this way</a>. Despite the limitations both in form and function of this app, it was enough to demonstrate the amazing power not only for sharing information - but also for uncovering patterns and trends that would be more difficult to discern without good visualization.  
+For an interactive version hosted (for free!) at shinyapps.io, [head this way](https://tobylunt.shinyapps.io/shinyapp/). Despite the limitations both in form and function of this app, it was enough to demonstrate the amazing power not only for sharing information - but also for uncovering patterns and trends that would be more difficult to discern without good visualization.  
 <br/>
