@@ -17,4 +17,5 @@ permalink: /about-me/
 <br>
 
 <hr>
-<p>*This site was built with Jekyll and is hosted on Github. Despite the limitations of static websites, I highly recommend Jekyll as a blogging platform. It's pretty great. I borrowed heavily from the brilliant work of ghjaru. Thanks! Check out his work* [here](http://github.com/gfjaru/Kiko).</p>
+<p>*This site was built with Jekyll and is hosted on Github. Despite the limitations of static websites, I highly recommend Jekyll as a blogging platform. It's pretty great. I borrowed heavily from the brilliant work of ghjaru - thanks!*</p>
+<p>Check out his work [here](http://github.com/gfjaru/Kiko).</p>
