@@ -5,7 +5,7 @@ shortUrl: http://goo.gl/7pZmG6
 comments: true
 ---
 
-![Shiny]({{ teamtvblogs.github.io }}/assets/img/shiny-header.png)
+[![Shiny]({{ teamtvblogs.github.io }}/assets/img/shiny-header.png)]({{ teamtvblogs.github.io }}/shiny-potatoes/)
 
 In an effort to explore the vast possibilities of R Shiny, I built a very simple Shiny app using data from a survey designed and conducted with colleagues in Ethiopia. The data explores the relationships between different seed potato storage technologies (which turn out to be very important!) under different hypothetical future conditions.
 
