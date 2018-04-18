@@ -456,7 +456,6 @@ tbody tr:nth-child(odd) th {
 
     a {
       color: #333;
-
       &:hover,
       &:focus {
         text-decoration: none;
@@ -466,7 +465,23 @@ tbody tr:nth-child(odd) th {
     span {
       color: #ddd;
     }
+  }
 
+  &-title--medium {
+    font-weight: 300;
+    font-size: 2rem;
+    
+    a {
+      color: #333;
+      &:hover,
+      &:focus {
+        text-decoration: none;
+      }
+    }
+
+    span {
+      color: #ddd;
+    }
   }
 
   &-title--small {

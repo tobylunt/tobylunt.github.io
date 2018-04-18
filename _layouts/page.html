@@ -1,20 +1,8 @@
 ---
 layout: default
 ---
-<header class="masthead">
-  <h1 class="masthead-title--small">
-    <a href="{{ site.baseurl }}/">HOME</a>
-    <p> </p>
-    <nav class="masthead-nav">
-      {% for nav in site.nav %}
-      <a href="{{ nav.href }}">{{ nav.name }}</a>
-      {% endfor %}
-      <a href="https://twitter.com/tobylunt" target="_blank">
-        <i class="fa fa-twitter"></i>
-      </a>
-    </nav>
-  </h1>
-</header>
+
+{% include pageheader.html %}
 
 <div class="content page">
   <h1 class="page-title">{{ page.title }}</h1>
