@@ -2,25 +2,21 @@
 layout: default
 ---
 
-<header class="masthead">
-  <h1 class="masthead-title--small">
-    <a href="{{ site.baseurl }}/">HOME</a>
-    <p> </p>
-    <nav class="masthead-nav">
-      {% for nav in site.nav %}
-      <a href="{{ nav.href }}">{{ nav.name }}</a>
-      {% endfor %}
-      <a href="https://twitter.com/tobylunt" target="_blank">
-        <i class="fa fa-twitter"></i>
-      </a>
-    </nav>
-  </h1>
-</header>
+{% include pageheader.html %}
 
 <div class="content post">
   <h1 class="post-title">{{ page.title }}</h1>
   <div class="post-date">
     <p><time>{{ page.date | date_to_string }}</time> - Read time: {% include read_time.html %}</p>
+    {% capture difference %} {{ page.tags | size | minus:1 }} {% endcapture %}
+    {% unless difference contains '-' %}
+     <span>[
+      {% for tag in page.tags %}
+      {% capture tag_name %}{{ tag }}{% endcapture %}
+      <a href="/tag/{{ tag_name }}"><code class="highligher-rouge"><nobr>{{ tag_name }}</nobr></code>&nbsp;</a>
+      {% endfor %}
+      ]</span>
+     {% endunless %}
   </div>
   {{ content }}
 </div>

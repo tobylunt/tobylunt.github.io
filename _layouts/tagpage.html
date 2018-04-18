@@ -1,0 +1,18 @@
+---
+layout: default
+---
+
+{% include pageheader.html %}
+
+<div class="post">
+<h1>Topic: {{ page.tag }}</h1>
+<br>
+<ul>
+{% for post in site.tags[page.tag] %}
+  <li><a href="{{ post.url }}">{{ post.title }}</a> ({{ post.date | date_to_string }})<br>
+    {{ post.description }}
+  </li>
+{% endfor %}
+</ul>
+</div>
+<hr>

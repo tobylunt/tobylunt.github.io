@@ -1,0 +1,14 @@
+<header class="masthead">
+  <h1 class="masthead-title--medium">
+    <a href="{{ site.baseurl }}/">HOME</a>
+  </h1>
+  <nav class="masthead-nav">
+    {% for nav in site.nav %}
+    <a href="{{ nav.href }}">{{ nav.name }}</a>
+    {% endfor %}
+    <a href="https://twitter.com/tobylunt" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  </nav>
+</header>
+
