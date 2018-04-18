@@ -132,6 +132,8 @@
       <p><a href="/whitman-bot-redux/"><img src="/assets/img/rnn.jpg" alt="RNN" /></a>
 <em>image source: canonical RNN diagram, found <a href="http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/">here</a></em></p>
 
+<p>RNNs are amazing! While it isn't a surprise that we can't recreate Walt Whitman in his entirety using only a few lines of code and a GPU, we can generate highly entertaining results with a relatively small corpus and minimal training time. I had better results using a character-based approach instead of a neural net that learns a word at a time. I won't explain the basics of what an RNN is or how it works; there are many tutorials on this subject that are quite good including the one <a href="http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/">from which the above diagram was found</a>, and Andrej Karpathy's excellent and now famous <a href="https://karpathy.github.io/2015/05/21/rnn-effectiveness/">blog post on the subject</a>. But long story short, RNNs have a 'working memory' of sorts in that the outputs are dependent not only on the immediately preceding vector of inputs, but also a history of previous inputs (of adjustable length). So for generative text, this means that the word or character that the neural net generates takes the previous context into account.</p>
+
         
       
       
