@@ -32,7 +32,7 @@ FILES = dict(train=TRN_PATH, validation=VAL_PATH, test=VAL_PATH)
 # set modeldata object; min_freq is for infrequent chars
 md = LanguageModelData.from_text_files(PATH, TEXT, **FILES, bs=bs, bptt=bptt, min_freq=3)
 ```
-Now to train the model, we import the fast.ai module...
+Now to train the model, we import the fast.ai stochastic gradient descent with restarts (SGDR) module...
 
 ```python
 from fastai import sgdr
@@ -61,7 +61,7 @@ class CharSeqStatefulLSTM(nn.Module):
                   V(torch.zeros(self.nl, bs, n_hidden)))
 ```
 
-We can then initialize the model object, and use one of the great features of the fast.ai library - stochastic gradient descent with restarts, which avoids getting stuck in local minima, and learning rate annealing, which helps to refine the process of gradient descent as the training progresses over multiple epochs. Often a larger learning rate is beneficial in the early stages of training, but a smaller one can lead to better result in the later stages.
+We can then initialize the model object, and use one of the great features of the fast.ai library - SGDR - which avoids getting stuck in local minima, and learning rate annealing, which helps to refine the process of gradient descent as the training progresses over multiple epochs. Often a larger learning rate is beneficial in the early stages of training, but a smaller one can lead to better result in the later stages.
 
 ```python
 # initialize the pytorch LSTM model object
@@ -86,41 +86,112 @@ So, interesting stuff, and definitely somewhat Whitman-ey. In all honesty, this 
 
 Thanks to some great humans, there is a [dockerized version](https://hub.docker.com/r/xoryouyou/torch-rnn/) of char-rnn that can be run super duper easily. I actually got the original char-rnn running on my local machine using Torch and Lua, but it was really slow. I wanted to easily deploy the model on the GPU server I was renting, and the dockerized version was just the ticket and trained about 10x faster. Hooray!
 
-Long story short, I had pretty good success with this model after some fiddling. At the end of the day the most responsive parameter was the size of the hidden layers - set in the `-rnn_size` option. Both 512 and 1024 worked quite well for me, and still trained in under an hour on my GPU. Here are a couple of snippets:
+Long story short, I had pretty good success with this model after some fiddling. At the end of the day the most responsive parameter was the size of the hidden layers - set in the `-rnn_size` option. Both 512 and 1024 worked quite well for me, and still trained in under an hour on my GPU. Here are a couple of snippets from the 512 model, which was the first set of parameters that gave any remotely meaningful results:
 
-> Forested landscapes. I am so lear'd
-to his heart for the foundation of one who should say I should say,
-and in the south was a fine past tangled sea-circumstances. Then there was no
-every first friends of Greece, and its entirety of our moon, I have
-abandon'd his visit to the bright prosperity of the hour,
-and a perfect passion of the old men who can be consciousness, and which said he
-had the distinctive summer or forever quite a delicate broad songs, the
-men in the rations and animals and children, even the men before
-silent sounding body, and the conventional morning and great assassination
-of his dead, but a present fellow, the condition of a democratic north red in
-its house of victory. I say this place and subtle and
-half-supplied still) I have seen the hour at the prolection day and
-main to be contradictory. The idea of the middle of the same one of
-the Massachusetts of the Deducation was the middle of the principle of the side of the
-rest. It was troubled by the same background of the front of the like of
-interrosonian, which we were a pleasant equal about the old frontier
-silence, but in his own ground, and have seen these days and art or
-instance.
+> Forested landscapes. I am so lear'd  
+>to his heart for the foundation of one who should say I should say,  
+>and in the south was a fine past tangled sea-circumstances. Then there was no
+>every first friends of Greece, and its entirety of our moon, I have
+>abandon'd his visit to the bright prosperity of the hour,
+>and a perfect passion of the old men who can be consciousness, and which said he
+>had the distinctive summer or forever quite a delicate broad songs, the
+>men in the rations and animals and children, even the men before
+>silent sounding body, and the conventional morning and great assassination
+>of his dead, but a present fellow, the condition of a democratic north red in
+>its house of victory. I say this place and subtle and
+>half-supplied still) I have seen the hour at the prolection day and
+>main to be contradictory. The idea of the middle of the same one of
+>the Massachusetts of the Deducation was the middle of the principle of the side of the
+>rest. It was troubled by the same background of the front of the like of
+>interrosonian, which we were a pleasant equal about the old frontier
+>silence, but in his own ground, and have seen these days and art or
+>instance.
 >
 >"You say is it has surely be tremendous a drink at Politics and the visible of the revolutions, the
 various gods and latents, however traits, and standing from the
 journals, a fine stranger to the whole death.
 >
 >The field, the long and friends, the construction of a time as the struggle of the highest
-impressions, the sense of a man were flat and rivers and womaning, and
-the great experiment of its body and statuette, not only in the time, the
-whole beautiful world's interesting being afterward, and on the soul, which
-the touch in the broad side of the trees, between the stripe, and
-the masses of the matter of the universe—the oceanic seasons of
-the rest. The same distinctive prailish prouders, considerations here,
-and still is in the stranger, race of view out of the moral show and
-poetry of the world.
+>impressions, the sense of a man were flat and rivers and womaning, and
+>the great experiment of its body and statuette, not only in the time, the
+>whole beautiful world's interesting being afterward, and on the soul, which
+>the touch in the broad side of the trees, between the stripe, and
+>the masses of the matter of the universe—the oceanic seasons of
+>the rest. The same distinctive prailish prouders, considerations here,
+>and still is in the stranger, race of view out of the moral show and
+>poetry of the world.
 
-This one was run on a version of the corpus for which I removed the line breaks, which I actually find less interesting. While there still is no cohesive narrative, the amount of sense this auto-generated text makes, the limited number of spelling errors, and the somewhat similar style to Whitman just blows my mind.
+Whoa - amazing! Spelling dramatically improved from previous iterations, and punctuation is getting quite close. Getting a consistent subject/object within a sentence is still a long ways off, but sentences have begun to appear (although Whitman's tendency for run-on definitely persists in the model, especially when generating text in a conservative mode). 
+
+This next model below was run on a version of the corpus for which I removed the line breaks, which I actually find less interesting. While there still is no cohesive narrative, the amount of sense this auto-generated text makes, the limited number of spelling errors, and the somewhat similar style to Whitman just blows my mind.
 
 > He was a most large dramatic soul, and making delicate famous thickly song-style of which he had supply the liberated me not the strong and afternoon region down to the cat-bird prayers and religion and lines of sense, nor soothing, launch'd back to the road this flying idea of the old Mississippi river—an occasionally mysterious or leaders, and by a physical democratic eminence. To-day our day in the depths of the young man, to be going in one side, the first, the anti-democratic democracy, at any rate which is a young tone about which it come to enter and in the key and a frail large fact of record, and marching away; the idea of corn. "Hall, Mr. Emerson, Mr. Again this counterpart, an untouch'd—sometimes looks to me, in the song of the farmer yet round just now to-day, my mind's breast of the windows; and there are individuals with their weed innocent. The great transparent proof of his wife generally, and leaning to get the gulls fall in the field—where I suppose a bit of literature of his regiment. She was evisted himself from the silent, frequent glass of whom I only abore perfectly farmer'd, I know abandon'd the dlead of this paracogethe of Abraham Lincoln—furnish the President and art of his capitulation, court, yet lives and coloring the mind, but always will be realized him in the side of the highest wind, and had no man and night—said that this Saguenay had made a strange speckach. ("I wish'd as little intellect, then at some curious principles, Reverent in one or outward Wall, after the suffrage overhead, as now going to be a general humanity, and much of the best thoughts in my opinion, had been arouse to come.
+
+Comparing the loss between the training and validation sets, the above model becomes quite overfit after 50 epochs (even with 30% dropout). The machine doesn't quite understand how to deal with quotation marks or parentheses, and there are a couple of spelling errors. While this result is still pretty impressive, I think we can do incrementally better. This next iteration of the model doubled the dimension of the hidden layers, and expanded BPTT up to 128 characters. The hope is that we can improve the ability of the machine to carry meaning within a sentence by bumping up BPTT, but without too large a sacrifice of loss by expanding the neural net itself. I also switch back to the originally line-breaked file as I prefer the end result.
+
+>The lovers and sicking days as  
+>he arrived the heavens of that face it was a most common work and affectionate  
+>close and glare. The larger meaning of it was departed. It is a power  
+>at night in the coterial murder, whose great poet could arise that personal 
+>soul. Amid the human office and oppers are to so generally to the parts of  
+>the lands, with the revolution of the all-strong flowers, et cetera. I have  
+>had the great sense to the New World by some advantages, as I like to  
+>the street of the perfect but more than the hour. The concrete at  
+>the highest of the wards of mind, and going off to sing. I am not to  
+>certainly do not show this back poets and memoranda, the eyes, and in  
+>offices of heroes, savage, which we call the whole state of a hundred  
+>millions from the arrivals of death. As the actual common soul of a turbulent  
+>child already more like a table and fever, they were all leading 
+>the wards.  
+
+Looks a bit better, although we still haven't managed to make the model too much more sensible. But there are occasional snippets that pop out and amaze me (*"the actual common soul of a turbulent child"*; and also *"the larger meaning of it was departed"* - accurate use of verb tense!).  
+
+## CHECKPOINTING PROGRESS
+
+One of the great things about the working with models like this, is that if you checkpoint your progress, you can very easily compare how the model is improving over the course of training. For illustration's sake, here's a sequential sample of 4 checkpointed models over the course of 50 epochs of training - 150 characters each, with an initial seed of "Song of Myself."
+
+### Checkpoint 1
+
+>
+
+### Checkpoint 2
+
+>
+
+### Checkpoint 3
+
+>
+
+### Finished model
+
+>
+
+
+## FINAL PARAMETERS
+
+```bash
+# start the dockerized container with char-rnn ready to go (need to do this in a different tmux pane)
+nvidia-docker run --rm -ti xoryouyou/torch-rnn:latest bash
+
+# get the identifier for your docker container
+docker container list
+
+# copy your input text file into the dockerized container (where 'focused_minsky' is the id)
+docker cp whitman_text.txt focused_minsky:/home/torchuser/torch-rnn/data/whitman_text.txt
+
+# process the input corpus
+python scripts/preprocess.py --input_txt data/whitman_text.txt  --output_h5 data/whitman_text.h5 --output_json data/whitman_text.json
+
+# run the model. bptt of 64, 512 cell square hidden layers, dropout. takes ~40 mins on the gpu.
+th train.lua -input_h5 data/whitman_text.h5 -input_json data/whitman_text.json -rnn_size 512 -dropout 0.3 -seq_length 64
+
+# generate text! first with a random initial character...
+th sample.lua -checkpoint cv/checkpoint_8250.t7 -length 500 -temperature 0.7
+
+# then with a seeded initial string.
+th sample.lua -checkpoint cv/checkpoint_10000.t7 -length 500 -temperature 0.7 -first_string "I sing the body electric"
+```
+
+See [here](https://github.com/jcjohnson/torch-rnn/blob/master/doc/flags.md) for more info on using the model, what temperature is, and other hyperparameters worth playing around with.
+
+Enjoy!
