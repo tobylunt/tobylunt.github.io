@@ -121,7 +121,7 @@
     <p><time>15 Apr 2018</time> - Read time: <span class="reading-time" title="Estimated read time">
   
   
-    10 mins
+    15 mins
   
 </span></p>
     
@@ -136,6 +136,18 @@
   </div>
   <p><a href="/whitman-bot-redux/"><img src="/assets/img/rnn.jpg" alt="RNN" /></a>
 <em>image source: canonical RNN diagram, found <a href="http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/">here</a></em></p>
+
+<blockquote><p>We see,
+in some mining surface languidly written, and we can be allow'd the forms
+of things, as I believe so heavy, with their way to ourselves. The
+new and scripture of the future, the characteristic prose of the soul
+which had can be continued, more than a spectacle which seem'd to be
+so through all his effects in a man or teacher. Have an infinite
+tried to be profuse and complete and only be reconsider'd, for superb and
+waving on the family. A long coolness of all fit thereof, (the vital west
+month, or born for the scene of its conditions). I have done the time on the
+barns, the scrups, mothers, steady, green.<br/>
+- WHITMAN BOT</p></blockquote>
 
 <p>RNNs are amazing! While it isn't a surprise that we can't recreate Walt Whitman in his entirety using only a few lines of code and a GPU, we can generate highly entertaining results with a relatively small corpus and minimal training time. I had better results using a character-based approach instead of a neural net that learns a word at a time. I won't explain the basics of what an RNN is or how it works; there are many tutorials on this subject that are quite good including the one <a href="http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/">from which the above diagram was found</a>, and Andrej Karpathy's excellent and now famous <a href="https://karpathy.github.io/2015/05/21/rnn-effectiveness/">blog post on the subject</a>. But long story short, RNNs have a 'working memory' of sorts in that the outputs are dependent not only on the immediately preceding vector of inputs, but also a history of previous inputs (of adjustable length). So for generative text, this means that the word or character that the neural net generates takes the previous context into account.</p>
 
@@ -161,7 +173,7 @@ FILES = dict(train=TRN_PATH, validation=VAL_PATH, test=VAL_PATH)
 md = LanguageModelData.from_text_files(PATH, TEXT, **FILES, bs=bs, bptt=bptt, min_freq=3)
 </code></pre>
 
-<p>Now to train the model, we import the fast.ai module...</p>
+<p>Now to train the model, we import the fast.ai stochastic gradient descent with restarts (SGDR) module...</p>
 
 <pre><code class="python">from fastai import sgdr
 </code></pre>
@@ -189,7 +201,7 @@ md = LanguageModelData.from_text_files(PATH, TEXT, **FILES, bs=bs, bptt=bptt, mi
                   V(torch.zeros(self.nl, bs, n_hidden)))
 </code></pre>
 
-<p>We can then initialize the model object, and use one of the great features of the fast.ai library - stochastic gradient descent with restarts, which avoids getting stuck in local minima, and learning rate annealing, which helps to refine the process of gradient descent as the training progresses over multiple epochs. Often a larger learning rate is beneficial in the early stages of training, but a smaller one can lead to better result in the later stages.</p>
+<p>We can then initialize the model object, and use one of the great features of the fast.ai library - SGDR - which avoids getting stuck in local minima, and learning rate annealing, which helps to refine the process of gradient descent as the training progresses over multiple epochs. Often a larger learning rate is beneficial in the early stages of training, but a smaller one can lead to better result in the later stages.</p>
 
 <pre><code class="python"># initialize the pytorch LSTM model object
 m = CharSeqStatefulLSTM(md.nt, n_fac, n_hidden, 2).cuda()
@@ -213,10 +225,10 @@ lo = LayerOptimizer(optim.Adam, m, 1e-2, 1e-5)
 
 <p>Thanks to some great humans, there is a <a href="https://hub.docker.com/r/xoryouyou/torch-rnn/">dockerized version</a> of char-rnn that can be run super duper easily. I actually got the original char-rnn running on my local machine using Torch and Lua, but it was really slow. I wanted to easily deploy the model on the GPU server I was renting, and the dockerized version was just the ticket and trained about 10x faster. Hooray!</p>
 
-<p>Long story short, I had pretty good success with this model after some fiddling. At the end of the day the most responsive parameter was the size of the hidden layers - set in the <code>-rnn_size</code> option. Both 512 and 1024 worked quite well for me, and still trained in under an hour on my GPU. Here are a couple of snippets:</p>
+<p>Long story short, I had pretty good success with this model after some fiddling. At the end of the day the most responsive parameter was the size of the hidden layers - set in the <code>-rnn_size</code> option. Both 512 and 1024 worked quite well for me, and still trained in under an hour on my GPU. Here are a couple of snippets from the 512 model, which was the first set of parameters that gave any remotely meaningful results:</p>
 
-<blockquote><p>Forested landscapes. I am so lear'd
-to his heart for the foundation of one who should say I should say,
+<blockquote><p>Forested landscapes. I am so lear'd<br/>
+to his heart for the foundation of one who should say I should say,<br/>
 and in the south was a fine past tangled sea-circumstances. Then there was no
 every first friends of Greece, and its entirety of our moon, I have
 abandon'd his visit to the bright prosperity of the hour,
@@ -248,9 +260,83 @@ the rest. The same distinctive prailish prouders, considerations here,
 and still is in the stranger, race of view out of the moral show and
 poetry of the world.</p></blockquote>
 
-<p>This one was run on a version of the corpus for which I removed the line breaks, which I actually find less interesting. While there still is no cohesive narrative, the amount of sense this auto-generated text makes, the limited number of spelling errors, and the somewhat similar style to Whitman just blows my mind.</p>
+<p>Whoa - amazing! Spelling dramatically improved from previous iterations, and punctuation is getting quite close. Getting a consistent subject/object within a sentence is still a long ways off, but sentences have begun to appear (although Whitman's tendency for run-on definitely persists in the model, especially when generating text in a conservative mode).</p>
+
+<p>This next model below was run on a version of the corpus for which I removed the line breaks, which I actually find less interesting. While there still is no cohesive narrative, the amount of sense this auto-generated text makes, the limited number of spelling errors, and the somewhat similar style to Whitman just blows my mind.</p>
 
 <blockquote><p>He was a most large dramatic soul, and making delicate famous thickly song-style of which he had supply the liberated me not the strong and afternoon region down to the cat-bird prayers and religion and lines of sense, nor soothing, launch'd back to the road this flying idea of the old Mississippi river—an occasionally mysterious or leaders, and by a physical democratic eminence. To-day our day in the depths of the young man, to be going in one side, the first, the anti-democratic democracy, at any rate which is a young tone about which it come to enter and in the key and a frail large fact of record, and marching away; the idea of corn. "Hall, Mr. Emerson, Mr. Again this counterpart, an untouch'd—sometimes looks to me, in the song of the farmer yet round just now to-day, my mind's breast of the windows; and there are individuals with their weed innocent. The great transparent proof of his wife generally, and leaning to get the gulls fall in the field—where I suppose a bit of literature of his regiment. She was evisted himself from the silent, frequent glass of whom I only abore perfectly farmer'd, I know abandon'd the dlead of this paracogethe of Abraham Lincoln—furnish the President and art of his capitulation, court, yet lives and coloring the mind, but always will be realized him in the side of the highest wind, and had no man and night—said that this Saguenay had made a strange speckach. ("I wish'd as little intellect, then at some curious principles, Reverent in one or outward Wall, after the suffrage overhead, as now going to be a general humanity, and much of the best thoughts in my opinion, had been arouse to come.</p></blockquote>
+
+<p>Comparing the loss between the training and validation sets, the above model becomes quite overfit after 50 epochs (even with 30% dropout). The machine doesn't quite understand how to deal with quotation marks or parentheses, and there are a couple of spelling errors. While this result is still pretty impressive, I think we can do incrementally better. This next iteration of the model doubled the dimension of the hidden layers, and expanded BPTT up to 128 characters. The hope is that we can improve the ability of the machine to carry meaning within a sentence by bumping up BPTT, but without too large a sacrifice of loss by expanding the neural net itself. I also switch back to the originally line-breaked file as I prefer the end result.</p>
+
+<blockquote><p>The lovers and sicking days as<br/>
+he arrived the heavens of that face it was a most common work and affectionate<br/>
+close and glare. The larger meaning of it was departed. It is a power<br/>
+at night in the coterial murder, whose great poet could arise that personal
+soul. Amid the human office and oppers are to so generally to the parts of<br/>
+the lands, with the revolution of the all-strong flowers, et cetera. I have<br/>
+had the great sense to the New World by some advantages, as I like to<br/>
+the street of the perfect but more than the hour. The concrete at<br/>
+the highest of the wards of mind, and going off to sing. I am not to<br/>
+certainly do not show this back poets and memoranda, the eyes, and in<br/>
+offices of heroes, savage, which we call the whole state of a hundred<br/>
+millions from the arrivals of death. As the actual common soul of a turbulent<br/>
+child already more like a table and fever, they were all leading
+the wards.</p></blockquote>
+
+<p>Looks a bit better, although we still haven't managed to make the model too much more sensible. But there are occasional snippets that pop out and amaze me (<em>"the actual common soul of a turbulent child"</em>; and also <em>"the larger meaning of it was departed"</em> - accurate use of verb tense!).</p>
+
+<h2>WHITMAN'S POEMS</h2>
+
+<p>This model has been trained on Whitman's prose, but as a final experiment, and as suggested by <a href="http://aaronmoe.com">Aaron Moe</a>, I used the title of three of Whitman's poems as the intial seeds for the generation of new text. Keeping things short, the results are presented here in 150-character snippets, from a single run - the model would be happy to create as many bizarre Whitman proto-poetry as you like!</p>
+
+<h3>Song of Myself:</h3>
+
+<blockquote><p>Song of Myself, pale and<br/>
+purity, writers are crowded to discover.</p>
+
+<p>"But you annually take our time, I have seen the secession war?"</p>
+
+<p>And think of thei [...]</p></blockquote>
+
+<h3>I sing the body electric:</h3>
+
+<blockquote><p>I sing the body electric event of the world. The time has<br/>
+heard we can have would not be a full glad before the subject, and the show of its persons o [...]</p></blockquote>
+
+<h3>A noiseless patient spider:</h3>
+
+<blockquote><p>A noiseless patient spiders of democracy to<br/>
+age, and anyhow, that must be seen in his enduring influences, to [...]</p></blockquote>
+
+<p>&nbsp;</p>
+
+<h2>FINAL PARAMETERS</h2>
+
+<pre><code class="bash"># start the dockerized container with char-rnn ready to go (need to do this in a different tmux pane)
+nvidia-docker run --rm -ti xoryouyou/torch-rnn:latest bash
+
+# get the identifier for your docker container
+docker container list
+
+# copy your input text file into the dockerized container (where 'focused_minsky' is the id)
+docker cp whitman_text.txt focused_minsky:/home/torchuser/torch-rnn/data/whitman_text.txt
+
+# process the input corpus
+python scripts/preprocess.py --input_txt data/whitman_text.txt  --output_h5 data/whitman_text.h5 --output_json data/whitman_text.json
+
+# run the model. bptt of 64, 512 cell square hidden layers, dropout. takes ~40 mins on the gpu.
+th train.lua -input_h5 data/whitman_text.h5 -input_json data/whitman_text.json -rnn_size 512 -dropout 0.3 -seq_length 64
+
+# generate text! first with a random initial character...
+th sample.lua -checkpoint cv/checkpoint_8250.t7 -length 500 -temperature 0.7
+
+# then with a seeded initial string.
+th sample.lua -checkpoint cv/checkpoint_10000.t7 -length 500 -temperature 0.7 -first_string "I sing the body electric"
+</code></pre>
+
+<p>See <a href="https://github.com/jcjohnson/torch-rnn/blob/master/doc/flags.md">here</a> for more info on using the model, what temperature is, and other hyperparameters worth playing around with.</p>
+
+<p>Enjoy!</p>
 
 </div>
 
