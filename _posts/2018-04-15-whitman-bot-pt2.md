@@ -9,6 +9,18 @@ comments: true
 [![RNN]({{ teamtvblogs.github.io }}/assets/img/rnn.jpg)]({{ teamtvblogs.github.io }}/whitman-bot-redux/)
 _image source: canonical RNN diagram, found [here](http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/)_
 
+>We see,
+>in some mining surface languidly written, and we can be allow'd the forms
+>of things, as I believe so heavy, with their way to ourselves. The
+>new and scripture of the future, the characteristic prose of the soul
+>which had can be continued, more than a spectacle which seem'd to be
+>so through all his effects in a man or teacher. Have an infinite
+>tried to be profuse and complete and only be reconsider'd, for superb and
+>waving on the family. A long coolness of all fit thereof, (the vital west
+>month, or born for the scene of its conditions). I have done the time on the
+>barns, the scrups, mothers, steady, green.  
+> - WHITMAN BOT  
+
 RNNs are amazing! While it isn't a surprise that we can't recreate Walt Whitman in his entirety using only a few lines of code and a GPU, we can generate highly entertaining results with a relatively small corpus and minimal training time. I had better results using a character-based approach instead of a neural net that learns a word at a time. I won't explain the basics of what an RNN is or how it works; there are many tutorials on this subject that are quite good including the one [from which the above diagram was found](http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/), and Andrej Karpathy's excellent and now famous [blog post on the subject](https://karpathy.github.io/2015/05/21/rnn-effectiveness/). But long story short, RNNs have a 'working memory' of sorts in that the outputs are dependent not only on the immediately preceding vector of inputs, but also a history of previous inputs (of adjustable length). So for generative text, this means that the word or character that the neural net generates takes the previous context into account. 
 
 <!--more-->
@@ -146,26 +158,31 @@ Comparing the loss between the training and validation sets, the above model bec
 
 Looks a bit better, although we still haven't managed to make the model too much more sensible. But there are occasional snippets that pop out and amaze me (*"the actual common soul of a turbulent child"*; and also *"the larger meaning of it was departed"* - accurate use of verb tense!).  
 
-## CHECKPOINTING PROGRESS
+## WHITMAN'S POEMS
 
-One of the great things about the working with models like this, is that if you checkpoint your progress, you can very easily compare how the model is improving over the course of training. For illustration's sake, here's a sequential sample of 4 checkpointed models over the course of 50 epochs of training - 150 characters each, with an initial seed of "Song of Myself."
+This model has been trained on Whitman's prose, but as a final experiment, and as suggested by [Aaron Moe](http://aaronmoe.com), I used the title of three of Whitman's poems as the intial seeds for the generation of new text. Keeping things short, the results are presented here in 150-character snippets, from a single run - the model would be happy to create as many bizarre Whitman proto-poetry as you like!
 
-### Checkpoint 1
+### Song of Myself:
 
+>Song of Myself, pale and  
+>purity, writers are crowded to discover.  
 >
-
-### Checkpoint 2
-
+>"But you annually take our time, I have seen the secession war?"  
 >
+>And think of thei [...]  
 
-### Checkpoint 3
+### I sing the body electric:  
 
->
+>I sing the body electric event of the world. The time has  
+>heard we can have would not be a full glad before the subject, and the show of its persons o [...]  
 
-### Finished model
+### A noiseless patient spider:  
 
->
+>A noiseless patient spiders of democracy to  
+>age, and anyhow, that must be seen in his enduring influences, to [...]  
 
+
+&nbsp;
 
 ## FINAL PARAMETERS
 
@@ -195,3 +212,5 @@ th sample.lua -checkpoint cv/checkpoint_10000.t7 -length 500 -temperature 0.7 -f
 See [here](https://github.com/jcjohnson/torch-rnn/blob/master/doc/flags.md) for more info on using the model, what temperature is, and other hyperparameters worth playing around with.
 
 Enjoy!
+
+
