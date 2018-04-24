@@ -96,7 +96,7 @@ So, interesting stuff, and definitely somewhat Whitman-ey. In all honesty, this 
 
 ## DOCKERIZED CHAR-RNN
 
-Thanks to some great humans, there is a [dockerized version](https://hub.docker.com/r/xoryouyou/torch-rnn/) of char-rnn that can be run super duper easily. I actually got the original char-rnn running on my local machine using Torch and Lua, but it was really slow. I wanted to easily deploy the model on the GPU server I was renting, and the dockerized version was just the ticket and trained about 10x faster. Hooray!
+Thanks to some great humans, there is a [dockerized version](https://hub.docker.com/r/xoryouyou/torch-rnn/) of char-rnn that can be run super duper easily. I actually got the original char-rnn running on my local machine using Theano and Lua, but it was really slow. I wanted to easily deploy the model on the GPU server I was renting, and the dockerized version was just the ticket and trained about 10x faster. Hooray!
 
 Long story short, I had pretty good success with this model after some fiddling. At the end of the day the most responsive parameter was the size of the hidden layers - set in the `-rnn_size` option. Both 512 and 1024 worked quite well for me, and still trained in under an hour on my GPU. Here are a couple of snippets from the 512 model, which was the first set of parameters that gave any remotely meaningful results:
 
