@@ -33,7 +33,7 @@ assets:
     - _assets/img
 
 # Markdown
-markdown:           rdiscount
+markdown:           kramdown
 
 # Navigation
 nav:
