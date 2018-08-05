@@ -6,7 +6,7 @@ tags: ariadne
 comments: true
 ---
 
-[![Ariadne]({{ teamtvblogs.github.io }}/assets/img/ariadne.png "Ariadne")]({{ teamtvblogs.github.io }}/beautiful-disaster/)
+[![Ariadne]({{ tobylunt.github.io }}/assets/img/ariadne.png "Ariadne")]({{ tobylunt.github.io }}/beautiful-disaster/)
 
 Alright, it's finally become clear: I might not be totally right in the head. I, along with my two closest friends, just bought a 90 year old wooden boat. Ariadne needs a lot of work. We are planning for a 3-5 year restoration before she returns to her normal self. I'll try to record some of the process in periodic blog posts.
 
@@ -17,6 +17,6 @@ My buddies Jay and Scott and I have decided to become stewards of Ariadne, a woo
 
 There's no such thing as a free boat. But the three of us decided to take on this project as a way to strengthen our friendship in the face of the pressures of adulthood, and to keep this boat as a centerpiece for our community in the years to come. We estimate it will take us about five years and a lot of elbow grease to get her back on the water. Anyone is welcome to come help with the woodworking, or come for a ride when she's back in action.
 
-![Ariadne]({{ teamtvblogs.github.io }}/assets/img/ariadne-2.png "Ariadne")
+![Ariadne]({{ tobylunt.github.io }}/assets/img/ariadne-2.png "Ariadne")
 
 <br/>

@@ -5,7 +5,7 @@ shortUrl: http://goo.gl/EVFAHz
 comments: false
 ---
 
-![Elephants]({{ teamtvblogs.github.io }}/assets/img/elephants.jpg "Elephants are so quiet!")
+![Elephants]({{ tobylunt.github.io }}/assets/img/elephants.jpg "Elephants are so quiet!")
 
 <p class="lead">Elephants!</p>
 

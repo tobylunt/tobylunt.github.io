@@ -5,7 +5,7 @@ shortUrl: http://goo.gl/AwvXUz
 comments: true
 ---
 
-![boredom]({{ teamtvblogs.github.io }}/assets/img/boredface.png)
+![boredom]({{ tobylunt.github.io }}/assets/img/boredface.png)
 
 <i>Or: why clickbait is destroying our civilization</i>
 

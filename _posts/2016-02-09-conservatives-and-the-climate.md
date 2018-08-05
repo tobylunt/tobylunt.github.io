@@ -5,7 +5,7 @@ permalink: /conservatives-and-the-climate/
 shortUrl: http://goo.gl/iBc6i1
 ---
 
-![climate conservatives]({{ teamtvblogs.github.io }}/assets/img/climateconservatives.jpg)
+![climate conservatives]({{ tobylunt.github.io }}/assets/img/climateconservatives.jpg)
 
 > This is an article  written for the [Huffington Post](http://www.huffingtonpost.com/tobias-lunt/conservatives-want-to-fix_b_9123716.html).
 

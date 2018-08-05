@@ -4,7 +4,7 @@ permalink: /data-for-development/
 shortUrl: http://goo.gl/WxGYN0
 ---
 
-![data]({{ teamtvblogs.github.io }}/assets/img/data.png "Datums")
+![data]({{ tobylunt.github.io }}/assets/img/data.png "Datums")
 
 _image source: http://research.kraeutli.com/_
 > This is an older post originally written for the <a href="http://www.iacmadison.org">International Agriculture Colloquium</a> - a student organization at the University of Wisconsin-Madison.

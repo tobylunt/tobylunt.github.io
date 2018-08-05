@@ -3,11 +3,11 @@ title: ABOUT
 permalink: /about-me/
 ---
 
-![America]({{ teamtvblogs.github.io }}/assets/img/flag.jpg "Draped in America")
+![America]({{ tobylunt.github.io }}/assets/img/flag.jpg "Draped in America")
 
-I believe that we can make the world even more amazing through attentiveness, genuine collaboration, equality, and training.
+I believe that we can make the world even more amazing through attentiveness, collaboration, equality, and training.
 
-I'm a researcher and social justice advocate recently returned from a Fulbright to Ethiopia, working in agricultural development.
+I'm a researcher and social justice advocate recently returned from a Fulbright to Ethiopia, working at the World Bank in the Development Economics research group.
 
 My family are probably ultimately responsible for my draw to agriculture, food, and justice. My mother in particular showed me the importance of cooking and growing food - as a means of sharing joy, of nourishment, and even as a way change how the world functions. As an adult I've since worked with food and agriculture from multiple angles of attack: scholar, perfectionist line cook, farmworker, activist. My work with agriculture has brought me to economic development. I now focus on research and on measuring, developing, and deploying effective ways to improve livelihoods around the world.
 

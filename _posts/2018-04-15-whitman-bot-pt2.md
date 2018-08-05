@@ -6,7 +6,7 @@ tags: whitman
 comments: true
 ---
 
-[![RNN]({{ teamtvblogs.github.io }}/assets/img/rnn.jpg)]({{ teamtvblogs.github.io }}/whitman-bot-redux/)
+[![RNN]({{ tobylunt.github.io }}/assets/img/rnn.jpg)]({{ tobylunt.github.io }}/whitman-bot-redux/)
 _image source: canonical RNN diagram, found [here](http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/)_
 
 >We see,
