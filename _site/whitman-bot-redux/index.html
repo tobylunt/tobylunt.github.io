@@ -13,71 +13,13 @@
   ga('send', 'pageview');
 
 </script>
-  
-    
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-
-
-
-
-  
 
   
     
-    
-      
-    
-  
 
-  
-    
-    
-  
 
-  
-    
-    
-      
-    
-  
 
-  
-    
-    
-  
+
 
 
   
@@ -121,9 +63,10 @@
     <p><time>15 Apr 2018</time> - Read time: <span class="reading-time" title="Estimated read time">
   
   
-    15 mins
+    17 mins
   
-</span></p>
+</span>
+</p>
     
     
      <span>[
@@ -137,101 +80,107 @@
   <p><a href="/whitman-bot-redux/"><img src="/assets/img/rnn.jpg" alt="RNN" /></a>
 <em>image source: canonical RNN diagram, found <a href="http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/">here</a></em></p>
 
-<blockquote><p>We see,
-in some mining surface languidly written, and we can be allow'd the forms
+<blockquote>
+  <p>We see,
+in some mining surface languidly written, and we can be allow’d the forms
 of things, as I believe so heavy, with their way to ourselves. The
 new and scripture of the future, the characteristic prose of the soul
-which had can be continued, more than a spectacle which seem'd to be
+which had can be continued, more than a spectacle which seem’d to be
 so through all his effects in a man or teacher. Have an infinite
-tried to be profuse and complete and only be reconsider'd, for superb and
+tried to be profuse and complete and only be reconsider’d, for superb and
 waving on the family. A long coolness of all fit thereof, (the vital west
 month, or born for the scene of its conditions). I have done the time on the
-barns, the scrups, mothers, steady, green.<br/>
-- WHITMAN BOT</p></blockquote>
+barns, the scrups, mothers, steady, green.</p>
+  <ul>
+    <li>WHITMAN BOT</li>
+  </ul>
+</blockquote>
 
-<p>RNNs are amazing! While it isn't a surprise that we can't recreate Walt Whitman in his entirety using only a few lines of code and a GPU, we can generate highly entertaining results with a relatively small corpus and minimal training time. I had better results using a character-based approach instead of a neural net that learns a word at a time. I won't explain the basics of what an RNN is or how it works; there are many tutorials on this subject that are quite good including the one <a href="http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/">from which the above diagram was found</a>, and Andrej Karpathy's excellent and now famous <a href="https://karpathy.github.io/2015/05/21/rnn-effectiveness/">blog post on the subject</a>. But long story short, RNNs have a 'working memory' of sorts in that the outputs are dependent not only on the immediately preceding vector of inputs, but also a history of previous inputs (of adjustable length). So for generative text, this means that the word or character that the neural net generates takes the previous context into account.</p>
+<p>RNNs are amazing! While it isn’t a surprise that we can’t recreate Walt Whitman in his entirety using only a few lines of code and a GPU, we can generate highly entertaining results with a relatively small corpus and minimal training time. I had better results using a character-based approach instead of a neural net that learns a word at a time. I won’t explain the basics of what an RNN is or how it works; there are many tutorials on this subject that are quite good including the one <a href="http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/">from which the above diagram was found</a>, and Andrej Karpathy’s excellent and now famous <a href="https://karpathy.github.io/2015/05/21/rnn-effectiveness/">blog post on the subject</a>. But long story short, RNNs have a ‘working memory’ of sorts in that the outputs are dependent not only on the immediately preceding vector of inputs, but also a history of previous inputs (of adjustable length). So for generative text, this means that the word or character that the neural net generates takes the previous context into account.</p>
 
 <!--more-->
 
+<p>I ended up trying two approaches (in addition to a word-level model that didn’t get very far), taking advantage of the amazing public resources shared by <a href="http://www.fast.ai">fast.ai</a> and many char-RNN contributors in the name of advancing and proliferating the many applications of deep learning. First up: the Fast.ai language model from the excellent <a href="http://course.fast.ai">deep learning part 1</a> course, which predicts the next character in a sentence and can generate text following whatever style it is trained on.</p>
 
-<p>I ended up trying two approaches (in addition to a word-level model that didn't get very far), taking advantage of the amazing public resources shared by <a href="http://www.fast.ai">fast.ai</a> and many char-RNN contributors in the name of advancing and proliferating the many applications of deep learning. First up: the Fast.ai language model from the excellent <a href="http://course.fast.ai">deep learning part 1</a> course, which predicts the next character in a sentence and can generate text following whatever style it is trained on.</p>
+<p>This language model is actually only a subset of the larger goal within the lesson, however, which is a <em>sentiment classification</em> task - determining whether a movie review is positive or negative. The idea is that by first constructing and training a <em>language model</em>, we create a rudimentary “understanding” of english that can then be used for sentiment analysis. The model below was run on an Nvidia P5000 hosted by Paperspace. The fast.ai model uses some functionality from the excellent fast.ai python package, but is really just a Pytorch model with a couple added features for ease of use.</p>
 
-<p>This language model is actually only a subset of the larger goal within the lesson, however, which is a <em>sentiment classification</em> task - determining whether a movie review is positive or negative. The idea is that by first constructing and training a <em>language model</em>, we create a rudimentary "understanding" of english that can then be used for sentiment analysis. The model below was run on an Nvidia P5000 hosted by Paperspace. The fast.ai model uses some functionality from the excellent fast.ai python package, but is really just a Pytorch model with a couple added features for ease of use.</p>
+<h2 id="character-level-model-fastai">CHARACTER-LEVEL MODEL: FAST.AI</h2>
 
-<h2>CHARACTER-LEVEL MODEL: FAST.AI</h2>
+<p>First, we need to read our corpus - Whitman’s complete prose works, downloaded from <a href="https://whitmanarchive.org/published/other/CompleteProse.html">The Whitman Archive</a> - into a TorchText object for processing. Note that we set some key parameters here - Backprop Through Time (<code class="highlighter-rouge">bptt</code>) represents the length of the sequence that will be used at a given time to predict the next output, in this case characters. When the model is trained, these (in this case 8) timesteps will be “unrolled” to calculate the gradients and update weights through backpropagation. The <code class="highlighter-rouge">n_fac</code> parameter is the number of embeddings for each character, while <code class="highlighter-rouge">bs</code> is the batch size and <code class="highlighter-rouge">n_hidden</code> is the size of our square hidden layer matrix.</p>
 
-<p>First, we need to read our corpus - Whitman's complete prose works, downloaded from <a href="https://whitmanarchive.org/published/other/CompleteProse.html">The Whitman Archive</a> - into a TorchText object for processing. Note that we set some key parameters here - Backprop Through Time (<code>bptt</code>) represents the length of the sequence that will be used at a given time to predict the next output, in this case characters. When the model is trained, these (in this case 8) timesteps will be "unrolled" to calculate the gradients and update weights through backpropagation. The <code>n_fac</code> parameter is the number of embeddings for each character, while <code>bs</code> is the batch size and <code>n_hidden</code> is the size of our square hidden layer matrix.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Prep our TEXT TorchText object, and params we will use</span>
+<span class="n">TEXT</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">tokenize</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+<span class="n">bs</span><span class="o">=</span><span class="mi">64</span><span class="p">;</span> <span class="n">bptt</span><span class="o">=</span><span class="mi">8</span><span class="p">;</span> <span class="n">n_fac</span><span class="o">=</span><span class="mi">42</span><span class="p">;</span> <span class="n">n_hidden</span><span class="o">=</span><span class="mi">512</span>
 
-<pre><code class="python"># Prep our TEXT TorchText object, and params we will use
-TEXT = data.Field(lower=True, tokenize=list)
-bs=64; bptt=8; n_fac=42; n_hidden=512
+<span class="c"># build our modeldata object with train and val data, and params</span>
+<span class="n">FILES</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">train</span><span class="o">=</span><span class="n">TRN_PATH</span><span class="p">,</span> <span class="n">validation</span><span class="o">=</span><span class="n">VAL_PATH</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="n">VAL_PATH</span><span class="p">)</span>
 
-# build our modeldata object with train and val data, and params
-FILES = dict(train=TRN_PATH, validation=VAL_PATH, test=VAL_PATH)
+<span class="c"># set modeldata object; min_freq is for infrequent chars</span>
+<span class="n">md</span> <span class="o">=</span> <span class="n">LanguageModelData</span><span class="o">.</span><span class="n">from_text_files</span><span class="p">(</span><span class="n">PATH</span><span class="p">,</span> <span class="n">TEXT</span><span class="p">,</span> <span class="o">**</span><span class="n">FILES</span><span class="p">,</span> <span class="n">bs</span><span class="o">=</span><span class="n">bs</span><span class="p">,</span> <span class="n">bptt</span><span class="o">=</span><span class="n">bptt</span><span class="p">,</span> <span class="n">min_freq</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div></div>
+<p>Now to train the model, we import the fast.ai stochastic gradient descent with restarts (SGDR) module…</p>
 
-# set modeldata object; min_freq is for infrequent chars
-md = LanguageModelData.from_text_files(PATH, TEXT, **FILES, bs=bs, bptt=bptt, min_freq=3)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">fastai</span> <span class="kn">import</span> <span class="n">sgdr</span>
+</code></pre></div></div>
+<p>…and then assemble the architecture using standard Pytorch syntax. Here we use our parameters defined above, but also set a few others things - including <code class="highlighter-rouge">dropout</code>, which helps make the model more generlized and avoids overfit.</p>
 
-<p>Now to train the model, we import the fast.ai stochastic gradient descent with restarts (SGDR) module...</p>
-
-<pre><code class="python">from fastai import sgdr
-</code></pre>
-
-<p>...and then assemble the architecture using standard Pytorch syntax. Here we use our parameters defined above, but also set a few others things - including <code>dropout</code>, which helps make the model more generlized and avoids overfit.</p>
-
-<pre><code class="python">class CharSeqStatefulLSTM(nn.Module):
-    def __init__(self, vocab_size, n_fac, bs, nl):
-        super().__init__()
-        self.vocab_size,self.nl = vocab_size,nl
-        self.e = nn.Embedding(vocab_size, n_fac)
-        self.rnn = nn.LSTM(n_fac, n_hidden, nl, dropout=0.7)
-        self.l_out = nn.Linear(n_hidden, vocab_size)
-        self.init_hidden(bs)
-
-    def forward(self, cs):
-        bs = cs[0].size(0)
-        if self.h[0].size(1) != bs: self.init_hidden(bs)
-        outp,h = self.rnn(self.e(cs), self.h)
-        self.h = repackage_var(h)
-        return F.log_softmax(self.l_out(outp), dim=-1).view(-1, self.vocab_size)
-
-    def init_hidden(self, bs):
-        self.h = (V(torch.zeros(self.nl, bs, n_hidden)),
-                  V(torch.zeros(self.nl, bs, n_hidden)))
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CharSeqStatefulLSTM</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">n_fac</span><span class="p">,</span> <span class="n">bs</span><span class="p">,</span> <span class="n">nl</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">nl</span> <span class="o">=</span> <span class="n">vocab_size</span><span class="p">,</span><span class="n">nl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">n_fac</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rnn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LSTM</span><span class="p">(</span><span class="n">n_fac</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">,</span> <span class="n">nl</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l_out</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">(</span><span class="n">bs</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cs</span><span class="p">):</span>
+        <span class="n">bs</span> <span class="o">=</span> <span class="n">cs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="n">bs</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">(</span><span class="n">bs</span><span class="p">)</span>
+        <span class="n">outp</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rnn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="p">(</span><span class="n">cs</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">repackage_var</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l_out</span><span class="p">(</span><span class="n">outp</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">init_hidden</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">V</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nl</span><span class="p">,</span> <span class="n">bs</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">)),</span>
+                  <span class="n">V</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nl</span><span class="p">,</span> <span class="n">bs</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">)))</span>
+</code></pre></div></div>
 
 <p>We can then initialize the model object, and use one of the great features of the fast.ai library - SGDR - which avoids getting stuck in local minima, and learning rate annealing, which helps to refine the process of gradient descent as the training progresses over multiple epochs. Often a larger learning rate is beneficial in the early stages of training, but a smaller one can lead to better result in the later stages.</p>
 
-<pre><code class="python"># initialize the pytorch LSTM model object
-m = CharSeqStatefulLSTM(md.nt, n_fac, n_hidden, 2).cuda()
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># initialize the pytorch LSTM model object</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">CharSeqStatefulLSTM</span><span class="p">(</span><span class="n">md</span><span class="o">.</span><span class="n">nt</span><span class="p">,</span> <span class="n">n_fac</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
 
-# use the fast.ai LayerOptimizer to implement Adam but with SGDR and learning rate annealing. 
-# 1e-2 is learning rate; 1e-5 is weight decay
-lo = LayerOptimizer(optim.Adam, m, 1e-2, 1e-5)
-</code></pre>
+<span class="c"># use the fast.ai LayerOptimizer to implement Adam but with SGDR and learning rate annealing. </span>
+<span class="c"># 1e-2 is learning rate; 1e-5 is weight decay</span>
+<span class="n">lo</span> <span class="o">=</span> <span class="n">LayerOptimizer</span><span class="p">(</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">)</span>
+</code></pre></div></div>
 
-<p>Fitting the model led to some interesting results. I had a difficult time getting the loss below about 1.6. It's possible to seed the model with some initial text, or just start with a random character. Here, I seeded with "forest":</p>
+<p>Fitting the model led to some interesting results. I had a difficult time getting the loss below about 1.6. It’s possible to seed the model with some initial text, or just start with a random character. Here, I seeded with “forest”:</p>
 
-<blockquote><p>forested my friends home. it another indications in thence other, with andturg and ourversomeny, take, month itself, labors in more at british vast movement—in fultworthir official cipand as i afternoon—the privilegin in a white just average, visic persons,with varied from years and kats, uncleands—the comfortable.—eaternally, new englanding able to thelochof the idea of histrick, family-bad in fancy,disb.</p></blockquote>
+<blockquote>
+  <p>forested my friends home. it another indications in thence other, with andturg and ourversomeny, take, month itself, labors in more at british vast movement—in fultworthir official cipand as i afternoon—the privilegin in a white just average, visic persons,with varied from years and kats, uncleands—the comfortable.—eaternally, new englanding able to thelochof the idea of histrick, family-bad in fancy,disb.</p>
+</blockquote>
 
 <p>Another attempt with different hyperparameters was slightly better, but not too different:</p>
 
-<blockquote><p>sailing to dominary palcation. the includinate—the long togatew i am institude verycupof and dismass'd with centre, face, showif his forestus. to see my taken up and ashow'd—he radiable. stream'd. as ergars to. lucky blood, but wadoning or stranged, and they literatless, solern-vacutions of these riser" bong they own; now.—there issued, there areistone at left. a last call,' to so, be, june co.and was view of the great debart? yesterday, number'd. chirping and about by the shadow every repulsing on all drovers in her own new form's here on the gray to sooner, enceon throughter, &amp;c. spansound.</p></blockquote>
+<blockquote>
+  <p>sailing to dominary palcation. the includinate—the long togatew i am institude verycupof and dismass’d with centre, face, showif his forestus. to see my taken up and ashow’d—he radiable. stream’d. as ergars to. lucky blood, but wadoning or stranged, and they literatless, solern-vacutions of these riser” bong they own; now.—there issued, there areistone at left. a last call,’ to so, be, june co.and was view of the great debart? yesterday, number’d. chirping and about by the shadow every repulsing on all drovers in her own new form’s here on the gray to sooner, enceon throughter, &amp;c. spansound.</p>
+</blockquote>
 
 <p>So, interesting stuff, and definitely somewhat Whitman-ey. In all honesty, this is still an absolutely astounding result. The neural net has learned some basic punctuation, many complex words, and to mimic simple clauses. But we can do better.</p>
 
-<h2>DOCKERIZED CHAR-RNN</h2>
+<h2 id="dockerized-char-rnn">DOCKERIZED CHAR-RNN</h2>
 
-<p>Thanks to some great humans, there is a <a href="https://hub.docker.com/r/xoryouyou/torch-rnn/">dockerized version</a> of char-rnn that can be run super duper easily. I actually got the original char-rnn running on my local machine using Torch and Lua, but it was really slow. I wanted to easily deploy the model on the GPU server I was renting, and the dockerized version was just the ticket and trained about 10x faster. Hooray!</p>
+<p>Thanks to some great humans, there is a <a href="https://hub.docker.com/r/xoryouyou/torch-rnn/">dockerized version</a> of char-rnn that can be run super duper easily. I actually got the original char-rnn running on my local machine using Theano and Lua, but it was really slow. I wanted to easily deploy the model on the GPU server I was renting, and the dockerized version was just the ticket and trained about 10x faster. Hooray!</p>
 
-<p>Long story short, I had pretty good success with this model after some fiddling. At the end of the day the most responsive parameter was the size of the hidden layers - set in the <code>-rnn_size</code> option. Both 512 and 1024 worked quite well for me, and still trained in under an hour on my GPU. Here are a couple of snippets from the 512 model, which was the first set of parameters that gave any remotely meaningful results:</p>
+<p>Long story short, I had pretty good success with this model after some fiddling. At the end of the day the most responsive parameter was the size of the hidden layers - set in the <code class="highlighter-rouge">-rnn_size</code> option. Both 512 and 1024 worked quite well for me, and still trained in under an hour on my GPU. Here are a couple of snippets from the 512 model, which was the first set of parameters that gave any remotely meaningful results:</p>
 
-<blockquote><p>Forested landscapes. I am so lear'd<br/>
-to his heart for the foundation of one who should say I should say,<br/>
+<blockquote>
+  <p>Forested landscapes. I am so lear’d<br />
+to his heart for the foundation of one who should say I should say,<br />
 and in the south was a fine past tangled sea-circumstances. Then there was no
 every first friends of Greece, and its entirety of our moon, I have
-abandon'd his visit to the bright prosperity of the hour,
+abandon’d his visit to the bright prosperity of the hour,
 and a perfect passion of the old men who can be consciousness, and which said he
 had the distinctive summer or forever quite a delicate broad songs, the
 men in the rations and animals and children, even the men before
@@ -246,97 +195,109 @@ interrosonian, which we were a pleasant equal about the old frontier
 silence, but in his own ground, and have seen these days and art or
 instance.</p>
 
-<p>"You say is it has surely be tremendous a drink at Politics and the visible of the revolutions, the
+  <p>“You say is it has surely be tremendous a drink at Politics and the visible of the revolutions, the
 various gods and latents, however traits, and standing from the
 journals, a fine stranger to the whole death.</p>
 
-<p>The field, the long and friends, the construction of a time as the struggle of the highest
+  <p>The field, the long and friends, the construction of a time as the struggle of the highest
 impressions, the sense of a man were flat and rivers and womaning, and
 the great experiment of its body and statuette, not only in the time, the
-whole beautiful world's interesting being afterward, and on the soul, which
+whole beautiful world’s interesting being afterward, and on the soul, which
 the touch in the broad side of the trees, between the stripe, and
 the masses of the matter of the universe—the oceanic seasons of
 the rest. The same distinctive prailish prouders, considerations here,
 and still is in the stranger, race of view out of the moral show and
-poetry of the world.</p></blockquote>
+poetry of the world.</p>
+</blockquote>
 
-<p>Whoa - amazing! Spelling dramatically improved from previous iterations, and punctuation is getting quite close. Getting a consistent subject/object within a sentence is still a long ways off, but sentences have begun to appear (although Whitman's tendency for run-on definitely persists in the model, especially when generating text in a conservative mode).</p>
+<p>Whoa - amazing! Spelling dramatically improved from previous iterations, and punctuation is getting quite close. Getting a consistent subject/object within a sentence is still a long ways off, but sentences have begun to appear (although Whitman’s tendency for run-on definitely persists in the model, especially when generating text in a conservative mode).</p>
 
 <p>This next model below was run on a version of the corpus for which I removed the line breaks, which I actually find less interesting. While there still is no cohesive narrative, the amount of sense this auto-generated text makes, the limited number of spelling errors, and the somewhat similar style to Whitman just blows my mind.</p>
 
-<blockquote><p>He was a most large dramatic soul, and making delicate famous thickly song-style of which he had supply the liberated me not the strong and afternoon region down to the cat-bird prayers and religion and lines of sense, nor soothing, launch'd back to the road this flying idea of the old Mississippi river—an occasionally mysterious or leaders, and by a physical democratic eminence. To-day our day in the depths of the young man, to be going in one side, the first, the anti-democratic democracy, at any rate which is a young tone about which it come to enter and in the key and a frail large fact of record, and marching away; the idea of corn. "Hall, Mr. Emerson, Mr. Again this counterpart, an untouch'd—sometimes looks to me, in the song of the farmer yet round just now to-day, my mind's breast of the windows; and there are individuals with their weed innocent. The great transparent proof of his wife generally, and leaning to get the gulls fall in the field—where I suppose a bit of literature of his regiment. She was evisted himself from the silent, frequent glass of whom I only abore perfectly farmer'd, I know abandon'd the dlead of this paracogethe of Abraham Lincoln—furnish the President and art of his capitulation, court, yet lives and coloring the mind, but always will be realized him in the side of the highest wind, and had no man and night—said that this Saguenay had made a strange speckach. ("I wish'd as little intellect, then at some curious principles, Reverent in one or outward Wall, after the suffrage overhead, as now going to be a general humanity, and much of the best thoughts in my opinion, had been arouse to come.</p></blockquote>
+<blockquote>
+  <p>He was a most large dramatic soul, and making delicate famous thickly song-style of which he had supply the liberated me not the strong and afternoon region down to the cat-bird prayers and religion and lines of sense, nor soothing, launch’d back to the road this flying idea of the old Mississippi river—an occasionally mysterious or leaders, and by a physical democratic eminence. To-day our day in the depths of the young man, to be going in one side, the first, the anti-democratic democracy, at any rate which is a young tone about which it come to enter and in the key and a frail large fact of record, and marching away; the idea of corn. “Hall, Mr. Emerson, Mr. Again this counterpart, an untouch’d—sometimes looks to me, in the song of the farmer yet round just now to-day, my mind’s breast of the windows; and there are individuals with their weed innocent. The great transparent proof of his wife generally, and leaning to get the gulls fall in the field—where I suppose a bit of literature of his regiment. She was evisted himself from the silent, frequent glass of whom I only abore perfectly farmer’d, I know abandon’d the dlead of this paracogethe of Abraham Lincoln—furnish the President and art of his capitulation, court, yet lives and coloring the mind, but always will be realized him in the side of the highest wind, and had no man and night—said that this Saguenay had made a strange speckach. (“I wish’d as little intellect, then at some curious principles, Reverent in one or outward Wall, after the suffrage overhead, as now going to be a general humanity, and much of the best thoughts in my opinion, had been arouse to come.</p>
+</blockquote>
 
-<p>Comparing the loss between the training and validation sets, the above model becomes quite overfit after 50 epochs (even with 30% dropout). The machine doesn't quite understand how to deal with quotation marks or parentheses, and there are a couple of spelling errors. While this result is still pretty impressive, I think we can do incrementally better. This next iteration of the model doubled the dimension of the hidden layers, and expanded BPTT up to 128 characters. The hope is that we can improve the ability of the machine to carry meaning within a sentence by bumping up BPTT, but without too large a sacrifice of loss by expanding the neural net itself. I also switch back to the originally line-breaked file as I prefer the end result.</p>
+<p>Comparing the loss between the training and validation sets, the above model becomes quite overfit after 50 epochs (even with 30% dropout). The machine doesn’t quite understand how to deal with quotation marks or parentheses, and there are a couple of spelling errors. While this result is still pretty impressive, I think we can do incrementally better. This next iteration of the model doubled the dimension of the hidden layers, and expanded BPTT up to 128 characters. The hope is that we can improve the ability of the machine to carry meaning within a sentence by bumping up BPTT, but without too large a sacrifice of loss by expanding the neural net itself. I also switch back to the originally line-breaked file as I prefer the end result.</p>
 
-<blockquote><p>The lovers and sicking days as<br/>
-he arrived the heavens of that face it was a most common work and affectionate<br/>
-close and glare. The larger meaning of it was departed. It is a power<br/>
-at night in the coterial murder, whose great poet could arise that personal
-soul. Amid the human office and oppers are to so generally to the parts of<br/>
-the lands, with the revolution of the all-strong flowers, et cetera. I have<br/>
-had the great sense to the New World by some advantages, as I like to<br/>
-the street of the perfect but more than the hour. The concrete at<br/>
-the highest of the wards of mind, and going off to sing. I am not to<br/>
-certainly do not show this back poets and memoranda, the eyes, and in<br/>
-offices of heroes, savage, which we call the whole state of a hundred<br/>
-millions from the arrivals of death. As the actual common soul of a turbulent<br/>
-child already more like a table and fever, they were all leading
-the wards.</p></blockquote>
+<blockquote>
+  <p>The lovers and sicking days as<br />
+he arrived the heavens of that face it was a most common work and affectionate<br />
+close and glare. The larger meaning of it was departed. It is a power<br />
+at night in the coterial murder, whose great poet could arise that personal 
+soul. Amid the human office and oppers are to so generally to the parts of<br />
+the lands, with the revolution of the all-strong flowers, et cetera. I have<br />
+had the great sense to the New World by some advantages, as I like to<br />
+the street of the perfect but more than the hour. The concrete at<br />
+the highest of the wards of mind, and going off to sing. I am not to<br />
+certainly do not show this back poets and memoranda, the eyes, and in<br />
+offices of heroes, savage, which we call the whole state of a hundred<br />
+millions from the arrivals of death. As the actual common soul of a turbulent<br />
+child already more like a table and fever, they were all leading 
+the wards.</p>
+</blockquote>
 
-<p>Looks a bit better, although we still haven't managed to make the model too much more sensible. But there are occasional snippets that pop out and amaze me (<em>"the actual common soul of a turbulent child"</em>; and also <em>"the larger meaning of it was departed"</em> - accurate use of verb tense!).</p>
+<p>Looks a bit better, although we still haven’t managed to make the model too much more sensible. But there are occasional snippets that pop out and amaze me (<em>“the actual common soul of a turbulent child”</em>; and also <em>“the larger meaning of it was departed”</em> - accurate use of verb tense!).</p>
 
-<h2>WHITMAN'S POEMS</h2>
+<h2 id="whitmans-poems">WHITMAN’S POEMS</h2>
 
-<p>This model has been trained on Whitman's prose, but as a final experiment, and as suggested by <a href="http://aaronmoe.com">Aaron Moe</a>, I used the title of three of Whitman's poems as the intial seeds for the generation of new text. Keeping things short, the results are presented here in 150-character snippets, from a single run - the model would be happy to create as many bizarre Whitman proto-poetry as you like!</p>
+<p>This model has been trained on Whitman’s prose, but as a final experiment, and as suggested by <a href="http://aaronmoe.com">Aaron Moe</a>, I used the title of three of Whitman’s poems as the intial seeds for the generation of new text. Keeping things short, the results are presented here in 150-character snippets, from a single run - the model would be happy to create as many bizarre Whitman proto-poetry as you like!</p>
 
-<h3>Song of Myself:</h3>
+<h3 id="song-of-myself">Song of Myself:</h3>
 
-<blockquote><p>Song of Myself, pale and<br/>
+<blockquote>
+  <p>Song of Myself, pale and<br />
 purity, writers are crowded to discover.</p>
 
-<p>"But you annually take our time, I have seen the secession war?"</p>
+  <p>“But you annually take our time, I have seen the secession war?”</p>
 
-<p>And think of thei [...]</p></blockquote>
+  <p>And think of thei […]</p>
+</blockquote>
 
-<h3>I sing the body electric:</h3>
+<h3 id="i-sing-the-body-electric">I sing the body electric:</h3>
 
-<blockquote><p>I sing the body electric event of the world. The time has<br/>
-heard we can have would not be a full glad before the subject, and the show of its persons o [...]</p></blockquote>
+<blockquote>
+  <p>I sing the body electric event of the world. The time has<br />
+heard we can have would not be a full glad before the subject, and the show of its persons o […]</p>
+</blockquote>
 
-<h3>A noiseless patient spider:</h3>
+<h3 id="a-noiseless-patient-spider">A noiseless patient spider:</h3>
 
-<blockquote><p>A noiseless patient spiders of democracy to<br/>
-age, and anyhow, that must be seen in his enduring influences, to [...]</p></blockquote>
+<blockquote>
+  <p>A noiseless patient spiders of democracy to<br />
+age, and anyhow, that must be seen in his enduring influences, to […]</p>
+</blockquote>
 
-<p>&nbsp;</p>
+<p> </p>
 
-<h2>FINAL PARAMETERS</h2>
+<h2 id="final-parameters">FINAL PARAMETERS</h2>
 
-<pre><code class="bash"># start the dockerized container with char-rnn ready to go (need to do this in a different tmux pane)
-nvidia-docker run --rm -ti xoryouyou/torch-rnn:latest bash
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># start the dockerized container with char-rnn ready to go (need to do this in a different tmux pane)</span>
+nvidia-docker run <span class="nt">--rm</span> <span class="nt">-ti</span> xoryouyou/torch-rnn:latest bash
 
-# get the identifier for your docker container
+<span class="c"># get the identifier for your docker container</span>
 docker container list
 
-# copy your input text file into the dockerized container (where 'focused_minsky' is the id)
+<span class="c"># copy your input text file into the dockerized container (where 'focused_minsky' is the id)</span>
 docker cp whitman_text.txt focused_minsky:/home/torchuser/torch-rnn/data/whitman_text.txt
 
-# process the input corpus
-python scripts/preprocess.py --input_txt data/whitman_text.txt  --output_h5 data/whitman_text.h5 --output_json data/whitman_text.json
+<span class="c"># process the input corpus</span>
+python scripts/preprocess.py <span class="nt">--input_txt</span> data/whitman_text.txt  <span class="nt">--output_h5</span> data/whitman_text.h5 <span class="nt">--output_json</span> data/whitman_text.json
 
-# run the model. bptt of 64, 512 cell square hidden layers, dropout. takes ~40 mins on the gpu.
-th train.lua -input_h5 data/whitman_text.h5 -input_json data/whitman_text.json -rnn_size 512 -dropout 0.3 -seq_length 64
+<span class="c"># run the model. bptt of 64, 512 cell square hidden layers, dropout. takes ~40 mins on the gpu.</span>
+th train.lua <span class="nt">-input_h5</span> data/whitman_text.h5 <span class="nt">-input_json</span> data/whitman_text.json <span class="nt">-rnn_size</span> 512 <span class="nt">-dropout</span> 0.3 <span class="nt">-seq_length</span> 64
 
-# generate text! first with a random initial character...
-th sample.lua -checkpoint cv/checkpoint_8250.t7 -length 500 -temperature 0.7
+<span class="c"># generate text! first with a random initial character...</span>
+th sample.lua <span class="nt">-checkpoint</span> cv/checkpoint_8250.t7 <span class="nt">-length</span> 500 <span class="nt">-temperature</span> 0.7
 
-# then with a seeded initial string.
-th sample.lua -checkpoint cv/checkpoint_10000.t7 -length 500 -temperature 0.7 -first_string "I sing the body electric"
-</code></pre>
+<span class="c"># then with a seeded initial string.</span>
+th sample.lua <span class="nt">-checkpoint</span> cv/checkpoint_10000.t7 <span class="nt">-length</span> 500 <span class="nt">-temperature</span> 0.7 <span class="nt">-first_string</span> <span class="s2">"I sing the body electric"</span>
+</code></pre></div></div>
 
 <p>See <a href="https://github.com/jcjohnson/torch-rnn/blob/master/doc/flags.md">here</a> for more info on using the model, what temperature is, and other hyperparameters worth playing around with.</p>
 
 <p>Enjoy!</p>
+
 
 </div>
 
@@ -363,8 +324,6 @@ s.setAttribute('data-timestamp', +new Date());
 <!--
 <div class="social-share">
     
-    
-        
     
     <a class="social-share-element" id="social-twitter" href="https://twitter.com/intent/tweet?text=Whitman Bot Redux&url=https://goo.gl/uxMoZJ&via=OviliaZhang&hashtags=" target="_blank" title="xShare this post on Twitter"></a>
     <a class="social-share-element" id="social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Whitman Bot Redux&u=https://goo.gl/uxMoZJ" target="_blank" title="Share this post on Facebook"></a>

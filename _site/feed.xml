@@ -2,109 +2,373 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
 	<channel>
 		<title>TOBIAS</title>
-		<link></link>
-		<atom:link href="/feed.xml" rel="self" type="application/rss+xml" />
+		<link>http://localhost:4000</link>
+		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+		
+			<item>
+				<title>Replacing the Forefoot</title>
+        <description>&lt;p&gt;&lt;a href=&quot;/ariadne-forefoot/&quot;&gt;&lt;img src=&quot;/assets/img/side_by_side.jpg&quot; alt=&quot;Old forefoot&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The forefoot is an essential piece of Ariadne’s structural timber - a
+14’ long section of her backbone. The forefoot was totally shot - full
+of splits and dry rot; it could be pierced all the way through with a
+knife at multiple points along its length.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;This was a large project with multiple stages, but was completed much
+more quickly than expected due to the herculean efforts of my buddy
+Scott, the most talented woodworker of the three of us by far.&lt;/p&gt;
+
+&lt;h2 id=&quot;templating-and-mockup&quot;&gt;TEMPLATING AND MOCKUP&lt;/h2&gt;
+
+&lt;p&gt;We knew we had to replace the forefoot as it was irreparably damaged,
+so our first step was to construct a template that we could use to
+strategize and mock up our replacement piece. This was done by
+springing plank ends, bolting together pieces of thin pattern ply,
+cutting grooves to fit around the floor timbers and frames, and
+placing up next to the original forefoot. Once in position, we could
+trace the exact shape of the existing piece to create a rough-cut
+piece.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/templating_forefoot.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Templating the forefoot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We decided to build the new forefoot out of laminated 2” lengths of
+white oak. A solid piece would have been better for this purpose, but
+we had access to G-Flex and the 2” planks and decided that urgency
+trumped perfection in this case. We need to get Ariadne back in the
+water. We don’t expect the G-Flex to fail, but if it does, we can
+always replace this piece again in 10 years or so. So we went ahead
+with our plan and laminated the pieces together to accommodate our
+template. Can never have enough clamps!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/clamping_forefoot.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Laminating the forefoot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The blank was then cleaned up, joints inspected, and readied for
+shaping.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/forefoot_mockup.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Forefoot blank&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The shape was cut by placing the template on top of the blank,
+drilling small holes through the template into the piece underneath,
+and then spiling the finished line. Cuts were made on Scott’s fancy
+new Laguna bandsaw.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/forefoot_cut_to_shape.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Cutting to shape&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;At the end of this process, Scott had built a nice square blank to
+match the template we had made. He brought the template to the boat to
+begin the process of shaping and installation.&lt;/p&gt;
+
+&lt;h2 id=&quot;removing-the-old-forefoot&quot;&gt;REMOVING THE OLD FOREFOOT&lt;/h2&gt;
+
+&lt;p&gt;Before you get the new thing in, you have to get the old one out! This
+was a somewhat involved process, but no more so than any other task on
+a wooden boat. The bolts holding the old floor timbers to the forefoot
+needed to be removed - and were complete corroded away. Bronze wood
+screws fastening plank ends to forefoot rabbet needed to be backed
+out. Many broke or were spinners, needing special attention.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/removing_old_forefoot.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Removal&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once the old forefoot was removed, we were treated to a nice view of
+the new floor timbers we had installed (see &lt;a href=&quot;/floor-timbers/&quot;&gt;this post&lt;/a&gt; for more info on that
+process). You can see that we cut off many hood ends of the planks in
+this area; the planks needed to be sprung back to release the old
+forefoot, but many of them were damaged and were cut away for later
+replacement. Hood ends of planks (as well as butt block joints) are
+commonly damaged due to the freeze/thaw process of moisture that seeps
+into the end grain.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/empty_floors.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;The void&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;shaping-and-cutting-the-rabbet&quot;&gt;SHAPING, AND CUTTING THE RABBET&lt;/h2&gt;
+
+&lt;p&gt;Comparing the old forefoot to the new blank was pretty
+striking. However, the new piece still needed to be shaped, and the
+rabbet to be cut. The rabbet is a groove cut into the backbone of the
+boat that the edges of the lowest planks set perfectly into - this
+joint is essential for the seaworthiness of the boat. If you have a
+bad rabbet, your boat’s going to leak!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/old_new_mockup_forefoot.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Old and new&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here’s a closer look, comparing the quality of the old forefoot to the
+piece of white oak. Note that the square holes are for the bungs
+covering the floor timber bolts, originally made out of iron.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/old_new_forefoot.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Old and new&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now, when it comes to cutting the rabbet, we had a decision to
+consider. Most boats built in North America cut a 90 degree rabbet
+symmetrically, such that the distance from the inner rabbet to the
+bearding line matches the distance from the inner rabbet to the outer
+(lower) rabbet. However, in scandinavia where Ariadne was built, the
+entire rabbet is inset towards the cutwater in the center of the keel
+timber (forefoot in this case).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/forefoot_rabbet_comparison.png&quot; alt=&quot;Ariadne&quot; title=&quot;Rabbet types&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The reason that the scandinavians would have found this desirable is
+that it increases the bearing surface of the plank on the rabbet - the
+plank will rest on the upper surface of the rabbet, from the inner
+rabbet line to the bearding line. We chose to continue this
+approach. The rabbet was cut with a Lie Nielsen side rabbet plane,
+working down gradually to the correct dimensions, and test-fitting
+with a piece of plank to ensure the proper fit.&lt;/p&gt;
+
+&lt;video width=&quot;720&quot; height=&quot;480&quot; controls=&quot;&quot;&gt;
+  &lt;source src=&quot;/assets/img/cutting_forefoot_rabbet.m4v&quot; type=&quot;video/mp4&quot; /&gt;
+&lt;/video&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/plane_shavings.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Planing detritus&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The rabbet was cut in sections, with a lot of test-fitting and
+comparison to the old forefoot. The roughly 10’ straight section in
+the middle of the forefoot was the simplest to cut, while the aft and
+forwardmost lengths needed to be faired in when test-fit on the boat
+itself.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/side_by_side_2.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Old and new&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;test-fitting&quot;&gt;TEST FITTING&lt;/h2&gt;
+
+&lt;p&gt;Test-fitting was essential for fairing in the rabbet correctly, but
+also to ensure the forefoot itself came to the necessary final
+shape. The photo below shows the testing of the rabbet, before the
+after end of the forefoot has begun to take shape.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/test_fit_forefoot.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Test fitting&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The final shape of the aft section of the rabbet.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/faired_forefoot_rabbet.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Faired rabbet&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Up forward, we see the process of Scott shaping the cutwater to match
+the original profile and fit correctly with the stem. The cutwater
+here is being shaped before the forwardmost section of rabbet has been
+built.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/forefoot_fitting_fore.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Fitting forward&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;At the aftmost end of the forefoot, we have the endearingly named
+“cobra head” - a flared section of timber that is shaped to fill what
+was previously a interior void that trapped water with no possibility
+of egress. We’re not sure why this was built that way originally, as
+all the floor timbers have limber holes to allow for the flow of water
+back to the bilge. However, without our new cobra head, there was an
+impassable dam that would not allow water aft of the forefoot-keel
+timber joint. The cobra head fills this space entirely. This feature
+was initally shaped with a chisel to roughly approximate the correct
+dimensions, then faired in by eye with a block plane, sandpaper, and
+Scott’s good judgment.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/cobra_head_rough.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Cobra head rough&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The final appearance of the “cobra head.” Looking nice and fair. A
+filler block will eventually be added on the underside of the
+forefoot, to fill in a small void in the leading edge of the deadwood.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/cobra_head_smooth.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Smooooooth cobra&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;priming-and-install&quot;&gt;PRIMING AND INSTALL&lt;/h2&gt;
+
+&lt;p&gt;After a half dozen test fits and tons of planing and sanding, it was
+time for installation. First, we decided to prime the piece with a few
+coats of anti-microbial paint. Note, however, that we ended up not
+priming the rabbet or the cutwater. The cutwater will be externally
+visible and will thus be varnished above the waterline; below the
+waterline it will be primed and coated with bottom paint. We’re not
+sure if we should paint the rabbet so will ask around before doing
+so. Jay’s enjoying the process of the first coat:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/priming_forefoot.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Priming&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After priming and the final test-fit, it was installation time. We
+used dolfinite as a bedding compound, which is non-structural but will
+prevent the transmission of moisture through joints. The forefoot was
+bolted forward to the stem and aft to keel timber using temporary
+bolts, which will be replaced by upsized silicon bronze. We have yet
+to cut stopwaters for these joints, but will do so using softwood
+dowels.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/clamping_install_forefoot.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Clamping in place&quot; /&gt;&lt;/p&gt;
+
+&lt;video width=&quot;720&quot; height=&quot;480&quot; controls=&quot;&quot;&gt;
+  &lt;source src=&quot;/assets/img/forefoot_installation.mov&quot; type=&quot;video/mp4&quot; /&gt;
+&lt;/video&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/forefoot_floors_new.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Installed&quot; /&gt;&lt;/p&gt;
+
+</description>
+				<pubDate>Thu, 02 Aug 2018 00:00:00 -0400</pubDate>
+				<link>http://localhost:4000/ariadne-forefoot/</link>
+				<guid isPermaLink="true">http://localhost:4000/ariadne-forefoot/</guid>
+			</item>
+		
+			<item>
+				<title>Floor Timbers</title>
+        <description>&lt;p&gt;&lt;a href=&quot;/floor-timbers/&quot;&gt;&lt;img src=&quot;/assets/img/forward_floors_installed.jpg&quot; alt=&quot;Floors&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;After getting Ariadne into her new home, we decided to first embark on
+replacing a few of her floor timbers. The floor timbers are essential
+structural members that tie the backbone to the rest of the boat.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;You can see how the floor timbers tie into the rest of the boat’s
+structure in the photo above, where the new floors are primed in
+orange and installed. The photo below shows the interior of the hull
+through the companionway, where I highlighted three larger floor
+timbers with a red line. The floors vary in size, ranging from
+approximately 2-3’ in width and a depth of up to 8” or so down in the
+bilge. The floors tie the keel timber to the frames, and to the
+planking and the skin of the boat. These are essential pieces and can
+be primary points of failure for lightly built wooden boats.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/floors_companionway.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Companionway floor timbers&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Some of the beefier floor timbers on Ariadne have been replaced (out
+of teak!) while many of them fore and aft are suffering from severe
+nail sickness due to the original iron bolts corroding and
+delignifying the wood. We began by replacing seven forward floor
+timbers out of laminated white oak, and will replace the iron bolts
+with new ones manufactured from silicon bronze.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/rusted_iron_bolt.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Rusted iron bolt&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The floor timbers were patterned and laminated up to their rough shape
+far away from the boat. This way, when we got back to Maine, we could
+simply spile the final shape onto the mocked up piece and cut the
+correct bevels on the bandsaw. In addition to the thicker laminate
+stack, we screwed a thinner stack of laminates across the top of each
+floor timber to reduce grain run-out and increase strength. We were
+inspired by the “floor timbers with wings” concept from Bud
+Macintosh’s excellent “How to Build a Wooden Boat.”&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/floor_timbers_sanding.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Floors lammed up&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/floor_timbers_screwing.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Floor timber top lamination&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The new floors were primed and installed, temporarily bolting through
+the forefoot as the forefoot itself will be replaced next. We will
+paint over the red lead primer to minimize the halloween effect down
+in the interior. Another seven to nine floors aft of the cockpit will
+also need to be replaced.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/forward_floors_installed.jpg&quot; alt=&quot;Ariadne&quot; title=&quot;Forward floors installed&quot; /&gt;&lt;/p&gt;
+</description>
+				<pubDate>Tue, 24 Jul 2018 00:00:00 -0400</pubDate>
+				<link>http://localhost:4000/floor-timbers/</link>
+				<guid isPermaLink="true">http://localhost:4000/floor-timbers/</guid>
+			</item>
 		
 			<item>
 				<title>Whitman Bot Redux</title>
         <description>&lt;p&gt;&lt;a href=&quot;/whitman-bot-redux/&quot;&gt;&lt;img src=&quot;/assets/img/rnn.jpg&quot; alt=&quot;RNN&quot; /&gt;&lt;/a&gt;
 &lt;em&gt;image source: canonical RNN diagram, found &lt;a href=&quot;http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/&quot;&gt;here&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
-&lt;blockquote&gt;&lt;p&gt;We see,
-in some mining surface languidly written, and we can be allow&#39;d the forms
+&lt;blockquote&gt;
+  &lt;p&gt;We see,
+in some mining surface languidly written, and we can be allow’d the forms
 of things, as I believe so heavy, with their way to ourselves. The
 new and scripture of the future, the characteristic prose of the soul
-which had can be continued, more than a spectacle which seem&#39;d to be
+which had can be continued, more than a spectacle which seem’d to be
 so through all his effects in a man or teacher. Have an infinite
-tried to be profuse and complete and only be reconsider&#39;d, for superb and
+tried to be profuse and complete and only be reconsider’d, for superb and
 waving on the family. A long coolness of all fit thereof, (the vital west
 month, or born for the scene of its conditions). I have done the time on the
-barns, the scrups, mothers, steady, green.&lt;br/&gt;
-- WHITMAN BOT&lt;/p&gt;&lt;/blockquote&gt;
+barns, the scrups, mothers, steady, green.&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;WHITMAN BOT&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
 
-&lt;p&gt;RNNs are amazing! While it isn&#39;t a surprise that we can&#39;t recreate Walt Whitman in his entirety using only a few lines of code and a GPU, we can generate highly entertaining results with a relatively small corpus and minimal training time. I had better results using a character-based approach instead of a neural net that learns a word at a time. I won&#39;t explain the basics of what an RNN is or how it works; there are many tutorials on this subject that are quite good including the one &lt;a href=&quot;http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/&quot;&gt;from which the above diagram was found&lt;/a&gt;, and Andrej Karpathy&#39;s excellent and now famous &lt;a href=&quot;https://karpathy.github.io/2015/05/21/rnn-effectiveness/&quot;&gt;blog post on the subject&lt;/a&gt;. But long story short, RNNs have a &#39;working memory&#39; of sorts in that the outputs are dependent not only on the immediately preceding vector of inputs, but also a history of previous inputs (of adjustable length). So for generative text, this means that the word or character that the neural net generates takes the previous context into account.&lt;/p&gt;
+&lt;p&gt;RNNs are amazing! While it isn’t a surprise that we can’t recreate Walt Whitman in his entirety using only a few lines of code and a GPU, we can generate highly entertaining results with a relatively small corpus and minimal training time. I had better results using a character-based approach instead of a neural net that learns a word at a time. I won’t explain the basics of what an RNN is or how it works; there are many tutorials on this subject that are quite good including the one &lt;a href=&quot;http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/&quot;&gt;from which the above diagram was found&lt;/a&gt;, and Andrej Karpathy’s excellent and now famous &lt;a href=&quot;https://karpathy.github.io/2015/05/21/rnn-effectiveness/&quot;&gt;blog post on the subject&lt;/a&gt;. But long story short, RNNs have a ‘working memory’ of sorts in that the outputs are dependent not only on the immediately preceding vector of inputs, but also a history of previous inputs (of adjustable length). So for generative text, this means that the word or character that the neural net generates takes the previous context into account.&lt;/p&gt;
 
 &lt;!--more--&gt;
 
+&lt;p&gt;I ended up trying two approaches (in addition to a word-level model that didn’t get very far), taking advantage of the amazing public resources shared by &lt;a href=&quot;http://www.fast.ai&quot;&gt;fast.ai&lt;/a&gt; and many char-RNN contributors in the name of advancing and proliferating the many applications of deep learning. First up: the Fast.ai language model from the excellent &lt;a href=&quot;http://course.fast.ai&quot;&gt;deep learning part 1&lt;/a&gt; course, which predicts the next character in a sentence and can generate text following whatever style it is trained on.&lt;/p&gt;
 
-&lt;p&gt;I ended up trying two approaches (in addition to a word-level model that didn&#39;t get very far), taking advantage of the amazing public resources shared by &lt;a href=&quot;http://www.fast.ai&quot;&gt;fast.ai&lt;/a&gt; and many char-RNN contributors in the name of advancing and proliferating the many applications of deep learning. First up: the Fast.ai language model from the excellent &lt;a href=&quot;http://course.fast.ai&quot;&gt;deep learning part 1&lt;/a&gt; course, which predicts the next character in a sentence and can generate text following whatever style it is trained on.&lt;/p&gt;
+&lt;p&gt;This language model is actually only a subset of the larger goal within the lesson, however, which is a &lt;em&gt;sentiment classification&lt;/em&gt; task - determining whether a movie review is positive or negative. The idea is that by first constructing and training a &lt;em&gt;language model&lt;/em&gt;, we create a rudimentary “understanding” of english that can then be used for sentiment analysis. The model below was run on an Nvidia P5000 hosted by Paperspace. The fast.ai model uses some functionality from the excellent fast.ai python package, but is really just a Pytorch model with a couple added features for ease of use.&lt;/p&gt;
 
-&lt;p&gt;This language model is actually only a subset of the larger goal within the lesson, however, which is a &lt;em&gt;sentiment classification&lt;/em&gt; task - determining whether a movie review is positive or negative. The idea is that by first constructing and training a &lt;em&gt;language model&lt;/em&gt;, we create a rudimentary &quot;understanding&quot; of english that can then be used for sentiment analysis. The model below was run on an Nvidia P5000 hosted by Paperspace. The fast.ai model uses some functionality from the excellent fast.ai python package, but is really just a Pytorch model with a couple added features for ease of use.&lt;/p&gt;
+&lt;h2 id=&quot;character-level-model-fastai&quot;&gt;CHARACTER-LEVEL MODEL: FAST.AI&lt;/h2&gt;
 
-&lt;h2&gt;CHARACTER-LEVEL MODEL: FAST.AI&lt;/h2&gt;
+&lt;p&gt;First, we need to read our corpus - Whitman’s complete prose works, downloaded from &lt;a href=&quot;https://whitmanarchive.org/published/other/CompleteProse.html&quot;&gt;The Whitman Archive&lt;/a&gt; - into a TorchText object for processing. Note that we set some key parameters here - Backprop Through Time (&lt;code class=&quot;highlighter-rouge&quot;&gt;bptt&lt;/code&gt;) represents the length of the sequence that will be used at a given time to predict the next output, in this case characters. When the model is trained, these (in this case 8) timesteps will be “unrolled” to calculate the gradients and update weights through backpropagation. The &lt;code class=&quot;highlighter-rouge&quot;&gt;n_fac&lt;/code&gt; parameter is the number of embeddings for each character, while &lt;code class=&quot;highlighter-rouge&quot;&gt;bs&lt;/code&gt; is the batch size and &lt;code class=&quot;highlighter-rouge&quot;&gt;n_hidden&lt;/code&gt; is the size of our square hidden layer matrix.&lt;/p&gt;
 
-&lt;p&gt;First, we need to read our corpus - Whitman&#39;s complete prose works, downloaded from &lt;a href=&quot;https://whitmanarchive.org/published/other/CompleteProse.html&quot;&gt;The Whitman Archive&lt;/a&gt; - into a TorchText object for processing. Note that we set some key parameters here - Backprop Through Time (&lt;code&gt;bptt&lt;/code&gt;) represents the length of the sequence that will be used at a given time to predict the next output, in this case characters. When the model is trained, these (in this case 8) timesteps will be &quot;unrolled&quot; to calculate the gradients and update weights through backpropagation. The &lt;code&gt;n_fac&lt;/code&gt; parameter is the number of embeddings for each character, while &lt;code&gt;bs&lt;/code&gt; is the batch size and &lt;code&gt;n_hidden&lt;/code&gt; is the size of our square hidden layer matrix.&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Prep our TEXT TorchText object, and params we will use&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;TEXT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Field&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lower&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tokenize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bptt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n_fac&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n_hidden&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;512&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;# Prep our TEXT TorchText object, and params we will use
-TEXT = data.Field(lower=True, tokenize=list)
-bs=64; bptt=8; n_fac=42; n_hidden=512
+&lt;span class=&quot;c&quot;&gt;# build our modeldata object with train and val data, and params&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;FILES&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;train&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TRN_PATH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;validation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;VAL_PATH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;VAL_PATH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-# build our modeldata object with train and val data, and params
-FILES = dict(train=TRN_PATH, validation=VAL_PATH, test=VAL_PATH)
+&lt;span class=&quot;c&quot;&gt;# set modeldata object; min_freq is for infrequent chars&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;md&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LanguageModelData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;from_text_files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TEXT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FILES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bptt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bptt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;min_freq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Now to train the model, we import the fast.ai stochastic gradient descent with restarts (SGDR) module…&lt;/p&gt;
 
-# set modeldata object; min_freq is for infrequent chars
-md = LanguageModelData.from_text_files(PATH, TEXT, **FILES, bs=bs, bptt=bptt, min_freq=3)
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;fastai&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sgdr&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;…and then assemble the architecture using standard Pytorch syntax. Here we use our parameters defined above, but also set a few others things - including &lt;code class=&quot;highlighter-rouge&quot;&gt;dropout&lt;/code&gt;, which helps make the model more generlized and avoids overfit.&lt;/p&gt;
 
-&lt;p&gt;Now to train the model, we import the fast.ai stochastic gradient descent with restarts (SGDR) module...&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;from fastai import sgdr
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;...and then assemble the architecture using standard Pytorch syntax. Here we use our parameters defined above, but also set a few others things - including &lt;code&gt;dropout&lt;/code&gt;, which helps make the model more generlized and avoids overfit.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;class CharSeqStatefulLSTM(nn.Module):
-    def __init__(self, vocab_size, n_fac, bs, nl):
-        super().__init__()
-        self.vocab_size,self.nl = vocab_size,nl
-        self.e = nn.Embedding(vocab_size, n_fac)
-        self.rnn = nn.LSTM(n_fac, n_hidden, nl, dropout=0.7)
-        self.l_out = nn.Linear(n_hidden, vocab_size)
-        self.init_hidden(bs)
-
-    def forward(self, cs):
-        bs = cs[0].size(0)
-        if self.h[0].size(1) != bs: self.init_hidden(bs)
-        outp,h = self.rnn(self.e(cs), self.h)
-        self.h = repackage_var(h)
-        return F.log_softmax(self.l_out(outp), dim=-1).view(-1, self.vocab_size)
-
-    def init_hidden(self, bs):
-        self.h = (V(torch.zeros(self.nl, bs, n_hidden)),
-                  V(torch.zeros(self.nl, bs, n_hidden)))
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CharSeqStatefulLSTM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vocab_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n_fac&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vocab_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vocab_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nl&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Embedding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vocab_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n_fac&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rnn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LSTM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n_fac&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n_hidden&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dropout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l_out&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Linear&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n_hidden&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vocab_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;init_hidden&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;forward&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;bs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;init_hidden&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;outp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rnn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;repackage_var&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log_softmax&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l_out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dim&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;view&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vocab_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;init_hidden&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;torch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;zeros&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n_hidden&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt;
+                  &lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;torch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;zeros&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n_hidden&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;We can then initialize the model object, and use one of the great features of the fast.ai library - SGDR - which avoids getting stuck in local minima, and learning rate annealing, which helps to refine the process of gradient descent as the training progresses over multiple epochs. Often a larger learning rate is beneficial in the early stages of training, but a smaller one can lead to better result in the later stages.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;# initialize the pytorch LSTM model object
-m = CharSeqStatefulLSTM(md.nt, n_fac, n_hidden, 2).cuda()
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# initialize the pytorch LSTM model object&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CharSeqStatefulLSTM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;md&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n_fac&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n_hidden&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cuda&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
 
-# use the fast.ai LayerOptimizer to implement Adam but with SGDR and learning rate annealing. 
-# 1e-2 is learning rate; 1e-5 is weight decay
-lo = LayerOptimizer(optim.Adam, m, 1e-2, 1e-5)
-&lt;/code&gt;&lt;/pre&gt;
+&lt;span class=&quot;c&quot;&gt;# use the fast.ai LayerOptimizer to implement Adam but with SGDR and learning rate annealing. &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 1e-2 is learning rate; 1e-5 is weight decay&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;lo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LayerOptimizer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;optim&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Adam&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1e-2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1e-5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Fitting the model led to some interesting results. I had a difficult time getting the loss below about 1.6. It&#39;s possible to seed the model with some initial text, or just start with a random character. Here, I seeded with &quot;forest&quot;:&lt;/p&gt;
+&lt;p&gt;Fitting the model led to some interesting results. I had a difficult time getting the loss below about 1.6. It’s possible to seed the model with some initial text, or just start with a random character. Here, I seeded with “forest”:&lt;/p&gt;
 
-&lt;blockquote&gt;&lt;p&gt;forested my friends home. it another indications in thence other, with andturg and ourversomeny, take, month itself, labors in more at british vast movement—in fultworthir official cipand as i afternoon—the privilegin in a white just average, visic persons,with varied from years and kats, uncleands—the comfortable.—eaternally, new englanding able to thelochof the idea of histrick, family-bad in fancy,disb.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;forested my friends home. it another indications in thence other, with andturg and ourversomeny, take, month itself, labors in more at british vast movement—in fultworthir official cipand as i afternoon—the privilegin in a white just average, visic persons,with varied from years and kats, uncleands—the comfortable.—eaternally, new englanding able to thelochof the idea of histrick, family-bad in fancy,disb.&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;Another attempt with different hyperparameters was slightly better, but not too different:&lt;/p&gt;
 
-&lt;blockquote&gt;&lt;p&gt;sailing to dominary palcation. the includinate—the long togatew i am institude verycupof and dismass&#39;d with centre, face, showif his forestus. to see my taken up and ashow&#39;d—he radiable. stream&#39;d. as ergars to. lucky blood, but wadoning or stranged, and they literatless, solern-vacutions of these riser&quot; bong they own; now.—there issued, there areistone at left. a last call,&#39; to so, be, june co.and was view of the great debart? yesterday, number&#39;d. chirping and about by the shadow every repulsing on all drovers in her own new form&#39;s here on the gray to sooner, enceon throughter, &amp;amp;c. spansound.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;sailing to dominary palcation. the includinate—the long togatew i am institude verycupof and dismass’d with centre, face, showif his forestus. to see my taken up and ashow’d—he radiable. stream’d. as ergars to. lucky blood, but wadoning or stranged, and they literatless, solern-vacutions of these riser” bong they own; now.—there issued, there areistone at left. a last call,’ to so, be, june co.and was view of the great debart? yesterday, number’d. chirping and about by the shadow every repulsing on all drovers in her own new form’s here on the gray to sooner, enceon throughter, &amp;amp;c. spansound.&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;So, interesting stuff, and definitely somewhat Whitman-ey. In all honesty, this is still an absolutely astounding result. The neural net has learned some basic punctuation, many complex words, and to mimic simple clauses. But we can do better.&lt;/p&gt;
 
-&lt;h2&gt;DOCKERIZED CHAR-RNN&lt;/h2&gt;
+&lt;h2 id=&quot;dockerized-char-rnn&quot;&gt;DOCKERIZED CHAR-RNN&lt;/h2&gt;
 
-&lt;p&gt;Thanks to some great humans, there is a &lt;a href=&quot;https://hub.docker.com/r/xoryouyou/torch-rnn/&quot;&gt;dockerized version&lt;/a&gt; of char-rnn that can be run super duper easily. I actually got the original char-rnn running on my local machine using Torch and Lua, but it was really slow. I wanted to easily deploy the model on the GPU server I was renting, and the dockerized version was just the ticket and trained about 10x faster. Hooray!&lt;/p&gt;
+&lt;p&gt;Thanks to some great humans, there is a &lt;a href=&quot;https://hub.docker.com/r/xoryouyou/torch-rnn/&quot;&gt;dockerized version&lt;/a&gt; of char-rnn that can be run super duper easily. I actually got the original char-rnn running on my local machine using Theano and Lua, but it was really slow. I wanted to easily deploy the model on the GPU server I was renting, and the dockerized version was just the ticket and trained about 10x faster. Hooray!&lt;/p&gt;
 
-&lt;p&gt;Long story short, I had pretty good success with this model after some fiddling. At the end of the day the most responsive parameter was the size of the hidden layers - set in the &lt;code&gt;-rnn_size&lt;/code&gt; option. Both 512 and 1024 worked quite well for me, and still trained in under an hour on my GPU. Here are a couple of snippets from the 512 model, which was the first set of parameters that gave any remotely meaningful results:&lt;/p&gt;
+&lt;p&gt;Long story short, I had pretty good success with this model after some fiddling. At the end of the day the most responsive parameter was the size of the hidden layers - set in the &lt;code class=&quot;highlighter-rouge&quot;&gt;-rnn_size&lt;/code&gt; option. Both 512 and 1024 worked quite well for me, and still trained in under an hour on my GPU. Here are a couple of snippets from the 512 model, which was the first set of parameters that gave any remotely meaningful results:&lt;/p&gt;
 
-&lt;blockquote&gt;&lt;p&gt;Forested landscapes. I am so lear&#39;d&lt;br/&gt;
-to his heart for the foundation of one who should say I should say,&lt;br/&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Forested landscapes. I am so lear’d&lt;br /&gt;
+to his heart for the foundation of one who should say I should say,&lt;br /&gt;
 and in the south was a fine past tangled sea-circumstances. Then there was no
 every first friends of Greece, and its entirety of our moon, I have
-abandon&#39;d his visit to the bright prosperity of the hour,
+abandon’d his visit to the bright prosperity of the hour,
 and a perfect passion of the old men who can be consciousness, and which said he
 had the distinctive summer or forever quite a delicate broad songs, the
 men in the rations and animals and children, even the men before
@@ -119,156 +383,165 @@ interrosonian, which we were a pleasant equal about the old frontier
 silence, but in his own ground, and have seen these days and art or
 instance.&lt;/p&gt;
 
-&lt;p&gt;&quot;You say is it has surely be tremendous a drink at Politics and the visible of the revolutions, the
+  &lt;p&gt;“You say is it has surely be tremendous a drink at Politics and the visible of the revolutions, the
 various gods and latents, however traits, and standing from the
 journals, a fine stranger to the whole death.&lt;/p&gt;
 
-&lt;p&gt;The field, the long and friends, the construction of a time as the struggle of the highest
+  &lt;p&gt;The field, the long and friends, the construction of a time as the struggle of the highest
 impressions, the sense of a man were flat and rivers and womaning, and
 the great experiment of its body and statuette, not only in the time, the
-whole beautiful world&#39;s interesting being afterward, and on the soul, which
+whole beautiful world’s interesting being afterward, and on the soul, which
 the touch in the broad side of the trees, between the stripe, and
 the masses of the matter of the universe—the oceanic seasons of
 the rest. The same distinctive prailish prouders, considerations here,
 and still is in the stranger, race of view out of the moral show and
-poetry of the world.&lt;/p&gt;&lt;/blockquote&gt;
+poetry of the world.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;p&gt;Whoa - amazing! Spelling dramatically improved from previous iterations, and punctuation is getting quite close. Getting a consistent subject/object within a sentence is still a long ways off, but sentences have begun to appear (although Whitman&#39;s tendency for run-on definitely persists in the model, especially when generating text in a conservative mode).&lt;/p&gt;
+&lt;p&gt;Whoa - amazing! Spelling dramatically improved from previous iterations, and punctuation is getting quite close. Getting a consistent subject/object within a sentence is still a long ways off, but sentences have begun to appear (although Whitman’s tendency for run-on definitely persists in the model, especially when generating text in a conservative mode).&lt;/p&gt;
 
 &lt;p&gt;This next model below was run on a version of the corpus for which I removed the line breaks, which I actually find less interesting. While there still is no cohesive narrative, the amount of sense this auto-generated text makes, the limited number of spelling errors, and the somewhat similar style to Whitman just blows my mind.&lt;/p&gt;
 
-&lt;blockquote&gt;&lt;p&gt;He was a most large dramatic soul, and making delicate famous thickly song-style of which he had supply the liberated me not the strong and afternoon region down to the cat-bird prayers and religion and lines of sense, nor soothing, launch&#39;d back to the road this flying idea of the old Mississippi river—an occasionally mysterious or leaders, and by a physical democratic eminence. To-day our day in the depths of the young man, to be going in one side, the first, the anti-democratic democracy, at any rate which is a young tone about which it come to enter and in the key and a frail large fact of record, and marching away; the idea of corn. &quot;Hall, Mr. Emerson, Mr. Again this counterpart, an untouch&#39;d—sometimes looks to me, in the song of the farmer yet round just now to-day, my mind&#39;s breast of the windows; and there are individuals with their weed innocent. The great transparent proof of his wife generally, and leaning to get the gulls fall in the field—where I suppose a bit of literature of his regiment. She was evisted himself from the silent, frequent glass of whom I only abore perfectly farmer&#39;d, I know abandon&#39;d the dlead of this paracogethe of Abraham Lincoln—furnish the President and art of his capitulation, court, yet lives and coloring the mind, but always will be realized him in the side of the highest wind, and had no man and night—said that this Saguenay had made a strange speckach. (&quot;I wish&#39;d as little intellect, then at some curious principles, Reverent in one or outward Wall, after the suffrage overhead, as now going to be a general humanity, and much of the best thoughts in my opinion, had been arouse to come.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;He was a most large dramatic soul, and making delicate famous thickly song-style of which he had supply the liberated me not the strong and afternoon region down to the cat-bird prayers and religion and lines of sense, nor soothing, launch’d back to the road this flying idea of the old Mississippi river—an occasionally mysterious or leaders, and by a physical democratic eminence. To-day our day in the depths of the young man, to be going in one side, the first, the anti-democratic democracy, at any rate which is a young tone about which it come to enter and in the key and a frail large fact of record, and marching away; the idea of corn. “Hall, Mr. Emerson, Mr. Again this counterpart, an untouch’d—sometimes looks to me, in the song of the farmer yet round just now to-day, my mind’s breast of the windows; and there are individuals with their weed innocent. The great transparent proof of his wife generally, and leaning to get the gulls fall in the field—where I suppose a bit of literature of his regiment. She was evisted himself from the silent, frequent glass of whom I only abore perfectly farmer’d, I know abandon’d the dlead of this paracogethe of Abraham Lincoln—furnish the President and art of his capitulation, court, yet lives and coloring the mind, but always will be realized him in the side of the highest wind, and had no man and night—said that this Saguenay had made a strange speckach. (“I wish’d as little intellect, then at some curious principles, Reverent in one or outward Wall, after the suffrage overhead, as now going to be a general humanity, and much of the best thoughts in my opinion, had been arouse to come.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;p&gt;Comparing the loss between the training and validation sets, the above model becomes quite overfit after 50 epochs (even with 30% dropout). The machine doesn&#39;t quite understand how to deal with quotation marks or parentheses, and there are a couple of spelling errors. While this result is still pretty impressive, I think we can do incrementally better. This next iteration of the model doubled the dimension of the hidden layers, and expanded BPTT up to 128 characters. The hope is that we can improve the ability of the machine to carry meaning within a sentence by bumping up BPTT, but without too large a sacrifice of loss by expanding the neural net itself. I also switch back to the originally line-breaked file as I prefer the end result.&lt;/p&gt;
+&lt;p&gt;Comparing the loss between the training and validation sets, the above model becomes quite overfit after 50 epochs (even with 30% dropout). The machine doesn’t quite understand how to deal with quotation marks or parentheses, and there are a couple of spelling errors. While this result is still pretty impressive, I think we can do incrementally better. This next iteration of the model doubled the dimension of the hidden layers, and expanded BPTT up to 128 characters. The hope is that we can improve the ability of the machine to carry meaning within a sentence by bumping up BPTT, but without too large a sacrifice of loss by expanding the neural net itself. I also switch back to the originally line-breaked file as I prefer the end result.&lt;/p&gt;
 
-&lt;blockquote&gt;&lt;p&gt;The lovers and sicking days as&lt;br/&gt;
-he arrived the heavens of that face it was a most common work and affectionate&lt;br/&gt;
-close and glare. The larger meaning of it was departed. It is a power&lt;br/&gt;
-at night in the coterial murder, whose great poet could arise that personal
-soul. Amid the human office and oppers are to so generally to the parts of&lt;br/&gt;
-the lands, with the revolution of the all-strong flowers, et cetera. I have&lt;br/&gt;
-had the great sense to the New World by some advantages, as I like to&lt;br/&gt;
-the street of the perfect but more than the hour. The concrete at&lt;br/&gt;
-the highest of the wards of mind, and going off to sing. I am not to&lt;br/&gt;
-certainly do not show this back poets and memoranda, the eyes, and in&lt;br/&gt;
-offices of heroes, savage, which we call the whole state of a hundred&lt;br/&gt;
-millions from the arrivals of death. As the actual common soul of a turbulent&lt;br/&gt;
-child already more like a table and fever, they were all leading
-the wards.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;The lovers and sicking days as&lt;br /&gt;
+he arrived the heavens of that face it was a most common work and affectionate&lt;br /&gt;
+close and glare. The larger meaning of it was departed. It is a power&lt;br /&gt;
+at night in the coterial murder, whose great poet could arise that personal 
+soul. Amid the human office and oppers are to so generally to the parts of&lt;br /&gt;
+the lands, with the revolution of the all-strong flowers, et cetera. I have&lt;br /&gt;
+had the great sense to the New World by some advantages, as I like to&lt;br /&gt;
+the street of the perfect but more than the hour. The concrete at&lt;br /&gt;
+the highest of the wards of mind, and going off to sing. I am not to&lt;br /&gt;
+certainly do not show this back poets and memoranda, the eyes, and in&lt;br /&gt;
+offices of heroes, savage, which we call the whole state of a hundred&lt;br /&gt;
+millions from the arrivals of death. As the actual common soul of a turbulent&lt;br /&gt;
+child already more like a table and fever, they were all leading 
+the wards.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;p&gt;Looks a bit better, although we still haven&#39;t managed to make the model too much more sensible. But there are occasional snippets that pop out and amaze me (&lt;em&gt;&quot;the actual common soul of a turbulent child&quot;&lt;/em&gt;; and also &lt;em&gt;&quot;the larger meaning of it was departed&quot;&lt;/em&gt; - accurate use of verb tense!).&lt;/p&gt;
+&lt;p&gt;Looks a bit better, although we still haven’t managed to make the model too much more sensible. But there are occasional snippets that pop out and amaze me (&lt;em&gt;“the actual common soul of a turbulent child”&lt;/em&gt;; and also &lt;em&gt;“the larger meaning of it was departed”&lt;/em&gt; - accurate use of verb tense!).&lt;/p&gt;
 
-&lt;h2&gt;WHITMAN&#39;S POEMS&lt;/h2&gt;
+&lt;h2 id=&quot;whitmans-poems&quot;&gt;WHITMAN’S POEMS&lt;/h2&gt;
 
-&lt;p&gt;This model has been trained on Whitman&#39;s prose, but as a final experiment, and as suggested by &lt;a href=&quot;http://aaronmoe.com&quot;&gt;Aaron Moe&lt;/a&gt;, I used the title of three of Whitman&#39;s poems as the intial seeds for the generation of new text. Keeping things short, the results are presented here in 150-character snippets, from a single run - the model would be happy to create as many bizarre Whitman proto-poetry as you like!&lt;/p&gt;
+&lt;p&gt;This model has been trained on Whitman’s prose, but as a final experiment, and as suggested by &lt;a href=&quot;http://aaronmoe.com&quot;&gt;Aaron Moe&lt;/a&gt;, I used the title of three of Whitman’s poems as the intial seeds for the generation of new text. Keeping things short, the results are presented here in 150-character snippets, from a single run - the model would be happy to create as many bizarre Whitman proto-poetry as you like!&lt;/p&gt;
 
-&lt;h3&gt;Song of Myself:&lt;/h3&gt;
+&lt;h3 id=&quot;song-of-myself&quot;&gt;Song of Myself:&lt;/h3&gt;
 
-&lt;blockquote&gt;&lt;p&gt;Song of Myself, pale and&lt;br/&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Song of Myself, pale and&lt;br /&gt;
 purity, writers are crowded to discover.&lt;/p&gt;
 
-&lt;p&gt;&quot;But you annually take our time, I have seen the secession war?&quot;&lt;/p&gt;
+  &lt;p&gt;“But you annually take our time, I have seen the secession war?”&lt;/p&gt;
 
-&lt;p&gt;And think of thei [...]&lt;/p&gt;&lt;/blockquote&gt;
+  &lt;p&gt;And think of thei […]&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;h3&gt;I sing the body electric:&lt;/h3&gt;
+&lt;h3 id=&quot;i-sing-the-body-electric&quot;&gt;I sing the body electric:&lt;/h3&gt;
 
-&lt;blockquote&gt;&lt;p&gt;I sing the body electric event of the world. The time has&lt;br/&gt;
-heard we can have would not be a full glad before the subject, and the show of its persons o [...]&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;I sing the body electric event of the world. The time has&lt;br /&gt;
+heard we can have would not be a full glad before the subject, and the show of its persons o […]&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;h3&gt;A noiseless patient spider:&lt;/h3&gt;
+&lt;h3 id=&quot;a-noiseless-patient-spider&quot;&gt;A noiseless patient spider:&lt;/h3&gt;
 
-&lt;blockquote&gt;&lt;p&gt;A noiseless patient spiders of democracy to&lt;br/&gt;
-age, and anyhow, that must be seen in his enduring influences, to [...]&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;A noiseless patient spiders of democracy to&lt;br /&gt;
+age, and anyhow, that must be seen in his enduring influences, to […]&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
 
-&lt;h2&gt;FINAL PARAMETERS&lt;/h2&gt;
+&lt;h2 id=&quot;final-parameters&quot;&gt;FINAL PARAMETERS&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;# start the dockerized container with char-rnn ready to go (need to do this in a different tmux pane)
-nvidia-docker run --rm -ti xoryouyou/torch-rnn:latest bash
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# start the dockerized container with char-rnn ready to go (need to do this in a different tmux pane)&lt;/span&gt;
+nvidia-docker run &lt;span class=&quot;nt&quot;&gt;--rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; xoryouyou/torch-rnn:latest bash
 
-# get the identifier for your docker container
+&lt;span class=&quot;c&quot;&gt;# get the identifier for your docker container&lt;/span&gt;
 docker container list
 
-# copy your input text file into the dockerized container (where &#39;focused_minsky&#39; is the id)
+&lt;span class=&quot;c&quot;&gt;# copy your input text file into the dockerized container (where 'focused_minsky' is the id)&lt;/span&gt;
 docker cp whitman_text.txt focused_minsky:/home/torchuser/torch-rnn/data/whitman_text.txt
 
-# process the input corpus
-python scripts/preprocess.py --input_txt data/whitman_text.txt  --output_h5 data/whitman_text.h5 --output_json data/whitman_text.json
+&lt;span class=&quot;c&quot;&gt;# process the input corpus&lt;/span&gt;
+python scripts/preprocess.py &lt;span class=&quot;nt&quot;&gt;--input_txt&lt;/span&gt; data/whitman_text.txt  &lt;span class=&quot;nt&quot;&gt;--output_h5&lt;/span&gt; data/whitman_text.h5 &lt;span class=&quot;nt&quot;&gt;--output_json&lt;/span&gt; data/whitman_text.json
 
-# run the model. bptt of 64, 512 cell square hidden layers, dropout. takes ~40 mins on the gpu.
-th train.lua -input_h5 data/whitman_text.h5 -input_json data/whitman_text.json -rnn_size 512 -dropout 0.3 -seq_length 64
+&lt;span class=&quot;c&quot;&gt;# run the model. bptt of 64, 512 cell square hidden layers, dropout. takes ~40 mins on the gpu.&lt;/span&gt;
+th train.lua &lt;span class=&quot;nt&quot;&gt;-input_h5&lt;/span&gt; data/whitman_text.h5 &lt;span class=&quot;nt&quot;&gt;-input_json&lt;/span&gt; data/whitman_text.json &lt;span class=&quot;nt&quot;&gt;-rnn_size&lt;/span&gt; 512 &lt;span class=&quot;nt&quot;&gt;-dropout&lt;/span&gt; 0.3 &lt;span class=&quot;nt&quot;&gt;-seq_length&lt;/span&gt; 64
 
-# generate text! first with a random initial character...
-th sample.lua -checkpoint cv/checkpoint_8250.t7 -length 500 -temperature 0.7
+&lt;span class=&quot;c&quot;&gt;# generate text! first with a random initial character...&lt;/span&gt;
+th sample.lua &lt;span class=&quot;nt&quot;&gt;-checkpoint&lt;/span&gt; cv/checkpoint_8250.t7 &lt;span class=&quot;nt&quot;&gt;-length&lt;/span&gt; 500 &lt;span class=&quot;nt&quot;&gt;-temperature&lt;/span&gt; 0.7
 
-# then with a seeded initial string.
-th sample.lua -checkpoint cv/checkpoint_10000.t7 -length 500 -temperature 0.7 -first_string &quot;I sing the body electric&quot;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;span class=&quot;c&quot;&gt;# then with a seeded initial string.&lt;/span&gt;
+th sample.lua &lt;span class=&quot;nt&quot;&gt;-checkpoint&lt;/span&gt; cv/checkpoint_10000.t7 &lt;span class=&quot;nt&quot;&gt;-length&lt;/span&gt; 500 &lt;span class=&quot;nt&quot;&gt;-temperature&lt;/span&gt; 0.7 &lt;span class=&quot;nt&quot;&gt;-first_string&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;I sing the body electric&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;See &lt;a href=&quot;https://github.com/jcjohnson/torch-rnn/blob/master/doc/flags.md&quot;&gt;here&lt;/a&gt; for more info on using the model, what temperature is, and other hyperparameters worth playing around with.&lt;/p&gt;
 
 &lt;p&gt;Enjoy!&lt;/p&gt;
+
 </description>
 				<pubDate>Sun, 15 Apr 2018 00:00:00 -0400</pubDate>
-				<link>/whitman-bot-redux/</link>
-				<guid isPermaLink="true">/whitman-bot-redux/</guid>
+				<link>http://localhost:4000/whitman-bot-redux/</link>
+				<guid isPermaLink="true">http://localhost:4000/whitman-bot-redux/</guid>
 			</item>
 		
 			<item>
 				<title>Moving and Shaking</title>
-        <description>&lt;p&gt;&lt;a href=&quot;/assets/img/IMG_5140.png&quot;&gt;&lt;img src=&quot;/assets/img/IMG_5140.png&quot; title=&quot;Ariadne&quot; alt=&quot;Ariadne&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;a href=&quot;/assets/img/IMG_5140.png&quot;&gt;&lt;img src=&quot;/assets/img/IMG_5140.png&quot; alt=&quot;Ariadne&quot; title=&quot;Ariadne&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Ariadne has been moved out of the boatyard, and into her new home - a section of cleared woods in Scott&#39;s parents&#39; backyard. The moving process was relatively painless, thanks to the generosity of the local boatyard owner and his team, and to Scott and his family who built the tent that will protect the boat from the elements as she is being restored. We are now able to begin the process of taking apart pieces of the hull in the most vulnerable areas, and really assessing the scope of what we are working with.&lt;/p&gt;
+&lt;p&gt;Ariadne has been moved out of the boatyard, and into her new home - a section of cleared woods in Scott’s parents’ backyard. The moving process was relatively painless, thanks to the generosity of the local boatyard owner and his team, and to Scott and his family who built the tent that will protect the boat from the elements as she is being restored. We are now able to begin the process of taking apart pieces of the hull in the most vulnerable areas, and really assessing the scope of what we are working with.&lt;/p&gt;
 
 &lt;!--more--&gt;
 
+&lt;p&gt;The transfer of Ariadne out of the boatyard was smooth. She only had about two miles to travel on the road, but given her long overhangs and questionable structural integrity, we really wouldn’t have wanted to move her any further. Up she went onto the hydraulic trailer (which will also be used to launch her when she is ready), and off into her home in the woods.&lt;/p&gt;
 
-&lt;p&gt;The transfer of Ariadne out of the boatyard was smooth. She only had about two miles to travel on the road, but given her long overhangs and questionable structural integrity, we really wouldn&#39;t have wanted to move her any further. Up she went onto the hydraulic trailer (which will also be used to launch her when she is ready), and off into her home in the woods.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;/assets/img/IMG_4416.png&quot;&gt;&lt;img src=&quot;/assets/img/IMG_4416.png&quot; title=&quot;Ariadne&quot; alt=&quot;Ariadne&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/assets/img/IMG_4416.png&quot;&gt;&lt;img src=&quot;/assets/img/IMG_4416.png&quot; alt=&quot;Ariadne&quot; title=&quot;Ariadne&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Ariadne will take shelter for the next few years in a auxiliary shed built from a kit; the pipe frame and heavy tarping should be sufficient to keep her protected from the elements, and will give us enough room to stand on the deck and move about the boat underneath. It would be nice to have a bit more space, but it should do the job just fine.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;/assets/img/IMG_5158.png&quot;&gt;&lt;img src=&quot;/assets/img/IMG_5158.png&quot; title=&quot;Ariadne&quot; alt=&quot;Ariadne&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/assets/img/IMG_5158.png&quot;&gt;&lt;img src=&quot;/assets/img/IMG_5158.png&quot; alt=&quot;Ariadne&quot; title=&quot;Ariadne&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;The next step was to being removing a few planks in areas that we could see are suspect. This is an exciting and somewhat terrifying part of a project like this - you&#39;ve already committed to the work based on your best estimates of the scope of work, time, and cost, but now you really get to see what you&#39;re up against. We knew for our initial surveys that the boat leaked like a seive, and needed many new structural parts including keel timbers and frames. We also knew that the keel timber had suffered from being dried out over the years, and may need new wood. Cotton caulking is visible in the picture below, which was an attempt to stop leaks low in the bilge - this boat was designed &lt;strong&gt;not&lt;/strong&gt; to be caulked, so called &lt;em&gt;tight-seamed carvel&lt;/em&gt; planking, which is very unusual outside of classic scandinavian designs. The photo also shows some shakes in the forward keel timber - cracks that have opened up along the grain, probably due to being so dried out over the past five years sitting up on land.&lt;/p&gt;
+&lt;p&gt;The next step was to being removing a few planks in areas that we could see are suspect. This is an exciting and somewhat terrifying part of a project like this - you’ve already committed to the work based on your best estimates of the scope of work, time, and cost, but now you really get to see what you’re up against. We knew for our initial surveys that the boat leaked like a seive, and needed many new structural parts including keel timbers and frames. We also knew that the keel timber had suffered from being dried out over the years, and may need new wood. Cotton caulking is visible in the picture below, which was an attempt to stop leaks low in the bilge - this boat was designed &lt;strong&gt;not&lt;/strong&gt; to be caulked, so called &lt;em&gt;tight-seamed carvel&lt;/em&gt; planking, which is very unusual outside of classic scandinavian designs. The photo also shows some shakes in the forward keel timber - cracks that have opened up along the grain, probably due to being so dried out over the past five years sitting up on land.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;/assets/img/IMG_5176.png&quot;&gt;&lt;img src=&quot;/assets/img/IMG_5176.png&quot; title=&quot;Ariadne&quot; alt=&quot;Ariadne&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/assets/img/IMG_5176.png&quot;&gt;&lt;img src=&quot;/assets/img/IMG_5176.png&quot; alt=&quot;Ariadne&quot; title=&quot;Ariadne&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;From the inside looking out, we can see that things actually look pretty good for a boat of this age. This boat was very lightly built, and we plan to beef up the floor timbers and the ribs that we replace, using laminated oak. Even from a distance, many of the floor timbers are visible deteriorated and will be replaced. The floor timbers are responsble for keeping the lateral halves of the boat together, firmly tied down to the keel timber - the backbone - running down the center. Especially between the mast step and the ballast keel, any weakness in this area can open up seams and cause potentially catastrophic failure. Consequently, beefing up and replacing keel timbers is job one for us. (Notice the antique threaded screws on either side of the mast step, which are responsible for forestay tension!)&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;/assets/img/IMG_5183.png&quot;&gt;&lt;img src=&quot;/assets/img/IMG_5183.png&quot; title=&quot;Ariadne&quot; alt=&quot;Ariadne&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/assets/img/IMG_5183.png&quot;&gt;&lt;img src=&quot;/assets/img/IMG_5183.png&quot; alt=&quot;Ariadne&quot; title=&quot;Ariadne&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Scott has made templates of the forward keel timbers, which we will rough out away from the boat and then install over the summer. At that point, we will also have to assess the health of the keel timber where the forestay attaches to the boat; this is a critical part of the backbone, and needs to be healthy and strong. We will also decide which frames to replace, and will likely replace the metal frame caps that top the bent frames as visible in the picture below.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;/assets/img/bow_section.png&quot;&gt;&lt;img src=&quot;/assets/img/bow_section.png&quot; title=&quot;Ariadne&quot; alt=&quot;Ariadne&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/assets/img/bow_section.png&quot;&gt;&lt;img src=&quot;/assets/img/bow_section.png&quot; alt=&quot;Ariadne&quot; title=&quot;Ariadne&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 </description>
 				<pubDate>Thu, 01 Feb 2018 00:00:00 -0500</pubDate>
-				<link>/moving-and-shaking/</link>
-				<guid isPermaLink="true">/moving-and-shaking/</guid>
+				<link>http://localhost:4000/moving-and-shaking/</link>
+				<guid isPermaLink="true">http://localhost:4000/moving-and-shaking/</guid>
 			</item>
 		
 			<item>
 				<title>Whitman Bot</title>
         <description>&lt;p&gt;&lt;a href=&quot;/whitman-bot/&quot;&gt;&lt;img src=&quot;/assets/img/whitman-archive.png&quot; alt=&quot;Whitman&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Machine learning amazes me - and so does my brother in law &lt;a href=&quot;http://aaronmoe.com&quot;&gt;Aaron Moe&lt;/a&gt;, professor of English, literature genius, and ecopoeticist. Whenever I hang out with Aaron, I learn something. Among many things, Aaron is an expert on E.E. Cummings and the works of Walt Whitman. One of our conversations led to an idea: what if we were to adapt &lt;a href=&quot;https://karpathy.github.io/2015/05/21/rnn-effectiveness/&quot;&gt;some&lt;/a&gt; of the &lt;a href=&quot;https://www.engadget.com/2015/12/02/neural-network-journalism-philip-k-dick/&quot;&gt;advances&lt;/a&gt; of leading machine learning engineers to mimic the prose of Whitman? You could feed the bot a &quot;seed&quot; of a few words, and then see how Walt might finish your sentence.&lt;/p&gt;
+&lt;p&gt;Machine learning amazes me - and so does my brother in law &lt;a href=&quot;http://aaronmoe.com&quot;&gt;Aaron Moe&lt;/a&gt;, professor of English, literature genius, and ecopoeticist. Whenever I hang out with Aaron, I learn something. Among many things, Aaron is an expert on E.E. Cummings and the works of Walt Whitman. One of our conversations led to an idea: what if we were to adapt &lt;a href=&quot;https://karpathy.github.io/2015/05/21/rnn-effectiveness/&quot;&gt;some&lt;/a&gt; of the &lt;a href=&quot;https://www.engadget.com/2015/12/02/neural-network-journalism-philip-k-dick/&quot;&gt;advances&lt;/a&gt; of leading machine learning engineers to mimic the prose of Whitman? You could feed the bot a “seed” of a few words, and then see how Walt might finish your sentence.&lt;/p&gt;
 
 &lt;!--more--&gt;
+&lt;p&gt;There has been quite a bit of work in this area, most notably the char-RNN work of Andrej Karpathy which has become a very popular algorithm. Char-RNN was originally trained on a corpus of Shakespeare’s works, learning character-by-character how to create snippets of text mimicking the Bard’s great works. Karpathy also trained the network on other sources of text of dramatically different form and function, including Latex code (which nearly compiled). The power of this approach is truly mind-boggling - with a relatively simple architecture, the machine can learn to generate unstructured text in any desired style provided a sufficiently large training set.&lt;/p&gt;
 
-
-&lt;p&gt;There has been quite a bit of work in this area, most notably the char-RNN work of Andrej Karpathy which has become a very popular algorithm. Char-RNN was originally trained on a corpus of Shakespeare&#39;s works, learning character-by-character how to create snippets of text mimicking the Bard&#39;s great works. Karpathy also trained the network on other sources of text of dramatically different form and function, including Latex code (which nearly compiled). The power of this approach is truly mind-boggling - with a relatively simple architecture, the machine can learn to generate unstructured text in any desired style provided a sufficiently large training set.&lt;/p&gt;
-
-&lt;p&gt;The idea to use this approach on Whitman&#39;s work is in the early stages of development. Check back in here for updates, or &lt;a href=&quot;/contact&quot;&gt;shoot me a message&lt;/a&gt; - I&#39;d love to chat about it, or other cool new ideas or potential collaborations!&lt;br/&gt;
-&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;The idea to use this approach on Whitman’s work is in the early stages of development. Check back in here for updates, or &lt;a href=&quot;/contact&quot;&gt;shoot me a message&lt;/a&gt; - I’d love to chat about it, or other cool new ideas or potential collaborations!&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
 </description>
 				<pubDate>Sun, 10 Sep 2017 00:00:00 -0400</pubDate>
-				<link>/whitman-bot/</link>
-				<guid isPermaLink="true">/whitman-bot/</guid>
+				<link>http://localhost:4000/whitman-bot/</link>
+				<guid isPermaLink="true">http://localhost:4000/whitman-bot/</guid>
 			</item>
 		
 			<item>
@@ -278,9 +551,7 @@ th sample.lua -checkpoint cv/checkpoint_10000.t7 -length 500 -temperature 0.7 -f
 &lt;p&gt;In an effort to explore the vast possibilities of R Shiny, I built a very simple Shiny app using data from a survey designed and conducted with colleagues in Ethiopia. The data explores the relationships between different seed potato storage technologies (which turn out to be very important!) under different hypothetical future conditions.&lt;/p&gt;
 
 &lt;!--more--&gt;
-
-
-&lt;p&gt;The goal of this particular analysis was to explore the impact of a low-tech seed potato storage technology called Diffuse Light Storehouses (DLS), which allow rural Ethiopian farmers to dramatically improve their yields. This is because potatoes are planted from the tubers of the last growing season, not from &quot;seed&quot; as we know it. These tubers are much more sensitive than true seed, and require good storage conditions to meet their yield potential.&lt;/p&gt;
+&lt;p&gt;The goal of this particular analysis was to explore the impact of a low-tech seed potato storage technology called Diffuse Light Storehouses (DLS), which allow rural Ethiopian farmers to dramatically improve their yields. This is because potatoes are planted from the tubers of the last growing season, not from “seed” as we know it. These tubers are much more sensitive than true seed, and require good storage conditions to meet their yield potential.&lt;/p&gt;
 
 &lt;p&gt;Consequently, we compared the profitability of building DLS independently, building DLS with the support of an NGO program which subsidized construction, and traditional storage methods. Profitability depends on a variety of future conditions including labor wage rates, materials costs, sale and purchase prices, and yields. Many of these variables vary year-to-year in a way that depends on the previous year - e.g. the wage rate in time t+1 depends on wages in time t. We can model these changes over time using Markov Chain processes - I chose geometric brownian motion (the image shows an example of this).&lt;/p&gt;
 
@@ -292,36 +563,60 @@ th sample.lua -checkpoint cv/checkpoint_10000.t7 -length 500 -temperature 0.7 -f
 
 &lt;p&gt;&lt;a href=&quot;https://tobylunt.shinyapps.io/shinyapp/&quot;&gt;&lt;img src=&quot;/assets/img/shiny-app.png&quot; alt=&quot;Shiny-app&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;For an interactive version hosted (for free!) at shinyapps.io, &lt;a href=&quot;https://tobylunt.shinyapps.io/shinyapp/&quot;&gt;head this way&lt;/a&gt;. Despite the limitations both in form and function of this app, it was enough to demonstrate the amazing power not only for sharing information - but also for uncovering patterns and trends that would be more difficult to discern without good visualization.&lt;br/&gt;
-&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;For an interactive version hosted (for free!) at shinyapps.io, &lt;a href=&quot;https://tobylunt.shinyapps.io/shinyapp/&quot;&gt;head this way&lt;/a&gt;. Despite the limitations both in form and function of this app, it was enough to demonstrate the amazing power not only for sharing information - but also for uncovering patterns and trends that would be more difficult to discern without good visualization.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
 </description>
 				<pubDate>Sun, 10 Sep 2017 00:00:00 -0400</pubDate>
-				<link>/shiny-potatoes/</link>
-				<guid isPermaLink="true">/shiny-potatoes/</guid>
+				<link>http://localhost:4000/shiny-potatoes/</link>
+				<guid isPermaLink="true">http://localhost:4000/shiny-potatoes/</guid>
 			</item>
 		
 			<item>
 				<title>Beautiful Disaster</title>
-        <description>&lt;p&gt;&lt;a href=&quot;/beautiful-disaster/&quot;&gt;&lt;img src=&quot;/assets/img/ariadne.png&quot; title=&quot;Ariadne&quot; alt=&quot;Ariadne&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;a href=&quot;/beautiful-disaster/&quot;&gt;&lt;img src=&quot;/assets/img/ariadne.png&quot; alt=&quot;Ariadne&quot; title=&quot;Ariadne&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Alright, it&#39;s finally become clear: I might not be totally right in the head. I, along with my two closest friends, just bought a 90 year old wooden boat. Ariadne needs a lot of work. We are planning for a 3-5 year restoration before she returns to her normal self. I&#39;ll try to record some of the process in periodic blog posts.&lt;/p&gt;
+&lt;p&gt;Alright, it’s finally become clear: I might not be totally right in the head. I, along with my two closest friends, just bought a 90 year old wooden boat. Ariadne needs a lot of work. We are planning for a 3-5 year restoration before she returns to her normal self. I’ll try to record some of the process in periodic blog posts.&lt;/p&gt;
 
 &lt;!--more--&gt;
+&lt;p&gt;Sailing (rightfully) has a reputation for exclusivity, whiteness, and
+general douchebaggery. Some of this will never change, because fancy
+boats are expensive, sometimes absurdly expensive, and serve as giant
+proxy phalluses for the mega-rich. This is unfortunate on so many
+levels. On the positive side, sailing is a powerful way to be in the
+natural world - to learn how to work with the weather and to respect
+nature, to build self-reliance and self-confidence, to learn the
+skills of a craftsperson (in this case woodworking and composites),
+and to witness and appreciate the diversity and beauty of the natural
+world. But yes, you have to have a boat to go sailing, and somebody to
+teach you the basics really helps. I’m very grateful to have had the
+privilege of both these things in my youth.&lt;/p&gt;
 
+&lt;p&gt;My buddies Jay and Scott and I have decided to become stewards of
+Ariadne, a wooden boat built almost entirely of mahogany in the late
+1920s in Sweden. The boat was owned by a neighbor of ours who rescued
+it from ruin in the 1980s, and kept it alive until his death about
+five years ago. It was a labor of love for him, as it will be for
+us. The boat has next to no financial value, despite her great beauty
+and pedigree. We were granted the stewardship of Ariadne for $1 with
+the pretext that we would respect and revitalize Ariadne, consistent
+with the memory of her previous owner. This is our dream and our
+intention.&lt;/p&gt;
 
-&lt;p&gt;Sailing (rightfully) has a reputation for exclusivity, whiteness, and general douchebaggery. Some of this will never change, because fancy boats are expensive, sometimes absurdly expensive, and serve as giant proxy phalluses for the mega-rich. This is unfortunate on so many levels. On the positive side, sailing is a powerful way to be in the natural world - to learn how to work with the weather and to respect nature, to build self-reliance and self-confidence, to learn the skills of a craftsperson (in this case woodworking and composites), and to witness and appreciate the diversity and beauty of the natural world. But yes, you have to have a boat to go sailing, and somebody to teach you the basics really helps. I&#39;m very grateful to have had the privilege of both these things in my youth.&lt;/p&gt;
+&lt;p&gt;There’s no such thing as a free boat. But the three of us decided to
+take on this project as a way to strengthen our friendship in the face
+of the pressures of adulthood, and to keep this boat as a centerpiece
+for our community in the years to come. We estimate it will take us
+about five years and a lot of elbow grease to get her back on the
+water. Anyone is welcome to come help with the woodworking, or come
+for a ride when she’s back in action.&lt;/p&gt;
 
-&lt;p&gt;My buddies Jay and Scott and I have decided to become stewards of Ariadne, a wooden boat built almost entirely of mahogany in the late 1920s in Sweden. The boat was owned by a neighbor of ours who rescued it from ruin in the 1980s, and kept it alive until his death about five years ago. It was a labor of love for him, as it will be for us. The boat has next to no financial value, despite her great beauty and pedigree. We were granted the stewardship of Ariadne for $1 with the pretext that we would respect and revitalize Ariadne, consistent with the memory of her previous owner. This is our dream and our intention.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/ariadne-2.png&quot; alt=&quot;Ariadne&quot; title=&quot;Ariadne&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;There&#39;s no such thing as a free boat. But the three of us decided to take on this project as a way to strengthen our friendship in the face of the pressures of adulthood, and to keep this boat as a centerpiece for our community in the years to come. We estimate it will take us about five years and a lot of elbow grease to get her back on the water. Anyone is welcome to come help with the woodworking, or come for a ride when she&#39;s back in action.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/img/ariadne-2.png&quot; title=&quot;Ariadne&quot; alt=&quot;Ariadne&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 </description>
 				<pubDate>Sun, 10 Sep 2017 00:00:00 -0400</pubDate>
-				<link>/beautiful-disaster/</link>
-				<guid isPermaLink="true">/beautiful-disaster/</guid>
+				<link>http://localhost:4000/beautiful-disaster/</link>
+				<guid isPermaLink="true">http://localhost:4000/beautiful-disaster/</guid>
 			</item>
 		
 			<item>
@@ -330,31 +625,29 @@ th sample.lua -checkpoint cv/checkpoint_10000.t7 -length 500 -temperature 0.7 -f
 
 &lt;p&gt;&lt;i&gt;Or: why clickbait is destroying our civilization&lt;/i&gt;&lt;/p&gt;
 
-&lt;p&gt;Well, it&#39;s possible that clickbait isn&#39;t destroying our civilization, at least not as much as it&#39;s destroying my productivity. It&#39;s becoming clear, however, that the culture of instant gratification and avoidance of boredom is as dangerous as it is understandable.&lt;/p&gt;
+&lt;p&gt;Well, it’s possible that clickbait isn’t destroying our civilization, at least not as much as it’s destroying my productivity. It’s becoming clear, however, that the culture of instant gratification and avoidance of boredom is as dangerous as it is understandable.&lt;/p&gt;
 
 &lt;!--more--&gt;
-
-
-&lt;p&gt;I&#39;ll let the behavioral psychologists explain how our wiring causes us to seek gratification for the reward centers of our brains, and how the explosion of technology is affecting the way we live our lives. Multitasking and context-switching have become ubiquitous elements of modern culture, where fast-cut filmmaking, twitter feeds, and even our eating habits are designed to give us repeated hits of pleasure, sending happy chemicals through our nervous system.&lt;/p&gt;
+&lt;p&gt;I’ll let the behavioral psychologists explain how our wiring causes us to seek gratification for the reward centers of our brains, and how the explosion of technology is affecting the way we live our lives. Multitasking and context-switching have become ubiquitous elements of modern culture, where fast-cut filmmaking, twitter feeds, and even our eating habits are designed to give us repeated hits of pleasure, sending happy chemicals through our nervous system.&lt;/p&gt;
 
 &lt;p&gt;As access to information and media explodes across the globe, the North American attention span is shrinking with equal aplomb. One study estimated that Canadian attention span had shrunk from 12 to 8 seconds in the past 14 years – and concluded that our attention span is now shorter than that of a goldfish. While I imagine that there are a wide range of benign and not-so-benign consequences to this type of human evolution, one ripple effect is particularly nefarious – the most important issues in human society are often the least sexy ones, and the least worthy of our attention at first glance.&lt;/p&gt;
 
-&lt;p&gt;We all have a limited amount of time, energy, and brain space to engage with what is happening in the world. Consequently, we develop and inherit a set of filters that determine what is deserving of our attention and what we let pass by unobserved and unconsidered. Michael Bell, a professor of rural sociology at the University of Wisconsin-Madison, calls this the &quot;cultivation of the ignorable&quot; – internal choices of what information is trustworthy, interesting, or to be disregarded. The cultivation of the ignorable is inevitable, as human beings have limited processing power, and limited time to devote to causes other than caring for themselves and their loved ones.&lt;/p&gt;
+&lt;p&gt;We all have a limited amount of time, energy, and brain space to engage with what is happening in the world. Consequently, we develop and inherit a set of filters that determine what is deserving of our attention and what we let pass by unobserved and unconsidered. Michael Bell, a professor of rural sociology at the University of Wisconsin-Madison, calls this the “cultivation of the ignorable” – internal choices of what information is trustworthy, interesting, or to be disregarded. The cultivation of the ignorable is inevitable, as human beings have limited processing power, and limited time to devote to causes other than caring for themselves and their loved ones.&lt;/p&gt;
 
-&lt;p&gt;Multitasking behavior, and the underlying limitations to what we are capable of processing, are dangerous because they can be exploited. As John Oliver said, &quot;If you want to do something evil, put it inside something boring.&quot; Consider how some of the most important elements of our lives are often governed by complex documents that most of us cannot adequately understand without, if we can afford it, hiring expensive advisors – this includes mortgage contracts, health insurance agreements, and the fine print of the laws that govern how we vote, do business, and build our families.&lt;/p&gt;
+&lt;p&gt;Multitasking behavior, and the underlying limitations to what we are capable of processing, are dangerous because they can be exploited. As John Oliver said, “If you want to do something evil, put it inside something boring.” Consider how some of the most important elements of our lives are often governed by complex documents that most of us cannot adequately understand without, if we can afford it, hiring expensive advisors – this includes mortgage contracts, health insurance agreements, and the fine print of the laws that govern how we vote, do business, and build our families.&lt;/p&gt;
 
-&lt;p&gt;If we lose our attention spans, we simultaneously erode our collective ability to identify and call out inegalitarian structures within the tax code. If we exclusively heed the siren song of all the shiny things and cat videos on the internet, we don&#39;t learn about the vast, cascading effects of campaign financing upon how policy is made in America. If we reach for our smartphones during every waking moment, we may miss out on our chance to catch the next pernicious financial instrument before it causes widespread harm in our society. These issues – alongside trade protectionism and food aid, interest rates, fossil fuel subsidies, insurance contracts, and countless others – are undeniably unsexy. Unfortunately, they also shape the entire world in which we live. They determine who gains, retains, and loses power, both politically and economically. They determine which populations are marginalized (and many are currently marginalized), and they govern the level and distribution of human rights. These are the issues that determine whether or not America is a just and prosperous society, where all citizens can equally enjoy life, liberty, and the pursuit of happiness.&lt;/p&gt;
+&lt;p&gt;If we lose our attention spans, we simultaneously erode our collective ability to identify and call out inegalitarian structures within the tax code. If we exclusively heed the siren song of all the shiny things and cat videos on the internet, we don’t learn about the vast, cascading effects of campaign financing upon how policy is made in America. If we reach for our smartphones during every waking moment, we may miss out on our chance to catch the next pernicious financial instrument before it causes widespread harm in our society. These issues – alongside trade protectionism and food aid, interest rates, fossil fuel subsidies, insurance contracts, and countless others – are undeniably unsexy. Unfortunately, they also shape the entire world in which we live. They determine who gains, retains, and loses power, both politically and economically. They determine which populations are marginalized (and many are currently marginalized), and they govern the level and distribution of human rights. These are the issues that determine whether or not America is a just and prosperous society, where all citizens can equally enjoy life, liberty, and the pursuit of happiness.&lt;/p&gt;
 
 &lt;p&gt;In a democratic system of governance, justice and equality are dependent upon the involvement of an informed and motivated public. As individuals, we are not capable of fixing every issue that matters to us, but we need to recognize the importance of unsexy issues and illuminate dark legislative corners under the spotlight of scrutiny and debate. Without this attention, those with the resources to create complex contracts, laws, and financial instruments will continue to do as they please; even if most are honest and good, all it takes is a few rogue agents to hide something self-servingly evil and destructive within something boring. So by all means, continue to enjoy twitter and the occasional sensational headline – I know I will – but don’t forget that worlds are constructed using materials that are much more dull, and vote accordingly.&lt;/p&gt;
 </description>
 				<pubDate>Sat, 09 Jul 2016 00:00:00 -0400</pubDate>
-				<link>/sexy-vs-unsexy/</link>
-				<guid isPermaLink="true">/sexy-vs-unsexy/</guid>
+				<link>http://localhost:4000/sexy-vs-unsexy/</link>
+				<guid isPermaLink="true">http://localhost:4000/sexy-vs-unsexy/</guid>
 			</item>
 		
 			<item>
 				<title>Tech for Development</title>
-        <description>&lt;p&gt;&lt;i&gt;&quot;The sleight of hand that focuses attention on technical solutions while covering up violations of the rights of real people is the moral tragedy of development today.&quot; &lt;/i&gt;&lt;br/&gt;
+        <description>&lt;p&gt;&lt;i&gt;“The sleight of hand that focuses attention on technical solutions while covering up violations of the rights of real people is the moral tragedy of development today.” &lt;/i&gt;&lt;br /&gt;
 William Easterly – Tyranny of Experts (p15)&lt;/p&gt;
 
 &lt;p&gt;Is new technology a panacea for solving global hunger, pollution, and poverty? Or is it shortsighted, wishful thinking to believe that humankind will develop technological solutions to free ourselves of our most intractable problems?&lt;/p&gt;
@@ -362,142 +655,127 @@ William Easterly – Tyranny of Experts (p15)&lt;/p&gt;
 &lt;p&gt;Many conversations that I have about the future, and the role of future tech, wind their way towards one of these two extremes. This dichotomy turns out to be counterproductive, coloring over important nuances that will shape our future.&lt;/p&gt;
 
 &lt;!--more--&gt;
-
-
 &lt;p&gt;Technological innovations themselves often do not cause problems simply through their mere existence - unless they bring inherent existential or moral dilemmas, like the development of the hydrogen bomb, or robot soldiers. The challenges sometimes presented by new technologies, such as the disenfranchisement of vulnerable populations and environmental and social externalities, can be products of underlying &lt;strong&gt;power structures&lt;/strong&gt;, not the technology itself. Consequently, when we ask whether a new gadget will cause greater good then harm, we must consider: &lt;i&gt;who gets to choose which technologies are developed, and how they are applied in the real world?&lt;/i&gt;&lt;/p&gt;
 
 &lt;p&gt;When assessing the role of future technology from a perspective of power structures, our relationship to these issues shifts in subtle but meaningful ways. Demonizing individual technologies is no longer fruitful. Instead, we ask ourselves: what are the structural determinants of how solutions to global problems are developed? What are the institutionalized patterns and parameters (formal or informal) that are leading to improper or unjust application of particular technologies? How can we as a global society push our processes of technological development to maximize equity and productivity? How can we expand the principles of open-source, in the name of fair access to technology and crowdsourced development?&lt;/p&gt;
 
 &lt;p&gt;From the lens of agricultural development, it is clear that some technologies provide benefits to some groups at the expense of others. For example, water extraction technology used by wealthy farmers can reduce water access for poorer neighboring households, while new processing and storage techniques can boost larger agricultural businesses and crowd smallholders out of the market. On the other hand, other technological developments can be used to assemble key suites of tools to help tackle our most insurmountable problems, such as helping poor farmers defend themselves against climate risks through climate-smart agricultural practices.&lt;/p&gt;
 
-&lt;p&gt;To write off &quot;technology&quot; as inherently unjust, or as merely dangerous and exploitative arrows in the quiver of multinationals, is to discard the counsel of prudence – disregarding our societal need to utilize technological improvements as we work to make the world safer, healthier, more productive, and more just. Opportunities to improve productivity, healthcare, education, and freedom through technology should not be seized if they do not come with associated harms to underrepresented populations (and species). Similarly, to consider &quot;technology&quot; as &lt;i&gt;deus ex machina&lt;/i&gt; to sweepingly solve our most wicked global problems, ignores the importance of an watchful eye towards equity in the development of a future we can be proud of.&lt;/p&gt;
+&lt;p&gt;To write off “technology” as inherently unjust, or as merely dangerous and exploitative arrows in the quiver of multinationals, is to discard the counsel of prudence – disregarding our societal need to utilize technological improvements as we work to make the world safer, healthier, more productive, and more just. Opportunities to improve productivity, healthcare, education, and freedom through technology should not be seized if they do not come with associated harms to underrepresented populations (and species). Similarly, to consider “technology” as &lt;i&gt;deus ex machina&lt;/i&gt; to sweepingly solve our most wicked global problems, ignores the importance of an watchful eye towards equity in the development of a future we can be proud of.&lt;/p&gt;
 
 &lt;p&gt;Instead of blaming the tools, we must consider the power structures that determine how tools are created and put to use. We must examine the political and economic institutions that determine which genome gets sequenced, which neighborhoods benefit from infrastructure improvements, and which new ideas get funded. We should aim for a productive technological justice that benefits all, even the weakest and poorest, while rewarding both private and public investment.&lt;/p&gt;
 
 &lt;p&gt;Our technologies reflect our collective values. We should strive for the tools we use to express values that we are proud of, not to perpetuate inequality and hardship.&lt;/p&gt;
 </description>
 				<pubDate>Sat, 27 Feb 2016 00:00:00 -0500</pubDate>
-				<link>/on-technology/</link>
-				<guid isPermaLink="true">/on-technology/</guid>
+				<link>http://localhost:4000/on-technology/</link>
+				<guid isPermaLink="true">http://localhost:4000/on-technology/</guid>
 			</item>
 		
 			<item>
 				<title>Conservatives And The Climate</title>
         <description>&lt;p&gt;&lt;img src=&quot;/assets/img/climateconservatives.jpg&quot; alt=&quot;climate conservatives&quot; /&gt;&lt;/p&gt;
 
-&lt;blockquote&gt;&lt;p&gt;This is an article  written for the &lt;a href=&quot;http://www.huffingtonpost.com/tobias-lunt/conservatives-want-to-fix_b_9123716.html&quot;&gt;Huffington Post&lt;/a&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;This is an article  written for the &lt;a href=&quot;http://www.huffingtonpost.com/tobias-lunt/conservatives-want-to-fix_b_9123716.html&quot;&gt;Huffington Post&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;Donald Trump may not like it, but addressing climate change is an issue that fits perfectly within Republican ideology.&lt;/p&gt;
 
 &lt;p&gt;Let me tell you why.&lt;/p&gt;
 
 &lt;!--more--&gt;
-
-
 &lt;p&gt;First, acting on Climate Change is a religious no-brainer. American conservatives are strongly religious, with a highly influential &lt;a href=&quot;https://www.washingtonpost.com/news/monkey-cage/wp/2015/09/04/how-democrats-became-secular-and-republicans-became-religious-its-not-what-you-think/&quot;&gt;Christian base&lt;/a&gt;. Organized religions (and most secular moral codes) agree on the essential human imperative to lend a hand to people in dire straits. Climate change is creating conditions of utmost economic, social and physical distress, disproportionately affecting the most vulnerable people around the world - small subsistence farmers earning a dollar or two per day, dependent on the weather to eke out a living. In a twisted turn of fate, the parts of the globe feeling the strongest effects of climate change, and forecast to bear the brunt of future climate extremes, are areas with the &lt;a href=&quot;http://www.theguardian.com/environment/climate-consensus-97-per-cent/2015/jan/26/climate-change-could-impact-poor-much-more-than-previously-thought&quot;&gt;fewest resources available&lt;/a&gt; to prepare themselves for what is coming.&lt;/p&gt;
 
-&lt;p&gt;We live in a global community, linked more tightly and comprehensively than ever before. Because of modern communication technology, we can no longer feign ignorance when our neighbors starve or are forced to take desperate measures to ensure the survival of their families. Coming to the aid of the world&#39;s most vulnerable citizens against the ravages of climate change is a goal perfectly in line with the Conservative Christian moral code. In fact, it would be disingenuous not to intervene.&lt;/p&gt;
+&lt;p&gt;We live in a global community, linked more tightly and comprehensively than ever before. Because of modern communication technology, we can no longer feign ignorance when our neighbors starve or are forced to take desperate measures to ensure the survival of their families. Coming to the aid of the world’s most vulnerable citizens against the ravages of climate change is a goal perfectly in line with the Conservative Christian moral code. In fact, it would be disingenuous not to intervene.&lt;/p&gt;
 
-&lt;p&gt;Secondly, climate change is the key fiscal issue of our time. Climate change doesn&#39;t just mean strange weather and struggling farmers - the effects are far reaching. Heat waves, increased risk of tropical diseases, and severe weather events such as tornadoes and tsunamis all have negative impacts on &lt;a href=&quot;http://www.who.int/mediacentre/factsheets/fs266/en/&quot;&gt;human health&lt;/a&gt; - and the American economy. Damage to property and financial assets will also intensify and become more common (remember how hard &lt;a href=&quot;http://www.wri.org/publication/impacts-hurricane-sandy-and-climate-change-connection&quot;&gt;hurricane Sandy&lt;/a&gt; hit New York and New Jersey?).&lt;/p&gt;
+&lt;p&gt;Secondly, climate change is the key fiscal issue of our time. Climate change doesn’t just mean strange weather and struggling farmers - the effects are far reaching. Heat waves, increased risk of tropical diseases, and severe weather events such as tornadoes and tsunamis all have negative impacts on &lt;a href=&quot;http://www.who.int/mediacentre/factsheets/fs266/en/&quot;&gt;human health&lt;/a&gt; - and the American economy. Damage to property and financial assets will also intensify and become more common (remember how hard &lt;a href=&quot;http://www.wri.org/publication/impacts-hurricane-sandy-and-climate-change-connection&quot;&gt;hurricane Sandy&lt;/a&gt; hit New York and New Jersey?).&lt;/p&gt;
 
-&lt;p&gt;At both individual and national levels, the economic consequences levied by climate change are painfully significant. Political disruptions, crop failures, and systemic economic upheaval are &lt;a href=&quot;http://www.lloyds.com/news-and-insight/risk-insight/library/society-and-security/food-system-shock&quot;&gt;all possibilities&lt;/a&gt; - which will affect your wallet and possibly the security of your nation. If you identify as a prudent fiscal conservative, it&#39;s in your best interest to prevent the worst effects of climate change both now and in the future.&lt;/p&gt;
+&lt;p&gt;At both individual and national levels, the economic consequences levied by climate change are painfully significant. Political disruptions, crop failures, and systemic economic upheaval are &lt;a href=&quot;http://www.lloyds.com/news-and-insight/risk-insight/library/society-and-security/food-system-shock&quot;&gt;all possibilities&lt;/a&gt; - which will affect your wallet and possibly the security of your nation. If you identify as a prudent fiscal conservative, it’s in your best interest to prevent the worst effects of climate change both now and in the future.&lt;/p&gt;
 
-&lt;p&gt;Third, inaction on climate change is a national security threat. Just ask the &lt;a href=&quot;http://www.defense.gov/News-Article-View/Article/612710&quot;&gt;Department of Defense&lt;/a&gt;, which is leading the charge on renewable energy R&amp;amp;D and climate change adaptation, or ask one Iraq war veteran who describes climate change as the &lt;a href=&quot;http://time.com/4101903/climate-change-national-security/&quot;&gt;&quot;mother of all risks&quot;&lt;/a&gt; to national security. The ripple effects of climate change&#39;s impact on food production and food prices can cause political unrest, social fragmentation, and the destabilization of commodity markets. This isn&#39;t a future hypothetical; climate change has already contributed to toppling governments, which we observed in the &lt;a href=&quot;http://www.scientificamerican.com/article/climate-change-and-rising-food-prices-heightened-arab-spring/&quot;&gt;revolutions of the Arab Spring&lt;/a&gt; in 2008-2009.&lt;/p&gt;
+&lt;p&gt;Third, inaction on climate change is a national security threat. Just ask the &lt;a href=&quot;http://www.defense.gov/News-Article-View/Article/612710&quot;&gt;Department of Defense&lt;/a&gt;, which is leading the charge on renewable energy R&amp;amp;D and climate change adaptation, or ask one Iraq war veteran who describes climate change as the &lt;a href=&quot;http://time.com/4101903/climate-change-national-security/&quot;&gt;“mother of all risks”&lt;/a&gt; to national security. The ripple effects of climate change’s impact on food production and food prices can cause political unrest, social fragmentation, and the destabilization of commodity markets. This isn’t a future hypothetical; climate change has already contributed to toppling governments, which we observed in the &lt;a href=&quot;http://www.scientificamerican.com/article/climate-change-and-rising-food-prices-heightened-arab-spring/&quot;&gt;revolutions of the Arab Spring&lt;/a&gt; in 2008-2009.&lt;/p&gt;
 
-&lt;p&gt;Conservatives and liberals may not have much to cooperate on these days, but all would readily agree that people should not be forced to starve or lose their livelihoods when achievable, implementable solutions exist. This is especially the case when helping our neighbor also helps ourselves - by lending a hand in regions struggling with climate change, we also protect ourselves from political and economic instability and develop solutions that we will likely soon need in our own fields and cities back home. There are other strong reasons why Republicans should act, including the hunter&#39;s incentive for habitat conservation, and the importance of re-establishing American technological innovation in the future global economy. All told, climate denial is &lt;a href=&quot;http://www.huffingtonpost.com/entry/republican-climate-change-campaign-strategy_us_56a27dc1e4b0404eb8f18090?ir=Politics&amp;amp;section=us_politics&amp;amp;utm_hp_ref=politics&quot;&gt;not a future political winner&lt;/a&gt; for conservatives , and Republican legislators increasingly are becoming aware of this, such as &lt;a href=&quot;http://www.slate.com/blogs/moneybox/2015/10/28/lindsey_graham_talks_sense_at_debate_about_climate_change.html&quot;&gt;Lindsey Graham&lt;/a&gt; (R-SC) and &lt;a href=&quot;https://grist.org/climate-energy/heres-the-gop-congressman-whos-trying-to-kick-start-a-new-climate-movement/&quot;&gt;Chris Gibson&lt;/a&gt; (R-NY).&lt;/p&gt;
+&lt;p&gt;Conservatives and liberals may not have much to cooperate on these days, but all would readily agree that people should not be forced to starve or lose their livelihoods when achievable, implementable solutions exist. This is especially the case when helping our neighbor also helps ourselves - by lending a hand in regions struggling with climate change, we also protect ourselves from political and economic instability and develop solutions that we will likely soon need in our own fields and cities back home. There are other strong reasons why Republicans should act, including the hunter’s incentive for habitat conservation, and the importance of re-establishing American technological innovation in the future global economy. All told, climate denial is &lt;a href=&quot;http://www.huffingtonpost.com/entry/republican-climate-change-campaign-strategy_us_56a27dc1e4b0404eb8f18090?ir=Politics&amp;amp;section=us_politics&amp;amp;utm_hp_ref=politics&quot;&gt;not a future political winner&lt;/a&gt; for conservatives , and Republican legislators increasingly are becoming aware of this, such as &lt;a href=&quot;http://www.slate.com/blogs/moneybox/2015/10/28/lindsey_graham_talks_sense_at_debate_about_climate_change.html&quot;&gt;Lindsey Graham&lt;/a&gt; (R-SC) and &lt;a href=&quot;https://grist.org/climate-energy/heres-the-gop-congressman-whos-trying-to-kick-start-a-new-climate-movement/&quot;&gt;Chris Gibson&lt;/a&gt; (R-NY).&lt;/p&gt;
 
 &lt;p&gt;Maybe climate change should be a Republican issue in 2016 after all.&lt;/p&gt;
 </description>
 				<pubDate>Tue, 09 Feb 2016 00:00:00 -0500</pubDate>
-				<link>/conservatives-and-the-climate/</link>
-				<guid isPermaLink="true">/conservatives-and-the-climate/</guid>
+				<link>http://localhost:4000/conservatives-and-the-climate/</link>
+				<guid isPermaLink="true">http://localhost:4000/conservatives-and-the-climate/</guid>
 			</item>
 		
 			<item>
 				<title>Climate Change is Apolitical</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/assets/img/donkeyphant.png&quot; title=&quot;Donkeyphant&quot; alt=&quot;donkeyphant&quot; /&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;img src=&quot;/assets/img/donkeyphant.png&quot; alt=&quot;donkeyphant&quot; title=&quot;Donkeyphant&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;10 reasons you need to care about climate change – regardless of your politics&lt;/em&gt;&lt;/p&gt;
 
-&lt;blockquote&gt;&lt;p&gt;Moving into the New Year, the global climate is in a state of disarray and uncertainty. 2015 looks to be the hottest year on record by a considerable margin, followed by 2014, with all of the top ten occurring post-1998. A powerful El Niño is already contributing to fierce droughts in southern and eastern Africa, while the UK and the Midwestern United States are submerged by extreme floods. On Christmas Eve, Central Park in New York City reached a high temperature of 72 degrees. Climate change is here.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Moving into the New Year, the global climate is in a state of disarray and uncertainty. 2015 looks to be the hottest year on record by a considerable margin, followed by 2014, with all of the top ten occurring post-1998. A powerful El Niño is already contributing to fierce droughts in southern and eastern Africa, while the UK and the Midwestern United States are submerged by extreme floods. On Christmas Eve, Central Park in New York City reached a high temperature of 72 degrees. Climate change is here.&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;!--more--&gt;
-
-
 &lt;p&gt;A powerful piece of positive news snuck in just before the end of 2015, however; the Paris Agreement at COP21 in December marked a significant shift in momentum towards inclusive and comprehensive action to curb global climate change. With nearly 200 countries participating – and driven by citizen-fueled movements around the world pushing for solutions – the steps taken in Paris offer real hope that world leaders may finally be taking climate change seriously.&lt;/p&gt;
 
 &lt;p&gt;Despite all of this, climate change still feels like a mythical, distant and intangible ‘thing’ for many of us; it feels so big that we can’t personally help to fix it.   Others of us might feel that the issue is just too politically divided to motivate action across the aisle.  Here are ten reasons why climate change is, in fact, very, very real – no matter what your politics may be – and that you are the most important part of the solution.&lt;/p&gt;
 
-&lt;h2&gt;1. The world’s poorest are suffering – right now.&lt;/h2&gt;
+&lt;p&gt;##1. The world’s poorest are suffering – right now. 
+Climate change disproportionately affects the most vulnerable people around the world – small subsistence farmers earning a dollar or two per day, dependent on the weather to eke out a living. In a twisted turn of fate, the parts of the world feeling the strongest effects of climate change and forecast to bear the brunt of future climate extremes are &lt;a href=&quot;http://www.theguardian.com/environment/climate-consensus-97-per-cent/2015/jan/26/climate-change-could-impact-poor-much-more-than-previously-thought&quot;&gt;areas with the fewest resources available to prepare themselves for what is coming&lt;/a&gt;. Communities around the world are already feeling the strain of changing weather patterns. For example, in much of southern Africa, temperature increases, delayed and erratic rains, as well as droughts are causing hunger and limiting the ability of farmers to educate their children and afford basic medical care. The worst drought in 50 years is ongoing in Ethiopia, where young girls are being forced into marriage early because their families so desperately need the money that comes from a marriage dowry.&lt;/p&gt;
 
-&lt;p&gt;Climate change disproportionately affects the most vulnerable people around the world – small subsistence farmers earning a dollar or two per day, dependent on the weather to eke out a living. In a twisted turn of fate, the parts of the world feeling the strongest effects of climate change and forecast to bear the brunt of future climate extremes are &lt;a href=&quot;http://www.theguardian.com/environment/climate-consensus-97-per-cent/2015/jan/26/climate-change-could-impact-poor-much-more-than-previously-thought&quot;&gt;areas with the fewest resources available to prepare themselves for what is coming&lt;/a&gt;. Communities around the world are already feeling the strain of changing weather patterns. For example, in much of southern Africa, temperature increases, delayed and erratic rains, as well as droughts are causing hunger and limiting the ability of farmers to educate their children and afford basic medical care. The worst drought in 50 years is ongoing in Ethiopia, where young girls are being forced into marriage early because their families so desperately need the money that comes from a marriage dowry.&lt;/p&gt;
+&lt;p&gt;##2. Our values compel us to help. 
+We live in a global community, linked more tightly and comprehensively than ever before. Because of modern communication technology, we can no longer feign ignorance when our neighbors starve or are forced to desperate measures to ensure the survival of their families. Organized religions all agree on the essential human imperative to lend a hand to people in dire straits. Even secular people live by a genuine moral code, which certainly does not condone standing idle while millions of fellow human beings face the threat of starvation. Climate change is creating conditions of utmost economic, social and physical distress, and our values will drive us to help.&lt;/p&gt;
 
-&lt;h2&gt;2. Our values compel us to help.&lt;/h2&gt;
+&lt;p&gt;##3. Less obvious consequences of climate change 
+are numerous and frightening. Climate change doesn’t just mean strange weather and struggling farmers – the effects are far reaching. Heat waves, increased risk of tropical diseases, and severe weather events such as tornadoes and tsunamis all have negative impacts on &lt;a href=&quot;http://www.who.int/mediacentre/factsheets/fs266/en/&quot;&gt;human health&lt;/a&gt;. Damage to property and financial assets will worsen and become more common (remember how hard &lt;a href=&quot;http://www.wri.org/publication/impacts-hurricane-sandy-and-climate-change-connection&quot;&gt;hurricane Sandy&lt;/a&gt; hit New York and New Jersey?). The ripple effects of climate change’s impact on food production and food prices can cause political unrest and destabilize commodity markets, which we observed in 2008-2009, &lt;a href=&quot;climate&quot;&gt;contributing to the revolutions of the Arab Spring&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;We live in a global community, linked more tightly and comprehensively than ever before. Because of modern communication technology, we can no longer feign ignorance when our neighbors starve or are forced to desperate measures to ensure the survival of their families. Organized religions all agree on the essential human imperative to lend a hand to people in dire straits. Even secular people live by a genuine moral code, which certainly does not condone standing idle while millions of fellow human beings face the threat of starvation. Climate change is creating conditions of utmost economic, social and physical distress, and our values will drive us to help.&lt;/p&gt;
+&lt;p&gt;##4. If compassion isn’t your thing… 
+try enlightened self-interest. At both personal and national levels, the suffering and unrest levied by climate change is bad news. Political disruptions, crop failures, and systemic economic upheaval are &lt;a href=&quot;http://www.lloyds.com/news-and-insight/risk-insight/library/society-and-security/food-system-shock&quot;&gt;all possibilities&lt;/a&gt; – which will affect your wallet and possibly the security of your nation. Further, climate change threatens some of the world’s true marvels, such as the &lt;a href=&quot;http://www.theguardian.com/environment/2015/aug/25/great-barrier-reef-climate-change-is-biggest-threat-to-native-species-study&quot;&gt;Great Barrier Reef&lt;/a&gt;, which you may wish to personally enjoy. Even if you’re just looking out for number one, it’s in your best interest to prevent the worst effects of climate change now and in the future.&lt;/p&gt;
 
-&lt;h2&gt;3. Less obvious consequences of climate change&lt;/h2&gt;
+&lt;p&gt;##5. Whether humans are causing climate change 
+doesn’t matter. Some people disagree with the &lt;a href=&quot;http://climate.nasa.gov/scientific-consensus/&quot;&gt;scientific consensus&lt;/a&gt; that climate change is caused by human activities. Even if you are uncomfortable with the idea that humans are causing it, climate change is undeniably affecting people around the world already, and we cannot afford to delay utilizing every tool we have to prepare ourselves for what is ahead of us – regardless of the cause. Ultimately we need to address the fact that human emissions are exacerbating the greenhouse effect, but this debate is not an excuse to delay action to protect the world’s most vulnerable citizens from what they are already facing.&lt;/p&gt;
 
-&lt;p&gt;are numerous and frightening. Climate change doesn’t just mean strange weather and struggling farmers – the effects are far reaching. Heat waves, increased risk of tropical diseases, and severe weather events such as tornadoes and tsunamis all have negative impacts on &lt;a href=&quot;http://www.who.int/mediacentre/factsheets/fs266/en/&quot;&gt;human health&lt;/a&gt;. Damage to property and financial assets will worsen and become more common (remember how hard &lt;a href=&quot;http://www.wri.org/publication/impacts-hurricane-sandy-and-climate-change-connection&quot;&gt;hurricane Sandy&lt;/a&gt; hit New York and New Jersey?). The ripple effects of climate change’s impact on food production and food prices can cause political unrest and destabilize commodity markets, which we observed in 2008-2009, &lt;a href=&quot;climate&quot;&gt;contributing to the revolutions of the Arab Spring&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;##6. Morals, self-interest and achievability 
+all tell us to pitch in - making the politics irrelevant. Conservatives and liberals may not have much to cooperate on these days, but most would readily agree that people should not be forced to starve or lose their livelihoods when achievable, implementable solutions exist. This is especially the case when helping our neighbor also helps ourselves – by lending a hand to countries struggling with climate change, we also protect ourselves from political and economic instability and develop solutions that we may soon need in our own fields and cities back home.&lt;/p&gt;
 
-&lt;h2&gt;4. If compassion isn’t your thing...&lt;/h2&gt;
+&lt;p&gt;##7. The communities being affected are motivated
+to solve their own problems. We don’t need to solve others’ problems for them. The smallholder farmers, healthcare workers, and entrepreneurs in developing (and developed) countries who are waging war on the front lines of climate change are intelligent, motivated and innovative people; there are strong and resourceful local leaders working tirelessly every day to deploy solutions. These leaders are the most qualified and best equipped to solve the context-specific problems that plague their communities – not prescriptive development projects or heavy-handed government programs. However, these community leaders desperately need the support of development agencies, governments and the local and global public to get the resources and training they need to be successful.&lt;/p&gt;
 
-&lt;p&gt;try enlightened self-interest. At both personal and national levels, the suffering and unrest levied by climate change is bad news. Political disruptions, crop failures, and systemic economic upheaval are &lt;a href=&quot;http://www.lloyds.com/news-and-insight/risk-insight/library/society-and-security/food-system-shock&quot;&gt;all possibilities&lt;/a&gt; – which will affect your wallet and possibly the security of your nation. Further, climate change threatens some of the world’s true marvels, such as the &lt;a href=&quot;http://www.theguardian.com/environment/2015/aug/25/great-barrier-reef-climate-change-is-biggest-threat-to-native-species-study&quot;&gt;Great Barrier Reef&lt;/a&gt;, which you may wish to personally enjoy. Even if you’re just looking out for number one, it’s in your best interest to prevent the worst effects of climate change now and in the future.&lt;/p&gt;
+&lt;p&gt;##8. The problems of climate change are fixable. 
+Many organizations, governments, citizens, leaders and activists are working furiously to develop the tools we need to respond to the climate problem. Most of these tools already exist. Agricultural practices, new technologies, community organization and empowerment, and access to credit are all importance pieces to the puzzle. The missing piece is the global awareness and public commitment to work together and solve the problem. This is different than solving the energy crisis by investing in a hail-mary such as nuclear fusion. We have the tools that we need right now.&lt;/p&gt;
 
-&lt;h2&gt;5. Whether humans are causing climate change&lt;/h2&gt;
+&lt;p&gt;##9. Everyone has a role to play. 
+Everybody can contribute in their own way to counter the most disastrous effects of climate change. Governments and international bodies need to encourage local agency, community-led development, empowerment, gender parity and institution-building. Companies large and small need to recognize that climate change affects their businesses, and take steps to increase the resilience of their operations and those of their business partners. Local farmers need to continue to take control of their own destinies in the fight against climate change. Individual citizens need to talk to their neighbors, families and legislators, and join the growing movement for real solutions. All sectors need to immediately act to reduce emissions, aided by a reliable and entrepreneurial policy environment. The prerequisite for all of these steps is for people around the world to demand that their governments, as well as businesses and institutions they engage with, recognize and work to fix the problem.&lt;/p&gt;
 
-&lt;p&gt;doesn’t matter. Some people disagree with the &lt;a href=&quot;http://climate.nasa.gov/scientific-consensus/&quot;&gt;scientific consensus&lt;/a&gt; that climate change is caused by human activities. Even if you are uncomfortable with the idea that humans are causing it, climate change is undeniably affecting people around the world already, and we cannot afford to delay utilizing every tool we have to prepare ourselves for what is ahead of us – regardless of the cause. Ultimately we need to address the fact that human emissions are exacerbating the greenhouse effect, but this debate is not an excuse to delay action to protect the world’s most vulnerable citizens from what they are already facing.&lt;/p&gt;
-
-&lt;h2&gt;6. Morals, self-interest and achievability&lt;/h2&gt;
-
-&lt;p&gt;all tell us to pitch in - making the politics irrelevant. Conservatives and liberals may not have much to cooperate on these days, but most would readily agree that people should not be forced to starve or lose their livelihoods when achievable, implementable solutions exist. This is especially the case when helping our neighbor also helps ourselves – by lending a hand to countries struggling with climate change, we also protect ourselves from political and economic instability and develop solutions that we may soon need in our own fields and cities back home.&lt;/p&gt;
-
-&lt;h2&gt;7. The communities being affected are motivated&lt;/h2&gt;
-
-&lt;p&gt;to solve their own problems. We don’t need to solve others’ problems for them. The smallholder farmers, healthcare workers, and entrepreneurs in developing (and developed) countries who are waging war on the front lines of climate change are intelligent, motivated and innovative people; there are strong and resourceful local leaders working tirelessly every day to deploy solutions. These leaders are the most qualified and best equipped to solve the context-specific problems that plague their communities – not prescriptive development projects or heavy-handed government programs. However, these community leaders desperately need the support of development agencies, governments and the local and global public to get the resources and training they need to be successful.&lt;/p&gt;
-
-&lt;h2&gt;8. The problems of climate change are fixable.&lt;/h2&gt;
-
-&lt;p&gt;Many organizations, governments, citizens, leaders and activists are working furiously to develop the tools we need to respond to the climate problem. Most of these tools already exist. Agricultural practices, new technologies, community organization and empowerment, and access to credit are all importance pieces to the puzzle. The missing piece is the global awareness and public commitment to work together and solve the problem. This is different than solving the energy crisis by investing in a hail-mary such as nuclear fusion. We have the tools that we need right now.&lt;/p&gt;
-
-&lt;h2&gt;9. Everyone has a role to play.&lt;/h2&gt;
-
-&lt;p&gt;Everybody can contribute in their own way to counter the most disastrous effects of climate change. Governments and international bodies need to encourage local agency, community-led development, empowerment, gender parity and institution-building. Companies large and small need to recognize that climate change affects their businesses, and take steps to increase the resilience of their operations and those of their business partners. Local farmers need to continue to take control of their own destinies in the fight against climate change. Individual citizens need to talk to their neighbors, families and legislators, and join the growing movement for real solutions. All sectors need to immediately act to reduce emissions, aided by a reliable and entrepreneurial policy environment. The prerequisite for all of these steps is for people around the world to demand that their governments, as well as businesses and institutions they engage with, recognize and work to fix the problem.&lt;/p&gt;
-
-&lt;h2&gt;10. No matter who you are, you can help.&lt;/h2&gt;
-
-&lt;p&gt;You are the most important part of the solution. Talk to your employer about how your business and business partners can be more resilient against climate change, especially if you work with vulnerable or disenfranchised communities (such as farmworkers). Talk to your friends about the realities that our global neighbors are facing, and call your representative to tell them that climate change and the possibility of people facing starvation matter to you. Have a conversation with your crazy left-wing aunt or wild right-wing uncle about how climate change isn’t actually a political issue – it’s a moral one. Volunteer your expertise to a local or international organization that is fighting to help others – whether you’re an accountant, a barista, or fitness coach, you have a unique set of skills that can be helpful. Or, contribute financially to a charity or professional organization that is fighting tooth and nail to provide key resources and training to farmers and community leaders on the front lines of the climate fight.&lt;/p&gt;
+&lt;p&gt;##10. No matter who you are, you can help.
+You are the most important part of the solution. Talk to your employer about how your business and business partners can be more resilient against climate change, especially if you work with vulnerable or disenfranchised communities (such as farmworkers). Talk to your friends about the realities that our global neighbors are facing, and call your representative to tell them that climate change and the possibility of people facing starvation matter to you. Have a conversation with your crazy left-wing aunt or wild right-wing uncle about how climate change isn’t actually a political issue – it’s a moral one. Volunteer your expertise to a local or international organization that is fighting to help others – whether you’re an accountant, a barista, or fitness coach, you have a unique set of skills that can be helpful. Or, contribute financially to a charity or professional organization that is fighting tooth and nail to provide key resources and training to farmers and community leaders on the front lines of the climate fight.&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;If you get involved, you can help tip the balance from apathy and failure, to active and passionate success. Your involvement – yes, you – is the key to a world without hunger and with equal opportunity for all.&lt;/em&gt;&lt;/p&gt;
 </description>
 				<pubDate>Fri, 22 Jan 2016 00:00:00 -0500</pubDate>
-				<link>/10-reasons/</link>
-				<guid isPermaLink="true">/10-reasons/</guid>
+				<link>http://localhost:4000/10-reasons/</link>
+				<guid isPermaLink="true">http://localhost:4000/10-reasons/</guid>
 			</item>
 		
 			<item>
 				<title>Data For Development</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/assets/img/data.png&quot; title=&quot;Datums&quot; alt=&quot;data&quot; /&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;img src=&quot;/assets/img/data.png&quot; alt=&quot;data&quot; title=&quot;Datums&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;image source: http://research.kraeutli.com/&lt;/em&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;&lt;p&gt;This is an older post originally written for the &lt;a href=&quot;http://www.iacmadison.org&quot;&gt;International Agriculture Colloquium&lt;/a&gt; - a student organization at the University of Wisconsin-Madison.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;This is an older post originally written for the &lt;a href=&quot;http://www.iacmadison.org&quot;&gt;International Agriculture Colloquium&lt;/a&gt; - a student organization at the University of Wisconsin-Madison.&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;I’ve been thinking a bit about data. In agricultural development, much like nearly anything else, data-driven approaches are gaining increasing traction and are becoming essential prerequisites for funding and project success at nearly any scale. This being said, there are multiple significant challenges that sidecar our burgeoning capacity for generating and analyzing data. Today I’d like to talk about three of them.&lt;/p&gt;
 
 &lt;!--more--&gt;
-
-
 &lt;ul&gt;
-&lt;li&gt;How do we catalogue data?&lt;/li&gt;
-&lt;li&gt;How do we create meaning?&lt;/li&gt;
-&lt;li&gt;The indicator:model interface&lt;/li&gt;
+  &lt;li&gt;How do we catalogue data?&lt;/li&gt;
+  &lt;li&gt;How do we create meaning?&lt;/li&gt;
+  &lt;li&gt;The indicator:model interface&lt;/li&gt;
 &lt;/ul&gt;
 
-
-&lt;h2&gt;How do we catalogue data?&lt;/h2&gt;
-
-&lt;p&gt;As we know, working in international agriculture more often than not means that you are functioning in a complex nexus of multiple disciplines – social sciences, global health, agricultural sciences (of which there are many), economics, policy and sustainability science, to name but a few. The scientific community is finally beginning to acknowledge the importance of synergistic approaches to problem solving instead of, or in addition to, targeted interventions in an isolated arena. However, using data to direct, course-correct and evaluate multi-disciplinary projects is challenging because it requires integration of disparate data types that often don’t play nice with each other.&lt;/p&gt;
+&lt;p&gt;##How do we catalogue data?
+As we know, working in international agriculture more often than not means that you are functioning in a complex nexus of multiple disciplines – social sciences, global health, agricultural sciences (of which there are many), economics, policy and sustainability science, to name but a few. The scientific community is finally beginning to acknowledge the importance of synergistic approaches to problem solving instead of, or in addition to, targeted interventions in an isolated arena. However, using data to direct, course-correct and evaluate multi-disciplinary projects is challenging because it requires integration of disparate data types that often don’t play nice with each other.&lt;/p&gt;
 
 &lt;p&gt;If they weren’t before, this is where things get really un-sexy.&lt;/p&gt;
 
@@ -505,17 +783,15 @@ William Easterly – Tyranny of Experts (p15)&lt;/p&gt;
 
 &lt;p&gt;One interesting thought on this front is the development of &lt;a href=&quot;http://en.wikipedia.org/wiki/Knowledge_base&quot;&gt;knowledge bases&lt;/a&gt; and &lt;a href=&quot;http://en.wikipedia.org/wiki/Ontology_(information_science)&quot;&gt;ontologies&lt;/a&gt;, which utilize innovative data structures and relationships to improve searchability and utility of data far beyond the capacity of a traditional database. These knowledge bases or ontologies can then be referenced by integrated programs or models (called &lt;a href=&quot;http://en.wikipedia.org/wiki/Knowledge-based_systems&quot;&gt;knowledge-based systems&lt;/a&gt;) that discover and manipulate emergent properties of the data by teasing apart relationships in the knowledge base. One of the more well known knowledge-based systems is an autonomous medical diagnostic tool developed at Stanford in the 1970s called &lt;a href=&quot;https://www.amia.org/staff/eshortliffe/Buchanan-Shortliffe-1984/MYCIN%20Book.htm&quot;&gt;Mycin&lt;/a&gt;. Artificial Intelligence researchers are at the forefront of this movement, and food security researchers and professionals should make a pointed effort to interface with the AI community to see how we can leverage their discoveries.&lt;/p&gt;
 
-&lt;h2&gt;How do we create meaning?&lt;/h2&gt;
-
-&lt;p&gt;This is a fundamental and age-old statistical challenge: how does a researcher utilize the data she has to extract accurate and actionable findings? I’m not a statistician so I have limited insights to offer here, sadly. However, I think it’s important to remind ourselves of the sensitivity of our conclusions to our statistical methods, and to work towards making our findings as robust and reproducible as possible.&lt;/p&gt;
+&lt;p&gt;##How do we create meaning?
+This is a fundamental and age-old statistical challenge: how does a researcher utilize the data she has to extract accurate and actionable findings? I’m not a statistician so I have limited insights to offer here, sadly. However, I think it’s important to remind ourselves of the sensitivity of our conclusions to our statistical methods, and to work towards making our findings as robust and reproducible as possible.&lt;/p&gt;
 
 &lt;p&gt;The complexity of agricultural development means that projects will, by design, influence many variables simultaneously. (In fact, this happens in real life in most disciplines but many not be explicitly recognized). It is a big challenge to parse out the directionality of relationships between variables and to measure the effects that a project, shock or policy change might have on a community – particularly over short timescales.&lt;/p&gt;
 
 &lt;p&gt;As the statistician George Box quipped, “essentially, all models are wrong, but some are useful”. There is a tradeoff in model and framework complexity and applicability. Condensing data into reliable and actionable distillates is hard.&lt;/p&gt;
 
-&lt;h2&gt;The indicator:model interface.&lt;/h2&gt;
-
-&lt;p&gt;Building out our understanding of how agroecosystems are intertwined with social, environmental, and geopolitical outcomes requires the development of integrated models. There are fantastic models with a variety of scopes already under development by groups of very smart people (see &lt;a href=&quot;http://www.agmip.org/&quot;&gt;AgMIP&lt;/a&gt; and &lt;a href=&quot;http://geoglam-crop-monitor.org/&quot;&gt;GEOGLAM&lt;/a&gt;, for example). However, I think that advancing novel cross-sectoral models will face a challenge that I’m conceptualizing as the indicator:model interface.&lt;/p&gt;
+&lt;p&gt;##The indicator:model interface.
+Building out our understanding of how agroecosystems are intertwined with social, environmental, and geopolitical outcomes requires the development of integrated models. There are fantastic models with a variety of scopes already under development by groups of very smart people (see &lt;a href=&quot;http://www.agmip.org/&quot;&gt;AgMIP&lt;/a&gt; and &lt;a href=&quot;http://geoglam-crop-monitor.org/&quot;&gt;GEOGLAM&lt;/a&gt;, for example). However, I think that advancing novel cross-sectoral models will face a challenge that I’m conceptualizing as the indicator:model interface.&lt;/p&gt;
 
 &lt;p&gt;Specifically, in an incredibly complex system or set of systems, how do you know what to measure and how to build your model?&lt;/p&gt;
 
@@ -523,33 +799,34 @@ William Easterly – Tyranny of Experts (p15)&lt;/p&gt;
 
 &lt;p&gt;The selection of indicators to measure, which then gather data used to classify and parameterize a model, requires a priori assumptions about what the model might look like. This puts the cart before the horse a bit, and requires an iterative correctional process to make sure that we are measuring the right stuff and actually discovering meaningful relationships that can be levied to improve lives.&lt;/p&gt;
 
-&lt;h2&gt;The bottom line?&lt;/h2&gt;
-
-&lt;p&gt;This stuff is complex. That’s why we haven’t been very successful so far. But we are learning from our mistakes and have greater awareness, humility and access to powerful technological tools than ever before. If we’re careful and collaborative, we can levy these strengths into transformative improvements at home and abroad.&lt;/p&gt;
+&lt;p&gt;##The bottom line?
+This stuff is complex. That’s why we haven’t been very successful so far. But we are learning from our mistakes and have greater awareness, humility and access to powerful technological tools than ever before. If we’re careful and collaborative, we can levy these strengths into transformative improvements at home and abroad.&lt;/p&gt;
 </description>
 				<pubDate>Sat, 09 Jan 2016 00:00:00 -0500</pubDate>
-				<link>/data-for-development/</link>
-				<guid isPermaLink="true">/data-for-development/</guid>
+				<link>http://localhost:4000/data-for-development/</link>
+				<guid isPermaLink="true">http://localhost:4000/data-for-development/</guid>
 			</item>
 		
 			<item>
 				<title>Hello World!</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/assets/img/elephants.jpg&quot; title=&quot;Elephants are so quiet!&quot; alt=&quot;Elephants&quot; /&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;img src=&quot;/assets/img/elephants.jpg&quot; alt=&quot;Elephants&quot; title=&quot;Elephants are so quiet!&quot; /&gt;&lt;/p&gt;
 
 &lt;p class=&quot;lead&quot;&gt;Elephants!&lt;/p&gt;
 
+&lt;p&gt;Hello family, friends, and future friends! I have finally put together a simple website for ruminations, machinations, etc. The blog was built using Jekyll and Github Pages, modified from a simple theme called &lt;a href=&quot;http://github.com/gfjaru/Kiko&quot;&gt;Kiko&lt;/a&gt;, made by &lt;a href=&quot;https://twitter.com/gfjaru&quot;&gt;ghjaru&lt;/a&gt;. Thanks. &lt;!--more--&gt;From &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll’s&lt;/a&gt; readme:&lt;/p&gt;
 
-&lt;p&gt;Hello family, friends, and future friends! I have finally put together a simple website for ruminations, machinations, etc. The blog was built using Jekyll and Github Pages, modified from a simple theme called &lt;a href=&quot;http://github.com/gfjaru/Kiko&quot;&gt;Kiko&lt;/a&gt;, made by &lt;a href=&quot;https://twitter.com/gfjaru&quot;&gt;ghjaru&lt;/a&gt;. Thanks. &lt;!--more--&gt;From &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll&#39;s&lt;/a&gt; readme:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Jekyll is a simple, blog aware, static site generator. It takes a template directory […] and spits out a complete, static website suitable for serving with Apache or your favorite web server. This is also the engine behind GitHub Pages, which you can use to host your project’s page or blog [on] GitHub.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;blockquote&gt;&lt;p&gt;Jekyll is a simple, blog aware, static site generator. It takes a template directory [...] and spits out a complete, static website suitable for serving with Apache or your favorite web server. This is also the engine behind GitHub Pages, which you can use to host your project’s page or blog [on] GitHub.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;It’s a pretty powerful tool, at least for particular applications. Very good for making a minimalistic webpage like this one. No more writing blog posts in HTML! No more annoying Wordpress headaches! And I can tinker with the whole site from the terminal even if I’m in the bush with no internet connection.&lt;/p&gt;
 
-&lt;p&gt;It&#39;s a pretty powerful tool, at least for particular applications. Very good for making a minimalistic webpage like this one. No more writing blog posts in HTML! No more annoying Wordpress headaches! And I can tinker with the whole site from the terminal even if I&#39;m in the bush with no internet connection.&lt;/p&gt;
+&lt;p&gt;Thanks for visiting, and keep coming back for more substantive updates. Maybe at some point we’ll add some new functionality, but for now, this is what we’ve got.&lt;/p&gt;
 
-&lt;p&gt;Thanks for visiting, and keep coming back for more substantive updates. Maybe at some point we&#39;ll add some new functionality, but for now, this is what we&#39;ve got.&lt;/p&gt;
 </description>
 				<pubDate>Mon, 23 Nov 2015 00:00:00 -0500</pubDate>
-				<link>/hello-world/</link>
-				<guid isPermaLink="true">/hello-world/</guid>
+				<link>http://localhost:4000/hello-world/</link>
+				<guid isPermaLink="true">http://localhost:4000/hello-world/</guid>
 			</item>
 		
 	</channel>
