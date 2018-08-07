@@ -6,11 +6,12 @@ tags: ariadne
 comments: true
 ---
 
-[![Ariadne]({{ tobylunt.github.io }}/assets/img/ariadne.png "Ariadne")]({{ tobylunt.github.io }}/beautiful-disaster/)
+[![Ariadne]({{ tobylunt.github.io }}/assets/img/ariadne.jpg "Ariadne")]({{ tobylunt.github.io }}/beautiful-disaster/)
 
 Alright, it's finally become clear: I might not be totally right in the head. I, along with my two closest friends, just bought a 90 year old wooden boat. Ariadne needs a lot of work. We are planning for a 3-5 year restoration before she returns to her normal self. I'll try to record some of the process in periodic blog posts.
 
 <!--more-->
+
 Sailing (rightfully) has a reputation for exclusivity, whiteness, and
 general douchebaggery. Some of this will never change, because fancy
 boats are expensive, sometimes absurdly expensive, and serve as giant
@@ -20,9 +21,10 @@ natural world - to learn how to work with the weather and to respect
 nature, to build self-reliance and self-confidence, to learn the
 skills of a craftsperson (in this case woodworking and composites),
 and to witness and appreciate the diversity and beauty of the natural
-world. But yes, you have to have a boat to go sailing, and somebody to
-teach you the basics really helps. I'm very grateful to have had the
-privilege of both these things in my youth.
+world. And there are ways to enjoy those benefits without the
+awfulness. But yes, you have to have a boat to go sailing, and
+somebody to teach you the basics really helps. I'm very grateful to
+have had the privilege of both these things in my youth.
 
 My buddies Jay and Scott and I have decided to become stewards of
 Ariadne, a wooden boat built almost entirely of mahogany in the late
@@ -33,7 +35,12 @@ us. The boat has next to no financial value, despite her great beauty
 and pedigree. We were granted the stewardship of Ariadne for $1 with
 the pretext that we would respect and revitalize Ariadne, consistent
 with the memory of her previous owner. This is our dream and our
-intention.
+intention. A boat like this is an interesting endeavor as old wooden
+boats are a place where the super rich meet with the dirtbags - people
+who own and maintain their own boats with their own skill and limited
+resources, choosing a life of freedom and self-reliance over any sort
+of stability. Of course if you are unable to do the work yourself, an
+old wooden boat is an extreme expense.
 
 There's no such thing as a free boat. But the three of us decided to
 take on this project as a way to strengthen our friendship in the face

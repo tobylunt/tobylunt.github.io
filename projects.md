@@ -10,7 +10,7 @@ permalink: /projects/
 <br/>
 
 <hr>
-[![Ariadne]({{ tobylunt.github.io }}/assets/img/ariadne.png "Ariadne")]({{ tobylunt.github.io }}/tag/ariadne/).
+[![Ariadne]({{ tobylunt.github.io }}/assets/img/ariadne.jpg "Ariadne")]({{ tobylunt.github.io }}/tag/ariadne/).
 
 **TL;DR:** My best friends and I bought a 90 year old wooden sailboat, and are restoring her in Maine. This is a large, medium-term woodworking project, and I hope to post occasionally to catalogue some of our progress. [Here is a list of posts on this topic.]({{ tobylunt.github.io }}/tag/ariadne)
 
