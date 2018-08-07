@@ -20,8 +20,8 @@ levels. On the positive side, sailing is a powerful way to be in the
 natural world - to learn how to work with the weather and to respect
 nature, to build self-reliance and self-confidence, to learn the
 skills of a craftsperson (in this case woodworking and composites),
-and to witness and appreciate the diversity and beauty of the natural
-world. And there are ways to enjoy those benefits without the
+and to witness and appreciate the diversity and beauty of the
+earth. And there are ways to enjoy those benefits without the
 awfulness. But yes, you have to have a boat to go sailing, and
 somebody to teach you the basics really helps. I'm very grateful to
 have had the privilege of both these things in my youth.
@@ -33,14 +33,14 @@ it from ruin in the 1980s, and kept it alive until his death about
 five years ago. It was a labor of love for him, as it will be for
 us. The boat has next to no financial value, despite her great beauty
 and pedigree. We were granted the stewardship of Ariadne for $1 with
-the pretext that we would respect and revitalize Ariadne, consistent
+the pretext that we would respect and revitalize the boat, consistent
 with the memory of her previous owner. This is our dream and our
 intention. A boat like this is an interesting endeavor as old wooden
-boats are a place where the super rich meet with the dirtbags - people
-who own and maintain their own boats with their own skill and limited
-resources, choosing a life of freedom and self-reliance over any sort
-of stability. Of course if you are unable to do the work yourself, an
-old wooden boat is an extreme expense.
+boats are a place where the rich dingleberries of the world overlap
+with the dirtbags - people who own and maintain their own boats with
+their own skill and limited resources, choosing a life of freedom and
+self-reliance over any sort of stability. Of course if you are unable
+to do the work yourself, an old wooden boat is an extreme expense.
 
 There's no such thing as a free boat. But the three of us decided to
 take on this project as a way to strengthen our friendship in the face
