@@ -1,7 +1,6 @@
 ---
 title: Planking ends
 permalink: /fore-planking/
-shortUrl: http://goo.gl/EVFAHz
 tags: ariadne
 comments: true
 ---
