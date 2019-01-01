@@ -15,3 +15,7 @@ new mahogany to replace these key bits.
 
 <!--more-->
 
+
+
+![New bolt]({{ tobylunt.github.io }}/assets/img/IMG_2664.jpg "New bolt")
+![Ariadne]({{ tobylunt.github.io }}/assets/img/rusted_iron_bolt.jpg "Rusted iron bolt")
