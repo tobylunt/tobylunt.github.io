@@ -15,4 +15,5 @@ nuts, to find out.
 
 <!--more-->
 
-Both understandably and irritatingly, the forwardmost ends of these
+This is a work in progress. For the code and a pretty decent README, see the [Github repo](https://github.com/tobylunt/senate_cash).
+
