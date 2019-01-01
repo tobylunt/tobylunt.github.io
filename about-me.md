@@ -9,7 +9,8 @@ I believe that we can make the world even more amazing through attentiveness, co
 
 I'm most happy with loved ones especially my better half [Valerie](http://mighti.co), outdoors, with plants and animals around, learning a new language (human or machine), and exploring both new and familiar places. I have a problem with too many hobbies.   
 
+<br>
+<hr>
 ![America]({{ tobylunt.github.io }}/assets/img/flag.jpg "Draped in America")
-
 <hr>
 

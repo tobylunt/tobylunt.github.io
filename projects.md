@@ -5,7 +5,7 @@ permalink: /projects/
 
 <br>
 [![Senate Cash]({{ tobylunt.github.io }}/assets/img/senate_cash.png "Senate Cash")]({{ tobylunt.github.io }}/tag/senate_cash/)   
-**TL;DR:** senate financial contributions data are widely available but very difficult to understand. I build a webapp to visualize these data intuitively so that voters can easily inform themselves about the financial influence upon their senators. [See blog posts here]({{ tobylunt.github.io }}/tag/whitman/) or check out the [Github repo](https://github.com/tobylunt).   
+**TL;DR:** senate financial contributions data are widely available but very difficult to understand. I'm building a webapp to visualize these data intuitively so that voters can easily inform themselves about the financial influence upon their senators. [See blog posts here]({{ tobylunt.github.io }}/tag/senate_cash/) or check out the [Github repo](https://github.com/tobylunt).   
 <br>
 <hr>
 
