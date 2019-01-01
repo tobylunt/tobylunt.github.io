@@ -16,7 +16,7 @@ new mahogany to replace these key bits.
 <!--more-->
 
 ## Odds and ends
-![Bolt comparison]({{ tobylunt.github.io }}/assets/img/bolt_comparison.jpg "bolts")
+![Bolt comparison]({{ tobylunt.github.io }}/assets/img/bolt_comparison.png "bolts")
 ![New bolt]({{ tobylunt.github.io }}/assets/img/IMG_2664.jpg "New bolt")
 ![Hatch]({{ tobylunt.github.io }}/assets/img/IMG_0626.jpg "Hatch")
 ![Floor timbers]({{ tobylunt.github.io }}/assets/img/IMG_1099.jpg "Floors")
