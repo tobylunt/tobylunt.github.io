@@ -57,30 +57,60 @@ of tight-seamed carvel construction. So it's very important to get the
 seams as close as possible when replacing planks. There is a risk of
 cracked frames if things are too tight, but experts recommend getting
 it as tight as possible as opposed to trying to leave even spacing
-between planks (which is effectively impossible).   
+between planks (which is effectively impossible).
+
 ![Install]({{ tobylunt.github.io }}/assets/img/IMG_2671.jpg "install")
 ![Install]({{ tobylunt.github.io }}/assets/img/IMG_2672.jpg "install")
 ![Install]({{ tobylunt.github.io }}/assets/img/IMG_2672.jpg "install")
 ![Install]({{ tobylunt.github.io }}/assets/img/IMG_2686.jpg "install")
 
 A good old fashioned bit brace is an essential tool for fastening in
-the finished plank ends.
+the finished plank ends.   
+
 ![Install]({{ tobylunt.github.io }}/assets/img/IMG_2665.jpg "install")
 
 ## Finished
+
+Despite a couple of hiccups along the way, we managed to get four
+courses of plank ends installed in about a week (along with some other
+projects). Scott did a lot of the heavy lifting here. We are very
+happy with how they turned out. It feels very good to cut out bad wood
+and replace it with top shelf mahogany. We will do the next four
+courses, as well as building new garboards, and bung all the screw
+countersinks in one go.
+
 ![Done]({{ tobylunt.github.io }}/assets/img/IMG_2695.jpg "done")
 ![Done]({{ tobylunt.github.io }}/assets/img/IMG_2673.jpg "done")
 ![Done]({{ tobylunt.github.io }}/assets/img/IMG_2684.jpg "done")
 
 ## Odds and ends
+
+During this trip we also replaced all of the old floor timber
+bolts. Remember those? The corroded iron bolts are no longer, and have
+been swapped out for 5/8" silicon bronze. We ended up buying carriage
+bolts and chopping of the shoulders to make a T shape, which could
+then be hammered into the narrow cutwater of the forefoot.
+
 ![Bolt comparison]({{ tobylunt.github.io }}/assets/img/bolt_comparison.png "bolts")
 ![New bolt]({{ tobylunt.github.io }}/assets/img/IMG_2664.jpg "New bolt")
+
+We also brought the rebuilt main hatch cover back to Maine, and got
+some nice closure on the newly-bolted floor timbers up forward. So
+beefy.
+
 ![Hatch]({{ tobylunt.github.io }}/assets/img/IMG_0626.jpg "Hatch")
 ![Floor timbers]({{ tobylunt.github.io }}/assets/img/IMG_1099.jpg "Floors")
 
 ## Templating
+
+Lastly, we templated two dozen new frames by mounting a templating
+tool to the outside of the boat. We will inset each of these curves by
+the planking thickness (5/8") to make the curve fit inside of the
+boat. These will be made of laminated white oak using G-Flex epoxy,
+and will finish the strengthening of the forward section of the boat.
+
 ![Template]({{ tobylunt.github.io }}/assets/img/IMG_2691.jpg "template")
 ![Template]({{ tobylunt.github.io }}/assets/img/IMG_2693.jpg "template")
 
-## Next up
+## See you next time!
 ![Stern]({{ tobylunt.github.io }}/assets/img/IMG_2689.jpg "stern")
