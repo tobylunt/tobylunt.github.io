@@ -94,7 +94,7 @@ then be hammered into the narrow cutwater of the forefoot.
 ![Bolt comparison]({{ tobylunt.github.io }}/assets/img/bolt_comparison.png "bolts")
 ![New bolt]({{ tobylunt.github.io }}/assets/img/IMG_2664.jpg "New bolt")
 
-We also brought the rebuilt main hatch cover back to Maine, and got
+We also brought the rebuilt companionway hatch cover back to Maine, and got
 some nice closure on the newly-bolted floor timbers up forward. So
 beefy.
 
@@ -107,7 +107,7 @@ Lastly, we templated two dozen new frames by mounting a templating
 tool to the outside of the boat. We will inset each of these curves by
 the planking thickness (5/8") to make the curve fit inside of the
 boat. These will be made of laminated white oak using G-Flex epoxy,
-and will finish the strengthening of the forward section of the boat.
+and will significantly strengthen the forward section of the boat.
 
 ![Template]({{ tobylunt.github.io }}/assets/img/IMG_2691.jpg "template")
 ![Template]({{ tobylunt.github.io }}/assets/img/IMG_2693.jpg "template")
