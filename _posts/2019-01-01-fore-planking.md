@@ -25,7 +25,7 @@ plank ends removed without destroying them.
 The leading (hood) ends of these forward planks showed symptoms of the
 problems one would expect. Hood ends have exposed end grain which
 wicks in moisture, and can be susceptible to damage due to freeze/thaw
-over the winter months. So replacing these bits was going to have to
+over the winter months. So replacing these parts was going to have to
 happen regardless of whether we replaced the forefoot.
 
 ## Scarfing
@@ -35,7 +35,7 @@ The fix was to scarf new lengths of mahogany to replace the damaged
 wood as far back as necessary. The scarf itself is a 12:1 angle, cut
 with a router jig built to meet this specification. You ease off the
 plank fasteners far enough back to spring the plank end, fit the
-router over the end, clamp it down with a wooden wedge inside to keep
+router jig over the end, clamp it down with a wooden wedge inside to keep
 the target plank firmly against the jig, and go to town with your
 router.   
 
@@ -54,9 +54,10 @@ as possible.
 This boat is particularly finicky as there is no caulking - Ariadne is
 of tight-seamed carvel construction. So it's very important to get the
 seams as close as possible when replacing planks. There is a risk of
-cracked frames if things are too tight, but experts recommend getting
-it as tight as possible as opposed to trying to leave even spacing
-between planks (which is effectively impossible).
+cracked frames if things are too tight and then expand when taking up
+moisture from the ocean, but experts recommend getting it as tight as
+possible as opposed to trying to leave even spacing between planks
+(which is effectively impossible).
 
 ![Install]({{ tobylunt.github.io }}/assets/img/IMG_2671.jpg "install")
 ![Install]({{ tobylunt.github.io }}/assets/img/IMG_2672.jpg "install")
@@ -64,7 +65,8 @@ between planks (which is effectively impossible).
 ![Install]({{ tobylunt.github.io }}/assets/img/IMG_2686.jpg "install")
 
 A good old fashioned bit brace is an essential tool for fastening in
-the finished plank ends.   
+the finished plank ends. We use longer screws into the floor timbers
+and shorter ones into the frames.
 
 ![Install]({{ tobylunt.github.io }}/assets/img/IMG_2665.jpg "install")
 
@@ -76,7 +78,8 @@ projects). Scott did a lot of the heavy lifting here. We are very
 happy with how they turned out. It feels very good to cut out bad wood
 and replace it with top shelf mahogany. We will do the next four
 courses, as well as building new garboards, and bung all the screw
-countersinks in one go.
+countersinks in one go. We also still need to fair the planking in to
+a nice smooth consistent shape, and revarnish everything.
 
 ![Done]({{ tobylunt.github.io }}/assets/img/IMG_2695.jpg "done")
 ![Done]({{ tobylunt.github.io }}/assets/img/IMG_2673.jpg "done")
