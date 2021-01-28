@@ -43,8 +43,8 @@ nav:
     href:           "/blog"
   - name:           "Contact"
     href:           "/contact"
-  - name:           "CV"
-    href:           "/assets/cv.pdf"
+#  - name:           "CV"
+#    href:           "/assets/cv.pdf"
   - name:           "Projects"
     href:           "/projects"
 
