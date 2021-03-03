@@ -37,14 +37,14 @@ markdown:           kramdown
 
 # Navigation
 nav:
-  - name:           "About"
-    href:           "/about-me"
+#  - name:           "About"
+#    href:           "/about-me"
   - name:           "Blog"
     href:           "/blog"
   - name:           "Contact"
     href:           "/contact"
-#  - name:           "CV"
-#    href:           "/assets/cv.pdf"
+  - name:           "Resume"
+    href:           "/assets/resume.pdf"
   - name:           "Projects"
     href:           "/projects"
 

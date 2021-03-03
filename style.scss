@@ -35,7 +35,7 @@ body {
   font-family: $font-name1;
   src: url($font-path-file-name1+'.eot'); /* IE9 Compat Modes */
   src: url($font-path-file-name1+'.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url($font-path-file-name1+'.woff2') format('woff2'), /* Super Modern Browsers */
+//       url($font-path-file-name1+'.woff2') format('woff2'), /* Super Modern Browsers */
        url($font-path-file-name1+'.woff') format('woff'), /* Pretty Modern Browsers */
        url($font-path-file-name1+'.ttf')  format('truetype'), /* Safari, Android, iOS */
        url($font-path-file-name1+'.svg#font_name') format('svg'); /* Legacy iOS */
@@ -45,7 +45,7 @@ body {
   font-family: $font-name2;
   src: url($font-path-file-name2+'.eot'); /* IE9 Compat Modes */
   src: url($font-path-file-name2+'.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url($font-path-file-name2+'.woff2') format('woff2'), /* Super Modern Browsers */
+//       url($font-path-file-name2+'.woff2') format('woff2'), /* Super Modern Browsers */
        url($font-path-file-name2+'.woff') format('woff'), /* Pretty Modern Browsers */
        url($font-path-file-name2+'.ttf')  format('truetype'), /* Safari, Android, iOS */
        url($font-path-file-name2+'.svg#font_name') format('svg'); /* Legacy iOS */
@@ -179,7 +179,7 @@ post-header-lg {
 }
 
 h1 {
-  font-family: "CaviarDreams", Helvetica, Arial, sans-serif;
+//  font-family: "CaviarDreams", Helvetica, Arial, sans-serif;
   //font-family: "Amatic SC", Helvetica, Arial, sans-serif;
   //font-family: "Quicksand", Helvetica, Arial, sans-serif;
   margin-top: 0;
@@ -504,7 +504,12 @@ tbody tr:nth-child(odd) th {
   .masthead-nav {
     margin-bottom: 3rem;
 
+    .icon {
+        margin-right: .25em;
+    }
+      
     a {
+      margin-right: 2em;
       color: #aaa;
       font-weight: 300;
       text-transform: lowercase;
@@ -670,14 +675,17 @@ tbody tr:nth-child(odd) th {
     color: #888;
     text-shadow: 1px 1px 1px #FFF;
     border:1px solid #DDD;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
+    border-radius: 1em;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -webkit-box-shadow: 1px 1px 15px 2px #ccc;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow:    1px 1px 15px 2px #ccc;  /* Firefox 3.5 - 3.6 */
+    box-shadow:         1px 1px 15px 2px #ccc;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 }
 
 .bootstrap-frm input[type="text"], .bootstrap-frm input[type="email"], .bootstrap-frm textarea, .bootstrap-frm select{
-    font-family:"Caviar Dreams";
-    font-size: 15px;
+//    font-family:"Caviar Dreams";
+    font-size: 1em;
     border: 1px solid #CCC;
     color: #888;
     height: 30px;
@@ -703,15 +711,18 @@ tbody tr:nth-child(odd) th {
 }
 
 input[type=submit] {
-                font-family:"Caviar Dreams";
-                font-size:20px;
-                position:relative;
-                padding:6px 15px;
-                border:1px solid #9EC6E2;
-                background-color:#9EC6E2;
-                color:#fafafa;
+    font-family: "Arizona", Helvetica, Arial, sans-serif;
+//    font-family:"Caviar Dreams";
+//    font-size:20px;
+    font-size:2em;
+    position:relative;
+    padding:6px 15px;
+    border:1px solid #9EC6E2;
+    background-color:#9EC6E2;
+    color:#fafafa;
+    border-radius: 5px;
     &:hover {
-    background-color:#fafafa;
-                color:#618db3;
-}
+        background-color:#fafafa;
+        color:#618db3;
+    }
 }

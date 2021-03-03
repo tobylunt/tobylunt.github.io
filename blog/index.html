@@ -6,9 +6,9 @@ layout: default
 
 <div class="content page">
   <div class="recent-posts">
-  <post-header-lg>recent blog posts</post-header-lg>
+  <h1 class="page-title">RECENT POSTS</h1>
   </div>
-  <hr></hr>
+  <br>
   <!-- This loops through the paginated posts -->
   {% for post in paginator.posts %}
     <h1><a href="{{ post.url }}">{{ post.title }}</a></h1>

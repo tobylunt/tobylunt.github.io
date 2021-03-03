@@ -7,7 +7,7 @@ permalink: /contact/
 [//]: # input type="text" name="name" placeholder="Your name"> (This can go inside form element to input name)
 <form id="contactform" method="POST" class="bootstrap-frm">
     <div>
-        <input type="email" name="_replyto" placeholder="Your email">
+        <input type="email" name="_replyto" placeholder="Your email address">
         <input type="hidden" name="_subject" value="Website contact" />
         <input type="hidden" name="_next" value="{{ site.baseurl }}/thank-you/" />
         <textarea name="message" placeholder="Your message"></textarea>
