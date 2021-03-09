@@ -15,8 +15,4 @@ permalink: /contact/
     </div>
     <input type="submit" value="Submit">
 </form>
-<script>
-    var contactform =  document.getElementById('contactform');
-    contactform.setAttribute('action', '//formspree.io/' + 'toby.lunt' + '@' + 'gmail' + '.' + 'com');
-</script>   
 
