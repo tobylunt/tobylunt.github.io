@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	:root,
+	:root[data-theme="light"] {
+		color-scheme: light;
+		/* https://tailwindcss.com/docs/customizing-colors#using-css-variables */
+		--theme-bg: 0deg 0% 98%;
+		--theme-link: 172deg 18% 41%;
+		--theme-text: 203deg 11% 15%;
+		--theme-accent: 351deg 66% 48%;
+		--theme-accent-2: 0deg 0% 7%;
+		--theme-quote: 351deg 66% 48%;
+	}
+
+	:root[data-theme="dark"] {
+		color-scheme: dark;
+		--theme-bg: 210deg 6% 12%;
+		--theme-link: 17deg 49% 76%;
+		--theme-text: 220deg 3% 79%;
+		--theme-accent: 190deg 64% 45%;
+		--theme-accent-2: 0deg 0% 93%;
+		--theme-quote: 102deg 100% 86%;
+	}
+
+	html {
+		@apply scroll-smooth;
+	}
+
+	body {
+		@apply mx-auto flex min-h-screen max-w-3xl flex-col bg-bgColor px-8 pt-16 font-mono text-sm font-normal text-textColor antialiased;
+		font-family: 'Berkeley Mono', monospace;
+		font-weight: 100;
+	}
+
+	strong, h1, h2, h3 {
+		font-weight: 700;
+	}
+
+	.semi-bold {
+		font-weight: 600;
+	}
+}
+
+@font-face {
+	font-family: 'Berkeley Mono';
+	src: url('/fonts/berkeley-mono/BerkeleyMonoVariable-Regular.woff2') format('woff2-variations');
+	font-weight: 100 900;  /* This tells browsers the available weight range */
+	font-display: swap;
+}

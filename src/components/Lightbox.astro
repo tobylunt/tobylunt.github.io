@@ -1,0 +1,78 @@
+---
+---
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.3.8/dist/photoswipe.css">
+<script>
+  import PhotoSwipe from 'photoswipe';
+
+  // Initialize when the page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    const images = document.querySelectorAll('[data-pswp]');
+    
+    // Create array of image objects for PhotoSwipe
+    const items = Array.from(images).map(image => {
+      const anchor = image.closest('a');
+      return {
+        src: anchor.href,
+        width: parseInt(image.getAttribute('data-width')),
+        height: parseInt(image.getAttribute('data-height')),
+        alt: image.getAttribute('alt')
+      };
+    });
+
+    // Add click handler to each image
+    images.forEach((image, index) => {
+      image.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        const options = {
+          index,
+          bgOpacity: 0.9,
+          showHideOpacity: true,
+        };
+
+        const pswp = new PhotoSwipe({
+          dataSource: items,
+          ...options,
+        });
+
+        pswp.init();
+      });
+    });
+  });
+</script>
+
+<!-- PhotoSwipe container -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="pswp__bg"></div>
+  <div class="pswp__scroll-wrap">
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    <div class="pswp__ui pswp__ui--hidden">
+      <div class="pswp__top-bar">
+        <div class="pswp__counter"></div>
+        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+        <button class="pswp__button pswp__button--share" title="Share"></button>
+        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      </div>
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+      <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+        <div class="pswp__share-tooltip"></div>
+      </div>
+      <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+      <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+      <div class="pswp__caption">
+        <div class="pswp__caption__center"></div>
+      </div>
+    </div>
+  </div>
+</div>
