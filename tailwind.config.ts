@@ -24,7 +24,7 @@ export default {
 	plugins: [
 		require("@tailwindcss/typography"),
 		require("@tailwindcss/aspect-ratio"),
-		plugin(function ({ addComponents }) {
+		plugin(function ({ addComponents, addUtilities }) {
 			addComponents({
 				".cactus-link": {
 					"&:hover": {
@@ -34,6 +34,12 @@ export default {
 				},
 				".title": {
 					"@apply text-2xl font-semibold text-accent-2": {},
+				},
+			});
+			
+			addUtilities({
+				'.perspective-1000': {
+					'perspective': '1000px',
 				},
 			});
 		}),
@@ -55,6 +61,9 @@ export default {
 			},
 			transitionProperty: {
 				height: "height",
+			},
+			perspective: {
+				'1000': '1000px',
 			},
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-expect-error

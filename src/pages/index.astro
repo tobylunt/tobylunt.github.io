@@ -3,6 +3,8 @@ import SocialList from "@/components/SocialList.astro";
 import PostPreview from "@/components/blog/PostPreview.astro";
 import { getAllPosts, sortMDByDate } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
+import WaterSlice from "@/components/WaterSlice.astro";
+
 
 const MAX_POSTS = 10;
 const allPosts = await getAllPosts();
@@ -10,55 +12,39 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS);
 
 const cactusTech: { desc: string; href: string; title: string }[] = [
 	{
-		desc: "Build fast websites, faster.",
-		href: "https://astro.build",
-		title: "Astro",
-	},
-	{
-		desc: "Rapidly build modern websites without ever leaving your HTML.",
-		href: "https://tailwindcss.com",
-		title: "Tailwind CSS",
-	},
-	{
-		desc: "Simple and easy-to-use markup language.",
-		href: "https://www.markdownguide.org/",
-		title: "Markdown",
-	},
-	{
-		desc: "Markdown for the component era.",
-		href: "https://mdxjs.com/",
-		title: "MDX",
-	},
-	{
-		desc: "Generating png Open Graph images for blog posts.",
+		desc: "Very fine-grained data visualization engine.",
 		href: "https://github.com/vercel/satori",
-		title: "Satori",
+		title: "D3",
 	},
 	{
-		desc: "A fully static search library.",
-		href: "https://pagefind.app/",
-		title: "Pagefind",
+		desc: "LLM prompt management, metrics, traces, and a nice API.",
+		href: "https://www.langchain.com/",
+		title: "LangChain and LangSmith",
 	},
 	{
-		desc: "An easy to use Icon component for Astro.",
-		href: "https://github.com/natemoo-re/astro-icon#readme",
-		title: "Astro Icon",
+		desc: "Powerful slippy maps and spatial data representation.",
+		href: "https://docs.mapbox.com/mapbox-gl-js/api/",
+		title: "Mapbox GL JS",
 	},
 	{
-		desc: "Highly customisable source code & syntax highlighter",
-		href: "https://expressive-code.com/",
-		title: "Expressive Code",
+		desc: "Heirloom quality tools.",
+		href: "https://www.lie-nielsen.com/",
+		title: "Lie-Nielsen Toolworks",
 	},
 ];
 ---
 
 <PageLayout meta={{ title: "Home" }}>
 	<section>
-		<h1 class="title mb-6">Hello World!</h1>
+		<h1 class="title mb-6">Abstract</h1>
+
 		<p class="mb-4">
-			Hi, I’m a theme for Astro, an example of how you can use this starter to create a personal
-			blog. If you want to know more about how you can customise me, add more posts, and make it
-			your own, click on the github icon link below and it will take you to my repo.
+			Hi, I'm Toby. I like to make things. I try to make useful and beautiful things! I'm a co-founder of
+			<a target="_blank" href="http://www.devdatalab.org/">Development
+				Data Lab</a>. In my job, I and my team use advanced tech (like AI) to understand and help solve major social problems in developing countries. I also build furniture, restore old sailboats, and I really like maps. 
+		</p>
+		<p class="mb-4">
+			This site is just a landing page and a means for sharing hobbies and side projects. 
 		</p>
 		<SocialList />
 	</section>
@@ -75,7 +61,7 @@ const cactusTech: { desc: string; href: string; title: string }[] = [
 		</ul>
 	</section>
 	<section class="mt-16">
-		<h2 class="title mb-4 text-xl">Technologies</h2>
+		<h2 class="title mb-4 text-xl">Tools I have been liking recently</h2>
 		<dl class="space-y-4">
 			{
 				cactusTech.map(({ desc, href, title }) => (
