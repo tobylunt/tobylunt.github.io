@@ -5,12 +5,7 @@ import BlogHero from "@/components/blog/Hero.astro";
 import TOC from "@/components/blog/TOC.astro";
 import WebMentions from "@/components/blog/webmentions/index.astro";
 import Lightbox from '../components/Lightbox.astro';
-console.log('BlogPost layout is importing BlogVideo');
-
 import BaseLayout from "./Base.astro";
-import BaseHead from '../components/BaseHead.astro';
-
-const { frontmatter } = Astro.props;
 
 interface Props {
 	post: CollectionEntry<"post">;
@@ -83,23 +78,22 @@ const { headings } = await post.render();
 	import PhotoSwipe from 'photoswipe';
 
 	document.addEventListener('DOMContentLoaded', () => {
-		const articleImages = document.querySelectorAll('article img');
+		const articleImages = document.querySelectorAll('article img') as NodeListOf<HTMLImageElement>;
 		
 		// Initialize array with placeholder objects for all images
 		const galleryItems = new Array(articleImages.length).fill(null);
 		
 		articleImages.forEach((img, index) => {
-			// Create wrapper if not already wrapped
-			if (img.parentElement.tagName !== 'A') {
+			if (img.parentElement && img.parentElement.tagName !== 'A') {
 				const wrapper = document.createElement('a');
 				wrapper.href = img.src;
 				wrapper.style.cursor = 'zoom-in';
 				
-				// Wrap the image
-				img.parentNode.insertBefore(wrapper, img);
+				if (img.parentNode) {
+					img.parentNode.insertBefore(wrapper, img);
+				}
 				wrapper.appendChild(img);
 				
-				// Initialize gallery item immediately with loaded or current dimensions
 				galleryItems[index] = {
 					src: img.src,
 					width: img.naturalWidth || img.width,
@@ -107,7 +101,6 @@ const { headings } = await post.render();
 					alt: img.alt
 				};
 				
-				// Update dimensions once the image fully loads
 				img.onload = () => {
 					galleryItems[index] = {
 						src: img.src,
@@ -117,11 +110,9 @@ const { headings } = await post.render();
 					};
 				};
 				
-				// Add click handler
 				wrapper.onclick = (e) => {
 					e.preventDefault();
 					
-					// Make sure all images are in the gallery
 					articleImages.forEach((img2, idx) => {
 						if (!galleryItems[idx]) {
 							galleryItems[idx] = {
@@ -141,7 +132,7 @@ const { headings } = await post.render();
 						wheelToZoom: true,
 						padding: { top: 20, bottom: 20, left: 20, right: 20 },
 						imageClickAction: 'zoom',
-						fit: 'contain',
+						maxZoomLevel: 2,
 						allowPanToNext: true
 					});
 

@@ -4,20 +4,24 @@
 <script>
   import PhotoSwipe from 'photoswipe';
 
+  // Add this interface at the top of your file
+  interface SlideData {
+    src: string;
+    alt?: string;
+    // add other properties as needed
+  }
+
   // Initialize when the page loads
   document.addEventListener('DOMContentLoaded', () => {
     const images = document.querySelectorAll('[data-pswp]');
     
     // Create array of image objects for PhotoSwipe
-    const items = Array.from(images).map(image => {
-      const anchor = image.closest('a');
-      return {
-        src: anchor.href,
-        width: parseInt(image.getAttribute('data-width')),
-        height: parseInt(image.getAttribute('data-height')),
-        alt: image.getAttribute('alt')
-      };
-    });
+    const items = Array.from(images).map((image) => ({
+      src: image.getAttribute('src') || '',
+      width: parseInt(image.getAttribute('data-width') || '0'),
+      height: parseInt(image.getAttribute('data-height') || '0'),
+      alt: image.getAttribute('alt') || ''
+    }));
 
     // Add click handler to each image
     images.forEach((image, index) => {
@@ -31,7 +35,7 @@
         };
 
         const pswp = new PhotoSwipe({
-          dataSource: items,
+          dataSource: items as SlideData[],
           ...options,
         });
 

@@ -16,7 +16,7 @@ export default defineConfig({
 	image: {
 		domains: ["webmention.io"],
 	},
-	scripts: ['client'],
+	// scripts: ['client'],
 	integrations: [
 		expressiveCode(expressiveCodeOptions),
 		icon(),
@@ -36,7 +36,6 @@ export default defineConfig({
 				},
 			],
 		],    
-		components: true,
 		remarkPlugins: [remarkUnwrapImages, remarkReadingTime],
 		remarkRehype: {
 			footnoteLabelProperties: {

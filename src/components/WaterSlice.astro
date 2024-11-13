@@ -1,6 +1,8 @@
 ---
 interface Props {
   class?: string;
+  "aria-hidden"?: string;
+  focusable?: string;
 }
 
 const { class: className } = Astro.props;
@@ -40,12 +42,12 @@ const { class: className } = Astro.props;
 </div>
 
 <script>
-  function generateWavePath(time, side = 'left') {
+  function generateWavePath(time: number, side: 'left' | 'right' = 'left'): string {
     const amplitude = 1;
     const frequency = 2;
     
     // Generate wave points using sine function
-    const wavePoints = [];
+    const wavePoints: [number, number][] = [];
     for (let t = 0; t <= 1; t += 0.1) {
       const x = side === 'left' 
         ? 50 - (40 * t)  // Left: 50 to 10
@@ -67,7 +69,7 @@ const { class: className } = Astro.props;
         .join(' ');
   }
 
-  function reverseWavePath(wavePath) {
+  function reverseWavePath(wavePath: string): string {
     // Step 1: Extract initial coordinates from M and L commands
     const parts = wavePath.trim().split(/\s+/);
     const startX = parts[1];
@@ -89,7 +91,7 @@ const { class: className } = Astro.props;
                 endY: coords[3]
             };
         })
-        .filter(point => point.controlX != null); // Remove any invalid entries
+        .filter((point: { controlX: number | null }) => point.controlX != null); // Remove any invalid entries
 
     // Step 3: Reverse the points and reconstruct Q commands maintaining continuity
     const reversedCommands = [];
@@ -121,7 +123,7 @@ const { class: className } = Astro.props;
 // right wave path goes from 50,65 to 90,50
 // we want to reverse the right wave path and then combine the two to make the top face
 
-  function updatePaths(time) {
+  function updatePaths(time: number): void {
     const leftWavePath = generateWavePath(time, 'left');
     const rightWavePath = generateWavePath(time, 'right');
     
@@ -132,11 +134,21 @@ const { class: className } = Astro.props;
     const [rightEndX, rightEndY] = rightWaveCoords;
 
     // Update the back lines to connect to the wave endpoints
-    document.getElementById('leftBackLine').setAttribute('d', `M 10 60 L ${leftEndX} ${leftEndY}`);
-    document.getElementById('rightBackLine').setAttribute('d', `M 90 60 L ${rightEndX} ${rightEndY}`);
+    const leftBackLine = document.getElementById('leftBackLine');
+    if (leftBackLine) {
+      leftBackLine.setAttribute('d', `M 10 60 L ${leftEndX} ${leftEndY}`);
+    }
+
+    const rightBackLine = document.getElementById('rightBackLine');
+    if (rightBackLine) {
+      rightBackLine.setAttribute('d', `M 90 60 L ${rightEndX} ${rightEndY}`);
+    }
 
     // Update the wave edge (using left wave)
-    document.getElementById('waveEdge').setAttribute('d', leftWavePath);
+    const waveEdge = document.getElementById('waveEdge');
+    if (waveEdge) {
+      waveEdge.setAttribute('d', leftWavePath);
+    }
     
     // Get the start coordinates from both waves
     const leftStartCoords = leftWavePath.split(' ').slice(1, 3);
@@ -148,15 +160,24 @@ const { class: className } = Astro.props;
   
     // Update top face
     const topPath = `M ${leftEndX} ${leftEndY} L 50 35 L ${rightEndX} ${rightEndY} ${cleanReversedRightWave} ${leftWavePath.substring(leftWavePath.indexOf('Q'))} Z`;
-    document.getElementById('topFace').setAttribute('d', topPath);
+    const topFace = document.getElementById('topFace');
+    if (topFace) {
+      topFace.setAttribute('d', topPath);
+    }
     
     // Update left face
     const leftPath = `M 10 50 L 10 60 L 50 75 L ${leftStartCoords[0]} ${leftStartCoords[1]} ${leftWavePath.substring(leftWavePath.indexOf('Q'))} Z`;
-    document.getElementById('leftFace').setAttribute('d', leftPath);
+    const leftFace = document.getElementById('leftFace');
+    if (leftFace) {
+      leftFace.setAttribute('d', leftPath);
+    }
 
     // Update right face
     const rightPath = `M 90 50 L 90 60 L 50 75 L ${rightStartCoords[0]} ${rightStartCoords[1]} ${rightWavePath.substring(rightWavePath.indexOf('Q'))} Z`;
-    document.getElementById('rightFace').setAttribute('d', rightPath);
+    const rightFace = document.getElementById('rightFace');
+    if (rightFace) {
+      rightFace.setAttribute('d', rightPath);
+    }
   }
 
   // Animation loop
