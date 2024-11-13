@@ -15,6 +15,35 @@ const { class: className } = Astro.props;
     class="w-full h-full"
     id="waterSlice"
   >
+    <!-- Far edges (visible through water) -->
+    <!-- Left back edge: connects from back left corner to top center point -->
+    <path 
+      d="M 10 60 L 50 45"
+      stroke="#A5E1F3"
+      stroke-width="0.5"
+      fill="none"
+      opacity="0.5"
+      class="text-accent-2"
+    />
+    <!-- Right back edge: connects from back right corner to top center point -->
+    <path 
+      d="M 90 60 L 50 45"
+      stroke="#A5E1F3"
+      stroke-width="0.5"
+      fill="none"
+      opacity="0.5"
+      class="text-accent-2"
+    />
+    <!-- Top face edge: connects from top center point to bottom center point -->
+    <path 
+      d="M 50 45 L 50 35"
+      stroke="#A5E1F3"
+      stroke-width="0.5"
+      fill="none"
+      opacity="0.5"
+      class="text-accent-2"
+    />
+    
     <!-- Bottom far edges (lines extending to back corner) -->
     <path 
       id="leftBackLine"
