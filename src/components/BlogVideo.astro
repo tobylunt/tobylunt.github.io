@@ -1,15 +1,15 @@
 ---
+import { getVideoDurationInSeconds } from 'get-video-duration';
 import { stat } from 'node:fs/promises';
 import path from 'node:path';
-import { getVideoDurationInSeconds } from 'get-video-duration';
 
 interface Props {
+  height?: number;
   src: string;
   width?: number;
-  height?: number;
 }
 
-const { src, width = 720, height = 480 } = Astro.props;
+const { height = 480, src, width = 720 } = Astro.props;
 const videoSrc = `/assets/img/${src}`;
 const absolutePath = path.join(process.cwd(), 'public', 'assets', 'img', src);
 
@@ -51,11 +51,11 @@ const formatFileSize = (bytes: number) => {
   </ul>
   
   <video 
-    width={width} 
-    height={height} 
-    controls
+    class="w-full max-w-[720px] mx-auto video-player" 
+    controls 
+    height={height}
     preload="none"
-    class="w-full max-w-[720px] mx-auto video-player">
+    width={width}>
     <source src={videoSrc} type="video/mp4">
     <p>Your browser doesn't support HTML5 video.</p>
   </video>

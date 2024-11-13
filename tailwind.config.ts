@@ -59,11 +59,11 @@ export default {
 				sans: [...fontFamily.sans],
 				serif: [...fontFamily.serif],
 			},
-			transitionProperty: {
-				height: "height",
-			},
 			perspective: {
 				'1000': '1000px',
+			},
+			transitionProperty: {
+				height: "height",
 			},
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-expect-error

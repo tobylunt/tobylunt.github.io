@@ -1,4 +1,4 @@
 export { getFormattedDate } from "./date";
-export { elementHasClass, toggleClass, rootInDarkMode } from "./domElement";
-export { generateToc, type TocItem } from "./generateToc";
+export { elementHasClass, rootInDarkMode, toggleClass } from "./domElement";
+export { type TocItem, generateToc } from "./generateToc";
 export { getWebmentionsForUrl } from "./webmentions";

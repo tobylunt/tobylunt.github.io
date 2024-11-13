@@ -1,7 +1,7 @@
 ---
 interface Props {
-  class?: string;
   "aria-hidden"?: string;
+  class?: string;
   focusable?: string;
 }
 
@@ -10,63 +10,63 @@ const { class: className } = Astro.props;
 
 <div class={className}>
   <svg 
-    viewBox="0 0 100 100"
-    preserveAspectRatio="xMidYMid meet"
     class="w-full h-full"
     id="waterSlice"
+    preserveAspectRatio="xMidYMid meet"
+    viewBox="0 0 100 100"
   >
     <!-- Far edges (visible through water) -->
     <!-- Left back edge: connects from back left corner to top center point -->
     <path 
+      class="text-accent-2"
       d="M 10 60 L 50 45"
-      stroke="#A5E1F3"
-      stroke-width="0.5"
       fill="none"
       opacity="0.5"
-      class="text-accent-2"
+      stroke="#A5E1F3"
+      stroke-width="0.5"
     />
     <!-- Right back edge: connects from back right corner to top center point -->
     <path 
+      class="text-accent-2"
       d="M 90 60 L 50 45"
-      stroke="#A5E1F3"
-      stroke-width="0.5"
       fill="none"
       opacity="0.5"
-      class="text-accent-2"
+      stroke="#A5E1F3"
+      stroke-width="0.5"
     />
     <!-- Top face edge: connects from top center point to bottom center point -->
     <path 
+      class="text-accent-2"
       d="M 50 45 L 50 35"
-      stroke="#A5E1F3"
-      stroke-width="0.5"
       fill="none"
       opacity="0.5"
-      class="text-accent-2"
+      stroke="#A5E1F3"
+      stroke-width="0.5"
     />
     
     <!-- Bottom far edges (lines extending to back corner) -->
     <path 
+      class="text-accent-2"
+      fill="none"
       id="leftBackLine"
+      opacity="0.3"
       stroke="currentColor"
       stroke-width="0.5"
-      fill="none"
-      opacity="0.3"
-      class="text-accent-2"
     />
     <path 
+      class="text-accent-2"
+      fill="none"
       id="rightBackLine"
+      opacity="0.3"
       stroke="currentColor"
       stroke-width="0.5"
-      fill="none"
-      opacity="0.3"
-      class="text-accent-2"
     />
     
     <!-- Paths will be updated via JavaScript -->
-    <path id="waveEdge" stroke="#A5E1F3" stroke-width="0.5" fill="none" opacity="0.3" />
-    <path id="topFace" fill="#5FB5D1" opacity="0.9" />
-    <path id="leftFace" fill="#4A8FA6" opacity="0.8" />
-    <path id="rightFace" fill="#457F94" opacity="0.8" />
+    <path fill="none" id="waveEdge" opacity="0.3" stroke="#A5E1F3" stroke-width="0.5" />
+    <path fill="#5FB5D1" id="topFace" opacity="0.9" />
+    <path fill="#4A8FA6" id="leftFace" opacity="0.8" />
+    <path fill="#457F94" id="rightFace" opacity="0.8" />
   </svg>
 </div>
 
