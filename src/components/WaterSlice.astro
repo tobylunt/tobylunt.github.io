@@ -44,7 +44,7 @@ const { class: className } = Astro.props;
 <script>
   function generateWavePath(time: number, side: 'left' | 'right' = 'left'): string {
     const amplitude = 1;
-    const frequency = 2;
+    const frequency = 3;
     
     // Generate wave points using sine function
     const wavePoints: [number, number][] = [];
@@ -183,7 +183,7 @@ const { class: className } = Astro.props;
   // Animation loop
   let startTime = Date.now();
   function animate() {
-    const time = (Date.now() - startTime) / 1000;
+    const time = (Date.now() - startTime) / 2000;
     updatePaths(time);
     requestAnimationFrame(animate);
   }
