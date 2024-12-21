@@ -8,7 +8,9 @@
 		"postbuild": "pagefind --site dist",
 		"preview": "astro preview",
 		"format": "prettier -w --cache . && prettier -w --cache **/*.astro",
-		"check": "astro check"
+		"check": "astro check",
+		"new-post": "node scripts/new-post.js",
+		"cleanup-post": "node scripts/cleanup-post.js"
 	},
 	"dependencies": {
 		"@astrojs/check": "^0.9.4",
@@ -21,11 +23,13 @@
 		"astro-icon": "^1.1.2",
 		"d3": "^7.9.0",
 		"get-video-duration": "^4.1.0",
+		"heic-convert": "^2.1.0",
 		"photoswipe": "^5.4.4",
 		"rehype-external-links": "^3.0.0",
 		"satori": "0.11.3",
 		"satori-html": "^0.3.2",
 		"sharp": "^0.33.5",
+		"three": "^0.170.0",
 		"typescript": "^5.6.3"
 	},
 	"devDependencies": {

@@ -7,9 +7,10 @@ interface Props {
   height?: number;
   src: string;
   width?: number;
+  comment?: string;
 }
 
-const { height = 480, src, width = 720 } = Astro.props;
+const { height = 480, src, width = 720, comment } = Astro.props;
 const videoSrc = `/assets/img/${src}`;
 const absolutePath = path.join(process.cwd(), 'public', 'assets', 'img', src);
 
@@ -44,21 +45,19 @@ const formatFileSize = (bytes: number) => {
 ---
 
 <div class="video-container">
-  <ul class="metadata-list">
-    <li>Requested src: {src}</li>
-    <li>File size: {formatFileSize(stats.size)}</li>
-    <li>Duration: {formatDuration(durationInSeconds)}</li>
-  </ul>
-  
   <video 
     class="w-full max-w-[720px] mx-auto video-player" 
     controls 
     height={height}
-    preload="none"
+    preload="metadata"
     width={width}>
     <source src={videoSrc} type="video/mp4">
     <p>Your browser doesn't support HTML5 video.</p>
   </video>
+
+  {comment && (
+    <p class="video-comment">{comment}</p>
+  )}
 </div>
 
 <style>
@@ -70,13 +69,20 @@ const formatFileSize = (bytes: number) => {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
-  .metadata-list {
-    margin-bottom: 1rem;
-    color: #9aabc4;
-  }
-
   .video-player {
     border: 2px solid #b2b8be;
     border-radius: 0.25rem;
+  }
+
+  .video-comment {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-style: italic;
+    color: #666;
+    text-align: left;
+    line-height: 1.5;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
   }
 </style>

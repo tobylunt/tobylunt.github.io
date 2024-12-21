@@ -1,0 +1,60 @@
+---
+import { Image } from 'astro:assets';
+import { getImage } from 'astro:assets';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  caption?: string;
+  class?: string;
+}
+
+const { src, alt, caption, class: className = "my-4" } = Astro.props;
+
+const optimizedImage = await getImage({
+  src: src,
+  format: 'webp',
+});
+
+---
+
+<figure class="image-container">
+  <a href={src.src}
+     data-pswp="true"
+     data-width={src.width}
+     data-height={src.height}
+     data-caption={caption}>
+    <Image
+      src={src}
+      alt={alt}
+      class={`${className} rounded-image`}
+      width={src.width}
+      height={src.height}
+    />
+  </a>
+  {caption && <figcaption class="image-caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .image-container {
+    margin: 2rem auto;
+    max-width: 720px;
+  }
+
+  .rounded-image {
+    border-radius: 0.15rem;
+  }
+
+  .image-caption {
+    margin-top: 0.5rem;
+    color: #666;
+    font-style: italic;
+    line-height: 1.5;
+    padding: 0 1rem;
+  }
+
+  a {
+    cursor: pointer;
+    display: block;
+  }
+</style> 
