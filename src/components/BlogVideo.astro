@@ -1,7 +1,7 @@
 ---
-import { getVideoDurationInSeconds } from 'get-video-duration';
-import { stat } from 'node:fs/promises';
-import path from 'node:path';
+//import { getVideoDurationInSeconds } from 'get-video-duration';
+//import { stat } from 'node:fs/promises';
+//import path from 'node:path';
 
 interface Props {
   height?: number;
@@ -12,35 +12,35 @@ interface Props {
 
 const { height = 480, src, width = 720, comment } = Astro.props;
 const videoSrc = `/assets/img/${src}`;
-const absolutePath = path.join(process.cwd(), 'public', 'assets', 'img', src);
+//const absolutePath = path.join(process.cwd(), 'public', 'assets', 'img', src);
 
-// Get file metadata
-const stats = await stat(absolutePath);
-const durationInSeconds = await getVideoDurationInSeconds(absolutePath);
+// // Get file metadata
+// const stats = await stat(absolutePath);
+// const durationInSeconds = await getVideoDurationInSeconds(absolutePath);
 
-// Format duration to MM:SS or HH:MM:SS
-const formatDuration = (seconds: number) => {
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const remainingSeconds = Math.floor(seconds % 60);
+// // Format duration to MM:SS or HH:MM:SS
+// const formatDuration = (seconds: number) => {
+//   const hours = Math.floor(seconds / 3600);
+//   const minutes = Math.floor((seconds % 3600) / 60);
+//   const remainingSeconds = Math.floor(seconds % 60);
   
-  if (hours > 0) {
-    return `${hours}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-  }
-  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-};
+//   if (hours > 0) {
+//     return `${hours}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+//   }
+//   return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+// };
 
-// Add the formatFileSize function
-const formatFileSize = (bytes: number) => {
-  const units = ['B', 'KB', 'MB', 'GB'];
-  let size = bytes;
-  let unitIndex = 0;
-  while (size >= 1024 && unitIndex < units.length - 1) {
-    size /= 1024;
-    unitIndex++;
-  }
-  return `${size.toFixed(2)} ${units[unitIndex]}`;
-};
+// // Add the formatFileSize function
+// const formatFileSize = (bytes: number) => {
+//   const units = ['B', 'KB', 'MB', 'GB'];
+//   let size = bytes;
+//   let unitIndex = 0;
+//   while (size >= 1024 && unitIndex < units.length - 1) {
+//     size /= 1024;
+//     unitIndex++;
+//   }
+//   return `${size.toFixed(2)} ${units[unitIndex]}`;
+// };
 
 ---
 

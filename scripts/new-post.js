@@ -23,12 +23,13 @@
  *   4. Generate imports and components in the post
  */
 
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
-const heicConvert = require('heic-convert');
-const { promisify } = require('util');
-const { spawnSync } = require('child_process');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import heicConvert from 'heic-convert';
+import { spawnSync } from 'child_process';
+
+const __filename = fileURLToPath(import.meta.url);
 
 // Add this function near the top of the file
 function cleanFileName(fileName) {

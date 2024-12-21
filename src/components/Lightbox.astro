@@ -1,20 +1,21 @@
 ---
 ---
+
 <link href="https://cdn.jsdelivr.net/npm/photoswipe@5.3.8/dist/photoswipe.css" rel="stylesheet">
 
 <script>
   import PhotoSwipe from 'photoswipe';
+  import type { PhotoSwipeItem, PhotoSwipeOptions } from '../types/photoswipe';
 
   const initPhotoSwipe = async () => {
     try {
-      // Look for both images and videos
       const images = document.querySelectorAll('a[data-pswp]');
       const videos = document.querySelectorAll('video.video-player');
       
       // Convert videos to lightbox items
-      const videoItems = Array.from(videos).map(video => {
-        const width = parseInt(video.getAttribute('width'));
-        const height = parseInt(video.getAttribute('height'));
+      const videoItems: PhotoSwipeItem[] = Array.from(videos).map(video => {
+        const width = parseInt(video.getAttribute('width') || '0');
+        const height = parseInt(video.getAttribute('height') || '0');
         
         return {
           element: video,
@@ -29,23 +30,23 @@
           >
             <source src="${video.querySelector('source')?.src}" type="video/mp4">
           </video>`,
-          width: width,
-          height: height,
+          width,
+          height,
           caption: video.closest('.video-container')?.querySelector('.video-comment')?.textContent || ''
         };
       });
 
       // Convert images to lightbox items
-      const imageItems = Array.from(images).map(img => ({
-        src: img.getAttribute('href'),
-        width: parseInt(img.getAttribute('data-width')),
-        height: parseInt(img.getAttribute('data-height')),
-        alt: img.getAttribute('data-caption'),
-        caption: img.getAttribute('data-caption')
+      const imageItems: PhotoSwipeItem[] = Array.from(images).map(img => ({
+        src: img.getAttribute('href') || '',
+        width: parseInt(img.getAttribute('data-width') || '0'),
+        height: parseInt(img.getAttribute('data-height') || '0'),
+        alt: img.getAttribute('data-caption') || '',
+        caption: img.getAttribute('data-caption') || ''
       }));
 
       // Combine all items
-      const allItems = [...imageItems, ...videoItems];
+      const allItems: PhotoSwipeItem[] = [...imageItems, ...videoItems];
 
       // Add click handlers to both images and videos
       [...images, ...videos].forEach((item, index) => {
@@ -57,17 +58,17 @@
             index,
             bgOpacity: 0.9,
             padding: { top: 20, bottom: 20, left: 20, right: 20 }
-          });
+          } as PhotoSwipeOptions);
 
           // Register custom caption element
           pswp.on('uiRegister', () => {
-            pswp.ui.registerElement({
+            pswp.ui?.registerElement({
               name: 'custom-caption',
               order: 9,
               isButton: false,
-              appendTo: 'scroll-wrap',
+              appendTo: 'wrapper',
               html: 'Caption text',
-              onInit: (el, pswp) => {
+              onInit: (el) => {
                 el.style.position = 'absolute';
                 el.style.bottom = '20px';
                 el.style.left = '50%';
@@ -79,27 +80,32 @@
                 el.style.maxWidth = '80%';
                 
                 pswp.on('change', () => {
-                  const currSlide = pswp.currSlide;
-                  el.innerHTML = currSlide.data.caption || '';
+                  const caption = pswp.currSlide?.data?.caption;
+                  if (caption) {
+                    el.innerHTML = caption;
+                  }
                 });
               }
             });
           });
 
           // Handle video cleanup
-          let prevVideo = null;
+          let prevVideo: HTMLVideoElement | null = null;
           pswp.on('change', () => {
             // Pause and hide previous video if it exists
-            if (prevVideo && prevVideo instanceof HTMLVideoElement) {
+            if (prevVideo instanceof HTMLVideoElement) {
               prevVideo.pause();
               prevVideo.style.display = 'none';
             }
             
             // Get and show current video if exists
-            const currSlideContent = pswp.currSlide.content.element;
-            prevVideo = currSlideContent.querySelector('video');
-            if (prevVideo) {
-              prevVideo.style.display = 'block';
+            const currSlideContent = pswp.currSlide?.content?.element;
+            if (currSlideContent) {
+              const videoElement = currSlideContent.querySelector('video');
+              if (videoElement instanceof HTMLVideoElement) {
+                prevVideo = videoElement;
+                videoElement.style.display = 'block';
+              }
             }
           });
 

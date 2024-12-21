@@ -1,6 +1,5 @@
 ---
 import { Image } from 'astro:assets';
-import { getImage } from 'astro:assets';
 
 interface Props {
   src: ImageMetadata;
@@ -10,11 +9,6 @@ interface Props {
 }
 
 const { src, alt, caption, class: className = "my-4" } = Astro.props;
-
-const optimizedImage = await getImage({
-  src: src,
-  format: 'webp',
-});
 
 ---
 

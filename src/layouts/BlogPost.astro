@@ -1,6 +1,5 @@
 ---
 import type { CollectionEntry } from "astro:content";
-
 import BlogHero from "@/components/blog/Hero.astro";
 import TOC from "@/components/blog/TOC.astro";
 import WebMentions from "@/components/blog/webmentions/index.astro";
@@ -76,13 +75,13 @@ const { headings } = await post.render();
 </script>
 
 <script>
+	import type { PhotoSwipeItem, PhotoSwipeOptions } from '../types/photoswipe';
 	import PhotoSwipe from 'photoswipe';
 
 	document.addEventListener('DOMContentLoaded', () => {
 		const articleImages = document.querySelectorAll('article img') as NodeListOf<HTMLImageElement>;
 		
-		// Initialize array with placeholder objects for all images
-		const galleryItems = new Array(articleImages.length).fill(null);
+		const galleryItems: PhotoSwipeItem[] = new Array(articleImages.length).fill(null);
 		
 		articleImages.forEach((img, index) => {
 			if (img.parentElement && img.parentElement.tagName !== 'A') {
@@ -127,7 +126,7 @@ const { headings } = await post.render();
 					
 					const pswp = new PhotoSwipe({
 						dataSource: galleryItems,
-						index: index,
+						index,
 						bgOpacity: 0.9,
 						showHideOpacity: true,
 						wheelToZoom: true,
@@ -135,7 +134,7 @@ const { headings } = await post.render();
 						imageClickAction: 'zoom',
 						maxZoomLevel: 2,
 						allowPanToNext: true
-					});
+					} as PhotoSwipeOptions);
 
 					pswp.init();
 				};

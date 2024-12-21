@@ -17,8 +17,8 @@
  *   4. Delete unused images (or just list them in dry-run mode)
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 // Parse command line arguments
 const postName = process.argv[2];
