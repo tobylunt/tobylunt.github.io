@@ -5,7 +5,7 @@ import { getAllPosts, sortMDByDate } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
 
 
-const MAX_POSTS = 10;
+const MAX_POSTS = 5;
 const allPosts = await getAllPosts();
 const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS);
 
@@ -35,8 +35,6 @@ const cactusTech: { desc: string; href: string; title: string }[] = [
 
 <PageLayout meta={{ title: "Home" }}>
 	<section>
-		<h1 class="title mb-6">Abstract</h1>
-
 		<p class="mb-4">
 			Hi, I'm Toby. I like to make things. I try to make useful and beautiful things! I'm a co-founder of
 			<a class="cactus-link" href="http://www.devdatalab.org/" target="_blank">Development
@@ -58,6 +56,9 @@ const cactusTech: { desc: string; href: string; title: string }[] = [
 				))
 			}
 		</ul>
+		<div class="mt-4">
+			<a href="/posts" class="font-semibold hover:underline">More Posts →</a>
+		</div>
 	</section>
 	<section class="mt-16">
 		<h2 class="title mb-4 text-xl">Tools I have been liking recently</h2>
