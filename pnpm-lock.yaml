@@ -30,8 +30,8 @@ importers:
         specifier: ^0.38.3
         version: 0.38.3(astro@4.16.12(@types/node@22.9.0)(rollup@4.26.0)(typescript@5.6.3))
       astro-icon:
-        specifier: ^1.1.2
-        version: 1.1.2
+        specifier: ^1.1.5
+        version: 1.1.5
       d3:
         specifier: ^7.9.0
         version: 7.9.0
@@ -1315,8 +1315,8 @@ packages:
     peerDependencies:
       astro: ^4.0.0-beta || ^5.0.0-beta || ^3.3.0
 
-  astro-icon@1.1.2:
-    resolution: {integrity: sha512-2qAHBtZLYuFEIMP0Ck0edyLi5fQmJjwP2Qbv41f8L4KAJ2sra/dH7q5lCOn4q0DHVtS0w3tPG8UKQRits3UPcg==}
+  astro-icon@1.1.5:
+    resolution: {integrity: sha512-CJYS5nWOw9jz4RpGWmzNQY7D0y2ZZacH7atL2K9DeJXJVaz7/5WrxeyIxO8KASk1jCM96Q4LjRx/F3R+InjJrw==}
 
   astro@4.16.12:
     resolution: {integrity: sha512-NnFeIKhGW6MdXCQT2hRariUwfxqJUIRs6qKqaovaQkTojzxh2r1L8C49qanKc+huH9wK2C94VZB2T/tosyRl1A==}
@@ -5540,7 +5540,7 @@ snapshots:
       astro: 4.16.12(@types/node@22.9.0)(rollup@4.26.0)(typescript@5.6.3)
       rehype-expressive-code: 0.38.3
 
-  astro-icon@1.1.2:
+  astro-icon@1.1.5:
     dependencies:
       '@iconify/tools': 4.0.7
       '@iconify/types': 2.0.0
