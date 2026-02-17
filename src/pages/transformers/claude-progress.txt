@@ -264,3 +264,29 @@
 - Verified in Playwright: dark + light themes, weighted sum, contribution bars, pipeline recap all render correctly
 - Commit: 827060b
 - Next: Feature #12 — Multi-head attention (why multiple heads and head specialization)
+
+=== Feature #12 Completed — 2026-02-17 ===
+- Replaced multi-head-attention placeholder with full section content
+- Linkage callout: amber-tinted banner connecting to single-head pipeline from Feature #11
+- Introductory prose: why one head isn't enough, multi-head attention runs h heads in parallel
+- "One head becomes many" diagram:
+  - Single head box (Q K V → Attn → Out) at top
+  - ↓ ×h duplication arrow
+  - Three parallel head slots (Head 1, 2, 3) each with the same mini-pipeline
+  - Color-coded Q/K/V letters, amber Attn and Out boxes
+- Three head heatmap cards in a 3-column grid:
+  - Head 1: Positional/adjacency — attends to previous token (0.55 self, 0.42/0.52 prev)
+  - Head 2: Syntactic/subject-verb — cat→sat 0.62, sat→cat 0.65
+  - Head 3: Self-identity/broad context — strong diagonal (0.72, 0.76, 0.74)
+  - Each card: title, role label, description, 3×3 heatmap grid
+  - Heatmap uses same amber intensity style as Feature #10
+  - JS builds grids dynamically with corner labels, row/col labels, and colored cells
+  - Cell titles show "query → key: weight" on hover
+- Closing prose: head specialization scales (GPT-2 12 heads, GPT-4 64-96+), discovered head types (induction, previous-token, duplicate-token), transition to concatenation/projection
+- Extracted 'multi-head-attention' from placeholder loop; remaining placeholders filter sections 06-09
+- CSS: .mha-parallel-intro, .mha-single-head-box, .mha-head-pipeline, .mha-mini-box, .mha-multi-head-stack, .mha-head-slot, .mha-heads-gallery, .mha-head-card, .mha-heatmap-grid, .mha-heatmap-cell
+- Mobile responsive (@media max-width: 768px → single column; 480px → compact padding)
+- Build passes with 0 errors
+- Verified in Playwright: dark + light themes, parallel diagram, 3 heatmap cards with distinct patterns
+- Commit: c311f9d
+- Next: Feature #13 — Multi-head attention (concatenation, projection, and interactive explorer)

@@ -150,7 +150,7 @@
   {
     "id": 12,
     "name": "Multi-head attention — why multiple heads and head specialization",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Navigate to the Multi-Head Attention section",
       "LINKAGE: Verify this section opens by saying 'we just saw ONE attention head — now let's see what happens when we run SEVERAL in parallel'. Visually show the single-head diagram from #11's recap being duplicated into multiple parallel copies",
