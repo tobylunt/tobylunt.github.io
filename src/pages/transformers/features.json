@@ -94,7 +94,7 @@
   {
     "id": 8,
     "name": "Single attention head — Q, K, V matrices explainer with animation",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Navigate to the Attention section",
       "LINKAGE: Verify the section opens by receiving the combined embedding+position vectors from feature #7 — visually show THESE vectors (same style) entering the attention mechanism. Reference the architecture diagram: 'we are now inside the attention block'",

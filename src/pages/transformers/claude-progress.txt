@@ -162,3 +162,36 @@
 - Verified in Playwright: light + dark themes, slider interaction (pos 0 and pos 15), heatmap rendering, handoff diagram
 - Commit: ac68312
 - Next: Feature #8 — Single attention head (Q, K, V matrices explainer with animation)
+
+=== Feature #8 Completed — 2026-02-17 ===
+- Replaced attention placeholder with full section: Q, K, V projection explainer
+- Linkage callout: amber-tinted banner connecting to Multi-Head Attention block in architecture diagram
+- Introductory prose: tokens are independent, attention lets them talk, three learned projections
+- Q/K/V analogy cards: three color-coded cards with Query/Key/Value descriptions
+  - Q = blue (hsl 210 70% 55%) — "What am I looking for?"
+  - K = orange (hsl 25 85% 55%) — "What do I contain?"
+  - V = green (hsl 150 55% 45%) — "What do I offer?"
+- Library lookup analogy paragraph connecting Q/K/V to intuitive concepts
+- Interactive SVG projection animation (810×420 viewBox):
+  - 3 input vectors (x₁ "The", x₂ "cat", x₃ "sat") in amber
+  - 3 weight matrices (W_Q blue, W_K orange, W_V green) with dashed borders
+  - 3×3 output grid: q₁-q₃, k₁-k₃, v₁-v₃ with proper color coding
+  - Step button: advances one step at a time (9 steps total)
+  - Play button: auto-advances at 500ms intervals, toggles to Pause
+  - Reset button: returns to step 0
+  - Step counter: "Step N / 9"
+  - Active step highlighted (brighter arrows + fills), previous steps dimmed
+- Closing prose: explains d_model × d_k shape, projection as different "views", handoff to attention scores
+- Bug fix: HSL color + hex alpha suffix (e.g., `hsl(210, 70%, 55%)15`) produced invalid CSS colors
+  - Fix: created `withAlpha(hsl, alpha)` helper that converts to `hsl(210 70% 55% / 0.15)` syntax
+  - Also resolved CSS variables in JS via `getComputedStyle` for theme-aware SVG colors
+- Bug fix: new `<script>` tag was type-checked by Astro (strict TS), producing 63 errors
+  - Fix: added `is:inline` attribute to bypass TypeScript checking for vanilla browser JS
+- Bug fix: SVG viewBox was 720px wide but output columns extended to ~794px, clipping V column
+  - Fix: widened viewBox to 810px
+- Updated CLAUDE.md with editing tips: tab indentation, em-dash characters, filter array updates
+- Extracted 'attention' from placeholder loop; remaining placeholders now filter sections 05-09
+- Build passes with 0 errors
+- Verified in Playwright: dark + light themes, Step/Play/Reset buttons, all 9 animation steps
+- Commit: cfcc0ce
+- Next: Feature #9 — Single attention head (dot product attention and softmax interactive)
