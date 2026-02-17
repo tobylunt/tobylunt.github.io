@@ -618,9 +618,121 @@ const sections = [
 				</div>
 			</section>
 
-			{/* ===== Sections 04–09: Placeholders ===== */}
+			{/* ===== Section 04: Attention — Q, K, V ===== */}
+			<section id="attention" class="mb-24 scroll-mt-20">
+				<div class="mb-8 flex items-baseline gap-4">
+					<span class="font-mono text-sm text-accent/60">04</span>
+					<div>
+						<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">Attention</h2>
+						<p class="mt-1 text-base text-textColor/60">The mechanism that lets tokens talk to each other</p>
+					</div>
+				</div>
+
+				{/* LINKAGE: Receiving combined vectors from Feature #7 */}
+				<div class="linkage-callout linkage-attention">
+					<span class="linkage-icon">&#8599;</span>
+					<span>We're now zooming into the <strong>Multi-Head Attention</strong> block in the architecture diagram. The input vectors — carrying both meaning and position — arrive here.</span>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Each input vector knows <em>what</em> a token means and <em>where</em> it sits — but
+						so far, tokens are completely independent of each other. The word “bank” has the
+						same representation whether it appears in “river bank” or “bank account.”
+						Attention is how tokens <strong>talk to each other</strong>, gathering context from the
+						rest of the sequence to resolve ambiguities like this.
+					</p>
+					<p>
+						The mechanism works through three learned projections. Each input vector is multiplied
+						by three different weight matrices — <strong class="qkv-q-text">W<sub>Q</sub></strong>,
+						<strong class="qkv-k-text">W<sub>K</sub></strong>, and
+						<strong class="qkv-v-text">W<sub>V</sub></strong> — to produce three new vectors:
+					</p>
+				</div>
+
+				{/* Q, K, V analogy cards */}
+				<div class="qkv-analogy-cards">
+					<div class="qkv-card qkv-card-q">
+						<div class="qkv-card-letter">Q</div>
+						<div class="qkv-card-name">Query</div>
+						<div class="qkv-card-desc">“What am I looking for?”</div>
+					</div>
+					<div class="qkv-card qkv-card-k">
+						<div class="qkv-card-letter">K</div>
+						<div class="qkv-card-name">Key</div>
+						<div class="qkv-card-desc">“What do I contain?”</div>
+					</div>
+					<div class="qkv-card qkv-card-v">
+						<div class="qkv-card-letter">V</div>
+						<div class="qkv-card-name">Value</div>
+						<div class="qkv-card-desc">“What do I offer?”</div>
+					</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Think of it like a library lookup. Each token broadcasts a <strong class="qkv-q-text">query</strong>
+						(“I'm looking for adjectives that describe me”), every token has a
+						<strong class="qkv-k-text">key</strong> (“I'm an adjective”), and every token holds
+						a <strong class="qkv-v-text">value</strong> (“here's my information”). When a query
+						matches a key, the corresponding value gets pulled in — that's how context flows
+						between tokens.
+					</p>
+					<p>
+						Below, watch how three input tokens get projected through the weight matrices.
+						Press <strong>Step</strong> to advance one step at a time, or <strong>Play</strong>
+						to see the full animation.
+					</p>
+				</div>
+
+				{/* Interactive QKV projection visualization */}
+				<div class="qkv-viz-container">
+					<div class="qkv-controls">
+						<button id="qkv-step-btn" class="qkv-btn qkv-btn-step">
+							<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 2L11 7L3 12V2Z" fill="currentColor"/></svg>
+							Step
+						</button>
+						<button id="qkv-play-btn" class="qkv-btn qkv-btn-play">
+							<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 1L12 7L2 13V1Z" fill="currentColor"/><rect x="11" y="1" width="2" height="12" rx="0.5" fill="currentColor"/></svg>
+							Play
+						</button>
+						<button id="qkv-reset-btn" class="qkv-btn qkv-btn-reset">
+							<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7A5 5 0 1 1 7 12" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M2 10V7H5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+							Reset
+						</button>
+						<span id="qkv-step-label" class="qkv-step-label">Step 0 / 9</span>
+					</div>
+					<div class="qkv-viz-scroll">
+						<svg id="qkv-svg" class="qkv-svg" viewBox="0 0 810 420" xmlns="http://www.w3.org/2000/svg">
+							<!-- Will be populated by JS -->
+						</svg>
+					</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Each of the three weight matrices (<strong class="qkv-q-text">W<sub>Q</sub></strong>,
+						<strong class="qkv-k-text">W<sub>K</sub></strong>,
+						<strong class="qkv-v-text">W<sub>V</sub></strong>) has shape
+						<code>[d<sub>model</sub> &times; d<sub>k</sub>]</code>.
+						The multiplication projects each <code>d<sub>model</sub></code>-dimensional input down to a
+						<code>d<sub>k</sub></code>-dimensional query, key, or value — a different <em>view</em>
+						of the same token, optimized for a different purpose.
+					</p>
+					<p>
+						These three projections happen in parallel for every token in the sequence.
+						The result: three matrices — <strong class="qkv-q-text">Q</strong>,
+						<strong class="qkv-k-text">K</strong>, and <strong class="qkv-v-text">V</strong> — each
+						containing one row per token. Next, the queries and keys will be compared to compute
+						<strong>attention scores</strong> — determining how much each token should attend to
+						every other token.
+					</p>
+				</div>
+			</section>
+
+			{/* ===== Sections 05–09: Placeholders ===== */}
 			{
-				sections.filter(s => !['preamble','architecture','embeddings'].includes(s.id)).map((section) => (
+				sections.filter(s => !['preamble','architecture','embeddings','attention'].includes(s.id)).map((section) => (
 					<section
 						id={section.id}
 						class="section-placeholder mb-24 scroll-mt-20"
@@ -2181,6 +2293,148 @@ const sections = [
 			font-size: 0.78rem;
 		}
 	}
+
+	/* ===== Attention section — QKV ===== */
+	.linkage-attention {
+		background: hsl(35 90% 55% / 0.08);
+		border: 1px solid hsl(35 90% 55% / 0.2);
+		color: hsl(35 90% 55% / 0.85);
+	}
+
+	.linkage-attention strong {
+		color: hsl(35 90% 55%);
+	}
+
+	.qkv-q-text { color: hsl(210 70% 55%); }
+	.qkv-k-text { color: hsl(25 85% 55%); }
+	.qkv-v-text { color: hsl(150 55% 45%); }
+
+	.qkv-analogy-cards {
+		display: flex;
+		gap: 16px;
+		margin: 1.5rem 0 2rem;
+		max-width: 42rem;
+	}
+
+	.qkv-card {
+		flex: 1;
+		padding: 20px 16px;
+		border-radius: 10px;
+		text-align: center;
+		border: 1.5px solid;
+	}
+
+	.qkv-card-q {
+		background: hsl(210 70% 55% / 0.06);
+		border-color: hsl(210 70% 55% / 0.25);
+	}
+
+	.qkv-card-k {
+		background: hsl(25 85% 55% / 0.06);
+		border-color: hsl(25 85% 55% / 0.25);
+	}
+
+	.qkv-card-v {
+		background: hsl(150 55% 45% / 0.06);
+		border-color: hsl(150 55% 45% / 0.25);
+	}
+
+	.qkv-card-letter {
+		font-size: 1.8rem;
+		font-weight: 700;
+		font-family: 'Georgia', serif;
+		line-height: 1;
+		margin-bottom: 4px;
+	}
+
+	.qkv-card-q .qkv-card-letter { color: hsl(210 70% 55%); }
+	.qkv-card-k .qkv-card-letter { color: hsl(25 85% 55%); }
+	.qkv-card-v .qkv-card-letter { color: hsl(150 55% 45%); }
+
+	.qkv-card-name {
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.85);
+		margin-bottom: 6px;
+	}
+
+	.qkv-card-desc {
+		font-size: 0.82rem;
+		font-style: italic;
+		color: hsl(var(--theme-text) / 0.55);
+	}
+
+	.qkv-viz-container {
+		margin: 2rem 0;
+		max-width: 46rem;
+	}
+
+	.qkv-controls {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-bottom: 12px;
+		flex-wrap: wrap;
+	}
+
+	.qkv-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		padding: 6px 14px;
+		border-radius: 6px;
+		font-size: 0.82rem;
+		font-weight: 500;
+		cursor: pointer;
+		border: 1px solid hsl(var(--theme-text) / 0.15);
+		background: hsl(var(--theme-bg));
+		color: hsl(var(--theme-text) / 0.75);
+		transition: background 0.15s, border-color 0.15s;
+	}
+
+	.qkv-btn:hover {
+		background: hsl(var(--theme-text) / 0.05);
+		border-color: hsl(var(--theme-text) / 0.3);
+		color: hsl(var(--theme-text) / 0.9);
+	}
+
+	.qkv-btn-step {
+		border-color: hsl(var(--theme-accent) / 0.3);
+		color: hsl(var(--theme-accent));
+	}
+
+	.qkv-btn-step:hover {
+		background: hsl(var(--theme-accent) / 0.08);
+	}
+
+	.qkv-step-label {
+		font-size: 0.78rem;
+		color: hsl(var(--theme-text) / 0.45);
+		margin-left: 8px;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.qkv-viz-scroll {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.qkv-svg {
+		width: 100%;
+		min-width: 640px;
+		height: auto;
+		display: block;
+	}
+
+	@media (max-width: 480px) {
+		.qkv-analogy-cards {
+			flex-direction: column;
+			gap: 10px;
+		}
+		.qkv-card {
+			padding: 14px 12px;
+		}
+	}
 </style>
 
 <script define:vars={{ sectionIds: sections.map(s => s.id) }}>
@@ -2749,5 +3003,313 @@ const sections = [
 				pulseNext();
 			});
 		}
+	});
+</script>
+
+<script is:inline>
+	document.addEventListener('DOMContentLoaded', () => {
+		// --- QKV projection animation ---
+		const svg = document.getElementById('qkv-svg');
+		if (!svg) return;
+
+		const stepBtn = document.getElementById('qkv-step-btn');
+		const playBtn = document.getElementById('qkv-play-btn');
+		const resetBtn = document.getElementById('qkv-reset-btn');
+		const stepLabel = document.getElementById('qkv-step-label');
+
+		// Colors — use space-separated HSL for alpha support
+		const COL_INPUT = 'hsl(35 90% 55%)';   // amber — input vectors
+		const COL_Q = 'hsl(210 70% 55%)';       // blue — queries
+		const COL_K = 'hsl(25 85% 55%)';        // orange — keys
+		const COL_V = 'hsl(150 55% 45%)';       // green — values
+
+		// Theme-aware colors: read computed style
+		const cs = getComputedStyle(document.documentElement);
+		const themeText = cs.getPropertyValue('--theme-text').trim();
+		const themeBg = cs.getPropertyValue('--theme-bg').trim();
+		const COL_MATRIX = `hsl(${themeText} / 0.65)`;
+		const COL_DIM = `hsl(${themeText} / 0.35)`;
+		const COL_BG = `hsl(${themeBg})`;
+
+		// Helper: add alpha to an HSL color
+		function withAlpha(hsl, alpha) {
+			// hsl(210 70% 55%) → hsl(210 70% 55% / 0.15)
+			return hsl.replace(')', ` / ${alpha})`);
+		}
+
+		// Layout
+		const tokens = ['The', 'cat', 'sat'];
+		const TOTAL_STEPS = 9; // 3 tokens × 3 projections (Q, K, V)
+		let currentStep = 0;
+		let playInterval = null;
+
+		// Positions
+		const INPUT_X = 60;
+		const MATRIX_X = 250;
+		const OUTPUT_X = 530;
+		const ROW_Y = [100, 210, 320]; // y positions for 3 tokens
+		const MATRIX_W = 120;
+		const MATRIX_H = 55;
+		const VEC_W = 80;
+		const VEC_H = 30;
+
+		function ns(tag) {
+			return document.createElementNS('http://www.w3.org/2000/svg', tag);
+		}
+
+		function addText(parent, x, y, text, opts = {}) {
+			const el = ns('text');
+			el.setAttribute('x', x);
+			el.setAttribute('y', y);
+			el.textContent = text;
+			el.setAttribute('font-size', opts.size || '13');
+			el.setAttribute('fill', opts.fill || COL_DIM);
+			el.setAttribute('text-anchor', opts.anchor || 'middle');
+			el.setAttribute('font-family', opts.family || 'system-ui, sans-serif');
+			if (opts.weight) el.setAttribute('font-weight', opts.weight);
+			if (opts.cls) el.setAttribute('class', opts.cls);
+			parent.appendChild(el);
+			return el;
+		}
+
+		function addRect(parent, x, y, w, h, opts = {}) {
+			const el = ns('rect');
+			el.setAttribute('x', x);
+			el.setAttribute('y', y);
+			el.setAttribute('width', w);
+			el.setAttribute('height', h);
+			el.setAttribute('rx', opts.rx || 5);
+			el.setAttribute('fill', opts.fill || 'none');
+			el.setAttribute('stroke', opts.stroke || COL_DIM);
+			el.setAttribute('stroke-width', opts.sw || 1.5);
+			if (opts.opacity) el.setAttribute('opacity', opts.opacity);
+			if (opts.dash) el.setAttribute('stroke-dasharray', opts.dash);
+			if (opts.cls) el.setAttribute('class', opts.cls);
+			parent.appendChild(el);
+			return el;
+		}
+
+		function addArrow(parent, x1, y1, x2, y2, color, opts = {}) {
+			const el = ns('line');
+			el.setAttribute('x1', x1);
+			el.setAttribute('y1', y1);
+			el.setAttribute('x2', x2);
+			el.setAttribute('y2', y2);
+			el.setAttribute('stroke', color);
+			el.setAttribute('stroke-width', opts.sw || 1.5);
+			if (opts.dash) el.setAttribute('stroke-dasharray', opts.dash);
+			if (opts.cls) el.setAttribute('class', opts.cls);
+			if (opts.opacity) el.setAttribute('opacity', opts.opacity);
+			parent.appendChild(el);
+
+			// arrowhead
+			if (!opts.noHead) {
+				const head = ns('polygon');
+				const dx = x2 - x1;
+				const dy = y2 - y1;
+				const len = Math.sqrt(dx * dx + dy * dy);
+				const ux = dx / len;
+				const uy = dy / len;
+				const sz = 5;
+				const px = x2 - ux * 2;
+				const py = y2 - uy * 2;
+				head.setAttribute('points',
+					`${x2},${y2} ${px - uy * sz},${py + ux * sz} ${px + uy * sz},${py - ux * sz}`
+				);
+				head.setAttribute('fill', color);
+				if (opts.cls) head.setAttribute('class', opts.cls);
+				if (opts.opacity) head.setAttribute('opacity', opts.opacity);
+				parent.appendChild(head);
+			}
+			return el;
+		}
+
+		function drawBase() {
+			svg.innerHTML = '';
+
+			// Column labels
+			addText(svg, INPUT_X + VEC_W / 2, 35, 'Input Vectors', { size: '12', fill: COL_INPUT, weight: '600' });
+			addText(svg, INPUT_X + VEC_W / 2, 50, '(embedding + position)', { size: '10', fill: COL_DIM });
+			addText(svg, MATRIX_X + MATRIX_W / 2, 35, 'Weight Matrices', { size: '12', fill: COL_DIM, weight: '600' });
+			addText(svg, OUTPUT_X + VEC_W / 2, 35, 'Projections', { size: '12', fill: COL_DIM, weight: '600' });
+
+			// Draw input vectors (always visible)
+			tokens.forEach((tok, i) => {
+				const y = ROW_Y[i];
+				addRect(svg, INPUT_X, y - VEC_H / 2, VEC_W, VEC_H, {
+					fill: withAlpha(COL_INPUT, 0.15),
+					stroke: COL_INPUT,
+					sw: 1.5
+				});
+				addText(svg, INPUT_X + VEC_W / 2, y + 1, `x${String.fromCharCode(8321 + i)}`, {
+					size: '14', fill: COL_INPUT, weight: '600', family: 'Georgia, serif'
+				});
+				// Token label below
+				addText(svg, INPUT_X + VEC_W / 2, y + VEC_H / 2 + 16, `"${tok}"`, {
+					size: '11', fill: COL_DIM
+				});
+			});
+
+			// Draw weight matrix placeholders (3 matrices stacked per row, but we show them as columns for clarity)
+			const matrices = [
+				{ label: 'W_Q', sub: 'Q', color: COL_Q },
+				{ label: 'W_K', sub: 'K', color: COL_K },
+				{ label: 'W_V', sub: 'V', color: COL_V },
+			];
+
+			matrices.forEach((m, mi) => {
+				const mx = MATRIX_X;
+				const my = ROW_Y[mi];
+				addRect(svg, mx, my - MATRIX_H / 2, MATRIX_W, MATRIX_H, {
+					fill: withAlpha(m.color, 0.08),
+					stroke: m.color,
+					sw: 1.5,
+					dash: '4 3'
+				});
+				// W subscript label
+				const wText = ns('text');
+				wText.setAttribute('x', mx + MATRIX_W / 2);
+				wText.setAttribute('y', my + 2);
+				wText.setAttribute('text-anchor', 'middle');
+				wText.setAttribute('font-size', '15');
+				wText.setAttribute('fill', m.color);
+				wText.setAttribute('font-weight', '600');
+				wText.setAttribute('font-family', 'Georgia, serif');
+				wText.innerHTML = `W<tspan baseline-shift="sub" font-size="11">${m.sub}</tspan>`;
+				svg.appendChild(wText);
+			});
+
+			// Draw output placeholders (3 outputs per token = 9 boxes arranged in grid)
+			const projections = [
+				{ label: 'Q', color: COL_Q },
+				{ label: 'K', color: COL_K },
+				{ label: 'V', color: COL_V },
+			];
+
+			tokens.forEach((tok, ti) => {
+				projections.forEach((p, pi) => {
+					const ox = OUTPUT_X + pi * (VEC_W + 12);
+					const oy = ROW_Y[ti];
+					addRect(svg, ox, oy - VEC_H / 2, VEC_W, VEC_H, {
+						fill: 'transparent',
+						stroke: COL_DIM,
+						sw: 1,
+						dash: '3 3',
+						opacity: '0.3',
+						cls: `qkv-output-box qkv-out-${ti}-${pi}`
+					});
+				});
+			});
+
+			// Output column sub-labels
+			projections.forEach((p, pi) => {
+				const ox = OUTPUT_X + pi * (VEC_W + 12);
+				addText(svg, ox + VEC_W / 2, 50, p.label, {
+					size: '13', fill: p.color, weight: '700', family: 'Georgia, serif'
+				});
+			});
+		}
+
+		function showStep(step) {
+			// step 0 = base state
+			// steps 1-9: token (0-2) × projection (Q=0, K=1, V=2)
+			// step 1: token0→Q, step 2: token0→K, step 3: token0→V
+			// step 4: token1→Q, step 5: token1→K, step 6: token1→V
+			// etc.
+
+			drawBase();
+
+			const projColors = [COL_Q, COL_K, COL_V];
+			const projLabels = ['q', 'k', 'v'];
+
+			for (let s = 1; s <= Math.min(step, TOTAL_STEPS); s++) {
+				const ti = Math.floor((s - 1) / 3);  // token index
+				const pi = (s - 1) % 3;              // projection index (Q/K/V)
+				const col = projColors[pi];
+				const isActive = (s === step);
+
+				const inputY = ROW_Y[ti];
+				const matrixY = ROW_Y[pi];
+				const outputY = ROW_Y[ti];
+				const ox = OUTPUT_X + pi * (VEC_W + 12);
+
+				// Arrow: input → matrix
+				addArrow(svg, INPUT_X + VEC_W, inputY, MATRIX_X, matrixY, col, {
+					sw: isActive ? 2 : 1.2,
+					opacity: isActive ? '1' : '0.35',
+					cls: isActive ? 'qkv-arrow-active' : ''
+				});
+
+				// Arrow: matrix → output
+				addArrow(svg, MATRIX_X + MATRIX_W, matrixY, ox, outputY, col, {
+					sw: isActive ? 2 : 1.2,
+					opacity: isActive ? '1' : '0.35',
+					cls: isActive ? 'qkv-arrow-active' : ''
+				});
+
+				// Fill the output box
+				addRect(svg, ox, outputY - VEC_H / 2, VEC_W, VEC_H, {
+					fill: withAlpha(col, isActive ? 0.2 : 0.1),
+					stroke: col,
+					sw: isActive ? 2 : 1.2,
+					opacity: isActive ? '1' : '0.6'
+				});
+				const subscript = String.fromCharCode(8321 + ti);
+				addText(svg, ox + VEC_W / 2, outputY + 1, `${projLabels[pi]}${subscript}`, {
+					size: '13',
+					fill: col,
+					weight: isActive ? '700' : '500',
+					family: 'Georgia, serif'
+				});
+			}
+
+			stepLabel.textContent = `Step ${step} / ${TOTAL_STEPS}`;
+		}
+
+		function stepForward() {
+			if (currentStep < TOTAL_STEPS) {
+				currentStep++;
+				showStep(currentStep);
+			}
+		}
+
+		function play() {
+			if (playInterval) {
+				clearInterval(playInterval);
+				playInterval = null;
+				playBtn.textContent = 'Play';
+				return;
+			}
+			if (currentStep >= TOTAL_STEPS) {
+				currentStep = 0;
+			}
+			playBtn.textContent = 'Pause';
+			playInterval = setInterval(() => {
+				currentStep++;
+				showStep(currentStep);
+				if (currentStep >= TOTAL_STEPS) {
+					clearInterval(playInterval);
+					playInterval = null;
+					playBtn.textContent = 'Play';
+				}
+			}, 500);
+		}
+
+		function reset() {
+			if (playInterval) {
+				clearInterval(playInterval);
+				playInterval = null;
+				playBtn.textContent = 'Play';
+			}
+			currentStep = 0;
+			showStep(0);
+		}
+
+		stepBtn.addEventListener('click', stepForward);
+		playBtn.addEventListener('click', play);
+		resetBtn.addEventListener('click', reset);
+
+		// Initial render
+		showStep(0);
 	});
 </script>
