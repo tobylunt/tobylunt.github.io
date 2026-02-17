@@ -195,3 +195,25 @@
 - Verified in Playwright: dark + light themes, Step/Play/Reset buttons, all 9 animation steps
 - Commit: cfcc0ce
 - Next: Feature #9 — Single attention head (dot product attention and softmax interactive)
+
+=== Feature #9 Completed — 2026-02-17 ===
+- Added subsection "04b Dot Product Attention & Softmax" within the Attention section
+- Linkage callout: amber-tinted banner connecting Q and K from Feature #8
+- Introductory prose: dot products measure alignment, scaling by √d_k for gradient stability, softmax for probability distribution
+- Formula display: Attention(Q, K, V) = softmax(QK^T / √d_k) V
+- Interactive visualization pipeline:
+  - Raw scores grid: q₂·k₁=2.1, q₂·k₂=8.4, q₂·k₃=5.7 (for "cat" attending to each key)
+  - ÷√d_k scaling step with arrow (d_k=64, √64=8)
+  - Scaled scores display: 0.263, 1.050, 0.713
+  - Temperature slider (range 0.1–3.0, default 1.0) for exploring attention sharpness
+  - Softmax step arrow → bar chart with dynamic heights and amber intensity
+  - Sum display confirming weights always sum to 1.000
+- Softmax implementation: exp(x_i - max) / sum(exp(x_j - max)) with numerical stability
+- Temperature parameter: divides scaled scores before softmax, low = sharp (near one-hot), high = uniform
+- Closing prose: connects attention weights to value-weighted sum output
+- CSS additions: .attn-formula, .attn-dotprod-container, .attn-score-cell, .attn-temp-slider, .attn-bar, .attn-bars-sum
+- JS in <script is:inline> with softmax function, renderRawScores, renderScaledScores, renderBars
+- Build passes with 0 errors
+- Verified in Playwright: dark + light themes, temperature slider interaction (0.3 sharp → 0.716 on "cat", 1.6 smooth → 0.413 on "cat"), sum always 1.000
+- Commit: d045399
+- Next: Feature #10 — Single attention head (attention pattern heatmap)

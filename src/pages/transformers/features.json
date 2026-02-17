@@ -108,7 +108,7 @@
   {
     "id": 9,
     "name": "Single attention head — dot product attention and softmax interactive",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Navigate to the dot product / softmax subsection",
       "LINKAGE: Verify the Q and K vectors shown here use the EXACT same color coding from feature #8 — the reader should recognize these as the same objects. Show Q and K vectors from #8 being brought together for the dot product",
