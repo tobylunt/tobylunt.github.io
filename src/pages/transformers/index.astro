@@ -1033,9 +1033,148 @@ const sections = [
 				</div>
 			</section>
 
-			{/* ===== Sections 05–09: Placeholders ===== */}
+
+			{/* ===== Section 05: Multi-Head Attention ===== */}
+			<section id="multi-head-attention" class="mb-24 scroll-mt-20">
+				<div class="mb-8 flex items-baseline gap-4">
+					<span class="font-mono text-sm text-accent/60">05</span>
+					<div>
+						<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">Multi-Head Attention</h2>
+						<p class="mt-1 text-base text-textColor/60">Many perspectives, one representation</p>
+					</div>
+				</div>
+
+				<div class="linkage-callout linkage-attention">
+					<span class="linkage-icon">&#8599;</span>
+					<span>In the previous section, we built a <strong>single attention head</strong> &mdash; a complete pipeline from input vectors to context-enriched outputs. Now we&rsquo;ll see why one head isn&rsquo;t enough, and what happens when we run <strong>several heads in parallel</strong>.</span>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						A single attention head can only learn <strong>one type of relationship</strong> at a time.
+						It might learn to connect subjects to verbs, or to link pronouns to their antecedents &mdash;
+						but it can&rsquo;t do both simultaneously. Language is far too rich for a single perspective.
+					</p>
+					<p>
+						The solution is <strong>multi-head attention</strong>: run multiple attention heads in parallel,
+						each with its own learned W<sub>Q</sub>, W<sub>K</sub>, W<sub>V</sub> weight matrices.
+						Each head independently decides what to attend to, learning to capture different
+						aspects of the input. Think of it like looking at a sentence from multiple angles
+						at once &mdash; one head for grammar, another for meaning, another for proximity.
+					</p>
+				</div>
+
+				{/* Parallel heads diagram: single head duplicated */}
+				<div class="mha-parallel-intro">
+					<div class="mha-parallel-title">One head becomes many</div>
+					<div class="mha-parallel-diagram">
+						<div class="mha-single-head-box">
+							<div class="mha-head-label">Single head</div>
+							<div class="mha-head-pipeline">
+								<span class="mha-mini-box mha-mini-qkv"><span class="qkv-q-text">Q</span><span class="qkv-k-text">K</span><span class="qkv-v-text">V</span></span>
+								<span class="mha-mini-arrow">&rarr;</span>
+								<span class="mha-mini-box mha-mini-attn">Attn</span>
+								<span class="mha-mini-arrow">&rarr;</span>
+								<span class="mha-mini-box mha-mini-out">Out</span>
+							</div>
+						</div>
+						<div class="mha-duplicate-arrow">&darr; &times;h</div>
+						<div class="mha-multi-head-stack">
+							<div class="mha-head-slot mha-head-1">
+								<span class="mha-head-tag">Head 1</span>
+								<span class="mha-mini-box mha-mini-qkv"><span class="qkv-q-text">Q</span><span class="qkv-k-text">K</span><span class="qkv-v-text">V</span></span>
+								<span class="mha-mini-arrow">&rarr;</span>
+								<span class="mha-mini-box mha-mini-attn">Attn</span>
+								<span class="mha-mini-arrow">&rarr;</span>
+								<span class="mha-mini-box mha-mini-out">Out</span>
+							</div>
+							<div class="mha-head-slot mha-head-2">
+								<span class="mha-head-tag">Head 2</span>
+								<span class="mha-mini-box mha-mini-qkv"><span class="qkv-q-text">Q</span><span class="qkv-k-text">K</span><span class="qkv-v-text">V</span></span>
+								<span class="mha-mini-arrow">&rarr;</span>
+								<span class="mha-mini-box mha-mini-attn">Attn</span>
+								<span class="mha-mini-arrow">&rarr;</span>
+								<span class="mha-mini-box mha-mini-out">Out</span>
+							</div>
+							<div class="mha-head-slot mha-head-3">
+								<span class="mha-head-tag">Head 3</span>
+								<span class="mha-mini-box mha-mini-qkv"><span class="qkv-q-text">Q</span><span class="qkv-k-text">K</span><span class="qkv-v-text">V</span></span>
+								<span class="mha-mini-arrow">&rarr;</span>
+								<span class="mha-mini-box mha-mini-attn">Attn</span>
+								<span class="mha-mini-arrow">&rarr;</span>
+								<span class="mha-mini-box mha-mini-out">Out</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Each head receives the <strong>same input vectors</strong> but learns completely
+						different weight matrices. This means each head computes its own Q, K, V
+						projections and its own attention pattern. The result is that different heads
+						specialize in different tasks &mdash; without anyone telling them to. The
+						specialization emerges naturally during training.
+					</p>
+					<p>
+						Below are three example attention patterns for our familiar sentence &ldquo;The cat sat.&rdquo;
+						Notice how each head learns to focus on completely different relationships:
+					</p>
+				</div>
+
+				{/* Three head heatmaps side by side */}
+				<div class="mha-heads-gallery">
+					<div class="mha-head-card" id="mha-head-card-1">
+						<div class="mha-head-card-title">
+							<span class="mha-head-number">Head 1</span>
+							<span class="mha-head-role">Positional / adjacency</span>
+						</div>
+						<div class="mha-head-card-desc">Attends to nearby tokens &mdash; especially the immediately preceding word.</div>
+						<div class="mha-heatmap-grid" id="mha-heatmap-1"></div>
+					</div>
+					<div class="mha-head-card" id="mha-head-card-2">
+						<div class="mha-head-card-title">
+							<span class="mha-head-number">Head 2</span>
+							<span class="mha-head-role">Syntactic / subject-verb</span>
+						</div>
+						<div class="mha-head-card-desc">Connects subjects to their verbs &mdash; &ldquo;cat&rdquo; strongly attends to &ldquo;sat.&rdquo;</div>
+						<div class="mha-heatmap-grid" id="mha-heatmap-2"></div>
+					</div>
+					<div class="mha-head-card" id="mha-head-card-3">
+						<div class="mha-head-card-title">
+							<span class="mha-head-number">Head 3</span>
+							<span class="mha-head-role">Self-identity / broad context</span>
+						</div>
+						<div class="mha-head-card-desc">Each token attends mostly to itself, preserving its own information.</div>
+						<div class="mha-heatmap-grid" id="mha-heatmap-3"></div>
+					</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Head 1 acts like a <strong>positional head</strong> &mdash; it focuses on adjacent tokens,
+						helping each word understand its immediate context. Head 2 is a <strong>syntactic head</strong> &mdash;
+						it links grammatically related words like subjects and verbs, even across distance.
+						Head 3 is a <strong>self-identity head</strong> &mdash; it lets each token preserve its own
+						representation while blending in a little context from everything else.
+					</p>
+					<p>
+						In real transformers, this effect scales dramatically. GPT-2 has 12 heads per layer;
+						GPT-4 and Claude likely have 64&ndash;96+. Researchers have discovered heads that specialize
+						in <strong>induction</strong> (copying patterns), <strong>previous-token</strong> (always looking one step back),
+						<strong>duplicate-token</strong> (finding repeated words), and many more. The model figures out
+						which perspectives are useful entirely on its own.
+					</p>
+					<p>
+						But how do these different perspectives get combined into a single output? That&rsquo;s
+						the next step: <strong>concatenation and projection</strong>, covered in the next section.
+					</p>
+				</div>
+			</section>
+
+			{/* ===== Sections 06–09: Placeholders ===== */}
 			{
-				sections.filter(s => !['preamble','architecture','embeddings','attention'].includes(s.id)).map((section) => (
+				sections.filter(s => !['preamble','architecture','embeddings','attention','multi-head-attention'].includes(s.id)).map((section) => (
 					<section
 						id={section.id}
 						class="section-placeholder mb-24 scroll-mt-20"
@@ -3370,6 +3509,228 @@ const sections = [
 			font-size: 0.65rem;
 		}
 	}
+
+	/* ===== Feature #12: Multi-Head Attention ===== */
+
+	/* Parallel heads intro diagram */
+	.mha-parallel-intro {
+		margin: 2rem 0;
+		padding: 1.5rem;
+		background: hsl(var(--theme-text) / 0.03);
+		border: 1px solid hsl(var(--theme-text) / 0.08);
+		border-radius: 12px;
+		text-align: center;
+	}
+
+	.mha-parallel-title {
+		font-weight: 600;
+		font-size: 0.85rem;
+		color: hsl(var(--theme-text) / 0.5);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		margin-bottom: 1.2rem;
+	}
+
+	.mha-parallel-diagram {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.8rem;
+	}
+
+	.mha-single-head-box {
+		padding: 0.8rem 1.2rem;
+		border: 2px solid hsl(35 90% 55% / 0.3);
+		border-radius: 8px;
+		background: hsl(35 90% 55% / 0.06);
+	}
+
+	.mha-head-label {
+		font-size: 0.72rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.4);
+		margin-bottom: 0.4rem;
+	}
+
+	.mha-head-pipeline {
+		display: flex;
+		align-items: center;
+		gap: 0.3rem;
+		justify-content: center;
+	}
+
+	.mha-mini-box {
+		padding: 0.25rem 0.5rem;
+		border-radius: 4px;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.7rem;
+		font-weight: 600;
+	}
+
+	.mha-mini-qkv {
+		background: hsl(var(--theme-text) / 0.05);
+		border: 1px solid hsl(var(--theme-text) / 0.15);
+		display: flex;
+		gap: 0.2rem;
+	}
+
+	.mha-mini-attn {
+		background: hsl(35 90% 55% / 0.12);
+		color: hsl(35 90% 55%);
+		border: 1px solid hsl(35 90% 55% / 0.25);
+	}
+
+	.mha-mini-out {
+		background: hsl(35 90% 55% / 0.12);
+		color: hsl(35 90% 55%);
+		border: 1px solid hsl(35 90% 55% / 0.25);
+	}
+
+	.mha-mini-arrow {
+		color: hsl(var(--theme-text) / 0.3);
+		font-size: 0.8rem;
+	}
+
+	.mha-duplicate-arrow {
+		font-size: 1rem;
+		color: hsl(var(--theme-text) / 0.3);
+		font-weight: 600;
+	}
+
+	.mha-multi-head-stack {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		width: 100%;
+		max-width: 360px;
+	}
+
+	.mha-head-slot {
+		display: flex;
+		align-items: center;
+		gap: 0.3rem;
+		justify-content: center;
+		padding: 0.5rem 0.8rem;
+		border-radius: 8px;
+		border: 1px solid hsl(35 90% 55% / 0.2);
+		background: hsl(35 90% 55% / 0.04);
+	}
+
+	.mha-head-tag {
+		font-size: 0.65rem;
+		font-weight: 700;
+		color: hsl(35 90% 55%);
+		min-width: 3.5rem;
+		text-align: right;
+	}
+
+	/* Head heatmap gallery */
+	.mha-heads-gallery {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
+		margin: 2rem 0;
+	}
+
+	.mha-head-card {
+		background: hsl(var(--theme-bg));
+		border: 1px solid hsl(var(--theme-text) / 0.1);
+		border-radius: 10px;
+		padding: 1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+	}
+
+	.mha-head-card-title {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5rem;
+	}
+
+	.mha-head-number {
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.72rem;
+		font-weight: 700;
+		color: hsl(35 90% 55%);
+	}
+
+	.mha-head-role {
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.6);
+	}
+
+	.mha-head-card-desc {
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.45);
+		line-height: 1.4;
+	}
+
+	/* Mini heatmap grids (3x3, smaller than Feature #10) */
+	.mha-heatmap-grid {
+		display: grid;
+		grid-template-columns: auto repeat(3, 1fr);
+		grid-template-rows: auto repeat(3, 1fr);
+		gap: 2px;
+		align-items: center;
+		justify-items: center;
+		margin-top: auto;
+	}
+
+	.mha-heatmap-corner {
+		font-size: 0.5rem;
+		color: hsl(var(--theme-text) / 0.25);
+		text-align: center;
+		line-height: 1.2;
+	}
+
+	.mha-heatmap-col-label,
+	.mha-heatmap-row-label {
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.6rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.5);
+		padding: 2px;
+	}
+
+	.mha-heatmap-cell {
+		width: 100%;
+		aspect-ratio: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 3px;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.58rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.7);
+		cursor: default;
+		transition: transform 0.15s ease;
+		min-height: 36px;
+	}
+
+	.mha-heatmap-cell:hover {
+		transform: scale(1.08);
+	}
+
+	@media (max-width: 768px) {
+		.mha-heads-gallery {
+			grid-template-columns: 1fr;
+			max-width: 320px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.mha-parallel-intro {
+			padding: 1rem;
+		}
+		.mha-head-card {
+			padding: 0.8rem;
+		}
+	}
 </style>
 
 <script define:vars={{ sectionIds: sections.map(s => s.id) }}>
@@ -4463,5 +4824,86 @@ const sections = [
 		}
 
 		document.addEventListener('click', clearHighlight);
+	});
+</script>
+
+<script is:inline>
+	document.addEventListener('DOMContentLoaded', () => {
+		// ===== Feature #12: Multi-Head Attention heatmaps =====
+		const mhaTokens = ['The', 'cat', 'sat'];
+
+		// Three heads with distinct attention patterns
+		const headWeights = [
+			// Head 1: Positional / adjacency — attends to previous token
+			{
+				id: 'mha-heatmap-1',
+				weights: [
+					[0.55, 0.35, 0.10],  // "The": self + next
+					[0.42, 0.33, 0.25],  // "cat": prev "The" dominant
+					[0.08, 0.52, 0.40],  // "sat": prev "cat" dominant
+				],
+			},
+			// Head 2: Syntactic / subject-verb
+			{
+				id: 'mha-heatmap-2',
+				weights: [
+					[0.60, 0.22, 0.18],  // "The": mostly self (article)
+					[0.10, 0.28, 0.62],  // "cat": strongly attends to verb "sat"
+					[0.12, 0.65, 0.23],  // "sat": strongly attends to subject "cat"
+				],
+			},
+			// Head 3: Self-identity / broad context
+			{
+				id: 'mha-heatmap-3',
+				weights: [
+					[0.72, 0.14, 0.14],  // "The": mostly self
+					[0.12, 0.76, 0.12],  // "cat": mostly self
+					[0.13, 0.13, 0.74],  // "sat": mostly self
+				],
+			},
+		];
+
+		headWeights.forEach((head) => {
+			const gridEl = document.getElementById(head.id);
+			if (!gridEl) return;
+
+			// Corner
+			const corner = document.createElement('div');
+			corner.className = 'mha-heatmap-corner';
+			corner.innerHTML = 'K→<br>Q↓';
+			gridEl.appendChild(corner);
+
+			// Column labels
+			mhaTokens.forEach((tok) => {
+				const label = document.createElement('div');
+				label.className = 'mha-heatmap-col-label';
+				label.textContent = tok;
+				gridEl.appendChild(label);
+			});
+
+			// Rows: label + 3 cells
+			for (let row = 0; row < 3; row++) {
+				const rowLabel = document.createElement('div');
+				rowLabel.className = 'mha-heatmap-row-label';
+				rowLabel.textContent = mhaTokens[row];
+				gridEl.appendChild(rowLabel);
+
+				for (let col = 0; col < 3; col++) {
+					const w = head.weights[row][col];
+					const cell = document.createElement('div');
+					cell.className = 'mha-heatmap-cell';
+					cell.textContent = w.toFixed(2);
+					// Color intensity proportional to weight
+					const alpha = (0.08 + w * 0.85).toFixed(2);
+					cell.style.background = 'hsl(35 90% 55% / ' + alpha + ')';
+					// Text contrast
+					if (w > 0.5) {
+						cell.style.color = 'hsl(0 0% 10%)';
+					}
+					cell.title = '"' + mhaTokens[row] + '" → "' + mhaTokens[col] + '": ' + w.toFixed(3);
+					gridEl.appendChild(cell);
+				}
+			}
+		});
 	});
 </script>
