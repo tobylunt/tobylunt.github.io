@@ -136,7 +136,7 @@
   {
     "id": 11,
     "name": "Single attention head — value-weighted output animation",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Navigate to the value aggregation subsection",
       "LINKAGE: Verify the V vectors shown here use the SAME color coding from feature #8, and the attention weights come from the heatmap in feature #10. The reader should see these two pieces — V vectors and attention weights — combining",

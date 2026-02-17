@@ -242,3 +242,25 @@
 - Verified in Playwright: dark + light themes, hover interaction ("sat" → "cat": 0.380 tooltip)
 - Commit: 5ecd8b2
 - Next: Feature #11 — Single attention head (value-weighted output animation)
+
+=== Feature #11 Completed — 2026-02-17 ===
+- Added subsection "04d Value-Weighted Output" within the Attention section
+- Linkage callout: green-tinted banner connecting V vectors from 04a and attention weights from heatmap
+- Introductory prose: weighted sum concept, high attention = more information pulled in
+- Weighted sum computation for "cat" (token 2):
+  - Three step rows: weight × V vector = result, with opacity proportional to weight
+  - 0.21 × v₁ "The" = [0.04, -0.09, 0.18, ...]
+  - 0.46 × v₂ "cat" = [0.11, 0.37, -0.05, ...]
+  - 0.33 × v₃ "sat" = [0.08, 0.13, 0.22, ...]
+  - Dashed divider line, then sum: output₂ = [0.23, 0.41, 0.35, ...]
+- Contribution bar chart: horizontal bars showing 21%, 46%, 33% (green fill, V-color)
+- Closing prose: "cat, informed by sat and The" — output is context-enriched
+- Pipeline recap mini-diagram: Input → Q K V → QK^T/√d_k → softmax → × V → Output
+  - Color-coded boxes: amber (input/softmax/output), blue (QK^T), green (×V), Q/K/V individual colors
+  - Section number labels below: 04a, 04a, 04b, 04b, 04d, 04d
+- CSS: .val-output-container, .val-step-row, .val-weight, .val-vector-v, .val-result, .val-sum-divider, .val-bars-container, .val-bar-row, .val-bar-track, .val-bar-fill, .attn-pipeline-recap, .attn-pipeline-flow, .attn-pipeline-box, .attn-pipe-* color variants
+- Mobile responsive (@media max-width: 480px) for computation rows and pipeline boxes
+- Build passes with 0 errors
+- Verified in Playwright: dark + light themes, weighted sum, contribution bars, pipeline recap all render correctly
+- Commit: 827060b
+- Next: Feature #12 — Multi-head attention (why multiple heads and head specialization)
