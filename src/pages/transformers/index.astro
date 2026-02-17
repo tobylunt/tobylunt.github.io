@@ -246,9 +246,118 @@ const sections = [
 				</div>
 			</section>
 
-			{/* ===== Sections 02–09: Placeholders ===== */}
+			{/* ===== Section 02: Architecture Overview ===== */}
+			<section id="architecture" class="mb-24 scroll-mt-20">
+				<div class="mb-8 flex items-baseline gap-4">
+					<span class="font-mono text-sm text-accent/60">02</span>
+					<div>
+						<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">Architecture Overview</h2>
+						<p class="mt-1 text-base text-textColor/60">The full picture, from input to output</p>
+					</div>
+				</div>
+
+				<div class="arch-prose">
+					<p>
+						Here's the entire transformer, laid out as a pipeline. Data flows upward: raw text enters
+						at the bottom, and a prediction emerges at the top. Each block is something we'll explore
+						in depth — think of this diagram as the <strong>map</strong> for the rest of the page.
+					</p>
+					<p>
+						Hover over any block to learn what it does. When you're ready, press
+						<strong>Animate</strong> to watch data flow through the full architecture.
+					</p>
+				</div>
+
+				{/* Interactive block diagram */}
+				<div class="arch-diagram-wrap">
+					<div class="arch-controls">
+						<button id="arch-animate-btn" class="arch-animate-btn">
+							<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polygon points="3,1 12,7 3,13" fill="currentColor"/></svg>
+							Animate
+						</button>
+					</div>
+
+					<div class="arch-diagram" id="arch-diagram">
+						{/* Output / Softmax */}
+						<div class="arch-block arch-output" data-arch-id="output" data-tip="Converts the final vector into a probability distribution over the vocabulary — picking the next token.">
+							<span class="arch-block-label">Softmax Output</span>
+						</div>
+
+						{/* Unembedding */}
+						<div class="arch-block arch-output" data-arch-id="unembed" data-tip="Projects the residual stream vector back to vocabulary size via the unembedding matrix — the reverse of token embedding.">
+							<span class="arch-block-label">Unembedding</span>
+						</div>
+
+						<div class="arch-arrow">&#8593;</div>
+
+						{/* Layer norm (final) */}
+						<div class="arch-block arch-norm" data-arch-id="final-norm" data-tip="A final layer normalization that stabilizes the output before unembedding.">
+							<span class="arch-block-label">Layer Norm</span>
+						</div>
+
+						{/* Transformer layer (repeated) */}
+						<div class="arch-layer-group">
+							<div class="arch-layer-bracket">&times;N layers</div>
+
+							{/* Residual + FFN */}
+							<div class="arch-residual-wrap">
+								<div class="arch-residual-line" data-tip="The residual connection adds the FFN output back to the stream, preserving earlier information."></div>
+								<div class="arch-block arch-ffn" data-arch-id="ffn" data-tip="A two-layer neural network (expand → activate → compress) applied independently to each token. Acts as a learned lookup table.">
+									<span class="arch-block-label">Feed-Forward Network</span>
+								</div>
+								<div class="arch-block arch-norm arch-norm-sm" data-arch-id="norm2" data-tip="Layer normalization before the feed-forward network.">
+									<span class="arch-block-label">Layer Norm</span>
+								</div>
+							</div>
+
+							<div class="arch-add-label">+ residual</div>
+
+							{/* Residual + Attention */}
+							<div class="arch-residual-wrap">
+								<div class="arch-residual-line" data-tip="The residual connection adds the attention output back to the stream — this is what makes deep transformers trainable."></div>
+								<div class="arch-block arch-attention" data-arch-id="attention" data-tip="Multi-head self-attention: every token computes queries, keys, and values, then attends to every other token to gather context.">
+									<span class="arch-block-label">Multi-Head Attention</span>
+								</div>
+								<div class="arch-block arch-norm arch-norm-sm" data-arch-id="norm1" data-tip="Layer normalization before the attention mechanism.">
+									<span class="arch-block-label">Layer Norm</span>
+								</div>
+							</div>
+
+							<div class="arch-add-label">+ residual</div>
+						</div>
+
+						<div class="arch-arrow">&#8593;</div>
+
+						{/* Positional encoding */}
+						<div class="arch-block arch-embedding" data-arch-id="pos-enc" data-tip="Adds position information (sine/cosine waves) to each embedding, so the model knows word order.">
+							<span class="arch-block-label">+ Positional Encoding</span>
+						</div>
+
+						{/* Token embedding */}
+						<div class="arch-block arch-embedding" data-arch-id="embed" data-tip="Looks up each token in a learned embedding table, converting it from a discrete ID into a dense vector.">
+							<span class="arch-block-label">Token Embedding</span>
+						</div>
+
+						<div class="arch-arrow">&#8593;</div>
+
+						{/* Input */}
+						<div class="arch-input-label">Input tokens</div>
+					</div>
+
+					{/* Tooltip */}
+					<div class="arch-tooltip" id="arch-tooltip" aria-hidden="true"></div>
+				</div>
+
+				<p class="arch-outro">
+					In the sections that follow, we'll zoom into each of these blocks — starting
+					with how raw text becomes vectors (embeddings), then diving into the attention
+					mechanism, feed-forward networks, and the residual stream that ties it all together.
+				</p>
+			</section>
+
+			{/* ===== Sections 03–09: Placeholders ===== */}
 			{
-				sections.filter(s => s.id !== 'preamble').map((section) => (
+				sections.filter(s => s.id !== 'preamble' && s.id !== 'architecture').map((section) => (
 					<section
 						id={section.id}
 						class="section-placeholder mb-24 scroll-mt-20"
@@ -888,6 +997,279 @@ const sections = [
 			grid-template-columns: 1fr;
 		}
 	}
+
+	/* ===== Architecture diagram ===== */
+	.arch-prose {
+		max-width: 42rem;
+		margin-bottom: 2rem;
+	}
+
+	.arch-prose p {
+		font-size: 1.05rem;
+		line-height: 1.75;
+		color: hsl(var(--theme-text) / 0.78);
+		margin-bottom: 1.25rem;
+	}
+
+	.arch-prose strong {
+		color: hsl(var(--theme-text) / 0.95);
+		font-weight: 600;
+	}
+
+	.arch-outro {
+		font-size: 1.05rem;
+		line-height: 1.75;
+		color: hsl(var(--theme-text) / 0.78);
+		max-width: 42rem;
+		margin-top: 2rem;
+	}
+
+	.arch-diagram-wrap {
+		position: relative;
+		margin: 1.5rem 0;
+	}
+
+	.arch-controls {
+		display: flex;
+		justify-content: flex-end;
+		margin-bottom: 0.75rem;
+	}
+
+	.arch-animate-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 14px;
+		border-radius: 6px;
+		border: 1px solid hsl(var(--theme-text) / 0.12);
+		background: hsl(var(--theme-text) / 0.03);
+		color: hsl(var(--theme-text) / 0.65);
+		font-size: 0.78rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: background 0.15s ease, color 0.15s ease;
+	}
+
+	.arch-animate-btn:hover {
+		background: hsl(var(--theme-accent) / 0.08);
+		color: hsl(var(--theme-accent));
+	}
+
+	.arch-animate-btn.running {
+		color: hsl(var(--theme-accent));
+		border-color: hsl(var(--theme-accent) / 0.3);
+	}
+
+	.arch-diagram {
+		display: flex;
+		flex-direction: column-reverse; /* bottom-to-top flow */
+		align-items: center;
+		gap: 6px;
+		padding: 2rem 1rem;
+		border-radius: 12px;
+		border: 1px solid hsl(var(--theme-text) / 0.06);
+		background: hsl(var(--theme-text) / 0.015);
+	}
+
+	.arch-block {
+		position: relative;
+		width: 100%;
+		max-width: 320px;
+		padding: 12px 16px;
+		border-radius: 8px;
+		text-align: center;
+		cursor: pointer;
+		transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.3s ease;
+		border: 1.5px solid transparent;
+	}
+
+	.arch-block:hover {
+		transform: scale(1.03);
+		z-index: 2;
+	}
+
+	.arch-block-label {
+		font-size: 0.82rem;
+		font-weight: 600;
+		letter-spacing: 0.01em;
+	}
+
+	/* Block colors matching preamble vocabulary */
+	.arch-embedding {
+		background: hsl(210 70% 55% / 0.12);
+		border-color: hsl(210 70% 55% / 0.3);
+		color: hsl(210 70% 55%);
+	}
+	.arch-embedding:hover {
+		box-shadow: 0 0 0 3px hsl(210 70% 55% / 0.12);
+	}
+
+	.arch-attention {
+		background: hsl(35 90% 55% / 0.12);
+		border-color: hsl(35 90% 55% / 0.3);
+		color: hsl(35 90% 55%);
+	}
+	.arch-attention:hover {
+		box-shadow: 0 0 0 3px hsl(35 90% 55% / 0.12);
+	}
+
+	.arch-ffn {
+		background: hsl(150 55% 45% / 0.12);
+		border-color: hsl(150 55% 45% / 0.3);
+		color: hsl(150 55% 45%);
+	}
+	.arch-ffn:hover {
+		box-shadow: 0 0 0 3px hsl(150 55% 45% / 0.12);
+	}
+
+	.arch-output {
+		background: hsl(350 65% 55% / 0.12);
+		border-color: hsl(350 65% 55% / 0.3);
+		color: hsl(350 65% 55%);
+	}
+	.arch-output:hover {
+		box-shadow: 0 0 0 3px hsl(350 65% 55% / 0.12);
+	}
+
+	.arch-norm {
+		background: hsl(var(--theme-text) / 0.04);
+		border-color: hsl(var(--theme-text) / 0.1);
+		color: hsl(var(--theme-text) / 0.55);
+		padding: 8px 16px;
+	}
+	.arch-norm:hover {
+		box-shadow: 0 0 0 3px hsl(var(--theme-text) / 0.06);
+	}
+
+	.arch-norm-sm {
+		max-width: 240px;
+		padding: 6px 12px;
+	}
+
+	.arch-norm-sm .arch-block-label {
+		font-size: 0.72rem;
+	}
+
+	.arch-arrow {
+		font-size: 1.1rem;
+		color: hsl(var(--theme-text) / 0.2);
+		line-height: 1;
+		user-select: none;
+	}
+
+	.arch-input-label {
+		font-family: ui-monospace, monospace;
+		font-size: 0.78rem;
+		color: hsl(var(--theme-text) / 0.4);
+		padding: 4px 0;
+	}
+
+	/* Layer group (repeated block) */
+	.arch-layer-group {
+		position: relative;
+		display: flex;
+		flex-direction: column-reverse;
+		align-items: center;
+		gap: 6px;
+		width: 100%;
+		padding: 16px 12px;
+		border: 1.5px dashed hsl(270 50% 58% / 0.25);
+		border-radius: 10px;
+		background: hsl(270 50% 58% / 0.03);
+	}
+
+	.arch-layer-bracket {
+		position: absolute;
+		top: 8px;
+		right: 12px;
+		font-family: ui-monospace, monospace;
+		font-size: 0.68rem;
+		color: hsl(270 50% 58% / 0.55);
+		letter-spacing: 0.02em;
+	}
+
+	.arch-add-label {
+		font-family: ui-monospace, monospace;
+		font-size: 0.68rem;
+		color: hsl(270 50% 58% / 0.5);
+		user-select: none;
+	}
+
+	/* Residual connection wrapper */
+	.arch-residual-wrap {
+		position: relative;
+		display: flex;
+		flex-direction: column-reverse;
+		align-items: center;
+		gap: 6px;
+		width: 100%;
+		padding-left: 24px;
+	}
+
+	.arch-residual-line {
+		position: absolute;
+		left: 6px;
+		top: 8px;
+		bottom: 8px;
+		width: 3px;
+		border-radius: 2px;
+		background: hsl(270 50% 58% / 0.18);
+	}
+
+	/* Tooltip */
+	.arch-tooltip {
+		position: absolute;
+		bottom: 100%;
+		left: 50%;
+		transform: translateX(-50%) translateY(-8px);
+		max-width: 320px;
+		padding: 10px 14px;
+		border-radius: 8px;
+		background: hsl(var(--theme-text) / 0.92);
+		color: hsl(var(--theme-bg));
+		font-size: 0.8rem;
+		line-height: 1.5;
+		pointer-events: none;
+		opacity: 0;
+		transition: opacity 0.15s ease;
+		z-index: 10;
+		white-space: normal;
+	}
+
+	.arch-tooltip.visible {
+		opacity: 1;
+	}
+
+	/* Animation: data flow pulse */
+	.arch-block.arch-flow-active {
+		animation: archPulse 0.5s ease;
+	}
+
+	@keyframes archPulse {
+		0%   { transform: scale(1); box-shadow: none; }
+		50%  { transform: scale(1.06); box-shadow: 0 0 12px hsl(var(--theme-accent) / 0.3); }
+		100% { transform: scale(1); box-shadow: none; }
+	}
+
+	@media (max-width: 640px) {
+		.arch-block {
+			max-width: none;
+			padding: 10px 12px;
+		}
+		.arch-block-label {
+			font-size: 0.75rem;
+		}
+		.arch-norm-sm {
+			max-width: none;
+		}
+		.arch-residual-wrap {
+			padding-left: 18px;
+		}
+		.arch-tooltip {
+			max-width: 260px;
+			font-size: 0.75rem;
+		}
+	}
 </style>
 
 <script define:vars={{ sectionIds: sections.map(s => s.id) }}>
@@ -987,5 +1369,77 @@ const sections = [
 
 		closeBtn?.addEventListener('click', closeMobileDrawer);
 		backdrop?.addEventListener('click', closeMobileDrawer);
+
+		// --- Architecture diagram: tooltips + animation ---
+		const archDiagram = document.getElementById('arch-diagram');
+		const archTooltip = document.getElementById('arch-tooltip');
+		const animateBtn = document.getElementById('arch-animate-btn');
+
+		if (archDiagram && archTooltip) {
+			// Tooltip on hover/click
+			const allBlocks = archDiagram.querySelectorAll('[data-tip]');
+
+			function showTooltip(el) {
+				const tip = el.getAttribute('data-tip');
+				if (!tip) return;
+				archTooltip.textContent = tip;
+				archTooltip.classList.add('visible');
+				// Position relative to diagram wrap
+				const wrap = archDiagram.parentElement;
+				const wrapRect = wrap.getBoundingClientRect();
+				const elRect = el.getBoundingClientRect();
+				const tooltipLeft = elRect.left + elRect.width / 2 - wrapRect.left;
+				const tooltipTop = elRect.top - wrapRect.top - 8;
+				archTooltip.style.left = tooltipLeft + 'px';
+				archTooltip.style.top = tooltipTop + 'px';
+				archTooltip.style.bottom = 'auto';
+				archTooltip.style.transform = 'translateX(-50%)';
+			}
+
+			function hideTooltip() {
+				archTooltip.classList.remove('visible');
+			}
+
+			allBlocks.forEach(block => {
+				block.addEventListener('mouseenter', () => showTooltip(block));
+				block.addEventListener('mouseleave', hideTooltip);
+				block.addEventListener('click', () => showTooltip(block));
+			});
+
+			// Close tooltip on click outside
+			document.addEventListener('click', (e) => {
+				if (!e.target.closest('[data-tip]')) hideTooltip();
+			});
+		}
+
+		// Animate data flow
+		if (animateBtn && archDiagram) {
+			animateBtn.addEventListener('click', () => {
+				if (animateBtn.classList.contains('running')) return;
+				animateBtn.classList.add('running');
+
+				// Collect blocks in bottom-to-top visual order (column-reverse means DOM order is top-to-bottom visual, so reverse)
+				const blocks = Array.from(archDiagram.querySelectorAll('.arch-block'));
+				const orderedBlocks = blocks.reverse(); // now bottom-to-top
+
+				let i = 0;
+				function pulseNext() {
+					if (i >= orderedBlocks.length) {
+						animateBtn.classList.remove('running');
+						return;
+					}
+					const block = orderedBlocks[i];
+					block.classList.remove('arch-flow-active');
+					void block.offsetWidth; // force reflow
+					block.classList.add('arch-flow-active');
+					block.addEventListener('animationend', () => {
+						block.classList.remove('arch-flow-active');
+					}, { once: true });
+					i++;
+					setTimeout(pulseNext, 300);
+				}
+				pulseNext();
+			});
+		}
 	});
 </script>
