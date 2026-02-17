@@ -109,8 +109,146 @@ const sections = [
 
 		{/* Main content column */}
 		<article class="transformers-content">
+
+			{/* ===== Section 01: Preamble ===== */}
+			<section id="preamble" class="mb-24 scroll-mt-20">
+				<div class="mb-8 flex items-baseline gap-4">
+					<span class="font-mono text-sm text-accent/60">01</span>
+					<div>
+						<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">Preamble</h2>
+						<p class="mt-1 text-base text-textColor/60">Why transformers changed everything</p>
+					</div>
+				</div>
+
+				{/* Introductory prose */}
+				<div class="preamble-prose">
+					<p>
+						In 2017, a team at Google published a paper with an unassuming title:
+						<em>"Attention Is All You Need."</em> It introduced the <strong>transformer</strong> — an
+						architecture that would go on to power GPT, BERT, Claude, Stable Diffusion,
+						AlphaFold, and nearly every major AI breakthrough since.
+					</p>
+					<p>
+						Before transformers, sequence models processed tokens one at a time.
+						Recurrent neural networks (RNNs) and their variants — LSTMs and GRUs —
+						passed a hidden state forward step by step, like reading a book one word
+						at a time and trying to remember the whole plot through a single bottleneck of memory.
+					</p>
+					<p>
+						This sequential constraint meant two things: training was slow (you couldn't
+						parallelize), and long-range dependencies were hard to capture. By the time
+						the model reached the end of a long paragraph, the beginning had faded.
+					</p>
+					<p>
+						The transformer's key insight was radical: <strong>throw away recurrence entirely.</strong>
+						Instead, let every token attend to every other token simultaneously. This
+						mechanism — <em>self-attention</em> — lets the model look at the entire input at
+						once, deciding which parts matter for each part.
+					</p>
+				</div>
+
+				{/* Timeline: RNNs → LSTMs → Attention → Transformers */}
+				<div class="preamble-timeline" aria-label="Evolution from RNNs to Transformers">
+					<div class="timeline-track"></div>
+					<div class="timeline-item">
+						<div class="timeline-dot timeline-dot-past"></div>
+						<div class="timeline-content">
+							<span class="timeline-year">~2014</span>
+							<span class="timeline-label">RNNs &amp; LSTMs</span>
+							<span class="timeline-desc">Sequential processing, one token at a time</span>
+						</div>
+					</div>
+					<div class="timeline-item">
+						<div class="timeline-dot timeline-dot-past"></div>
+						<div class="timeline-content">
+							<span class="timeline-year">2015</span>
+							<span class="timeline-label">Attention (Bahdanau)</span>
+							<span class="timeline-desc">Learned to focus on relevant input positions</span>
+						</div>
+					</div>
+					<div class="timeline-item">
+						<div class="timeline-dot timeline-dot-present"></div>
+						<div class="timeline-content">
+							<span class="timeline-year">2017</span>
+							<span class="timeline-label">Transformer</span>
+							<span class="timeline-desc">Attention is all you need — no recurrence</span>
+						</div>
+					</div>
+					<div class="timeline-item">
+						<div class="timeline-dot timeline-dot-future"></div>
+						<div class="timeline-content">
+							<span class="timeline-year">2018+</span>
+							<span class="timeline-label">GPT, BERT, and beyond</span>
+							<span class="timeline-desc">Scaling transforms everything</span>
+						</div>
+					</div>
+				</div>
+
+				{/* Visual vocabulary — component color legend */}
+				<div class="preamble-vocab">
+					<p class="vocab-intro">
+						Throughout this explainer, we'll use a consistent visual language.
+						Each major component has its own color, so you'll always know what you're looking at:
+					</p>
+					<div class="vocab-grid">
+						<div class="vocab-item">
+							<div class="vocab-swatch vocab-embedding"></div>
+							<div class="vocab-meta">
+								<span class="vocab-name">Embedding</span>
+								<span class="vocab-hint">Words &rarr; vectors</span>
+							</div>
+						</div>
+						<div class="vocab-item">
+							<div class="vocab-swatch vocab-attention"></div>
+							<div class="vocab-meta">
+								<span class="vocab-name">Attention</span>
+								<span class="vocab-hint">Tokens talk to each other</span>
+							</div>
+						</div>
+						<div class="vocab-item">
+							<div class="vocab-swatch vocab-ffn"></div>
+							<div class="vocab-meta">
+								<span class="vocab-name">Feed-Forward</span>
+								<span class="vocab-hint">Per-token computation</span>
+							</div>
+						</div>
+						<div class="vocab-item">
+							<div class="vocab-swatch vocab-residual"></div>
+							<div class="vocab-meta">
+								<span class="vocab-name">Residual Stream</span>
+								<span class="vocab-hint">The information highway</span>
+							</div>
+						</div>
+						<div class="vocab-item">
+							<div class="vocab-swatch vocab-output"></div>
+							<div class="vocab-meta">
+								<span class="vocab-name">Output</span>
+								<span class="vocab-hint">Vectors &rarr; words</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{/* Black box teaser */}
+				<div class="preamble-teaser">
+					<div class="teaser-box">
+						<div class="teaser-label-in">tokens in</div>
+						<div class="teaser-blackbox">
+							<span class="teaser-q">?</span>
+						</div>
+						<div class="teaser-label-out">prediction out</div>
+					</div>
+					<p class="teaser-text">
+						Right now, the transformer is a black box. Tokens go in, a prediction comes out.
+						Over the next eight sections, we'll open this box — layer by layer, mechanism
+						by mechanism — until there's nothing left to hide.
+					</p>
+				</div>
+			</section>
+
+			{/* ===== Sections 02–09: Placeholders ===== */}
 			{
-				sections.map((section) => (
+				sections.filter(s => s.id !== 'preamble').map((section) => (
 					<section
 						id={section.id}
 						class="section-placeholder mb-24 scroll-mt-20"
@@ -522,6 +660,233 @@ const sections = [
 	@keyframes fadeIn {
 		from { opacity: 0; }
 		to { opacity: 1; }
+	}
+
+	/* ===== Preamble prose ===== */
+	.preamble-prose {
+		max-width: 42rem;
+	}
+
+	.preamble-prose p {
+		font-size: 1.05rem;
+		line-height: 1.75;
+		color: hsl(var(--theme-text) / 0.78);
+		margin-bottom: 1.25rem;
+	}
+
+	.preamble-prose em {
+		color: hsl(var(--theme-text) / 0.9);
+		font-style: italic;
+	}
+
+	.preamble-prose strong {
+		color: hsl(var(--theme-text) / 0.95);
+		font-weight: 600;
+	}
+
+	/* ===== Timeline ===== */
+	.preamble-timeline {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+		padding: 2.5rem 0 2rem 1.5rem;
+		margin: 2rem 0;
+	}
+
+	.timeline-track {
+		position: absolute;
+		left: 7px;
+		top: 2.5rem;
+		bottom: 2rem;
+		width: 2px;
+		background: hsl(var(--theme-text) / 0.08);
+		border-radius: 1px;
+	}
+
+	.timeline-item {
+		display: flex;
+		align-items: flex-start;
+		gap: 1rem;
+		padding: 0.75rem 0;
+		position: relative;
+	}
+
+	.timeline-dot {
+		flex-shrink: 0;
+		width: 16px;
+		height: 16px;
+		border-radius: 50%;
+		border: 2px solid;
+		position: relative;
+		left: -1.5rem;
+		margin-right: -1.5rem;
+		z-index: 1;
+	}
+
+	.timeline-dot-past {
+		border-color: hsl(var(--theme-text) / 0.2);
+		background: hsl(var(--theme-bg));
+	}
+
+	.timeline-dot-present {
+		border-color: hsl(var(--theme-accent));
+		background: hsl(var(--theme-accent));
+		box-shadow: 0 0 0 4px hsl(var(--theme-accent) / 0.15);
+	}
+
+	.timeline-dot-future {
+		border-color: hsl(var(--theme-accent) / 0.4);
+		background: hsl(var(--theme-bg));
+	}
+
+	.timeline-content {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		padding-left: 0.5rem;
+	}
+
+	.timeline-year {
+		font-family: ui-monospace, monospace;
+		font-size: 0.72rem;
+		font-weight: 600;
+		color: hsl(var(--theme-accent) / 0.7);
+		letter-spacing: 0.03em;
+	}
+
+	.timeline-label {
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.85);
+	}
+
+	.timeline-desc {
+		font-size: 0.82rem;
+		color: hsl(var(--theme-text) / 0.5);
+	}
+
+	/* ===== Visual vocabulary ===== */
+	.preamble-vocab {
+		margin: 2.5rem 0;
+	}
+
+	.vocab-intro {
+		font-size: 1.05rem;
+		line-height: 1.75;
+		color: hsl(var(--theme-text) / 0.78);
+		margin-bottom: 1.25rem;
+		max-width: 42rem;
+	}
+
+	.vocab-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+		gap: 12px;
+	}
+
+	.vocab-item {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 10px 14px;
+		border-radius: 8px;
+		border: 1px solid hsl(var(--theme-text) / 0.06);
+		background: hsl(var(--theme-text) / 0.02);
+	}
+
+	.vocab-swatch {
+		flex-shrink: 0;
+		width: 28px;
+		height: 28px;
+		border-radius: 6px;
+	}
+
+	/* Component colors — these will be reused in all subsequent sections */
+	.vocab-embedding  { background: hsl(210 70% 55%); } /* blue */
+	.vocab-attention  { background: hsl(35 90% 55%); }  /* amber/orange */
+	.vocab-ffn        { background: hsl(150 55% 45%); } /* green */
+	.vocab-residual   { background: hsl(270 50% 58%); } /* purple */
+	.vocab-output     { background: hsl(350 65% 55%); } /* rose/red */
+
+	.vocab-meta {
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
+	}
+
+	.vocab-name {
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.85);
+	}
+
+	.vocab-hint {
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.45);
+	}
+
+	/* ===== Black box teaser ===== */
+	.preamble-teaser {
+		margin: 3rem 0 1rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.5rem;
+	}
+
+	.teaser-box {
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+	}
+
+	.teaser-label-in,
+	.teaser-label-out {
+		font-family: ui-monospace, monospace;
+		font-size: 0.78rem;
+		color: hsl(var(--theme-text) / 0.45);
+		letter-spacing: 0.02em;
+	}
+
+	.teaser-blackbox {
+		width: 120px;
+		height: 80px;
+		border-radius: 12px;
+		background: hsl(var(--theme-text) / 0.08);
+		border: 1.5px solid hsl(var(--theme-text) / 0.15);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+	}
+
+	.teaser-q {
+		font-size: 2rem;
+		font-weight: 700;
+		color: hsl(var(--theme-text) / 0.18);
+		user-select: none;
+	}
+
+	.teaser-text {
+		font-size: 1.05rem;
+		line-height: 1.75;
+		color: hsl(var(--theme-text) / 0.78);
+		max-width: 42rem;
+		text-align: center;
+	}
+
+	@media (max-width: 480px) {
+		.teaser-box {
+			gap: 1rem;
+		}
+		.teaser-blackbox {
+			width: 90px;
+			height: 64px;
+		}
+		.vocab-grid {
+			grid-template-columns: 1fr;
+		}
 	}
 </style>
 
