@@ -838,6 +838,63 @@ const sections = [
 						controlling the mix.
 					</p>
 				</div>
+
+				{/* ===== Feature #10: Attention pattern heatmap ===== */}
+				<div class="subsection-divider"></div>
+				<h3 class="subsection-title"><span class="subsection-label">04c</span> Attention Pattern Heatmap</h3>
+
+				<div class="linkage-callout linkage-attention">
+					<span class="linkage-icon">&#8599;</span>
+					<span>In the previous step, we computed attention weights for one query token. When we do this for <strong>every</strong> token in the sequence, the result is a full <strong>attention matrix</strong> — a square grid showing how much each token attends to every other.</span>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						The attention matrix is the heart of the transformer's context-gathering mechanism.
+						Each row is one token's attention distribution (from the softmax we just saw), and each
+						column shows how much that key token is attended to. The matrix is always square —
+						<em>n</em> tokens produce an <em>n</em>&times;<em>n</em> grid.
+					</p>
+					<p>
+						Hover over any cell below to see the exact attention weight and the source/target
+						tokens. Notice the patterns: the model has learned which words are relevant to
+						which — even in this short sentence.
+					</p>
+				</div>
+
+				<div class="attn-heatmap-container" id="attn-heatmap">
+					<div class="attn-heatmap-title">Attention weights for "The cat sat"</div>
+					<div class="attn-heatmap-subtitle">Each row shows where that token looks (query → key)</div>
+
+					{/* Single flat grid: 4 columns (label + 3 cells), 4 rows (header + 3 data) */}
+					<div class="attn-heatmap-grid" id="heatmap-grid"></div>
+
+					{/* Tooltip */}
+					<div class="attn-heatmap-tooltip" id="heatmap-tooltip"></div>
+
+					{/* Color scale legend */}
+					<div class="attn-heatmap-legend">
+						<span class="attn-heatmap-legend-label">0</span>
+						<div class="attn-heatmap-legend-bar"></div>
+						<span class="attn-heatmap-legend-label">1</span>
+					</div>
+					<div class="attn-heatmap-legend-caption">Attention weight (darker = stronger)</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Notice the diagonal tendency — tokens often attend to themselves, which makes sense
+						because a word's own context is usually relevant. But the off-diagonal cells are where
+						the magic happens: "cat" attending strongly to "sat" captures the subject-verb
+						relationship, while "sat" attending to "cat" lets the verb know its subject.
+					</p>
+					<p>
+						This matrix is computed once per attention head. In a real transformer, there are
+						multiple heads (typically 8&ndash;96), each learning to attend to different patterns —
+						some capture syntax, some semantics, some positional relationships. We'll see how
+						they combine in the next section.
+					</p>
+				</div>
 			</section>
 
 			{/* ===== Sections 05–09: Placeholders ===== */}
@@ -2741,6 +2798,182 @@ const sections = [
 			font-size: 0.9rem;
 		}
 	}
+
+	/* ===== Feature #10: Attention heatmap ===== */
+	.attn-heatmap-container {
+		margin: 2rem 0;
+		padding: 1.5rem;
+		background: hsl(var(--theme-bg));
+		border: 1px solid hsl(var(--theme-text) / 0.1);
+		border-radius: 12px;
+	}
+
+	.attn-heatmap-title {
+		font-weight: 600;
+		font-size: 0.95rem;
+		color: hsl(var(--theme-text) / 0.85);
+		text-align: center;
+		margin-bottom: 2px;
+	}
+
+	.attn-heatmap-subtitle {
+		font-size: 0.78rem;
+		color: hsl(var(--theme-text) / 0.45);
+		text-align: center;
+		margin-bottom: 1.25rem;
+	}
+
+	.attn-heatmap-grid {
+		display: grid;
+		grid-template-columns: auto repeat(3, 80px);
+		grid-template-rows: auto repeat(3, 80px);
+		gap: 4px;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.attn-heatmap-corner {
+		font-size: 0.7rem;
+		color: hsl(var(--theme-text) / 0.4);
+		text-align: right;
+		padding-right: 10px;
+		padding-bottom: 4px;
+		line-height: 1.2;
+	}
+
+	.attn-heatmap-col-label {
+		text-align: center;
+		font-size: 0.82rem;
+		font-weight: 600;
+		padding: 4px 0;
+		color: hsl(var(--theme-text) / 0.7);
+		transition: color 0.15s, opacity 0.15s;
+	}
+
+	.attn-heatmap-col-label.highlight {
+		color: hsl(35 90% 55%);
+	}
+
+	.attn-heatmap-col-label.dimmed {
+		opacity: 0.3;
+	}
+
+	.attn-heatmap-row-label {
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.7);
+		text-align: right;
+		padding-right: 10px;
+		transition: color 0.15s, opacity 0.15s;
+	}
+
+	.attn-heatmap-row-label.highlight {
+		color: hsl(35 90% 55%);
+	}
+
+	.attn-heatmap-row-label.dimmed {
+		opacity: 0.3;
+	}
+
+	.attn-heatmap-cell {
+		width: 80px;
+		height: 80px;
+		border-radius: 8px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.85rem;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		cursor: pointer;
+		transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+		position: relative;
+	}
+
+	.attn-heatmap-cell:hover {
+		transform: scale(1.08);
+		box-shadow: 0 0 0 2px hsl(35 90% 55% / 0.6);
+		z-index: 2;
+	}
+
+	.attn-heatmap-cell.dimmed {
+		opacity: 0.3;
+	}
+
+	.attn-heatmap-tooltip {
+		position: absolute;
+		background: hsl(var(--theme-text) / 0.9);
+		color: hsl(var(--theme-bg));
+		padding: 6px 12px;
+		border-radius: 6px;
+		font-size: 0.8rem;
+		pointer-events: none;
+		opacity: 0;
+		transition: opacity 0.15s;
+		white-space: nowrap;
+		z-index: 10;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.attn-heatmap-tooltip.visible {
+		opacity: 1;
+	}
+
+	.attn-heatmap-legend {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		margin-top: 1rem;
+	}
+
+	.attn-heatmap-legend-label {
+		font-size: 0.75rem;
+		color: hsl(var(--theme-text) / 0.5);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.attn-heatmap-legend-bar {
+		width: 160px;
+		height: 14px;
+		border-radius: 4px;
+		background: linear-gradient(to right,
+			hsl(35 90% 55% / 0.05),
+			hsl(35 90% 55% / 0.25),
+			hsl(35 90% 55% / 0.5),
+			hsl(35 90% 55% / 0.75),
+			hsl(35 90% 55%)
+		);
+	}
+
+	.attn-heatmap-legend-caption {
+		text-align: center;
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.4);
+		margin-top: 4px;
+	}
+
+	@media (max-width: 480px) {
+		.attn-heatmap-container {
+			padding: 1rem;
+		}
+		.attn-heatmap-grid {
+			grid-template-columns: auto repeat(3, 60px);
+			grid-template-rows: auto repeat(3, 60px);
+		}
+		.attn-heatmap-cell {
+			width: 60px;
+			height: 60px;
+			font-size: 0.75rem;
+		}
+		.attn-heatmap-row-label {
+			font-size: 0.75rem;
+		}
+		.attn-heatmap-col-label {
+			font-size: 0.75rem;
+		}
+	}
 </style>
 
 <script define:vars={{ sectionIds: sections.map(s => s.id) }}>
@@ -3722,5 +3955,117 @@ const sections = [
 		renderRawScores();
 		renderScaledScores();
 		renderBars(1.0);
+	});
+</script>
+
+<script is:inline>
+	document.addEventListener('DOMContentLoaded', () => {
+		// ===== Feature #10: Attention pattern heatmap =====
+		const tokens = ['The', 'cat', 'sat'];
+		// Realistic attention weights (each row sums to ~1.0)
+		// Row = query token, Col = key token
+		const attnWeights = [
+			[0.42, 0.31, 0.27],  // "The" attends to: self (0.42), cat (0.31), sat (0.27)
+			[0.21, 0.46, 0.33],  // "cat" attends to: The (0.21), self (0.46), sat (0.33)
+			[0.15, 0.38, 0.47],  // "sat" attends to: The (0.15), cat (0.38), self (0.47)
+		];
+
+		const gridEl = document.getElementById('heatmap-grid');
+		const tooltipEl = document.getElementById('heatmap-tooltip');
+		if (!gridEl || !tooltipEl) return;
+
+		const allCells = [];
+		const allRowLabels = [];
+		const allColLabels = [];
+
+		// Row 0: corner + column labels
+		const corner = document.createElement('div');
+		corner.className = 'attn-heatmap-corner';
+		corner.innerHTML = 'Key →<br>Query ↓';
+		gridEl.appendChild(corner);
+
+		tokens.forEach((tok) => {
+			const label = document.createElement('div');
+			label.className = 'attn-heatmap-col-label';
+			label.textContent = '"' + tok + '"';
+			gridEl.appendChild(label);
+			allColLabels.push(label);
+		});
+
+		// Rows 1-3: row label + cells
+		for (let ri = 0; ri < tokens.length; ri++) {
+			const rowLabel = document.createElement('div');
+			rowLabel.className = 'attn-heatmap-row-label';
+			rowLabel.textContent = '"' + tokens[ri] + '"';
+			gridEl.appendChild(rowLabel);
+			allRowLabels.push(rowLabel);
+
+			for (let ci = 0; ci < tokens.length; ci++) {
+				const weight = attnWeights[ri][ci];
+				const cell = document.createElement('div');
+				cell.className = 'attn-heatmap-cell';
+				cell.textContent = weight.toFixed(2);
+				cell.dataset.row = ri;
+				cell.dataset.col = ci;
+
+				// Amber color with opacity proportional to weight
+				const alpha = 0.08 + weight * 0.85;
+				cell.style.background = 'hsl(35 90% 55% / ' + alpha.toFixed(2) + ')';
+
+				// Text color: dark on strong, light on weak
+				if (weight > 0.35) {
+					cell.style.color = 'hsl(35 20% 15%)';
+				} else {
+					cell.style.color = 'hsl(var(--theme-text) / 0.7)';
+				}
+
+				cell.addEventListener('mouseenter', () => highlightCell(ri, ci));
+				cell.addEventListener('mouseleave', clearHighlight);
+				cell.addEventListener('click', (e) => {
+					e.stopPropagation();
+					highlightCell(ri, ci);
+				});
+
+				gridEl.appendChild(cell);
+				allCells.push(cell);
+			}
+		}
+
+		function highlightCell(row, col) {
+			const weight = attnWeights[row][col];
+
+			allRowLabels.forEach((label, i) => {
+				label.classList.toggle('highlight', i === row);
+				label.classList.toggle('dimmed', i !== row);
+			});
+			allColLabels.forEach((label, i) => {
+				label.classList.toggle('highlight', i === col);
+				label.classList.toggle('dimmed', i !== col);
+			});
+
+			allCells.forEach((c) => {
+				const cr = parseInt(c.dataset.row);
+				const cc = parseInt(c.dataset.col);
+				c.classList.toggle('dimmed', cr !== row || cc !== col);
+			});
+
+			tooltipEl.textContent = '"' + tokens[row] + '" → "' + tokens[col] + '": ' + weight.toFixed(3);
+			tooltipEl.classList.add('visible');
+		}
+
+		function clearHighlight() {
+			allRowLabels.forEach((label) => {
+				label.classList.remove('highlight', 'dimmed');
+			});
+			allColLabels.forEach((label) => {
+				label.classList.remove('highlight', 'dimmed');
+			});
+			allCells.forEach((c) => {
+				c.classList.remove('dimmed');
+			});
+			tooltipEl.classList.remove('visible');
+		}
+
+		document.addEventListener('click', clearHighlight);
 	});
 </script>
