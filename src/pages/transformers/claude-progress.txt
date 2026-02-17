@@ -217,3 +217,28 @@
 - Verified in Playwright: dark + light themes, temperature slider interaction (0.3 sharp → 0.716 on "cat", 1.6 smooth → 0.413 on "cat"), sum always 1.000
 - Commit: d045399
 - Next: Feature #10 — Single attention head (attention pattern heatmap)
+
+=== Feature #10 Completed — 2026-02-17 ===
+- Added subsection "04c Attention Pattern Heatmap" within the Attention section
+- Linkage callout: amber-tinted banner connecting to Q·K dot products from Feature #9
+- Introductory prose: attention matrix is n×n grid, each row is one token's softmax distribution
+- Interactive 3×3 heatmap grid for "The cat sat" (same tokens as #8/#9):
+  - Flat CSS Grid layout: 4 columns (label + 3 cells), 4 rows (header + 3 data)
+  - Corner label: "Key → / Query ↓"
+  - Column labels (keys) across top, row labels (queries) down left side
+  - 9 cells with amber intensity proportional to attention weight
+  - Realistic weights: diagonal dominant (self-attention), with meaningful off-diagonal patterns
+    - "The": [0.42, 0.31, 0.27], "cat": [0.21, 0.46, 0.33], "sat": [0.15, 0.38, 0.47]
+  - Hover any cell: tooltip shows "query → key: weight", row/col labels highlight, other cells dim
+  - Click to pin highlight, click outside to clear
+- Color scale legend: gradient bar from 0 (light) to 1 (amber), with "darker = stronger" caption
+- Closing prose: diagonal tendency, off-diagonal captures subject-verb relationships, intro to multi-head
+- Initial layout attempt used nested divs with display:contents — caused misalignment
+  - Fix: refactored to single flat grid populated entirely via JS, ensuring row labels and cells share same grid container
+- CSS additions: .attn-heatmap-grid, .attn-heatmap-corner, .attn-heatmap-cell, .attn-heatmap-tooltip, .attn-heatmap-legend
+- JS in <script is:inline> with highlightCell/clearHighlight functions
+- Mobile responsive: 60px cells at ≤480px
+- Build passes with 0 errors
+- Verified in Playwright: dark + light themes, hover interaction ("sat" → "cat": 0.380 tooltip)
+- Commit: 5ecd8b2
+- Next: Feature #11 — Single attention head (value-weighted output animation)

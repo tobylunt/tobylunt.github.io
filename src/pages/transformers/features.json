@@ -122,7 +122,7 @@
   {
     "id": 10,
     "name": "Single attention head — attention pattern heatmap",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Navigate to the attention heatmap subsection",
       "LINKAGE: Verify the heatmap is presented as the RESULT of the Q·K dot products and softmax from feature #9 — not as an unrelated visualization. The transition should make clear: 'when we compute these scores for all token pairs, we get this matrix'",
