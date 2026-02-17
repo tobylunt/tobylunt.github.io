@@ -163,7 +163,7 @@
   {
     "id": 13,
     "name": "Multi-head attention — concatenation, projection, and interactive explorer",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Navigate to the multi-head concatenation subsection",
       "LINKAGE: Verify a diagram shows the outputs from the parallel heads in feature #12 being concatenated into a single wide vector, then projected by W_O back to the model dimension. The head outputs should use the same visual style as #12",

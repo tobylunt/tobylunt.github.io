@@ -290,3 +290,32 @@
 - Verified in Playwright: dark + light themes, parallel diagram, 3 heatmap cards with distinct patterns
 - Commit: c311f9d
 - Next: Feature #13 — Multi-head attention (concatenation, projection, and interactive explorer)
+
+=== Feature #13 Completed — 2026-02-17 ===
+- Added subsection "05b Concatenation & Projection" within Multi-Head Attention section
+- Linkage callout: amber-tinted banner connecting to the three heads from Feature #12
+- Prose about subspace division (d_model / h = d_k per head), cost equivalence
+- Formula display: MultiHead(Q, K, V) = Concat(head₁, …, headₕ) · W_O
+- Concatenation & projection diagram:
+  - Three color-coded head output vectors (blue=H1, amber=H2, purple=H3)
+  - ↓ Concat arrow
+  - Wide concatenated bar with H1/H2/H3 segments (h × d_k = 3 × 64 = 192)
+  - ↓ × W_O arrow
+  - Multi-Head Output box (d_model = 768)
+  - All elements react to head toggle (disabled heads dim in diagram + bar)
+- Interactive head toggle:
+  - Three toggle buttons: Head 1 (positional), Head 2 (syntactic), Head 3 (identity)
+  - Active state: amber border + indicator dot; inactive: gray
+  - Combined output vector updates in real-time based on active heads
+  - 8 unique notes for all 2^3 combinations (all on, pairs, singles, none)
+  - Output in concat diagram also updates
+- Residual stream handoff diagram:
+  - x (Input, purple) + MHA(x) (amber) = x + MHA(x) (Enriched, purple)
+  - Caption linking to feed-forward network
+- Closing prose: transition to feed-forward network section
+- CSS: .mha-formula, .mha-concat-diagram, .mha-concat-heads, .mha-concat-head-vec, .mha-concat-wide-*, .mha-concat-output, .mha-toggle-*, .mha-residual-*
+- Mobile responsive (@media max-width: 480px → column layouts, rotated operators)
+- Build passes with 0 errors
+- Verified in Playwright: dark + light themes, toggle interaction (Head 1 off → output updates, note changes), residual handoff diagram
+- Commit: b4b4ace
+- Next: Feature #14 — Feed-forward network (structure, activation functions, and role)
