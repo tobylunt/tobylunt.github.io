@@ -1313,9 +1313,153 @@ const sections = [
 				</div>
 			</section>
 
-			{/* ===== Sections 06–09: Placeholders ===== */}
+
+			{/* ===== Section 06: Feed-Forward Network ===== */}
+			<section id="ffn" class="mb-24 scroll-mt-20">
+				<div class="mb-8 flex items-baseline gap-4">
+					<span class="font-mono text-sm text-accent/60">06</span>
+					<div>
+						<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">Feed-Forward Network</h2>
+						<p class="mt-1 text-base text-textColor/60">Per-token computation and memory</p>
+					</div>
+				</div>
+
+				<div class="linkage-callout linkage-ffn">
+					<span class="linkage-icon">&#8599;</span>
+					<span>We&rsquo;re now in the <strong>Feed-Forward Network</strong> block &mdash; the second half of each transformer layer. The enriched vectors from multi-head attention (x + MHA(x)) arrive here for per-token processing.</span>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						After attention has mixed information across tokens, each token passes independently
+						through a <strong>feed-forward network</strong> (FFN). Unlike attention, which lets tokens
+						communicate, the FFN processes each token in isolation &mdash; the same weights
+						applied to every position. Think of attention as a <strong>meeting</strong> where tokens
+						exchange information, and the FFN as <strong>individual work time</strong> where each token
+						processes what it learned.
+					</p>
+					<p>
+						The FFN has a distinctive two-layer structure: it <strong>expands</strong> the vector to a
+						higher dimension, applies a nonlinear activation function, then <strong>compresses</strong>
+						it back. This expand-activate-compress pattern is where much of the transformer&rsquo;s
+						&ldquo;knowledge&rdquo; is stored.
+					</p>
+				</div>
+
+				{/* FFN structure diagram: expand-activate-compress */}
+				<div class="ffn-structure-diagram">
+					<div class="ffn-structure-title">Feed-forward network structure</div>
+					<div class="ffn-structure-formula">FFN(x) = W<sub>2</sub> &middot; &sigma;(W<sub>1</sub> &middot; x + b<sub>1</sub>) + b<sub>2</sub></div>
+					<div class="ffn-bulge">
+						<div class="ffn-bulge-stage ffn-stage-input">
+							<div class="ffn-bar" style="height: 60px;"></div>
+							<div class="ffn-stage-label">Input</div>
+							<div class="ffn-stage-dim">d<sub>model</sub><br>768</div>
+						</div>
+						<div class="ffn-bulge-arrow">&rarr;</div>
+						<div class="ffn-bulge-stage ffn-stage-w1">
+							<div class="ffn-bar-label">W<sub>1</sub></div>
+							<div class="ffn-bar" style="height: 30px;"></div>
+						</div>
+						<div class="ffn-bulge-arrow">&rarr;</div>
+						<div class="ffn-bulge-stage ffn-stage-expanded">
+							<div class="ffn-bar ffn-bar-tall" style="height: 180px;"></div>
+							<div class="ffn-stage-label">&sigma; Activation</div>
+							<div class="ffn-stage-dim">4 &times; d<sub>model</sub><br>3072</div>
+						</div>
+						<div class="ffn-bulge-arrow">&rarr;</div>
+						<div class="ffn-bulge-stage ffn-stage-w2">
+							<div class="ffn-bar-label">W<sub>2</sub></div>
+							<div class="ffn-bar" style="height: 30px;"></div>
+						</div>
+						<div class="ffn-bulge-arrow">&rarr;</div>
+						<div class="ffn-bulge-stage ffn-stage-output">
+							<div class="ffn-bar" style="height: 60px;"></div>
+							<div class="ffn-stage-label">Output</div>
+							<div class="ffn-stage-dim">d<sub>model</sub><br>768</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						The expansion ratio is typically <strong>4&times;</strong>: a 768-dimensional input becomes
+						a 3072-dimensional hidden representation, then gets compressed back to 768.
+						This &ldquo;bulge&rdquo; creates a much larger space for the network to work in &mdash;
+						like expanding into a bigger workshop, doing detailed work, then packing
+						the results back into a compact form.
+					</p>
+					<p>
+						The nonlinear <strong>activation function</strong> between the two linear layers is what
+						gives the FFN its power. Without it, stacking two linear transformations would
+						just be one bigger linear transformation &mdash; nothing interesting.
+						The activation introduces the <strong>nonlinearity</strong> that lets the network learn
+						complex patterns.
+					</p>
+				</div>
+
+				{/* Interactive activation function comparison */}
+				<div class="ffn-activation-container" id="ffn-activation">
+					<div class="ffn-activation-title">Activation functions</div>
+					<div class="ffn-activation-buttons" id="ffn-activation-buttons">
+						<button class="ffn-act-btn ffn-act-active" data-fn="relu" id="ffn-btn-relu">ReLU</button>
+						<button class="ffn-act-btn" data-fn="gelu" id="ffn-btn-gelu">GELU</button>
+						<button class="ffn-act-btn" data-fn="silu" id="ffn-btn-silu">SiLU / Swish</button>
+					</div>
+					<canvas id="ffn-activation-canvas" width="480" height="280"></canvas>
+					<div class="ffn-activation-desc" id="ffn-activation-desc">
+						<strong>ReLU</strong>: max(0, x). The original transformer used this. Simple and fast, but
+						&ldquo;dead neurons&rdquo; (always zero for negative inputs) can waste capacity.
+					</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Researchers have found that the FFN layers act as a kind of <strong>key-value memory</strong>.
+						Each neuron in the expanded layer acts like a &ldquo;pattern detector&rdquo; &mdash; it activates
+						when it recognizes certain features in the input. The first linear layer (W<sub>1</sub>) selects
+						which patterns match, the activation function gates them, and the second linear layer
+						(W<sub>2</sub>) maps the activated patterns back to the output space. This is where much of the
+						transformer&rsquo;s factual knowledge lives.
+					</p>
+				</div>
+
+				{/* Residual connection: FFN output added back */}
+				<div class="ffn-residual-handoff">
+					<div class="ffn-residual-title">Completing one transformer layer</div>
+					<div class="ffn-residual-flow">
+						<div class="ffn-residual-box ffn-res-input">
+							<div class="ffn-residual-box-label">After Attention</div>
+							<div class="ffn-residual-box-val">x + MHA(x)</div>
+						</div>
+						<div class="ffn-residual-plus">+</div>
+						<div class="ffn-residual-box ffn-res-ffn">
+							<div class="ffn-residual-box-label">FFN Output</div>
+							<div class="ffn-residual-box-val">FFN(&hellip;)</div>
+						</div>
+						<div class="ffn-residual-equals">=</div>
+						<div class="ffn-residual-box ffn-res-result">
+							<div class="ffn-residual-box-label">Layer Output</div>
+							<div class="ffn-residual-box-val">x&prime;</div>
+						</div>
+					</div>
+					<div class="ffn-residual-caption">This completes one transformer layer. The output x&prime; then flows into the next layer &mdash; through another attention + FFN cycle &mdash; or, if this is the final layer, into the output head.</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						That&rsquo;s one complete transformer layer: <strong>multi-head attention</strong> for cross-token
+						communication, then a <strong>feed-forward network</strong> for per-token processing, both
+						connected through <strong>residual connections</strong>. In a typical model, this pattern
+						repeats 12&ndash;96 times. The residual stream &mdash; the highway that carries
+						information through all these layers &mdash; is the subject of the next section.
+					</p>
+				</div>
+			</section>
+
+			{/* ===== Sections 07–09: Placeholders ===== */}
 			{
-				sections.filter(s => !['preamble','architecture','embeddings','attention','multi-head-attention'].includes(s.id)).map((section) => (
+				sections.filter(s => !['preamble','architecture','embeddings','attention','multi-head-attention','ffn'].includes(s.id)).map((section) => (
 					<section
 						id={section.id}
 						class="section-placeholder mb-24 scroll-mt-20"
@@ -4249,6 +4393,292 @@ const sections = [
 			transform: rotate(90deg);
 		}
 	}
+
+	/* ===== Feature #14: Feed-Forward Network ===== */
+	.linkage-ffn {
+		background: hsl(150 55% 45% / 0.06);
+		border-color: hsl(150 55% 45% / 0.25);
+	}
+	.linkage-ffn .linkage-icon { color: hsl(150 55% 45%); }
+
+	.ffn-structure-diagram {
+		background: hsl(var(--theme-text) / 0.02);
+		border: 1.5px solid hsl(var(--theme-text) / 0.08);
+		border-radius: 12px;
+		padding: 1.5rem;
+		margin: 1.5rem 0;
+		overflow-x: auto;
+	}
+
+	.ffn-structure-title {
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: hsl(150 55% 45%);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		margin-bottom: 0.5rem;
+	}
+
+	.ffn-structure-formula {
+		font-family: Georgia, 'Times New Roman', serif;
+		font-size: 0.95rem;
+		color: hsl(var(--theme-text) / 0.7);
+		margin-bottom: 1.2rem;
+		text-align: center;
+	}
+
+	.ffn-bulge {
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		gap: 0;
+		padding: 1rem 0;
+		min-height: 240px;
+	}
+
+	.ffn-bulge-stage {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 6px;
+		min-width: 60px;
+	}
+
+	.ffn-bar {
+		width: 40px;
+		border-radius: 6px;
+		background: hsl(150 55% 45% / 0.35);
+		border: 1.5px solid hsl(150 55% 45% / 0.5);
+		transition: height 0.3s ease;
+	}
+
+	.ffn-bar-tall {
+		width: 56px;
+		background: hsl(150 55% 45% / 0.5);
+		border-color: hsl(150 55% 45% / 0.7);
+	}
+
+	.ffn-stage-label {
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.7);
+		text-align: center;
+	}
+
+	.ffn-stage-dim {
+		font-size: 0.68rem;
+		color: hsl(var(--theme-text) / 0.4);
+		text-align: center;
+		line-height: 1.3;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.ffn-bulge-arrow {
+		font-size: 1.2rem;
+		color: hsl(var(--theme-text) / 0.25);
+		align-self: center;
+		padding: 0 4px;
+		margin-bottom: 30px;
+	}
+
+	.ffn-bar-label {
+		font-size: 0.72rem;
+		font-weight: 600;
+		color: hsl(150 55% 45% / 0.8);
+		font-family: Georgia, serif;
+		margin-bottom: 2px;
+	}
+
+	.ffn-stage-w1 .ffn-bar,
+	.ffn-stage-w2 .ffn-bar {
+		width: 30px;
+		background: hsl(150 55% 45% / 0.2);
+		border-color: hsl(150 55% 45% / 0.35);
+		border-style: dashed;
+	}
+
+	/* Activation function interactive */
+	.ffn-activation-container {
+		background: hsl(var(--theme-text) / 0.02);
+		border: 1.5px solid hsl(var(--theme-text) / 0.08);
+		border-radius: 12px;
+		padding: 1.5rem;
+		margin: 1.5rem 0;
+		text-align: center;
+	}
+
+	.ffn-activation-title {
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: hsl(150 55% 45%);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		margin-bottom: 0.8rem;
+	}
+
+	.ffn-activation-buttons {
+		display: flex;
+		gap: 8px;
+		justify-content: center;
+		margin-bottom: 1rem;
+		flex-wrap: wrap;
+	}
+
+	.ffn-act-btn {
+		padding: 6px 16px;
+		border-radius: 20px;
+		border: 1.5px solid hsl(var(--theme-text) / 0.15);
+		background: transparent;
+		color: hsl(var(--theme-text) / 0.6);
+		font-size: 0.82rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+
+	.ffn-act-btn:hover {
+		border-color: hsl(150 55% 45% / 0.4);
+		color: hsl(var(--theme-text) / 0.8);
+	}
+
+	.ffn-act-btn.ffn-act-active {
+		background: hsl(150 55% 45% / 0.15);
+		border-color: hsl(150 55% 45% / 0.5);
+		color: hsl(150 55% 45%);
+		font-weight: 600;
+	}
+
+	#ffn-activation-canvas {
+		max-width: 100%;
+		height: auto;
+		border-radius: 8px;
+		background: hsl(var(--theme-text) / 0.03);
+		border: 1px solid hsl(var(--theme-text) / 0.06);
+	}
+
+	.ffn-activation-desc {
+		font-size: 0.82rem;
+		color: hsl(var(--theme-text) / 0.6);
+		margin-top: 0.8rem;
+		line-height: 1.5;
+		text-align: left;
+		max-width: 480px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.ffn-activation-desc strong {
+		color: hsl(150 55% 45%);
+	}
+
+	/* Residual handoff */
+	.ffn-residual-handoff {
+		background: hsl(var(--theme-text) / 0.02);
+		border: 1.5px solid hsl(var(--theme-text) / 0.08);
+		border-radius: 12px;
+		padding: 1.5rem;
+		margin: 1.5rem 0;
+		text-align: center;
+	}
+
+	.ffn-residual-title {
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: hsl(270 50% 58%);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		margin-bottom: 1rem;
+	}
+
+	.ffn-residual-flow {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 12px;
+		flex-wrap: wrap;
+	}
+
+	.ffn-residual-box {
+		padding: 12px 18px;
+		border-radius: 10px;
+		text-align: center;
+		min-width: 100px;
+	}
+
+	.ffn-residual-box-label {
+		font-size: 0.68rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		margin-bottom: 4px;
+	}
+
+	.ffn-residual-box-val {
+		font-family: Georgia, 'Times New Roman', serif;
+		font-size: 1rem;
+		font-weight: 600;
+	}
+
+	.ffn-res-input {
+		background: hsl(270 50% 58% / 0.1);
+		border: 1.5px solid hsl(270 50% 58% / 0.3);
+	}
+	.ffn-res-input .ffn-residual-box-label { color: hsl(270 50% 58%); }
+	.ffn-res-input .ffn-residual-box-val { color: hsl(270 50% 58%); }
+
+	.ffn-res-ffn {
+		background: hsl(150 55% 45% / 0.1);
+		border: 1.5px solid hsl(150 55% 45% / 0.3);
+	}
+	.ffn-res-ffn .ffn-residual-box-label { color: hsl(150 55% 45%); }
+	.ffn-res-ffn .ffn-residual-box-val { color: hsl(150 55% 45%); }
+
+	.ffn-res-result {
+		background: hsl(270 50% 58% / 0.12);
+		border: 2px solid hsl(270 50% 58% / 0.35);
+	}
+	.ffn-res-result .ffn-residual-box-label { color: hsl(270 50% 58%); }
+	.ffn-res-result .ffn-residual-box-val { color: hsl(270 50% 58%); }
+
+	.ffn-residual-plus,
+	.ffn-residual-equals {
+		font-size: 1.2rem;
+		font-weight: 700;
+		color: hsl(var(--theme-text) / 0.3);
+	}
+
+	.ffn-residual-caption {
+		text-align: center;
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.4);
+		margin-top: 0.8rem;
+		font-style: italic;
+		max-width: 520px;
+		margin-left: auto;
+		margin-right: auto;
+		line-height: 1.5;
+	}
+
+	@media (max-width: 480px) {
+		.ffn-bulge {
+			gap: 2px;
+			min-height: 180px;
+		}
+		.ffn-bulge-stage {
+			min-width: 40px;
+		}
+		.ffn-bar { width: 28px; }
+		.ffn-bar-tall { width: 40px; }
+		.ffn-bulge-arrow { font-size: 0.9rem; padding: 0 2px; }
+		.ffn-residual-flow {
+			flex-direction: column;
+		}
+		.ffn-residual-plus,
+		.ffn-residual-equals {
+			transform: rotate(90deg);
+		}
+	}
+
 </style>
 
 <script define:vars={{ sectionIds: sections.map(s => s.id) }}>
@@ -5521,6 +5951,181 @@ const sections = [
 					updateUI();
 				});
 			}
+		});
+	});
+</script>
+
+<script is:inline>
+	document.addEventListener('DOMContentLoaded', () => {
+		// ===== Feature #14: Activation function canvas =====
+		const canvas = document.getElementById('ffn-activation-canvas');
+		if (!canvas) return;
+		const ctx = canvas.getContext('2d');
+		const W = canvas.width;
+		const H = canvas.height;
+
+		const descriptions = {
+			relu: '<strong>ReLU</strong>: max(0, x). The original transformer used this. Simple and fast, but “dead neurons” (always zero for negative inputs) can waste capacity.',
+			gelu: '<strong>GELU</strong>: x · Φ(x). Used in BERT and GPT-2+. Smoothly gates values rather than hard-clipping, letting small negative signals through. Now the most common choice.',
+			silu: '<strong>SiLU / Swish</strong>: x · σ(x). Used in LLaMA and PaLM. Similar to GELU but computed differently. Its slight dip below zero for negative inputs can help optimization.',
+		};
+
+		function relu(x) { return Math.max(0, x); }
+		function gelu(x) {
+			// Approximation: 0.5 * x * (1 + tanh(sqrt(2/pi) * (x + 0.044715 * x^3)))
+			const c = Math.sqrt(2 / Math.PI);
+			return 0.5 * x * (1 + Math.tanh(c * (x + 0.044715 * x * x * x)));
+		}
+		function silu(x) { return x / (1 + Math.exp(-x)); }
+
+		const fns = { relu, gelu, silu };
+		let activeFn = 'relu';
+
+		function getColors() {
+			const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+			return {
+				bg: isDark ? '#1a1a2e' : '#fafafa',
+				grid: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)',
+				axis: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
+				text: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)',
+				curve: 'hsl(150, 55%, 45%)',
+				curveShadow: isDark ? 'rgba(72,187,120,0.3)' : 'rgba(72,187,120,0.15)',
+				identity: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
+			};
+		}
+
+		function drawActivation(fnName) {
+			const fn = fns[fnName];
+			const colors = getColors();
+
+			// Clear
+			ctx.fillStyle = colors.bg;
+			ctx.fillRect(0, 0, W, H);
+
+			// Coordinate system: x from -4 to 4, y from -2 to 4
+			const xMin = -4, xMax = 4, yMin = -2, yMax = 4;
+			const pad = { left: 40, right: 20, top: 20, bottom: 30 };
+			const plotW = W - pad.left - pad.right;
+			const plotH = H - pad.top - pad.bottom;
+
+			function toPixel(x, y) {
+				return [
+					pad.left + ((x - xMin) / (xMax - xMin)) * plotW,
+					pad.top + ((yMax - y) / (yMax - yMin)) * plotH,
+				];
+			}
+
+			// Grid lines
+			ctx.strokeStyle = colors.grid;
+			ctx.lineWidth = 1;
+			for (let x = -3; x <= 3; x++) {
+				const [px] = toPixel(x, 0);
+				ctx.beginPath();
+				ctx.moveTo(px, pad.top);
+				ctx.lineTo(px, H - pad.bottom);
+				ctx.stroke();
+			}
+			for (let y = -1; y <= 3; y++) {
+				const [, py] = toPixel(0, y);
+				ctx.beginPath();
+				ctx.moveTo(pad.left, py);
+				ctx.lineTo(W - pad.right, py);
+				ctx.stroke();
+			}
+
+			// Axes
+			ctx.strokeStyle = colors.axis;
+			ctx.lineWidth = 1.5;
+			// x-axis
+			const [, y0] = toPixel(0, 0);
+			ctx.beginPath();
+			ctx.moveTo(pad.left, y0);
+			ctx.lineTo(W - pad.right, y0);
+			ctx.stroke();
+			// y-axis
+			const [x0] = toPixel(0, 0);
+			ctx.beginPath();
+			ctx.moveTo(x0, pad.top);
+			ctx.lineTo(x0, H - pad.bottom);
+			ctx.stroke();
+
+			// Axis labels
+			ctx.fillStyle = colors.text;
+			ctx.font = '11px system-ui, sans-serif';
+			ctx.textAlign = 'center';
+			for (let x = -3; x <= 3; x++) {
+				if (x === 0) continue;
+				const [px] = toPixel(x, 0);
+				ctx.fillText(x.toString(), px, y0 + 16);
+			}
+			ctx.textAlign = 'right';
+			for (let y = -1; y <= 3; y++) {
+				if (y === 0) continue;
+				const [, py] = toPixel(0, y);
+				ctx.fillText(y.toString(), x0 - 8, py + 4);
+			}
+
+			// Identity line (y = x) as faint reference
+			ctx.strokeStyle = colors.identity;
+			ctx.lineWidth = 1;
+			ctx.setLineDash([4, 4]);
+			ctx.beginPath();
+			const [ix1, iy1] = toPixel(xMin, xMin);
+			const [ix2, iy2] = toPixel(xMax, xMax);
+			ctx.moveTo(ix1, iy1);
+			ctx.lineTo(ix2, iy2);
+			ctx.stroke();
+			ctx.setLineDash([]);
+
+			// Draw activation curve
+			ctx.strokeStyle = colors.curve;
+			ctx.lineWidth = 2.5;
+			ctx.shadowColor = colors.curveShadow;
+			ctx.shadowBlur = 6;
+			ctx.beginPath();
+			const steps = 200;
+			for (let i = 0; i <= steps; i++) {
+				const x = xMin + (i / steps) * (xMax - xMin);
+				const y = fn(x);
+				const [px, py] = toPixel(x, y);
+				if (i === 0) ctx.moveTo(px, py);
+				else ctx.lineTo(px, py);
+			}
+			ctx.stroke();
+			ctx.shadowBlur = 0;
+		}
+
+		// Button click handlers
+		const buttons = document.querySelectorAll('.ffn-act-btn');
+		const descEl = document.getElementById('ffn-activation-desc');
+
+		buttons.forEach((btn) => {
+			btn.addEventListener('click', () => {
+				const fnName = btn.getAttribute('data-fn');
+				activeFn = fnName;
+
+				// Update active button
+				buttons.forEach((b) => b.classList.remove('ffn-act-active'));
+				btn.classList.add('ffn-act-active');
+
+				// Update description
+				if (descEl) descEl.innerHTML = descriptions[fnName];
+
+				// Redraw
+				drawActivation(fnName);
+			});
+		});
+
+		// Initial draw
+		drawActivation('relu');
+
+		// Redraw on theme change
+		const observer = new MutationObserver(() => {
+			drawActivation(activeFn);
+		});
+		observer.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ['data-theme'],
 		});
 	});
 </script>
