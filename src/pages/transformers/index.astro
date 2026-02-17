@@ -486,10 +486,134 @@ const sections = [
 						semantic relationships.
 					</p>
 					<p>
-						These embedding vectors are the foundation of everything that follows. They're
-						the raw material that attention will operate on — and the vector style you see
-						here (points in space, grouped by meaning) is exactly how we'll visualize them
-						throughout the rest of this explainer.
+						But there's a problem: these vectors know <em>what</em> each token means, but they
+						don't know <em>where</em> each token is. The word "bank" has the same embedding whether
+						it's the first or last word in a sentence. The transformer needs position information too.
+					</p>
+				</div>
+
+				{/* ===== Positional Encoding subsection ===== */}
+				<div class="subsection-divider"></div>
+
+				<h3 class="subsection-title">
+					<span class="subsection-label">03b</span>
+					Positional Encoding
+				</h3>
+
+				{/* Linkage callout */}
+				<div class="linkage-callout linkage-embedding">
+					<span class="linkage-icon">&#8599;</span>
+					<span>We're now at the <strong>+ Positional Encoding</strong> block — the second step in the input pipeline, right after token embedding.</span>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Self-attention is <strong>permutation-invariant</strong> — it treats all tokens
+						the same regardless of order. "The cat sat on the mat" and "mat the on sat cat the"
+						would produce identical attention patterns without positional information. That's
+						a problem, because word order carries meaning.
+					</p>
+					<p>
+						The solution: <strong>add</strong> a unique positional signal to each embedding vector.
+						The original transformer uses sine and cosine waves at different frequencies — each
+						position gets a unique "fingerprint" that the model can learn to interpret.
+					</p>
+					<p>
+						The formula is elegant: for position <em>pos</em> and dimension <em>i</em>:
+					</p>
+				</div>
+
+				<div class="posenc-formula">
+					<div class="posenc-formula-row">
+						<span class="posenc-fn">PE</span><sub>(pos, 2i)</sub> = sin(pos / 10000<sup>2i/d</sup>)
+					</div>
+					<div class="posenc-formula-row">
+						<span class="posenc-fn">PE</span><sub>(pos, 2i+1)</sub> = cos(pos / 10000<sup>2i/d</sup>)
+					</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Low dimensions oscillate rapidly (high frequency), capturing fine-grained position.
+						Higher dimensions oscillate slowly (low frequency), capturing broad position. Together,
+						they give each position a unique signature. Drag the slider below to see how the
+						encoding vector changes at each position:
+					</p>
+				</div>
+
+				{/* Interactive position slider + wave visualization */}
+				<div class="posenc-interactive">
+					<div class="posenc-slider-wrap">
+						<label class="posenc-slider-label" for="posenc-slider">
+							Position: <span id="posenc-pos-value" class="posenc-pos-value">0</span>
+						</label>
+						<input type="range" id="posenc-slider" class="posenc-slider" min="0" max="31" value="0" step="1"/>
+						<div class="posenc-slider-range">
+							<span>0</span>
+							<span>31</span>
+						</div>
+					</div>
+
+					{/* Wave visualization — SVG canvas */}
+					<div class="posenc-waves-wrap">
+						<div class="posenc-waves-label">Encoding vector at position <span id="posenc-wave-pos">0</span></div>
+						<svg id="posenc-waves" class="posenc-waves" viewBox="0 0 600 160" preserveAspectRatio="xMidYMid meet">
+							{/* Bars rendered by JS */}
+							<line x1="30" y1="80" x2="580" y2="80" stroke="currentColor" stroke-opacity="0.1" stroke-width="1"/>
+							<text x="12" y="14" fill="currentColor" fill-opacity="0.2" font-size="8" text-anchor="middle">+1</text>
+							<text x="12" y="84" fill="currentColor" fill-opacity="0.2" font-size="8" text-anchor="middle">0</text>
+							<text x="12" y="156" fill="currentColor" fill-opacity="0.2" font-size="8" text-anchor="middle">-1</text>
+						</svg>
+					</div>
+				</div>
+
+				{/* Heatmap of positional encoding matrix */}
+				<div class="posenc-heatmap-wrap">
+					<div class="posenc-heatmap-label">Positional encoding matrix (32 positions &times; 32 dimensions)</div>
+					<canvas id="posenc-heatmap" class="posenc-heatmap" width="480" height="240"></canvas>
+					<div class="posenc-heatmap-axes">
+						<span class="posenc-axis-label">Dimension &rarr;</span>
+						<span class="posenc-axis-label-y">Position &darr;</span>
+					</div>
+					<div class="posenc-heatmap-scale">
+						<span class="posenc-scale-label">&minus;1</span>
+						<div class="posenc-scale-bar"></div>
+						<span class="posenc-scale-label">+1</span>
+					</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Each row in the heatmap is a position's encoding — its unique fingerprint.
+						Notice the striped pattern: low-numbered dimensions (left) oscillate rapidly
+						across positions, while higher dimensions (right) change slowly. No two rows
+						are identical, so the model can always tell positions apart.
+					</p>
+				</div>
+
+				{/* LINKAGE: embedding + position = input to attention */}
+				<div class="posenc-handoff">
+					<div class="posenc-handoff-label">The input to attention:</div>
+					<div class="posenc-handoff-row">
+						<div class="posenc-handoff-box posenc-handoff-embed">
+							<span class="posenc-handoff-icon">E</span>
+							<span>Token Embedding</span>
+						</div>
+						<span class="posenc-handoff-plus">+</span>
+						<div class="posenc-handoff-box posenc-handoff-pos">
+							<span class="posenc-handoff-icon">P</span>
+							<span>Position Encoding</span>
+						</div>
+						<span class="posenc-handoff-eq">=</span>
+						<div class="posenc-handoff-box posenc-handoff-result">
+							<span class="posenc-handoff-icon">&rarr;</span>
+							<span>Input Vector</span>
+						</div>
+					</div>
+					<p class="posenc-handoff-note">
+						Each token now carries both its <strong>meaning</strong> (from the embedding) and its
+						<strong>position</strong> (from the positional encoding). These combined vectors are what
+						flow into the attention mechanism — the subject of the next section.
 					</p>
 				</div>
 			</section>
@@ -1753,6 +1877,310 @@ const sections = [
 			font-size: 0.72rem;
 		}
 	}
+
+	/* ===== Subsection divider ===== */
+	.subsection-divider {
+		width: 60px;
+		height: 1px;
+		background: hsl(var(--theme-text) / 0.1);
+		margin: 3rem 0 2rem;
+	}
+
+	.subsection-title {
+		font-size: 1.5rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.9);
+		margin-bottom: 1rem;
+		display: flex;
+		align-items: baseline;
+		gap: 10px;
+	}
+
+	.subsection-label {
+		font-family: ui-monospace, monospace;
+		font-size: 0.78rem;
+		font-weight: 500;
+		color: hsl(var(--theme-accent) / 0.6);
+	}
+
+	/* ===== Positional encoding formula ===== */
+	.posenc-formula {
+		max-width: 42rem;
+		margin: 1rem 0 1.5rem;
+		padding: 14px 20px;
+		border-radius: 8px;
+		background: hsl(var(--theme-text) / 0.03);
+		border: 1px solid hsl(var(--theme-text) / 0.06);
+		font-family: ui-monospace, monospace;
+		font-size: 0.88rem;
+		color: hsl(var(--theme-text) / 0.75);
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	.posenc-formula-row {
+		display: flex;
+		align-items: baseline;
+		gap: 2px;
+	}
+
+	.posenc-fn {
+		color: hsl(210 70% 55%);
+		font-weight: 600;
+	}
+
+	.posenc-formula sub,
+	.posenc-formula sup {
+		font-size: 0.72em;
+		color: hsl(var(--theme-text) / 0.5);
+	}
+
+	/* ===== Positional encoding interactive ===== */
+	.posenc-interactive {
+		max-width: 42rem;
+		margin: 1.5rem 0;
+	}
+
+	.posenc-slider-wrap {
+		margin-bottom: 12px;
+	}
+
+	.posenc-slider-label {
+		display: block;
+		font-size: 0.78rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: hsl(var(--theme-text) / 0.4);
+		margin-bottom: 6px;
+	}
+
+	.posenc-pos-value {
+		color: hsl(210 70% 55%);
+		font-weight: 700;
+		font-family: ui-monospace, monospace;
+	}
+
+	.posenc-slider {
+		width: 100%;
+		height: 6px;
+		-webkit-appearance: none;
+		appearance: none;
+		background: hsl(var(--theme-text) / 0.08);
+		border-radius: 3px;
+		outline: none;
+		cursor: pointer;
+	}
+
+	.posenc-slider::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		appearance: none;
+		width: 18px;
+		height: 18px;
+		border-radius: 50%;
+		background: hsl(210 70% 55%);
+		border: 2px solid hsl(var(--theme-bg));
+		box-shadow: 0 1px 4px hsl(0 0% 0% / 0.15);
+		cursor: pointer;
+	}
+
+	.posenc-slider::-moz-range-thumb {
+		width: 18px;
+		height: 18px;
+		border-radius: 50%;
+		background: hsl(210 70% 55%);
+		border: 2px solid hsl(var(--theme-bg));
+		box-shadow: 0 1px 4px hsl(0 0% 0% / 0.15);
+		cursor: pointer;
+	}
+
+	.posenc-slider-range {
+		display: flex;
+		justify-content: space-between;
+		font-size: 0.68rem;
+		color: hsl(var(--theme-text) / 0.25);
+		font-family: ui-monospace, monospace;
+		margin-top: 2px;
+	}
+
+	/* Wave bars */
+	.posenc-waves-wrap {
+		margin-top: 8px;
+	}
+
+	.posenc-waves-label {
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.35);
+		margin-bottom: 4px;
+	}
+
+	.posenc-waves-label span {
+		color: hsl(210 70% 55%);
+		font-weight: 600;
+		font-family: ui-monospace, monospace;
+	}
+
+	.posenc-waves {
+		width: 100%;
+		border-radius: 8px;
+		border: 1px solid hsl(var(--theme-text) / 0.06);
+		background: hsl(var(--theme-text) / 0.015);
+		color: hsl(var(--theme-text));
+	}
+
+	/* ===== Heatmap ===== */
+	.posenc-heatmap-wrap {
+		max-width: 42rem;
+		margin: 2rem 0;
+	}
+
+	.posenc-heatmap-label {
+		font-size: 0.78rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: hsl(var(--theme-text) / 0.4);
+		margin-bottom: 8px;
+	}
+
+	.posenc-heatmap {
+		width: 100%;
+		max-width: 480px;
+		border-radius: 6px;
+		border: 1px solid hsl(var(--theme-text) / 0.06);
+		image-rendering: pixelated;
+	}
+
+	.posenc-heatmap-axes {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 4px;
+	}
+
+	.posenc-axis-label,
+	.posenc-axis-label-y {
+		font-size: 0.68rem;
+		color: hsl(var(--theme-text) / 0.3);
+	}
+
+	.posenc-heatmap-scale {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		margin-top: 6px;
+	}
+
+	.posenc-scale-label {
+		font-size: 0.68rem;
+		font-family: ui-monospace, monospace;
+		color: hsl(var(--theme-text) / 0.3);
+	}
+
+	.posenc-scale-bar {
+		flex: 1;
+		max-width: 120px;
+		height: 8px;
+		border-radius: 4px;
+		background: linear-gradient(to right,
+			hsl(210 80% 35%),
+			hsl(210 20% 50%),
+			hsl(var(--theme-bg)),
+			hsl(35 60% 55%),
+			hsl(35 90% 55%)
+		);
+		border: 1px solid hsl(var(--theme-text) / 0.06);
+	}
+
+	/* ===== Handoff diagram ===== */
+	.posenc-handoff {
+		max-width: 42rem;
+		margin: 2.5rem 0 1rem;
+		padding: 20px;
+		border-radius: 10px;
+		border: 1.5px solid hsl(210 70% 55% / 0.15);
+		background: hsl(210 70% 55% / 0.03);
+	}
+
+	.posenc-handoff-label {
+		font-size: 0.78rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: hsl(var(--theme-text) / 0.4);
+		margin-bottom: 14px;
+	}
+
+	.posenc-handoff-row {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		flex-wrap: wrap;
+		justify-content: center;
+		margin-bottom: 16px;
+	}
+
+	.posenc-handoff-box {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 10px 14px;
+		border-radius: 8px;
+		font-size: 0.82rem;
+		font-weight: 600;
+	}
+
+	.posenc-handoff-icon {
+		font-size: 1rem;
+		font-weight: 700;
+		flex-shrink: 0;
+	}
+
+	.posenc-handoff-embed {
+		background: hsl(210 70% 55% / 0.1);
+		border: 1px solid hsl(210 70% 55% / 0.25);
+		color: hsl(210 70% 55%);
+	}
+
+	.posenc-handoff-pos {
+		background: hsl(210 70% 55% / 0.1);
+		border: 1px solid hsl(210 70% 55% / 0.25);
+		color: hsl(210 70% 55%);
+	}
+
+	.posenc-handoff-result {
+		background: hsl(35 90% 55% / 0.08);
+		border: 1px solid hsl(35 90% 55% / 0.2);
+		color: hsl(35 90% 55%);
+	}
+
+	.posenc-handoff-plus,
+	.posenc-handoff-eq {
+		font-size: 1.2rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.3);
+	}
+
+	.posenc-handoff-note {
+		font-size: 0.95rem;
+		line-height: 1.65;
+		color: hsl(var(--theme-text) / 0.7);
+	}
+
+	.posenc-handoff-note strong {
+		color: hsl(var(--theme-text) / 0.9);
+		font-weight: 600;
+	}
+
+	@media (max-width: 480px) {
+		.posenc-handoff-row {
+			flex-direction: column;
+			gap: 6px;
+		}
+		.posenc-formula {
+			font-size: 0.78rem;
+		}
+	}
 </style>
 
 <script define:vars={{ sectionIds: sections.map(s => s.id) }}>
@@ -2147,6 +2575,107 @@ const sections = [
 				item.appendChild(text);
 				scatterLegend.appendChild(item);
 			});
+		}
+
+		// --- Positional encoding interactive ---
+		const posSlider = document.getElementById('posenc-slider');
+		const posValue = document.getElementById('posenc-pos-value');
+		const posWavePos = document.getElementById('posenc-wave-pos');
+		const posWavesSvg = document.getElementById('posenc-waves');
+		const posHeatmap = document.getElementById('posenc-heatmap');
+
+		if (posSlider && posWavesSvg) {
+			const svgNS = 'http://www.w3.org/2000/svg';
+			const dModel = 32; // dimensions to show
+			const maxPos = 32;
+
+			function posEnc(pos, i, d) {
+				const angle = pos / Math.pow(10000, (2 * Math.floor(i / 2)) / d);
+				return i % 2 === 0 ? Math.sin(angle) : Math.cos(angle);
+			}
+
+			function renderWaves(pos) {
+				// Clear previous bars
+				posWavesSvg.querySelectorAll('.posenc-bar').forEach(el => el.remove());
+
+				const barWidth = 540 / dModel;
+				const startX = 30;
+				const centerY = 80;
+				const maxH = 65;
+
+				for (let i = 0; i < dModel; i++) {
+					const val = posEnc(pos, i, dModel);
+					const barH = val * maxH;
+					const x = startX + i * barWidth + 1;
+					const w = barWidth - 2;
+
+					const rect = document.createElementNS(svgNS, 'rect');
+					rect.setAttribute('class', 'posenc-bar');
+					rect.setAttribute('x', x);
+					rect.setAttribute('width', Math.max(w, 2));
+					rect.setAttribute('rx', '2');
+
+					if (val >= 0) {
+						rect.setAttribute('y', centerY - barH);
+						rect.setAttribute('height', barH);
+						rect.setAttribute('fill', 'hsl(210 70% 55%)');
+						rect.setAttribute('fill-opacity', 0.3 + Math.abs(val) * 0.5);
+					} else {
+						rect.setAttribute('y', centerY);
+						rect.setAttribute('height', -barH);
+						rect.setAttribute('fill', 'hsl(35 90% 55%)');
+						rect.setAttribute('fill-opacity', 0.3 + Math.abs(val) * 0.5);
+					}
+
+					posWavesSvg.appendChild(rect);
+				}
+			}
+
+			posSlider.addEventListener('input', () => {
+				const pos = parseInt(posSlider.value);
+				posValue.textContent = pos;
+				posWavePos.textContent = pos;
+				renderWaves(pos);
+			});
+
+			// Initial render
+			renderWaves(0);
+		}
+
+		// --- Heatmap ---
+		if (posHeatmap) {
+			const ctx = posHeatmap.getContext('2d');
+			const dModel = 32;
+			const maxPos = 32;
+			const cellW = posHeatmap.width / dModel;
+			const cellH = posHeatmap.height / maxPos;
+
+			function posEnc(pos, i, d) {
+				const angle = pos / Math.pow(10000, (2 * Math.floor(i / 2)) / d);
+				return i % 2 === 0 ? Math.sin(angle) : Math.cos(angle);
+			}
+
+			for (let p = 0; p < maxPos; p++) {
+				for (let i = 0; i < dModel; i++) {
+					const val = posEnc(p, i, dModel);
+					// Map [-1, 1] to color: blue (-1) → transparent (0) → amber (+1)
+					let r, g, b;
+					if (val >= 0) {
+						// Amber: hsl(35, 90%, 55%) ≈ rgb(240, 165, 35)
+						r = Math.round(240 * val + (1 - val) * 128);
+						g = Math.round(165 * val + (1 - val) * 128);
+						b = Math.round(35 * val + (1 - val) * 128);
+					} else {
+						// Blue: hsl(210, 70%, 55%) ≈ rgb(55, 130, 210)
+						const v = -val;
+						r = Math.round(55 * v + (1 - v) * 128);
+						g = Math.round(130 * v + (1 - v) * 128);
+						b = Math.round(210 * v + (1 - v) * 128);
+					}
+					ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+					ctx.fillRect(i * cellW, p * cellH, cellW, cellH);
+				}
+			}
 		}
 
 		// --- Architecture diagram: tooltips + animation ---
