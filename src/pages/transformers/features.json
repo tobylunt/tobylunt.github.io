@@ -190,7 +190,7 @@
   {
     "id": 15,
     "name": "Residual connections and layer normalization",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Navigate to the Residual Stream section",
       "LINKAGE: Verify this section ties together the data flow from features #8-14, showing the residual stream as the 'highway' that attention (#8-13) and FFN (#14) contribute to. Use the same vector visual style throughout",

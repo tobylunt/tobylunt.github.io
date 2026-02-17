@@ -348,3 +348,41 @@
 - Verified in Playwright: dark + light themes, all 3 activation function toggles, bulge diagram, residual handoff
 - Commit: 0e2e956
 - Next: Feature #15 — Residual connections and layer normalization
+
+=== Session: Feature #15 — Residual Connections & Layer Normalization ===
+- Completed: Feature #15 (Residual Stream — residual connections and layer normalization)
+- Section number: 07
+- HTML inserted via Python script (tab-safe), then CSS and JS added separately
+- Purple linkage callout connecting MHA (#8-13) and FFN (#14) into unified data flow
+- Prose: residual stream as "highway", attention/FFN as on/off ramps, delta/shared workspace concept
+- Highway diagram:
+  - x → [MHA branch + add] → x+MHA(x) → [FFN branch + add] → x'
+  - Purple stream segments, amber MHA blocks, green FFN blocks, purple + junctions
+- Layer accumulation stacked bars:
+  - 4 rows: Input, Layer 1, Layer 2, Layer 3
+  - Color-coded segments: blue (Embedding), amber (Attention), green (FFN)
+  - Proportions shift across layers (embedding shrinks, attention/FFN grow)
+  - Animate button: rows fade in sequentially (500ms intervals)
+  - Reset button: clears all visible rows
+  - Auto-show on page load with 300ms stagger
+  - Color legend below
+- Subsection 07b Layer Normalization:
+  - Prose: normalizing before each sublayer stabilizes training
+  - Layer norm interactive widget:
+    - Before/after columns with bar charts
+    - Purple bars for positive, rose for negative
+    - Stats display: μ (mean) and σ (std dev)
+    - After normalization always shows μ=0.00, σ=1.00
+    - Randomize button generates new random values
+    - Formula: LayerNorm(x) = γ · (x - μ) / √(σ² + ε) + β
+  - Pre-Norm ordering diagram:
+    - Linear flow: Residual → LayerNorm → MHA → +x → LayerNorm → FFN → +x → Residual
+    - Color-coded: purple (stream/add), dashed (norm), amber (MHA), green (FFN)
+- Closing prose: layer stacking, early vs late layers, connection to architecture diagram
+- Filter updated: added 'residual-stream' to excludes. Comment range: Sections 08–09
+- CSS: .linkage-residual, .res-highway-*, .res-stream-*, .res-junction-*, .res-block-attn/ffn, .res-layers-*, .res-bar-embed/attn/ffn, .ln-*, .res-prenorm-*
+- Mobile responsive (@media max-width: 480px)
+- Build passes with 0 errors
+- Verified in Playwright: dark + light themes, highway diagram, stacked bars with animation, layer norm interactive (randomize tested), pre-norm ordering diagram
+- Commit: fc25e81
+- Next: Feature #16 — Output layer (unembedding, logits, and next-token prediction)
