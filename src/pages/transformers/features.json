@@ -205,7 +205,7 @@
   {
     "id": 16,
     "name": "Output layer — unembedding, logits, and next-token prediction",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Navigate to the Output section",
       "LINKAGE: Verify this section receives the final residual stream vector from #15 and shows it entering the unembedding layer. Frame this as 'the vector has traveled through all N layers and is now ready to become a prediction'. Connect visually to the 'unembedding' block in the architecture diagram from #4",

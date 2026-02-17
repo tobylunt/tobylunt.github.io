@@ -386,3 +386,30 @@
 - Verified in Playwright: dark + light themes, highway diagram, stacked bars with animation, layer norm interactive (randomize tested), pre-norm ordering diagram
 - Commit: fc25e81
 - Next: Feature #16 — Output layer (unembedding, logits, and next-token prediction)
+
+=== Feature #16 Completed — 2026-02-17 ===
+- Added Section 08 "Output — From vectors back to words"
+- Rose linkage callout connecting to Unembedding block in architecture diagram
+- Introductory prose: reverse of embedding, unembedding layer, logits definition
+- Embedding ↔ Unembedding symmetry diagram:
+  - Two side-by-side boxes: blue (Embedding, Section 03, token→vector) and rose (Unembedding, this section, vector→logits)
+  - Mirror line with ↔ symbol between them
+  - Examples: cat → [0.23, -0.41, …] on embed side; […, 0.55, -0.08] → logits_50k on unembed side
+  - Caption about W_U ≈ W_E^T weight tying
+- Next-token prediction widget:
+  - Context tokens: "The cat sat on the" + "???" dashed placeholder
+  - Pipeline steps: Final residual vector (purple) → ×W_U → Raw logits → softmax(logits/T) → Probabilities (rose)
+  - Temperature slider (0.1–3.0, step 0.1, default 1.0) with rose accent
+  - Top-k predictions bar chart (8 candidates: mat, floor, bed, couch, table, roof, grass, chair)
+  - Bar fill widths proportional to probability, opacity varies
+  - Rest text showing remaining probability spread across ~50k tokens
+- Closing prose: temperature at 1.0, greedy decoding at T→0, creative sampling at high T, autoregressive generation
+- Bug found & fixed: Astro scoped styles don't apply to dynamically-created DOM elements (via document.createElement). Fixed by using inline styles (style.cssText) instead of CSS class names for all JS-created bar chart elements.
+- Softmax implementation: exp(x_i - max) / sum(exp(x_j - max)) with numerical stability, temperature divides logits before softmax
+- Filter updated: added 'output' to excludes. Comment: Section 09: Placeholder
+- CSS: .linkage-output, .out-symmetry-*, .out-prediction-*, .out-pipeline-*, .out-temp-*, .out-topk-*
+- Mobile responsive (@media max-width: 480px)
+- Build passes with 0 errors
+- Verified in Playwright: dark + light themes, bar chart rendering (inline styles fix confirmed), temperature slider interaction (T=0.1 → 100% mat, T=1.0 → 74.7% mat, T=3.0 → 30.1% mat with spread distribution)
+- Commit: 920527f
+- Next: Feature #17 — Circuits and mechanistic interpretability (the final section)
