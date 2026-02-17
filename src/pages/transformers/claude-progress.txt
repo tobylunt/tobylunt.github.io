@@ -48,3 +48,29 @@
 - Verified in Playwright: both dark and light themes, scrolled to show all three states
 - Commit: 44318a9
 - Next: Feature #3 — Preamble section with motivation, historical context, visual vocabulary
+
+=== Layout Fix — 2026-02-17 ===
+- User feedback: content area was too narrow, TOC too far right
+- Root cause: global.css applies max-w-3xl (768px) to <body>, constraining the grid
+- Fix: use width:100vw + left:50% + translateX(-50%) breakout pattern on .hero and .transformers-layout
+- Content column now fills the full center grid column
+- Verified on desktop (1440px) and mobile (375px)
+- Commit: 97968e1
+
+=== Feature #3 Completed — 2026-02-17 ===
+- Replaced preamble placeholder with full section content
+- Introductory prose: 4 paragraphs covering RNNs/LSTMs limitations, the transformer's key insight (self-attention), historical context
+- Timeline visualization: vertical timeline with 4 entries (RNNs ~2014, Bahdanau 2015, Transformer 2017 highlighted, GPT/BERT 2018+)
+- Visual vocabulary legend: 5 color-coded component swatches in a responsive grid
+  - Embedding = blue (hsl 210 70% 55%)
+  - Attention = amber (hsl 35 90% 55%)
+  - FFN = green (hsl 150 55% 45%)
+  - Residual Stream = purple (hsl 270 50% 58%)
+  - Output = rose (hsl 350 65% 55%)
+- Black box teaser: centered "tokens in → [?] → prediction out" diagram with closing paragraph
+- Refactored template: preamble rendered as dedicated HTML, sections 02-09 still use .map() loop
+- All CSS uses hsl(var(--theme-*)) for dark/light theme support
+- Build passes with 0 errors
+- Verified in Playwright: light + dark themes, prose, timeline, vocab grid, teaser all render correctly
+- Commit: 99ff8a3
+- Next: Feature #4 — Transformer architecture overview with interactive block diagram
