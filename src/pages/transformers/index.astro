@@ -355,9 +355,81 @@ const sections = [
 				</p>
 			</section>
 
-			{/* ===== Sections 03–09: Placeholders ===== */}
+			{/* ===== Section 03: Embeddings — Tokenization ===== */}
+			<section id="embeddings" class="mb-24 scroll-mt-20">
+				<div class="mb-8 flex items-baseline gap-4">
+					<span class="font-mono text-sm text-accent/60">03</span>
+					<div>
+						<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">Embeddings</h2>
+						<p class="mt-1 text-base text-textColor/60">Turning words into numbers</p>
+					</div>
+				</div>
+
+				{/* Linkage callout */}
+				<div class="linkage-callout linkage-embedding">
+					<span class="linkage-icon">&#8599;</span>
+					<span>We're now zooming into the <strong>Token Embedding</strong> block at the bottom of the architecture diagram.</span>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Before a transformer can do anything, it needs to convert raw text into numbers.
+						This happens in two steps: first, the text is split into <strong>tokens</strong> —
+						small pieces that the model treats as its atomic units — and then each token is
+						looked up in a table to produce a dense vector.
+					</p>
+					<p>
+						Modern models don't tokenize by whole words. Instead, they use <strong>subword
+						tokenization</strong> (like BPE — Byte Pair Encoding). Common words stay whole,
+						but rare or long words get broken into smaller pieces. This lets the model handle
+						any text — even words it's never seen — with a fixed-size vocabulary
+						(typically 32k–100k tokens).
+					</p>
+					<p>
+						Try typing below to see how text gets split into tokens. Notice how common words
+						often stay intact, while rarer words get broken into subword pieces.
+					</p>
+				</div>
+
+				{/* Interactive tokenizer widget */}
+				<div class="tokenizer-widget">
+					<label class="tokenizer-label" for="tokenizer-input">Type some text:</label>
+					<textarea
+						id="tokenizer-input"
+						class="tokenizer-input"
+						rows="2"
+						placeholder="The cat sat on the mat."
+						spellcheck="false"
+					></textarea>
+					<div class="tokenizer-output-wrap">
+						<div class="tokenizer-output-label">
+							Tokens <span class="tokenizer-count" id="tokenizer-count"></span>
+						</div>
+						<div class="tokenizer-output" id="tokenizer-output">
+							<span class="tokenizer-placeholder">Type above to see tokens&hellip;</span>
+						</div>
+					</div>
+					<div class="tokenizer-legend">
+						<span class="tokenizer-legend-item"><span class="token-chip token-whole-example">&nbsp;</span> Whole word</span>
+						<span class="tokenizer-legend-item"><span class="token-chip token-sub-example">&nbsp;</span> Subword piece</span>
+						<span class="tokenizer-legend-item"><span class="token-chip token-special-example">&nbsp;</span> Punctuation / special</span>
+					</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Each token maps to a unique integer ID — its index in the vocabulary table.
+						The embedding layer then looks up this ID in a learned matrix of shape
+						<code>[vocab_size &times; d_model]</code>, producing a dense vector (typically
+						768 or 1024 dimensions) that encodes the token's meaning. The next section will
+						visualize what these embedding vectors look like in space.
+					</p>
+				</div>
+			</section>
+
+			{/* ===== Sections 04–09: Placeholders ===== */}
 			{
-				sections.filter(s => s.id !== 'preamble' && s.id !== 'architecture').map((section) => (
+				sections.filter(s => !['preamble','architecture','embeddings'].includes(s.id)).map((section) => (
 					<section
 						id={section.id}
 						class="section-placeholder mb-24 scroll-mt-20"
@@ -1270,6 +1342,192 @@ const sections = [
 			font-size: 0.75rem;
 		}
 	}
+
+	/* ===== Shared section prose ===== */
+	.section-prose {
+		max-width: 42rem;
+	}
+
+	.section-prose p {
+		font-size: 1.05rem;
+		line-height: 1.75;
+		color: hsl(var(--theme-text) / 0.78);
+		margin-bottom: 1.25rem;
+	}
+
+	.section-prose strong {
+		color: hsl(var(--theme-text) / 0.95);
+		font-weight: 600;
+	}
+
+	.section-prose code {
+		font-size: 0.9em;
+		padding: 2px 5px;
+		border-radius: 4px;
+		background: hsl(var(--theme-text) / 0.06);
+		color: hsl(var(--theme-text) / 0.85);
+	}
+
+	/* ===== Linkage callout ===== */
+	.linkage-callout {
+		display: flex;
+		align-items: flex-start;
+		gap: 10px;
+		padding: 12px 16px;
+		border-radius: 8px;
+		margin-bottom: 1.5rem;
+		font-size: 0.88rem;
+		line-height: 1.55;
+		max-width: 42rem;
+	}
+
+	.linkage-callout strong {
+		font-weight: 600;
+	}
+
+	.linkage-icon {
+		flex-shrink: 0;
+		font-size: 1rem;
+		margin-top: 1px;
+	}
+
+	.linkage-embedding {
+		background: hsl(210 70% 55% / 0.08);
+		border: 1px solid hsl(210 70% 55% / 0.2);
+		color: hsl(210 70% 55% / 0.85);
+	}
+
+	.linkage-embedding strong {
+		color: hsl(210 70% 55%);
+	}
+
+	/* ===== Tokenizer widget ===== */
+	.tokenizer-widget {
+		margin: 2rem 0;
+		max-width: 42rem;
+	}
+
+	.tokenizer-label {
+		display: block;
+		font-size: 0.78rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: hsl(var(--theme-text) / 0.4);
+		margin-bottom: 6px;
+	}
+
+	.tokenizer-input {
+		width: 100%;
+		padding: 12px 14px;
+		border-radius: 8px;
+		border: 1.5px solid hsl(var(--theme-text) / 0.12);
+		background: hsl(var(--theme-text) / 0.03);
+		color: hsl(var(--theme-text) / 0.9);
+		font-family: ui-monospace, monospace;
+		font-size: 0.95rem;
+		line-height: 1.5;
+		resize: vertical;
+		transition: border-color 0.15s ease;
+	}
+
+	.tokenizer-input:focus {
+		outline: none;
+		border-color: hsl(210 70% 55% / 0.5);
+		box-shadow: 0 0 0 3px hsl(210 70% 55% / 0.1);
+	}
+
+	.tokenizer-input::placeholder {
+		color: hsl(var(--theme-text) / 0.25);
+	}
+
+	.tokenizer-output-wrap {
+		margin-top: 12px;
+	}
+
+	.tokenizer-output-label {
+		font-size: 0.78rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: hsl(var(--theme-text) / 0.4);
+		margin-bottom: 8px;
+	}
+
+	.tokenizer-count {
+		font-weight: 400;
+		color: hsl(var(--theme-text) / 0.3);
+	}
+
+	.tokenizer-output {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 5px;
+		min-height: 44px;
+		padding: 10px 12px;
+		border-radius: 8px;
+		border: 1px solid hsl(var(--theme-text) / 0.06);
+		background: hsl(var(--theme-text) / 0.015);
+	}
+
+	.tokenizer-placeholder {
+		font-size: 0.85rem;
+		color: hsl(var(--theme-text) / 0.25);
+		font-style: italic;
+	}
+
+	/* Token chips — color scheme for reuse in later sections */
+	.token-chip {
+		display: inline-block;
+		padding: 3px 8px;
+		border-radius: 4px;
+		font-family: ui-monospace, monospace;
+		font-size: 0.82rem;
+		font-weight: 500;
+		line-height: 1.4;
+		white-space: pre;
+	}
+
+	/* Whole word token */
+	.token-whole {
+		background: hsl(210 60% 55% / 0.12);
+		color: hsl(210 60% 55%);
+		border: 1px solid hsl(210 60% 55% / 0.2);
+	}
+
+	/* Subword piece */
+	.token-sub {
+		background: hsl(35 80% 50% / 0.12);
+		color: hsl(35 80% 50%);
+		border: 1px solid hsl(35 80% 50% / 0.2);
+	}
+
+	/* Punctuation / special */
+	.token-special {
+		background: hsl(var(--theme-text) / 0.06);
+		color: hsl(var(--theme-text) / 0.5);
+		border: 1px solid hsl(var(--theme-text) / 0.1);
+	}
+
+	/* Legend swatches */
+	.tokenizer-legend {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 16px;
+		margin-top: 10px;
+	}
+
+	.tokenizer-legend-item {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.45);
+	}
+
+	.token-whole-example { background: hsl(210 60% 55% / 0.25); width: 12px; height: 12px; border-radius: 3px; }
+	.token-sub-example { background: hsl(35 80% 50% / 0.25); width: 12px; height: 12px; border-radius: 3px; }
+	.token-special-example { background: hsl(var(--theme-text) / 0.15); width: 12px; height: 12px; border-radius: 3px; }
 </style>
 
 <script define:vars={{ sectionIds: sections.map(s => s.id) }}>
@@ -1369,6 +1627,110 @@ const sections = [
 
 		closeBtn?.addEventListener('click', closeMobileDrawer);
 		backdrop?.addEventListener('click', closeMobileDrawer);
+
+		// --- Tokenizer widget ---
+		const tokInput = document.getElementById('tokenizer-input');
+		const tokOutput = document.getElementById('tokenizer-output');
+		const tokCount = document.getElementById('tokenizer-count');
+
+		if (tokInput && tokOutput) {
+			// Simple BPE-like tokenizer simulation
+			// Splits text into tokens that approximate real subword tokenization
+			function simpleTokenize(text) {
+				if (!text.trim()) return [];
+
+				const tokens = [];
+				// Split into words and punctuation, preserving spaces as leading markers
+				const parts = text.match(/\s*\S+/g) || [];
+
+				// Common words that stay whole (simulating a BPE vocabulary)
+				const wholeWords = new Set([
+					'the','a','an','is','are','was','were','be','been','being',
+					'have','has','had','do','does','did','will','would','could',
+					'should','may','might','can','shall','must','need',
+					'and','or','but','not','no','yes','if','then','else',
+					'for','in','on','at','to','of','from','by','with','as',
+					'it','he','she','we','they','you','i','me','my','your',
+					'his','her','its','our','their','this','that','what','which',
+					'who','how','when','where','why','all','each','every',
+					'cat','dog','sat','mat','man','day','way','time','year',
+					'world','life','new','old','big','good','bad','great',
+					'first','last','long','little','own','other','right',
+					'said','just','know','take','come','make','like','go',
+					'see','look','think','give','use','find','tell','ask',
+					'work','seem','feel','try','leave','call','keep',
+					'help','talk','turn','start','show','hear','play',
+					'run','move','live','point','read','open','close',
+					'attention','transformer','model','token','input','output',
+					'layer','network','data','vector','matrix','learning',
+					'hello','thank','please','sorry','happy','love',
+				]);
+
+				for (const part of parts) {
+					const leading = part.match(/^\s*/)[0];
+					const word = part.slice(leading.length);
+
+					if (!word) continue;
+
+					// Split into word chars and punctuation runs
+					const segments = word.match(/[a-zA-Z']+|[^a-zA-Z']+/g) || [word];
+
+					for (const seg of segments) {
+						// Pure punctuation or number
+						if (!/[a-zA-Z]/.test(seg)) {
+							tokens.push({ text: (tokens.length === 0 ? '' : leading) + seg, type: 'special' });
+							leading && tokens.length > 1; // consume leading space
+							continue;
+						}
+
+						const lower = seg.toLowerCase();
+						const display = (tokens.length === 0 ? '' : leading) + seg;
+
+						if (wholeWords.has(lower) || seg.length <= 3) {
+							tokens.push({ text: display, type: 'whole' });
+						} else {
+							// Simulate subword splitting
+							const prefix = seg.slice(0, Math.ceil(seg.length * 0.6));
+							const suffix = seg.slice(prefix.length);
+							tokens.push({ text: (tokens.length === 0 ? '' : leading) + prefix, type: 'whole' });
+							if (suffix) {
+								tokens.push({ text: '##' + suffix, type: 'sub' });
+							}
+						}
+					}
+				}
+
+				return tokens;
+			}
+
+			function renderTokens(text) {
+				const tokens = simpleTokenize(text);
+				tokOutput.innerHTML = '';
+
+				if (tokens.length === 0) {
+					tokOutput.innerHTML = '<span class="tokenizer-placeholder">Type above to see tokens\u2026</span>';
+					tokCount.textContent = '';
+					return;
+				}
+
+				tokCount.textContent = '(' + tokens.length + ')';
+
+				tokens.forEach((tok, i) => {
+					const chip = document.createElement('span');
+					chip.className = 'token-chip token-' + tok.type;
+					chip.textContent = tok.text;
+					chip.title = 'Token ' + i + ' [' + tok.type + ']';
+					tokOutput.appendChild(chip);
+				});
+			}
+
+			tokInput.addEventListener('input', () => renderTokens(tokInput.value));
+
+			// Show default example on load
+			const defaultText = 'The cat sat on the mat.';
+			tokInput.value = defaultText;
+			renderTokens(defaultText);
+		}
 
 		// --- Architecture diagram: tooltips + animation ---
 		const archDiagram = document.getElementById('arch-diagram');
