@@ -421,8 +421,75 @@ const sections = [
 						Each token maps to a unique integer ID — its index in the vocabulary table.
 						The embedding layer then looks up this ID in a learned matrix of shape
 						<code>[vocab_size &times; d_model]</code>, producing a dense vector (typically
-						768 or 1024 dimensions) that encodes the token's meaning. The next section will
-						visualize what these embedding vectors look like in space.
+						768 or 1024 dimensions) that encodes the token's meaning.
+					</p>
+				</div>
+
+				{/* Token → Vector transition */}
+				<div class="embed-transition">
+					<div class="embed-transition-label">Each token becomes a dense vector:</div>
+					<div class="embed-transition-rows">
+						<div class="embed-transition-row">
+							<span class="token-chip token-whole">cat</span>
+							<span class="embed-arrow">&rarr;</span>
+							<span class="embed-vector">[0.23, &minus;0.41, 0.87, 0.05, &hellip;]</span>
+						</div>
+						<div class="embed-transition-row">
+							<span class="token-chip token-whole">dog</span>
+							<span class="embed-arrow">&rarr;</span>
+							<span class="embed-vector">[0.21, &minus;0.38, 0.91, 0.02, &hellip;]</span>
+						</div>
+						<div class="embed-transition-row">
+							<span class="token-chip token-whole">king</span>
+							<span class="embed-arrow">&rarr;</span>
+							<span class="embed-vector">[&minus;0.74, 0.62, &minus;0.15, 0.88, &hellip;]</span>
+						</div>
+					</div>
+					<p class="embed-transition-note">
+						Notice that <strong>cat</strong> and <strong>dog</strong> have similar vectors — they're both animals.
+						<strong>King</strong> points in a completely different direction. When we project these high-dimensional
+						vectors down to 2D, similar words cluster together:
+					</p>
+				</div>
+
+				{/* 2D Embedding scatter plot */}
+				<div class="embed-scatter-wrap">
+					<div class="embed-scatter-header">
+						<span class="embed-scatter-title">Word embeddings projected to 2D</span>
+						<span class="embed-scatter-subtitle">hover over any point to see the word</span>
+					</div>
+					<svg id="embed-scatter" class="embed-scatter" viewBox="0 0 600 420" preserveAspectRatio="xMidYMid meet">
+						{/* Grid lines */}
+						<line x1="60" y1="380" x2="580" y2="380" stroke="currentColor" stroke-opacity="0.08" stroke-width="1"/>
+						<line x1="60" y1="300" x2="580" y2="300" stroke="currentColor" stroke-opacity="0.05" stroke-width="1" stroke-dasharray="4 4"/>
+						<line x1="60" y1="220" x2="580" y2="220" stroke="currentColor" stroke-opacity="0.05" stroke-width="1" stroke-dasharray="4 4"/>
+						<line x1="60" y1="140" x2="580" y2="140" stroke="currentColor" stroke-opacity="0.05" stroke-width="1" stroke-dasharray="4 4"/>
+						<line x1="60" y1="60" x2="580" y2="60" stroke="currentColor" stroke-opacity="0.05" stroke-width="1" stroke-dasharray="4 4"/>
+						<line x1="60" y1="60" x2="60" y2="380" stroke="currentColor" stroke-opacity="0.08" stroke-width="1"/>
+						{/* Cluster backgrounds — subtle ovals (pointer-events: none so dots are hoverable) */}
+						<ellipse cx="140" cy="310" rx="80" ry="55" fill="hsl(210 70% 55%)" fill-opacity="0.04" stroke="hsl(210 70% 55%)" stroke-opacity="0.08" stroke-width="1" stroke-dasharray="3 3" pointer-events="none"/>
+						<ellipse cx="460" cy="110" rx="85" ry="55" fill="hsl(35 90% 55%)" fill-opacity="0.04" stroke="hsl(35 90% 55%)" stroke-opacity="0.08" stroke-width="1" stroke-dasharray="3 3" pointer-events="none"/>
+						<ellipse cx="150" cy="120" rx="75" ry="55" fill="hsl(350 65% 55%)" fill-opacity="0.04" stroke="hsl(350 65% 55%)" stroke-opacity="0.08" stroke-width="1" stroke-dasharray="3 3" pointer-events="none"/>
+						<ellipse cx="440" cy="310" rx="80" ry="55" fill="hsl(150 55% 45%)" fill-opacity="0.04" stroke="hsl(150 55% 45%)" stroke-opacity="0.08" stroke-width="1" stroke-dasharray="3 3" pointer-events="none"/>
+						<ellipse cx="300" cy="210" rx="70" ry="50" fill="hsl(270 50% 58%)" fill-opacity="0.04" stroke="hsl(270 50% 58%)" stroke-opacity="0.08" stroke-width="1" stroke-dasharray="3 3" pointer-events="none"/>
+						{/* Data points will be rendered by JS for interactivity */}
+					</svg>
+					<div class="embed-scatter-legend" id="embed-scatter-legend"></div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						The key insight is that embedding vectors aren't random — <strong>meaning is
+						encoded in geometry.</strong> Words that are used in similar contexts end up
+						with similar vectors, forming clusters in the high-dimensional space. The model
+						learns these representations during training, and they capture surprisingly rich
+						semantic relationships.
+					</p>
+					<p>
+						These embedding vectors are the foundation of everything that follows. They're
+						the raw material that attention will operate on — and the vector style you see
+						here (points in space, grouped by meaning) is exactly how we'll visualize them
+						throughout the rest of this explainer.
 					</p>
 				</div>
 			</section>
@@ -1528,6 +1595,164 @@ const sections = [
 	.token-whole-example { background: hsl(210 60% 55% / 0.25); width: 12px; height: 12px; border-radius: 3px; }
 	.token-sub-example { background: hsl(35 80% 50% / 0.25); width: 12px; height: 12px; border-radius: 3px; }
 	.token-special-example { background: hsl(var(--theme-text) / 0.15); width: 12px; height: 12px; border-radius: 3px; }
+
+	/* ===== Embedding transition (token → vector) ===== */
+	.embed-transition {
+		margin: 2.5rem 0 2rem;
+		max-width: 42rem;
+	}
+
+	.embed-transition-label {
+		font-size: 0.78rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: hsl(var(--theme-text) / 0.4);
+		margin-bottom: 10px;
+	}
+
+	.embed-transition-rows {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		margin-bottom: 1.25rem;
+	}
+
+	.embed-transition-row {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.embed-arrow {
+		color: hsl(var(--theme-text) / 0.3);
+		font-size: 1.1rem;
+		flex-shrink: 0;
+	}
+
+	.embed-vector {
+		font-family: ui-monospace, monospace;
+		font-size: 0.82rem;
+		color: hsl(210 70% 55% / 0.7);
+		background: hsl(210 70% 55% / 0.06);
+		padding: 4px 10px;
+		border-radius: 5px;
+		border: 1px solid hsl(210 70% 55% / 0.12);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.embed-transition-note {
+		font-size: 1.05rem;
+		line-height: 1.75;
+		color: hsl(var(--theme-text) / 0.78);
+	}
+
+	.embed-transition-note strong {
+		color: hsl(var(--theme-text) / 0.95);
+		font-weight: 600;
+	}
+
+	/* ===== Embedding scatter plot ===== */
+	.embed-scatter-wrap {
+		margin: 2rem 0;
+		max-width: 42rem;
+	}
+
+	.embed-scatter-header {
+		display: flex;
+		align-items: baseline;
+		gap: 10px;
+		margin-bottom: 8px;
+		flex-wrap: wrap;
+	}
+
+	.embed-scatter-title {
+		font-size: 0.78rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: hsl(var(--theme-text) / 0.4);
+	}
+
+	.embed-scatter-subtitle {
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.25);
+		font-style: italic;
+	}
+
+	.embed-scatter {
+		width: 100%;
+		border-radius: 10px;
+		border: 1px solid hsl(var(--theme-text) / 0.06);
+		background: hsl(var(--theme-text) / 0.015);
+		color: hsl(var(--theme-text));
+	}
+
+	/* SVG point styling */
+	.embed-scatter :global(.embed-point) {
+		cursor: pointer;
+		transition: r 0.15s ease, fill-opacity 0.15s ease;
+	}
+
+	.embed-scatter :global(.embed-point:hover) {
+		fill-opacity: 1;
+	}
+
+	.embed-scatter :global(.embed-label) {
+		font-family: ui-monospace, monospace;
+		font-size: 10px;
+		fill: hsl(var(--theme-text) / 0.85);
+		pointer-events: none;
+		opacity: 0;
+		transition: opacity 0.15s ease;
+	}
+
+	.embed-scatter :global(.embed-label.visible) {
+		opacity: 1;
+	}
+
+	.embed-scatter :global(.embed-cluster-label) {
+		font-size: 9px;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		fill: currentColor;
+		fill-opacity: 0.25;
+		pointer-events: none;
+	}
+
+	.embed-scatter-legend {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 14px;
+		margin-top: 8px;
+	}
+
+	.embed-scatter-legend :global(.scatter-legend-item) {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.45);
+	}
+
+	.embed-scatter-legend :global(.scatter-legend-dot) {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		flex-shrink: 0;
+	}
+
+	@media (max-width: 480px) {
+		.embed-transition-row {
+			flex-wrap: wrap;
+		}
+		.embed-vector {
+			font-size: 0.72rem;
+		}
+	}
 </style>
 
 <script define:vars={{ sectionIds: sections.map(s => s.id) }}>
@@ -1730,6 +1955,198 @@ const sections = [
 			const defaultText = 'The cat sat on the mat.';
 			tokInput.value = defaultText;
 			renderTokens(defaultText);
+		}
+
+		// --- Embedding scatter plot ---
+		const scatterSvg = document.getElementById('embed-scatter');
+		const scatterLegend = document.getElementById('embed-scatter-legend');
+
+		if (scatterSvg && scatterLegend) {
+			const clusters = [
+				{
+					name: 'Animals',
+					color: 'hsl(210 70% 55%)',
+					words: [
+						{ word: 'cat', x: 120, y: 300 },
+						{ word: 'dog', x: 155, y: 320 },
+						{ word: 'fish', x: 95, y: 340 },
+						{ word: 'bird', x: 140, y: 270 },
+						{ word: 'horse', x: 175, y: 295 },
+						{ word: 'mouse', x: 110, y: 330 },
+					],
+					labelPos: { x: 140, y: 365 },
+				},
+				{
+					name: 'Royalty',
+					color: 'hsl(35 90% 55%)',
+					words: [
+						{ word: 'king', x: 445, y: 95 },
+						{ word: 'queen', x: 480, y: 120 },
+						{ word: 'prince', x: 420, y: 115 },
+						{ word: 'throne', x: 490, y: 90 },
+						{ word: 'crown', x: 455, y: 140 },
+					],
+					labelPos: { x: 460, y: 160 },
+				},
+				{
+					name: 'Emotions',
+					color: 'hsl(350 65% 55%)',
+					words: [
+						{ word: 'happy', x: 130, y: 105 },
+						{ word: 'sad', x: 160, y: 130 },
+						{ word: 'angry', x: 115, y: 140 },
+						{ word: 'love', x: 175, y: 95 },
+						{ word: 'fear', x: 140, y: 80 },
+					],
+					labelPos: { x: 150, y: 165 },
+				},
+				{
+					name: 'Actions',
+					color: 'hsl(150 55% 45%)',
+					words: [
+						{ word: 'run', x: 430, y: 295 },
+						{ word: 'walk', x: 465, y: 315 },
+						{ word: 'jump', x: 410, y: 325 },
+						{ word: 'swim', x: 450, y: 340 },
+						{ word: 'climb', x: 475, y: 280 },
+					],
+					labelPos: { x: 440, y: 360 },
+				},
+				{
+					name: 'Time',
+					color: 'hsl(270 50% 58%)',
+					words: [
+						{ word: 'day', x: 280, y: 200 },
+						{ word: 'year', x: 310, y: 220 },
+						{ word: 'time', x: 265, y: 230 },
+						{ word: 'morning', x: 320, y: 195 },
+						{ word: 'night', x: 290, y: 180 },
+					],
+					labelPos: { x: 300, y: 255 },
+				},
+			];
+
+			const svgNS = 'http://www.w3.org/2000/svg';
+
+			// Add cluster labels
+			clusters.forEach(cluster => {
+				const text = document.createElementNS(svgNS, 'text');
+				text.setAttribute('x', cluster.labelPos.x);
+				text.setAttribute('y', cluster.labelPos.y);
+				text.setAttribute('text-anchor', 'middle');
+				text.setAttribute('class', 'embed-cluster-label');
+				text.style.fill = cluster.color;
+				text.style.fillOpacity = '0.3';
+				text.textContent = cluster.name;
+				scatterSvg.appendChild(text);
+			});
+
+			// Add data points with hover labels
+			let activeLabel = null;
+
+			clusters.forEach(cluster => {
+				cluster.words.forEach(pt => {
+					// Create group for point + label
+					const g = document.createElementNS(svgNS, 'g');
+
+					// Circle
+					const circle = document.createElementNS(svgNS, 'circle');
+					circle.setAttribute('cx', pt.x);
+					circle.setAttribute('cy', pt.y);
+					circle.setAttribute('r', '5');
+					circle.setAttribute('fill', cluster.color);
+					circle.setAttribute('fill-opacity', '0.65');
+					circle.setAttribute('class', 'embed-point');
+					circle.setAttribute('data-word', pt.word);
+
+					// Label (hidden by default)
+					const label = document.createElementNS(svgNS, 'text');
+					label.setAttribute('x', pt.x);
+					label.setAttribute('y', pt.y - 10);
+					label.setAttribute('text-anchor', 'middle');
+					label.setAttribute('class', 'embed-label');
+					label.textContent = pt.word;
+
+					// Background rect for label readability
+					const bg = document.createElementNS(svgNS, 'rect');
+					bg.setAttribute('class', 'embed-label');
+					bg.setAttribute('rx', '3');
+					bg.setAttribute('ry', '3');
+					bg.style.fill = 'hsl(var(--theme-bg))';
+					bg.style.fillOpacity = '0.85';
+
+					g.appendChild(bg);
+					g.appendChild(label);
+					g.appendChild(circle);
+
+					circle.addEventListener('mouseenter', () => {
+						if (activeLabel) activeLabel.forEach(el => el.classList.remove('visible'));
+						label.classList.add('visible');
+						bg.classList.add('visible');
+						circle.setAttribute('r', '7');
+						circle.setAttribute('fill-opacity', '1');
+						// Position bg behind label
+						const bbox = label.getBBox();
+						bg.setAttribute('x', bbox.x - 3);
+						bg.setAttribute('y', bbox.y - 1);
+						bg.setAttribute('width', bbox.width + 6);
+						bg.setAttribute('height', bbox.height + 2);
+						activeLabel = [label, bg];
+					});
+
+					circle.addEventListener('mouseleave', () => {
+						label.classList.remove('visible');
+						bg.classList.remove('visible');
+						circle.setAttribute('r', '5');
+						circle.setAttribute('fill-opacity', '0.65');
+						activeLabel = null;
+					});
+
+					// Touch support
+					circle.addEventListener('click', (e) => {
+						e.stopPropagation();
+						if (activeLabel) activeLabel.forEach(el => el.classList.remove('visible'));
+						label.classList.add('visible');
+						bg.classList.add('visible');
+						circle.setAttribute('r', '7');
+						circle.setAttribute('fill-opacity', '1');
+						const bbox = label.getBBox();
+						bg.setAttribute('x', bbox.x - 3);
+						bg.setAttribute('y', bbox.y - 1);
+						bg.setAttribute('width', bbox.width + 6);
+						bg.setAttribute('height', bbox.height + 2);
+						activeLabel = [label, bg];
+					});
+
+					scatterSvg.appendChild(g);
+				});
+			});
+
+			// Close labels on click outside
+			scatterSvg.addEventListener('click', (e) => {
+				if (!e.target.closest('.embed-point') && activeLabel) {
+					activeLabel.forEach(el => el.classList.remove('visible'));
+					// Reset all circles
+					scatterSvg.querySelectorAll('.embed-point').forEach(c => {
+						c.setAttribute('r', '5');
+						c.setAttribute('fill-opacity', '0.65');
+					});
+					activeLabel = null;
+				}
+			});
+
+			// Build legend
+			clusters.forEach(cluster => {
+				const item = document.createElement('span');
+				item.className = 'scatter-legend-item';
+				const dot = document.createElement('span');
+				dot.className = 'scatter-legend-dot';
+				dot.style.background = cluster.color;
+				const text = document.createTextNode(cluster.name);
+				item.appendChild(dot);
+				item.appendChild(text);
+				scatterLegend.appendChild(item);
+			});
 		}
 
 		// --- Architecture diagram: tooltips + animation ---
