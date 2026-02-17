@@ -1457,9 +1457,277 @@ const sections = [
 				</div>
 			</section>
 
-			{/* ===== Sections 07–09: Placeholders ===== */}
+
+			<section
+				id="residual-stream"
+				class="mb-24 scroll-mt-20"
+			>
+				<div class="mb-8 flex items-baseline gap-4">
+					<span class="font-mono text-sm text-accent/60">07</span>
+					<div>
+						<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">Residual Stream</h2>
+						<p class="mt-1 text-base text-textColor/60">The information highway through the network</p>
+					</div>
+				</div>
+
+				<div class="linkage-callout linkage-residual">
+					<span class="linkage-icon">&#8599;</span>
+					<span>We&rsquo;ve now seen both halves of a single transformer layer: <strong>multi-head attention</strong> for cross-token communication and the <strong>feed-forward network</strong> for per-token processing. But what connects them &mdash; and what lets information flow through dozens of these layers? The <strong>residual stream</strong>.</span>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Imagine a <strong>highway</strong> that runs through the entire transformer. At each layer,
+						attention and FFN blocks are like <strong>on-ramps and off-ramps</strong> &mdash; they read
+						from the highway, do their computation, and <strong>add</strong> their output back. The
+						original signal is never destroyed; it just accumulates new information at each stop.
+					</p>
+					<p>
+						This is the <strong>residual connection</strong> &mdash; a deceptively simple idea
+						(just add the input to the output) that turns out to be critical. Without it,
+						gradients vanish as they backpropagate through dozens of layers, making deep
+						networks impossible to train. With it, the gradient has a &ldquo;shortcut&rdquo; that
+						bypasses every layer, keeping the signal strong.
+					</p>
+				</div>
+
+				{/* Residual stream highway diagram */}
+				<div class="res-highway-diagram">
+					<div class="res-highway-title">The residual stream through one layer</div>
+					<div class="res-highway-track">
+						<div class="res-highway-stream" id="res-highway-stream">
+							<div class="res-stream-segment res-seg-input">
+								<div class="res-stream-label">x</div>
+							</div>
+							<div class="res-stream-junction">
+								<div class="res-junction-branch res-branch-attn">
+									<div class="res-branch-arrow">&uarr;</div>
+									<div class="res-branch-block res-block-attn">
+										<div class="res-block-name">Multi-Head<br>Attention</div>
+									</div>
+									<div class="res-branch-arrow">&darr;</div>
+								</div>
+								<div class="res-junction-plus">+</div>
+							</div>
+							<div class="res-stream-segment res-seg-mid">
+								<div class="res-stream-label">x + MHA(x)</div>
+							</div>
+							<div class="res-stream-junction">
+								<div class="res-junction-branch res-branch-ffn">
+									<div class="res-branch-arrow">&uarr;</div>
+									<div class="res-branch-block res-block-ffn">
+										<div class="res-block-name">Feed-Forward<br>Network</div>
+									</div>
+									<div class="res-branch-arrow">&darr;</div>
+								</div>
+								<div class="res-junction-plus">+</div>
+							</div>
+							<div class="res-stream-segment res-seg-output">
+								<div class="res-stream-label">x&prime;</div>
+							</div>
+						</div>
+					</div>
+					<div class="res-highway-caption">The purple highway is the residual stream. Attention (amber) and FFN (green) read from it, compute, and add their results back. The original signal x flows straight through.</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Here&rsquo;s the key insight: each sublayer (attention or FFN) computes a <strong>delta</strong>
+						&mdash; a change to apply &mdash; rather than replacing the stream. This means every
+						layer has access to information from <em>all</em> previous layers, not just the one before it.
+						The residual stream is a <strong>shared workspace</strong> that every component can read from
+						and write to.
+					</p>
+				</div>
+
+				{/* Animated residual accumulation across layers */}
+				<div class="res-layers-diagram">
+					<div class="res-layers-title">Stacking layers: the residual stream accumulates</div>
+					<div class="res-layers-controls">
+						<button class="res-layers-btn" id="res-animate-btn">
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+							Animate
+						</button>
+						<button class="res-layers-btn" id="res-reset-btn">
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>
+							Reset
+						</button>
+					</div>
+					<div class="res-layers-stack" id="res-layers-stack">
+						<div class="res-layer-row" data-layer="0">
+							<div class="res-layer-label">Input</div>
+							<div class="res-layer-bar-container">
+								<div class="res-layer-bar res-bar-embed" style="width: 100%;">
+									<span>Embedding</span>
+								</div>
+							</div>
+						</div>
+						<div class="res-layer-row" data-layer="1">
+							<div class="res-layer-label">Layer 1</div>
+							<div class="res-layer-bar-container">
+								<div class="res-layer-bar res-bar-embed" style="width: 55%;"><span>Emb</span></div>
+								<div class="res-layer-bar res-bar-attn" style="width: 25%;"><span>Attn 1</span></div>
+								<div class="res-layer-bar res-bar-ffn" style="width: 20%;"><span>FFN 1</span></div>
+							</div>
+						</div>
+						<div class="res-layer-row" data-layer="2">
+							<div class="res-layer-label">Layer 2</div>
+							<div class="res-layer-bar-container">
+								<div class="res-layer-bar res-bar-embed" style="width: 35%;"><span>Emb</span></div>
+								<div class="res-layer-bar res-bar-attn" style="width: 20%;"><span>A1</span></div>
+								<div class="res-layer-bar res-bar-ffn" style="width: 13%;"><span>F1</span></div>
+								<div class="res-layer-bar res-bar-attn" style="width: 18%;"><span>Attn 2</span></div>
+								<div class="res-layer-bar res-bar-ffn" style="width: 14%;"><span>FFN 2</span></div>
+							</div>
+						</div>
+						<div class="res-layer-row" data-layer="3">
+							<div class="res-layer-label">Layer 3</div>
+							<div class="res-layer-bar-container">
+								<div class="res-layer-bar res-bar-embed" style="width: 22%;"><span>Emb</span></div>
+								<div class="res-layer-bar res-bar-attn" style="width: 13%;"><span>A1</span></div>
+								<div class="res-layer-bar res-bar-ffn" style="width: 8%;"><span>F1</span></div>
+								<div class="res-layer-bar res-bar-attn" style="width: 14%;"><span>A2</span></div>
+								<div class="res-layer-bar res-bar-ffn" style="width: 10%;"><span>F2</span></div>
+								<div class="res-layer-bar res-bar-attn" style="width: 18%;"><span>Attn 3</span></div>
+								<div class="res-layer-bar res-bar-ffn" style="width: 15%;"><span>FFN 3</span></div>
+							</div>
+						</div>
+					</div>
+					<div class="res-layers-legend">
+						<span class="res-legend-item"><span class="res-legend-swatch res-swatch-embed"></span>Embedding</span>
+						<span class="res-legend-item"><span class="res-legend-swatch res-swatch-attn"></span>Attention</span>
+						<span class="res-legend-item"><span class="res-legend-swatch res-swatch-ffn"></span>FFN</span>
+					</div>
+					<div class="res-layers-caption">Each row shows the composition of the residual stream at that point. As layers accumulate, the stream becomes a rich mix of contributions from embedding, attention, and FFN blocks.</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						But there&rsquo;s a problem. As values flow through dozens of addition operations, they
+						can grow uncontrollably large &mdash; or different dimensions can drift to wildly
+						different scales. Training becomes unstable. This is where <strong>layer normalization</strong>
+						comes in.
+					</p>
+				</div>
+
+				{/* Layer normalization interactive */}
+				<h3 class="subsection-divider" id="layer-norm">
+					<span class="subsection-number">07b</span>
+					<span class="subsection-title">Layer Normalization</span>
+				</h3>
+
+				<div class="section-prose">
+					<p>
+						Layer normalization is a <strong>normalization gate</strong> that sits before each sublayer
+						(in the &ldquo;Pre-Norm&rdquo; variant used by most modern transformers). It rescales each
+						vector so the values across dimensions have <strong>zero mean</strong> and <strong>unit variance</strong>,
+						then applies learned scale (&gamma;) and shift (&beta;) parameters.
+					</p>
+					<p>
+						The effect is simple but powerful: no matter how large or skewed the values
+						in the residual stream become, layer norm brings them back to a stable range
+						before each sublayer processes them. Think of it as a <strong>reset button for scale</strong>
+						&mdash; it preserves the direction (meaning) of the vector while standardizing its magnitude.
+					</p>
+				</div>
+
+				<div class="ln-interactive" id="ln-interactive">
+					<div class="ln-title">Layer normalization in action</div>
+					<div class="ln-formula">LayerNorm(x) = &gamma; &middot; (x &minus; &mu;) / &sigma; + &beta;</div>
+					<div class="ln-columns">
+						<div class="ln-column">
+							<div class="ln-col-title">Before normalization</div>
+							<div class="ln-bars" id="ln-before-bars"></div>
+							<div class="ln-stats" id="ln-before-stats"></div>
+						</div>
+						<div class="ln-arrow">&rarr;</div>
+						<div class="ln-column">
+							<div class="ln-col-title">After normalization</div>
+							<div class="ln-bars" id="ln-after-bars"></div>
+							<div class="ln-stats" id="ln-after-stats"></div>
+						</div>
+					</div>
+					<div class="ln-randomize">
+						<button class="ln-randomize-btn" id="ln-randomize-btn">Randomize values</button>
+					</div>
+					<div class="ln-caption">Click &ldquo;Randomize&rdquo; to see how layer norm handles different input distributions. The output always has mean &asymp; 0 and std &asymp; 1, regardless of the input scale.</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Modern transformers (GPT-2 onward) typically use <strong>Pre-Norm</strong> ordering: layer norm
+						is applied <em>before</em> each sublayer, not after. This makes training more stable because
+						each sublayer receives well-conditioned inputs. The pattern for each layer is:
+					</p>
+				</div>
+
+				{/* Pre-norm ordering diagram */}
+				<div class="res-prenorm-diagram">
+					<div class="res-prenorm-title">Pre-Norm layer ordering (modern transformers)</div>
+					<div class="res-prenorm-flow">
+						<div class="res-prenorm-step res-pn-stream">
+							<div class="res-pn-label">Residual</div>
+							<div class="res-pn-val">x</div>
+						</div>
+						<div class="res-prenorm-arrow">&rarr;</div>
+						<div class="res-prenorm-step res-pn-norm">
+							<div class="res-pn-label">Layer Norm</div>
+						</div>
+						<div class="res-prenorm-arrow">&rarr;</div>
+						<div class="res-prenorm-step res-pn-attn">
+							<div class="res-pn-label">MHA</div>
+						</div>
+						<div class="res-prenorm-arrow">&rarr;</div>
+						<div class="res-prenorm-step res-pn-add">
+							<div class="res-pn-label">+ x</div>
+						</div>
+						<div class="res-prenorm-arrow">&rarr;</div>
+						<div class="res-prenorm-step res-pn-norm">
+							<div class="res-pn-label">Layer Norm</div>
+						</div>
+						<div class="res-prenorm-arrow">&rarr;</div>
+						<div class="res-prenorm-step res-pn-ffn">
+							<div class="res-pn-label">FFN</div>
+						</div>
+						<div class="res-prenorm-arrow">&rarr;</div>
+						<div class="res-prenorm-step res-pn-add">
+							<div class="res-pn-label">+ x</div>
+						</div>
+						<div class="res-prenorm-arrow">&rarr;</div>
+						<div class="res-prenorm-step res-pn-stream">
+							<div class="res-pn-label">Residual</div>
+							<div class="res-pn-val">x&prime;</div>
+						</div>
+					</div>
+					<div class="res-prenorm-caption">In Pre-Norm, layer normalization comes <em>before</em> each sublayer. The &ldquo;+ x&rdquo; nodes are the residual additions, feeding back into the stream.</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Finally, let&rsquo;s see how stacking these layers creates the full transformer.
+						A typical model has <strong>12&ndash;96 layers</strong>, each running the same
+						attention &rarr; residual &rarr; FFN &rarr; residual cycle. The residual stream flows through
+						all of them, accumulating increasingly abstract representations.
+					</p>
+					<p>
+						Early layers tend to learn <strong>local, syntactic patterns</strong> (like part-of-speech tagging),
+						while later layers capture <strong>abstract, semantic relationships</strong> (like factual knowledge
+						and reasoning). The residual stream is what makes this gradual refinement possible &mdash;
+						each layer can read what previous layers wrote and build on it, rather than starting from scratch.
+					</p>
+					<p>
+						The residual stream also connects back to the architecture diagram from section 02 &mdash;
+						it&rsquo;s the vertical highway labeled &ldquo;+ residual&rdquo; that runs through the &ldquo;&times;N layers&rdquo;
+						block. Now that we understand what happens inside each layer and how they connect,
+						the next step is to see what happens at the very end: turning the final residual vector
+						back into a word prediction.
+					</p>
+				</div>
+			</section>
+
+			{/* ===== Sections 08–09: Placeholders ===== */}
 			{
-				sections.filter(s => !['preamble','architecture','embeddings','attention','multi-head-attention','ffn'].includes(s.id)).map((section) => (
+				sections.filter(s => !['preamble','architecture','embeddings','attention','multi-head-attention','ffn','residual-stream'].includes(s.id)).map((section) => (
 					<section
 						id={section.id}
 						class="section-placeholder mb-24 scroll-mt-20"
@@ -4679,6 +4947,534 @@ const sections = [
 		}
 	}
 
+
+	/* ===== Feature #15: Residual Stream ===== */
+	.linkage-residual {
+		background: hsl(270 50% 58% / 0.06);
+		border-color: hsl(270 50% 58% / 0.25);
+	}
+	.linkage-residual .linkage-icon { color: hsl(270 50% 58%); }
+
+	/* Highway diagram */
+	.res-highway-diagram {
+		background: hsl(var(--theme-text) / 0.02);
+		border: 1.5px solid hsl(var(--theme-text) / 0.08);
+		border-radius: 12px;
+		padding: 1.5rem;
+		margin: 1.5rem 0;
+		overflow-x: auto;
+	}
+
+	.res-highway-title {
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: hsl(270 50% 58%);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		margin-bottom: 1.2rem;
+		text-align: center;
+	}
+
+	.res-highway-track {
+		position: relative;
+		padding: 0.5rem 0;
+	}
+
+	.res-highway-stream {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0;
+		min-height: 180px;
+	}
+
+	.res-stream-segment {
+		background: hsl(270 50% 58% / 0.15);
+		border: 2px solid hsl(270 50% 58% / 0.4);
+		border-radius: 8px;
+		padding: 10px 18px;
+		text-align: center;
+		min-width: 80px;
+		position: relative;
+		z-index: 2;
+	}
+
+	.res-stream-label {
+		font-family: Georgia, 'Times New Roman', serif;
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: hsl(270 50% 58%);
+	}
+
+	.res-stream-junction {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		position: relative;
+		min-width: 100px;
+	}
+
+	.res-junction-branch {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 4px;
+	}
+
+	.res-branch-arrow {
+		font-size: 0.9rem;
+		color: hsl(var(--theme-text) / 0.25);
+	}
+
+	.res-branch-block {
+		padding: 8px 14px;
+		border-radius: 8px;
+		text-align: center;
+	}
+
+	.res-block-attn {
+		background: hsl(35 90% 55% / 0.12);
+		border: 1.5px solid hsl(35 90% 55% / 0.35);
+	}
+
+	.res-block-ffn {
+		background: hsl(150 55% 45% / 0.12);
+		border: 1.5px solid hsl(150 55% 45% / 0.35);
+	}
+
+	.res-block-name {
+		font-size: 0.72rem;
+		font-weight: 600;
+		line-height: 1.3;
+	}
+
+	.res-block-attn .res-block-name { color: hsl(35 90% 55%); }
+	.res-block-ffn .res-block-name { color: hsl(150 55% 45%); }
+
+	.res-junction-plus {
+		font-size: 1.1rem;
+		font-weight: 700;
+		color: hsl(var(--theme-text) / 0.3);
+		margin-top: 6px;
+	}
+
+	.res-highway-caption {
+		text-align: center;
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.4);
+		margin-top: 1rem;
+		font-style: italic;
+		max-width: 520px;
+		margin-left: auto;
+		margin-right: auto;
+		line-height: 1.5;
+	}
+
+	/* Layer accumulation stacked bars */
+	.res-layers-diagram {
+		background: hsl(var(--theme-text) / 0.02);
+		border: 1.5px solid hsl(var(--theme-text) / 0.08);
+		border-radius: 12px;
+		padding: 1.5rem;
+		margin: 1.5rem 0;
+	}
+
+	.res-layers-title {
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: hsl(270 50% 58%);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		margin-bottom: 1rem;
+		text-align: center;
+	}
+
+	.res-layers-controls {
+		display: flex;
+		gap: 8px;
+		justify-content: center;
+		margin-bottom: 1.2rem;
+	}
+
+	.res-layers-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 16px;
+		border-radius: 20px;
+		border: 1.5px solid hsl(var(--theme-text) / 0.15);
+		background: transparent;
+		color: hsl(var(--theme-text) / 0.6);
+		font-size: 0.82rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+
+	.res-layers-btn:hover {
+		border-color: hsl(270 50% 58% / 0.4);
+		color: hsl(var(--theme-text) / 0.8);
+	}
+
+	.res-layers-stack {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.res-layer-row {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		opacity: 0;
+		transform: translateY(8px);
+		transition: opacity 0.4s ease, transform 0.4s ease;
+	}
+
+	.res-layer-row.res-row-visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.res-layer-label {
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.5);
+		min-width: 55px;
+		text-align: right;
+	}
+
+	.res-layer-bar-container {
+		display: flex;
+		flex: 1;
+		height: 32px;
+		border-radius: 6px;
+		overflow: hidden;
+		background: hsl(var(--theme-text) / 0.03);
+		border: 1px solid hsl(var(--theme-text) / 0.06);
+	}
+
+	.res-layer-bar {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+		transition: width 0.5s ease;
+	}
+
+	.res-layer-bar span {
+		font-size: 0.65rem;
+		font-weight: 600;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		padding: 0 4px;
+	}
+
+	.res-bar-embed {
+		background: hsl(210 70% 55% / 0.3);
+		color: hsl(210 70% 55%);
+	}
+	.res-bar-attn {
+		background: hsl(35 90% 55% / 0.3);
+		color: hsl(35 90% 55%);
+	}
+	.res-bar-ffn {
+		background: hsl(150 55% 45% / 0.3);
+		color: hsl(150 55% 45%);
+	}
+
+	.res-layers-legend {
+		display: flex;
+		gap: 16px;
+		justify-content: center;
+		margin-top: 1rem;
+		flex-wrap: wrap;
+	}
+
+	.res-legend-item {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.5);
+	}
+
+	.res-legend-swatch {
+		width: 14px;
+		height: 14px;
+		border-radius: 3px;
+	}
+
+	.res-swatch-embed { background: hsl(210 70% 55% / 0.4); }
+	.res-swatch-attn { background: hsl(35 90% 55% / 0.4); }
+	.res-swatch-ffn { background: hsl(150 55% 45% / 0.4); }
+
+	.res-layers-caption {
+		text-align: center;
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.4);
+		margin-top: 0.6rem;
+		font-style: italic;
+		line-height: 1.5;
+	}
+
+	/* Layer norm interactive */
+	.ln-interactive {
+		background: hsl(var(--theme-text) / 0.02);
+		border: 1.5px solid hsl(var(--theme-text) / 0.08);
+		border-radius: 12px;
+		padding: 1.5rem;
+		margin: 1.5rem 0;
+	}
+
+	.ln-title {
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: hsl(270 50% 58%);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		margin-bottom: 0.5rem;
+		text-align: center;
+	}
+
+	.ln-formula {
+		font-family: Georgia, 'Times New Roman', serif;
+		font-size: 0.95rem;
+		color: hsl(var(--theme-text) / 0.7);
+		margin-bottom: 1.2rem;
+		text-align: center;
+	}
+
+	.ln-columns {
+		display: flex;
+		align-items: stretch;
+		gap: 16px;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	.ln-column {
+		flex: 1;
+		min-width: 180px;
+		max-width: 260px;
+	}
+
+	.ln-col-title {
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.6);
+		text-align: center;
+		margin-bottom: 0.6rem;
+	}
+
+	.ln-bars {
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		gap: 6px;
+		height: 140px;
+		padding: 0 4px;
+	}
+
+	.ln-bar {
+		width: 28px;
+		border-radius: 4px 4px 0 0;
+		transition: height 0.4s ease, background 0.3s ease;
+		position: relative;
+		min-height: 2px;
+	}
+
+	.ln-bar-label {
+		position: absolute;
+		top: -18px;
+		left: 50%;
+		transform: translateX(-50%);
+		font-size: 0.62rem;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		color: hsl(var(--theme-text) / 0.5);
+		white-space: nowrap;
+	}
+
+	.ln-bar-neg {
+		align-self: flex-start;
+		border-radius: 0 0 4px 4px;
+		margin-top: auto;
+	}
+
+	.ln-stats {
+		text-align: center;
+		font-size: 0.68rem;
+		color: hsl(var(--theme-text) / 0.45);
+		margin-top: 0.5rem;
+		font-variant-numeric: tabular-nums;
+		line-height: 1.5;
+	}
+
+	.ln-arrow {
+		font-size: 1.5rem;
+		color: hsl(var(--theme-text) / 0.2);
+		align-self: center;
+		padding: 0 4px;
+	}
+
+	.ln-randomize {
+		text-align: center;
+		margin-top: 1rem;
+	}
+
+	.ln-randomize-btn {
+		padding: 6px 20px;
+		border-radius: 20px;
+		border: 1.5px solid hsl(270 50% 58% / 0.3);
+		background: hsl(270 50% 58% / 0.08);
+		color: hsl(270 50% 58%);
+		font-size: 0.82rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+
+	.ln-randomize-btn:hover {
+		background: hsl(270 50% 58% / 0.15);
+		border-color: hsl(270 50% 58% / 0.5);
+	}
+
+	.ln-caption {
+		text-align: center;
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.4);
+		margin-top: 0.8rem;
+		font-style: italic;
+		line-height: 1.5;
+	}
+
+	/* Pre-norm ordering diagram */
+	.res-prenorm-diagram {
+		background: hsl(var(--theme-text) / 0.02);
+		border: 1.5px solid hsl(var(--theme-text) / 0.08);
+		border-radius: 12px;
+		padding: 1.5rem;
+		margin: 1.5rem 0;
+		overflow-x: auto;
+	}
+
+	.res-prenorm-title {
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: hsl(270 50% 58%);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		margin-bottom: 1rem;
+		text-align: center;
+	}
+
+	.res-prenorm-flow {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0;
+		flex-wrap: wrap;
+		row-gap: 10px;
+	}
+
+	.res-prenorm-step {
+		padding: 8px 12px;
+		border-radius: 8px;
+		text-align: center;
+		min-width: 48px;
+	}
+
+	.res-pn-label {
+		font-size: 0.72rem;
+		font-weight: 600;
+	}
+
+	.res-pn-val {
+		font-family: Georgia, serif;
+		font-size: 0.85rem;
+		font-weight: 600;
+		margin-top: 2px;
+	}
+
+	.res-pn-stream {
+		background: hsl(270 50% 58% / 0.1);
+		border: 1.5px solid hsl(270 50% 58% / 0.3);
+	}
+	.res-pn-stream .res-pn-label { color: hsl(270 50% 58%); }
+	.res-pn-stream .res-pn-val { color: hsl(270 50% 58%); }
+
+	.res-pn-norm {
+		background: hsl(var(--theme-text) / 0.06);
+		border: 1.5px dashed hsl(var(--theme-text) / 0.2);
+	}
+	.res-pn-norm .res-pn-label { color: hsl(var(--theme-text) / 0.6); }
+
+	.res-pn-attn {
+		background: hsl(35 90% 55% / 0.1);
+		border: 1.5px solid hsl(35 90% 55% / 0.3);
+	}
+	.res-pn-attn .res-pn-label { color: hsl(35 90% 55%); }
+
+	.res-pn-ffn {
+		background: hsl(150 55% 45% / 0.1);
+		border: 1.5px solid hsl(150 55% 45% / 0.3);
+	}
+	.res-pn-ffn .res-pn-label { color: hsl(150 55% 45%); }
+
+	.res-pn-add {
+		background: hsl(270 50% 58% / 0.06);
+		border: 1.5px solid hsl(270 50% 58% / 0.2);
+	}
+	.res-pn-add .res-pn-label { color: hsl(270 50% 58%); font-family: Georgia, serif; }
+
+	.res-prenorm-arrow {
+		font-size: 0.9rem;
+		color: hsl(var(--theme-text) / 0.2);
+		padding: 0 4px;
+	}
+
+	.res-prenorm-caption {
+		text-align: center;
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.4);
+		margin-top: 1rem;
+		font-style: italic;
+		line-height: 1.5;
+	}
+
+	@media (max-width: 480px) {
+		.res-highway-stream {
+			flex-direction: column;
+			gap: 4px;
+		}
+		.res-stream-junction {
+			flex-direction: row;
+			gap: 8px;
+		}
+		.res-junction-branch {
+			flex-direction: row;
+		}
+		.ln-columns {
+			flex-direction: column;
+			align-items: center;
+		}
+		.ln-arrow {
+			transform: rotate(90deg);
+		}
+		.res-prenorm-flow {
+			gap: 4px;
+		}
+		.res-prenorm-step {
+			padding: 6px 8px;
+			min-width: 36px;
+		}
+		.res-pn-label {
+			font-size: 0.62rem;
+		}
+	}
+
 </style>
 
 <script define:vars={{ sectionIds: sections.map(s => s.id) }}>
@@ -6127,5 +6923,120 @@ const sections = [
 			attributes: true,
 			attributeFilter: ['data-theme'],
 		});
+	});
+</script>
+
+<script is:inline>
+	document.addEventListener('DOMContentLoaded', () => {
+		// ===== Feature #15: Residual stream animations =====
+
+		// --- Layer accumulation animation ---
+		const rows = document.querySelectorAll('.res-layer-row');
+		const animateBtn = document.getElementById('res-animate-btn');
+		const resetBtn = document.getElementById('res-reset-btn');
+		let animationTimer = null;
+
+		function resetAnimation() {
+			if (animationTimer) { clearTimeout(animationTimer); animationTimer = null; }
+			rows.forEach(r => r.classList.remove('res-row-visible'));
+		}
+
+		function animateLayers() {
+			resetAnimation();
+			rows.forEach((row, i) => {
+				animationTimer = setTimeout(() => {
+					row.classList.add('res-row-visible');
+				}, i * 500);
+			});
+		}
+
+		if (animateBtn) animateBtn.addEventListener('click', animateLayers);
+		if (resetBtn) resetBtn.addEventListener('click', resetAnimation);
+
+		// Auto-show all rows after a short delay on load
+		setTimeout(() => {
+			rows.forEach((row, i) => {
+				setTimeout(() => row.classList.add('res-row-visible'), i * 300);
+			});
+		}, 500);
+
+		// --- Layer norm interactive ---
+		const beforeBarsEl = document.getElementById('ln-before-bars');
+		const afterBarsEl = document.getElementById('ln-after-bars');
+		const beforeStatsEl = document.getElementById('ln-before-stats');
+		const afterStatsEl = document.getElementById('ln-after-stats');
+		const randomizeBtn = document.getElementById('ln-randomize-btn');
+
+		if (!beforeBarsEl || !afterBarsEl) return;
+
+		const numDims = 8;
+		const barHeight = 120; // max bar height in px
+
+		function randomValues() {
+			// Random values with varying scales to demonstrate norm's effect
+			const scale = 2 + Math.random() * 8;
+			const offset = (Math.random() - 0.5) * 6;
+			return Array.from({ length: numDims }, () => (Math.random() - 0.5) * scale + offset);
+		}
+
+		function layerNorm(values) {
+			const mean = values.reduce((a, b) => a + b, 0) / values.length;
+			const variance = values.reduce((a, b) => a + (b - mean) ** 2, 0) / values.length;
+			const std = Math.sqrt(variance + 1e-5);
+			return values.map(v => (v - mean) / std);
+		}
+
+		function mean(arr) { return arr.reduce((a, b) => a + b, 0) / arr.length; }
+		function std(arr) {
+			const m = mean(arr);
+			return Math.sqrt(arr.reduce((a, b) => a + (b - m) ** 2, 0) / arr.length);
+		}
+
+		function renderBars(container, values, maxAbsVal) {
+			container.innerHTML = '';
+			const absMax = maxAbsVal || Math.max(...values.map(Math.abs), 0.01);
+			values.forEach((v, i) => {
+				const bar = document.createElement('div');
+				bar.className = 'ln-bar';
+				const h = Math.abs(v) / absMax * barHeight;
+				const isNeg = v < 0;
+				if (isNeg) {
+					bar.style.height = h + 'px';
+					bar.style.background = 'hsl(350 65% 55% / 0.4)';
+					bar.style.alignSelf = 'flex-start';
+					bar.style.borderRadius = '0 0 4px 4px';
+					bar.style.marginTop = (barHeight - h) + 'px';
+				} else {
+					bar.style.height = h + 'px';
+					bar.style.background = 'hsl(270 50% 58% / 0.4)';
+					bar.style.marginTop = (barHeight - h) + 'px';
+				}
+				const label = document.createElement('div');
+				label.className = 'ln-bar-label';
+				label.textContent = v.toFixed(1);
+				bar.appendChild(label);
+				container.appendChild(bar);
+			});
+		}
+
+		function renderStats(container, values) {
+			const m = mean(values);
+			const s = std(values);
+			container.innerHTML = '\u03bc = ' + m.toFixed(2) + ' &nbsp; \u03c3 = ' + s.toFixed(2);
+		}
+
+		function update() {
+			const before = randomValues();
+			const after = layerNorm(before);
+			const maxBefore = Math.max(...before.map(Math.abs), 0.01);
+			const maxAfter = Math.max(...after.map(Math.abs), 0.01);
+			renderBars(beforeBarsEl, before, maxBefore);
+			renderBars(afterBarsEl, after, maxAfter);
+			renderStats(beforeStatsEl, before);
+			renderStats(afterStatsEl, after);
+		}
+
+		if (randomizeBtn) randomizeBtn.addEventListener('click', update);
+		update(); // Initial render
 	});
 </script>
