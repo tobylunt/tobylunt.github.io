@@ -319,3 +319,32 @@
 - Verified in Playwright: dark + light themes, toggle interaction (Head 1 off → output updates, note changes), residual handoff diagram
 - Commit: b4b4ace
 - Next: Feature #14 — Feed-forward network (structure, activation functions, and role)
+
+=== Session: Feature #14 — Feed-Forward Network ===
+- Completed: Feature #14 (FFN — structure, activation functions, and role)
+- Section number: 06
+- HTML inserted via Python script (tab-safe), then CSS and JS added separately
+- Green linkage callout connecting to MHA output from Feature #13
+- Prose: attention=meeting vs FFN=individual work, expand-activate-compress pattern
+- FFN structure "bulge" diagram:
+  - Input (768) → W₁ → σ Activation (3072, 4×) → W₂ → Output (768)
+  - Visual bars: short→tall→short showing expansion ratio
+  - W₁/W₂ shown as dashed-border small bars
+  - Formula: FFN(x) = W₂ · σ(W₁ · x + b₁) + b₂
+- Interactive activation function canvas:
+  - Three toggle buttons: ReLU, GELU, SiLU/Swish
+  - Canvas draws function curve with grid, axes, axis labels, dashed identity line
+  - Colors adapt to dark/light theme via MutationObserver on data-theme
+  - Description text updates per function (ReLU: dead neurons, GELU: smooth gating, SiLU: slight negative dip)
+- Key-value memory interpretation prose
+- Residual handoff diagram:
+  - x + MHA(x) (purple) + FFN(…) (green) = x' (purple)
+  - Caption: completes one transformer layer, output flows to next layer or output head
+- Closing prose: transition to residual stream section
+- CSS: .ffn-structure-diagram, .ffn-bulge, .ffn-bulge-stage, .ffn-bar, .ffn-bar-tall, .ffn-bar-label, .ffn-bulge-arrow, .ffn-activation-container, .ffn-act-btn, .ffn-residual-handoff, .ffn-residual-flow, .ffn-residual-box, .ffn-res-input/ffn/result
+- Mobile responsive (@media max-width: 480px)
+- Filter updated: added 'ffn' to excludes. Comment range: Sections 07–09
+- Build passes with 0 errors
+- Verified in Playwright: dark + light themes, all 3 activation function toggles, bulge diagram, residual handoff
+- Commit: 0e2e956
+- Next: Feature #15 — Residual connections and layer normalization

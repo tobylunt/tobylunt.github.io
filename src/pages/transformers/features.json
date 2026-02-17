@@ -176,7 +176,7 @@
   {
     "id": 14,
     "name": "Feed-forward network — structure, activation functions, and role",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Navigate to the FFN section",
       "LINKAGE: Verify this section opens by receiving the output from multi-head attention (#13) through the residual connection. Show the same vector arriving at the FFN block — reference the architecture diagram: 'we are now in the FFN block, the second half of each transformer layer'",
