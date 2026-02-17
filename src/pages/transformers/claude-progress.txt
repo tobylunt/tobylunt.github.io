@@ -111,3 +111,30 @@
 - Verified in Playwright: light + dark themes, default tokenization, subword splitting ("Transformers use unsupervised pretraining for extraordinary performance." → 13 tokens with correct splits)
 - Commit: 2d77dc1
 - Next: Feature #6 — Token embedding visualization (words as vectors in space)
+
+=== Feature #6 Completed — 2026-02-17 ===
+- Added embedding space visualization below the tokenizer in the Embeddings section
+- Token → vector transition visual:
+  - Three example rows: cat → [0.23, -0.41, ...], dog → [0.21, -0.38, ...], king → [-0.74, 0.62, ...]
+  - Uses same blue token chips from Feature #5 for consistency
+  - Explanatory note about similar vectors for similar words
+- Interactive 2D scatter plot (SVG-based):
+  - 26 words organized into 5 semantic clusters:
+    - Animals (blue, hsl 210): cat, dog, fish, bird, horse, mouse
+    - Royalty (amber, hsl 35): king, queen, prince, throne, crown
+    - Emotions (rose, hsl 350): happy, sad, angry, love, fear
+    - Actions (green, hsl 150): run, walk, jump, swim, climb
+    - Time (purple, hsl 270): day, year, time, morning, night
+  - Subtle dashed ellipse backgrounds for each cluster
+  - Grid lines for spatial reference
+  - Hover any point to see word label (enlarges dot, shows text with background)
+  - Touch/click support for mobile
+  - Click outside to dismiss label
+  - Cluster name labels at bottom of each group
+  - Color-coded legend below the plot
+- Closing prose: "meaning is encoded in geometry" — establishes vector representation style for reuse
+- Fixed pointer-events bug: cluster ellipses were blocking hover on data points (added pointer-events="none")
+- Build passes with 0 errors
+- Verified in Playwright: dark + light themes, hover interaction on "cat" (dark) and "queen" (light)
+- Commit: a283b53
+- Next: Feature #7 — Positional encoding visualization (sine/cosine waves)

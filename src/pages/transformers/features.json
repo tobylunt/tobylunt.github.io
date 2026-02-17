@@ -66,7 +66,7 @@
   {
     "id": 6,
     "name": "Token embedding visualization — words as vectors in space",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Navigate to the Embeddings section (below tokenization)",
       "LINKAGE: Verify this section begins by taking the tokens from feature #5 and showing the NEXT step — each token becoming a vector. The visual should show tokens (using the same color coding from #5) transforming into points in space",
