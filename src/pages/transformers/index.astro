@@ -728,6 +728,116 @@ const sections = [
 						every other token.
 					</p>
 				</div>
+
+				{/* ===== Feature #9: Dot product attention + softmax ===== */}
+				<div class="subsection-divider"></div>
+				<h3 class="subsection-title"><span class="subsection-label">04b</span> Dot Product Attention &amp; Softmax</h3>
+
+				<div class="linkage-callout linkage-attention">
+					<span class="linkage-icon">&#8599;</span>
+					<span>We now take the <strong class="qkv-q-text">Q</strong> and <strong class="qkv-k-text">K</strong> matrices from the previous step and use them to compute <strong>attention scores</strong> — how much each token should attend to every other token.</span>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						How does a token decide which other tokens are relevant? By comparing its
+						<strong class="qkv-q-text">query</strong> against every other token’s
+						<strong class="qkv-k-text">key</strong>. The comparison is a <strong>dot product</strong> —
+						the simplest measure of how aligned two vectors are. If a query and key point in
+						similar directions, their dot product is large (high attention). If they’re
+						orthogonal, it’s near zero (no attention).
+					</p>
+				</div>
+
+				{/* Formula display */}
+				<div class="attn-formula">
+					<div class="attn-formula-row">
+						Attention(<span class="qkv-q-text">Q</span>, <span class="qkv-k-text">K</span>, <span class="qkv-v-text">V</span>) = softmax(<span class="qkv-q-text">Q</span><span class="qkv-k-text">K</span><sup>T</sup> / &radic;<span class="attn-formula-dk">d<sub>k</sub></span>) <span class="qkv-v-text">V</span>
+					</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Let’s break this down. For a sequence of three tokens, the dot product
+						<strong class="qkv-q-text">Q</strong><strong class="qkv-k-text">K</strong><sup>T</sup>
+						produces a 3×3 matrix of raw scores. Each cell (i, j) measures how much
+						token i wants to attend to token j. But these raw scores can be huge, so we
+						divide by &radic;d<sub>k</sub> to keep gradients stable. Then <strong>softmax</strong>
+						converts each row into a probability distribution that sums to 1.
+					</p>
+					<p>
+						Below, see how the raw dot-product scores for one token (“cat”) get transformed
+						into attention weights. Use the <strong>temperature slider</strong> to see how
+						sharpening (low temperature) makes the model focus on one token, while smoothing
+						(high temperature) spreads attention evenly.
+					</p>
+				</div>
+
+				{/* Interactive dot product + softmax visualization */}
+				<div class="attn-dotprod-container">
+					{/* Dot product grid: Q row × K columns */}
+					<div class="attn-dotprod-grid">
+						<div class="attn-grid-label">Raw scores for <span class="qkv-q-text">q<sub>2</sub></span> (“cat”) attending to each key:</div>
+						<div class="attn-grid-row" id="attn-raw-scores">
+							{/* Populated by JS */}
+						</div>
+					</div>
+
+					{/* Scaling step */}
+					<div class="attn-step-arrow">
+						<span class="attn-step-label">&divide; &radic;d<sub>k</sub></span>
+						<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 5V19M12 19L6 13M12 19L18 13" stroke="currentColor" stroke-width="1.5"/></svg>
+					</div>
+
+					{/* Scaled scores */}
+					<div class="attn-dotprod-grid">
+						<div class="attn-grid-label">Scaled scores (/ &radic;d<sub>k</sub>):</div>
+						<div class="attn-grid-row" id="attn-scaled-scores">
+							{/* Populated by JS */}
+						</div>
+					</div>
+
+					{/* Temperature slider */}
+					<div class="attn-temp-control">
+						<label class="attn-temp-label" id="attn-temp-display">Temperature: 1.0</label>
+						<input type="range" id="attn-temp-slider" class="attn-temp-slider" min="0.1" max="3.0" step="0.1" value="1.0" />
+						<div class="attn-temp-range">
+							<span>0.1 (sharp)</span>
+							<span>3.0 (smooth)</span>
+						</div>
+					</div>
+
+					{/* Softmax step */}
+					<div class="attn-step-arrow">
+						<span class="attn-step-label">softmax</span>
+						<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 5V19M12 19L6 13M12 19L18 13" stroke="currentColor" stroke-width="1.5"/></svg>
+					</div>
+
+					{/* Softmax bar chart */}
+					<div class="attn-softmax-chart">
+						<div class="attn-grid-label">Attention weights (softmax output):</div>
+						<div class="attn-bars-container" id="attn-bars">
+							{/* Populated by JS */}
+						</div>
+						<div class="attn-bars-sum" id="attn-sum">Sum = 1.000</div>
+					</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						At temperature 1.0 (the default), “cat” attends most strongly to itself and
+						to “sat” — tokens that are semantically and syntactically close. Lower the
+						temperature toward 0.1 and the distribution becomes nearly one-hot: the model
+						focuses on a single token. Raise it to 3.0 and attention spreads almost uniformly.
+					</p>
+					<p>
+						The final step multiplies these attention weights by the
+						<strong class="qkv-v-text">value</strong> vectors — producing a weighted
+						sum that becomes the output of this attention head. Each token’s output is a
+						blend of information from the tokens it attended to, with the attention weights
+						controlling the mix.
+					</p>
+				</div>
 			</section>
 
 			{/* ===== Sections 05–09: Placeholders ===== */}
@@ -2435,6 +2545,202 @@ const sections = [
 			padding: 14px 12px;
 		}
 	}
+
+	/* ===== Dot product attention + softmax (Feature #9) ===== */
+	.attn-formula {
+		margin: 1.5rem 0;
+		padding: 16px 20px;
+		border-radius: 8px;
+		background: hsl(35 90% 55% / 0.06);
+		border: 1px solid hsl(35 90% 55% / 0.15);
+		max-width: 42rem;
+		font-size: 1.05rem;
+		font-family: Georgia, 'Times New Roman', serif;
+		color: hsl(var(--theme-text) / 0.85);
+		text-align: center;
+	}
+
+	.attn-formula-dk {
+		border-bottom: 1px solid hsl(var(--theme-text) / 0.4);
+		padding-bottom: 1px;
+	}
+
+	.attn-dotprod-container {
+		margin: 2rem 0;
+		max-width: 42rem;
+	}
+
+	.attn-dotprod-grid {
+		margin-bottom: 0.5rem;
+	}
+
+	.attn-grid-label {
+		font-size: 0.85rem;
+		color: hsl(var(--theme-text) / 0.55);
+		margin-bottom: 8px;
+	}
+
+	.attn-grid-row {
+		display: flex;
+		gap: 10px;
+	}
+
+	.attn-score-cell {
+		flex: 1;
+		padding: 12px 8px;
+		border-radius: 8px;
+		text-align: center;
+		border: 1.5px solid hsl(var(--theme-text) / 0.12);
+		background: hsl(var(--theme-text) / 0.02);
+		transition: background 0.2s, border-color 0.2s;
+	}
+
+	.attn-score-token {
+		font-size: 0.75rem;
+		color: hsl(var(--theme-text) / 0.45);
+		margin-bottom: 4px;
+	}
+
+	.attn-score-value {
+		font-size: 1.1rem;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		color: hsl(var(--theme-text) / 0.85);
+	}
+
+	.attn-step-arrow {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2px;
+		margin: 10px 0;
+		color: hsl(var(--theme-text) / 0.35);
+	}
+
+	.attn-step-label {
+		font-size: 0.8rem;
+		font-weight: 500;
+		color: hsl(35 90% 55% / 0.8);
+		font-family: Georgia, serif;
+	}
+
+	.attn-temp-control {
+		margin: 16px 0;
+		max-width: 320px;
+	}
+
+	.attn-temp-label {
+		display: block;
+		font-size: 0.85rem;
+		font-weight: 500;
+		color: hsl(var(--theme-text) / 0.7);
+		margin-bottom: 6px;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.attn-temp-slider {
+		width: 100%;
+		-webkit-appearance: none;
+		appearance: none;
+		height: 5px;
+		border-radius: 3px;
+		background: hsl(var(--theme-text) / 0.12);
+		outline: none;
+		cursor: pointer;
+	}
+
+	.attn-temp-slider::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		width: 18px;
+		height: 18px;
+		border-radius: 50%;
+		background: hsl(35 90% 55%);
+		cursor: pointer;
+		border: 2px solid hsl(var(--theme-bg));
+		box-shadow: 0 1px 3px hsl(0 0% 0% / 0.2);
+	}
+
+	.attn-temp-slider::-moz-range-thumb {
+		width: 18px;
+		height: 18px;
+		border-radius: 50%;
+		background: hsl(35 90% 55%);
+		cursor: pointer;
+		border: 2px solid hsl(var(--theme-bg));
+	}
+
+	.attn-temp-range {
+		display: flex;
+		justify-content: space-between;
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.35);
+		margin-top: 4px;
+	}
+
+	.attn-softmax-chart {
+		margin-top: 0.5rem;
+	}
+
+	.attn-bars-container {
+		display: flex;
+		gap: 10px;
+		align-items: flex-end;
+		height: 140px;
+		padding-bottom: 24px;
+		position: relative;
+	}
+
+	.attn-bar-col {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		height: 100%;
+		justify-content: flex-end;
+	}
+
+	.attn-bar {
+		width: 100%;
+		border-radius: 4px 4px 0 0;
+		transition: height 0.3s ease, background 0.3s ease;
+		min-height: 2px;
+	}
+
+	.attn-bar-value {
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.7);
+		margin-bottom: 4px;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.attn-bar-token {
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.45);
+		margin-top: 6px;
+		position: absolute;
+		bottom: 0;
+	}
+
+	.attn-bars-sum {
+		text-align: center;
+		font-size: 0.78rem;
+		color: hsl(var(--theme-text) / 0.4);
+		margin-top: 8px;
+		font-variant-numeric: tabular-nums;
+	}
+
+	@media (max-width: 480px) {
+		.attn-grid-row {
+			gap: 6px;
+		}
+		.attn-score-cell {
+			padding: 8px 4px;
+		}
+		.attn-score-value {
+			font-size: 0.9rem;
+		}
+	}
 </style>
 
 <script define:vars={{ sectionIds: sections.map(s => s.id) }}>
@@ -3311,5 +3617,110 @@ const sections = [
 
 		// Initial render
 		showStep(0);
+	});
+</script>
+
+<script is:inline>
+	document.addEventListener('DOMContentLoaded', () => {
+		// --- Dot product attention + softmax interactive ---
+		const rawScoresEl = document.getElementById('attn-raw-scores');
+		const scaledScoresEl = document.getElementById('attn-scaled-scores');
+		const barsEl = document.getElementById('attn-bars');
+		const sumEl = document.getElementById('attn-sum');
+		const tempSlider = document.getElementById('attn-temp-slider');
+		const tempDisplay = document.getElementById('attn-temp-display');
+
+		if (!rawScoresEl || !scaledScoresEl || !barsEl || !tempSlider) return;
+
+		// Simulated dot product scores for q2 ("cat") attending to ["The", "cat", "sat"]
+		const tokens = ['The', 'cat', 'sat'];
+		const rawScores = [2.1, 8.4, 5.7]; // q2·k1, q2·k2, q2·k3
+		const dk = 64; // typical d_k
+		const sqrtDk = Math.sqrt(dk); // 8
+
+		const scaledBase = rawScores.map(s => s / sqrtDk);
+
+		function softmax(scores, temperature) {
+			const scaled = scores.map(s => s / temperature);
+			const maxS = Math.max(...scaled);
+			const exps = scaled.map(s => Math.exp(s - maxS));
+			const sum = exps.reduce((a, b) => a + b, 0);
+			return exps.map(e => e / sum);
+		}
+
+		// Render raw score cells
+		function renderRawScores() {
+			rawScoresEl.innerHTML = '';
+			tokens.forEach((tok, i) => {
+				const cell = document.createElement('div');
+				cell.className = 'attn-score-cell';
+				const highlight = rawScores[i] === Math.max(...rawScores) ? ' style="border-color: hsl(35 90% 55% / 0.4); background: hsl(35 90% 55% / 0.06)"' : '';
+				cell.innerHTML = '<div class="attn-score-token">q\u2082 \u00b7 k' + String.fromCharCode(8321 + i) + ' ("' + tok + '")</div>' +
+					'<div class="attn-score-value"' + highlight + '>' + rawScores[i].toFixed(1) + '</div>';
+				rawScoresEl.appendChild(cell);
+			});
+		}
+
+		// Render scaled score cells
+		function renderScaledScores() {
+			scaledScoresEl.innerHTML = '';
+			tokens.forEach((tok, i) => {
+				const cell = document.createElement('div');
+				cell.className = 'attn-score-cell';
+				cell.innerHTML = '<div class="attn-score-token">"' + tok + '"</div>' +
+					'<div class="attn-score-value">' + scaledBase[i].toFixed(3) + '</div>';
+				scaledScoresEl.appendChild(cell);
+			});
+		}
+
+		// Render softmax bars
+		function renderBars(temperature) {
+			const weights = softmax(scaledBase, temperature);
+			barsEl.innerHTML = '';
+
+			const maxWeight = Math.max(...weights);
+
+			tokens.forEach((tok, i) => {
+				const col = document.createElement('div');
+				col.className = 'attn-bar-col';
+
+				const valLabel = document.createElement('div');
+				valLabel.className = 'attn-bar-value';
+				valLabel.textContent = weights[i].toFixed(3);
+
+				const bar = document.createElement('div');
+				bar.className = 'attn-bar';
+				const heightPct = (weights[i] / maxWeight) * 100;
+				const intensity = 0.3 + weights[i] * 0.7;
+				bar.style.height = Math.max(heightPct, 2) + '%';
+				bar.style.background = 'hsl(35 90% 55% / ' + intensity.toFixed(2) + ')';
+
+				const tokLabel = document.createElement('div');
+				tokLabel.className = 'attn-bar-token';
+				tokLabel.textContent = '"' + tok + '"';
+
+				col.appendChild(valLabel);
+				col.appendChild(bar);
+				col.appendChild(tokLabel);
+				barsEl.appendChild(col);
+			});
+
+			if (sumEl) {
+				const sum = weights.reduce((a, b) => a + b, 0);
+				sumEl.textContent = 'Sum = ' + sum.toFixed(3);
+			}
+		}
+
+		// Temperature slider handler
+		tempSlider.addEventListener('input', () => {
+			const temp = parseFloat(tempSlider.value);
+			if (tempDisplay) tempDisplay.textContent = 'Temperature: ' + temp.toFixed(1);
+			renderBars(temp);
+		});
+
+		// Initial render
+		renderRawScores();
+		renderScaledScores();
+		renderBars(1.0);
 	});
 </script>
