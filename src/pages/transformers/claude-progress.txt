@@ -74,3 +74,17 @@
 - Verified in Playwright: light + dark themes, prose, timeline, vocab grid, teaser all render correctly
 - Commit: 99ff8a3
 - Next: Feature #4 — Transformer architecture overview with interactive block diagram
+
+=== Feature #4 Completed — 2026-02-17 ===
+- Replaced architecture placeholder with full interactive block diagram
+- Vertical bottom-to-top layout: Input tokens → Token Embedding → Positional Encoding → [×N layers: LayerNorm → Multi-Head Attention → +residual → LayerNorm → FFN → +residual] → LayerNorm → Unembedding → Softmax Output
+- Color-coded blocks matching preamble vocabulary (blue=embedding, amber=attention, green=FFN, rose=output, neutral=layer norm)
+- Repeated layer group: dashed purple border with "×N layers" label, residual connection lines
+- Interactive tooltips: hover/click any block to see description (positioned above block)
+- Animate button: sequential pulse animation through all blocks (bottom-to-top, 300ms intervals)
+- Intro prose frames diagram as the "map"; outro connects to upcoming sections
+- Refactored template: preamble + architecture rendered as dedicated HTML, sections 03-09 use .map() loop
+- Build passes with 0 errors
+- Verified in Playwright: dark + light themes, tooltip on hover, animate button
+- Commit: bc63f2b
+- Next: Feature #5 — Tokenization explainer with interactive widget

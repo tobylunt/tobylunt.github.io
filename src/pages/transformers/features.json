@@ -38,7 +38,7 @@
   {
     "id": 4,
     "name": "Transformer architecture overview — interactive block diagram",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Navigate to the Architecture Overview section",
       "Verify a diagram showing the full transformer architecture (embedding → N x [attention + FFN] → unembedding)",
