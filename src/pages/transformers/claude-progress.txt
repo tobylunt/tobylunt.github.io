@@ -138,3 +138,27 @@
 - Verified in Playwright: dark + light themes, hover interaction on "cat" (dark) and "queen" (light)
 - Commit: a283b53
 - Next: Feature #7 — Positional encoding visualization (sine/cosine waves)
+
+=== Feature #7 Completed — 2026-02-17 ===
+- Added positional encoding subsection within the Embeddings section (after scatter plot)
+- Subsection divider pattern: .subsection-divider + .subsection-title "03b Positional Encoding"
+- Linkage callout connecting back to "+ Positional Encoding" block in architecture diagram
+- Prose about permutation invariance of self-attention, need for position information
+- Formula display: PE(pos,2i) = sin(pos/10000^{2i/d}), PE(pos,2i+1) = cos(pos/10000^{2i/d})
+- Interactive position slider (range 0-31):
+  - Real-time SVG wave bar visualization showing encoding vector values
+  - Blue bars (hsl 210) for positive values, amber bars (hsl 35) for negative values
+  - Bar height proportional to absolute value, opacity varies with magnitude
+- Canvas heatmap (480×240) of 32×32 positional encoding matrix:
+  - Color mapping: blue (positive) → gray (zero) → amber (negative)
+  - Axis labels: "Position →" (x-axis), "Dimension →" (y-axis)
+  - Color scale bar below
+- Handoff diagram: E Token Embedding + P Position Encoding = → Input Vector
+  - Uses amber color for result to foreshadow attention section
+- Closing prose about combined vectors flowing into attention
+- Reusable CSS patterns: .subsection-divider, .subsection-title, .posenc-formula, .posenc-slider, .posenc-waves, .posenc-heatmap, .posenc-handoff
+- Mobile responsive (@media max-width: 480px) for handoff and formula
+- Build passes with 0 errors
+- Verified in Playwright: light + dark themes, slider interaction (pos 0 and pos 15), heatmap rendering, handoff diagram
+- Commit: ac68312
+- Next: Feature #8 — Single attention head (Q, K, V matrices explainer with animation)

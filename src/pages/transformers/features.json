@@ -80,7 +80,7 @@
   {
     "id": 7,
     "name": "Positional encoding visualization — sine and cosine waves",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Navigate to the Positional Encoding subsection",
       "LINKAGE: Verify a visual shows the embedding vectors from feature #6 being AUGMENTED with positional information — the reader should see the same vectors gaining an additional component, not a disconnected new diagram",
