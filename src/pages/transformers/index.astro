@@ -1,0 +1,116 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+
+const sections = [
+	{
+		id: "preamble",
+		number: "01",
+		title: "Preamble",
+		subtitle: "Why transformers changed everything",
+	},
+	{
+		id: "architecture",
+		number: "02",
+		title: "Architecture Overview",
+		subtitle: "The full picture, from input to output",
+	},
+	{
+		id: "embeddings",
+		number: "03",
+		title: "Embeddings",
+		subtitle: "Turning words into numbers",
+	},
+	{
+		id: "attention",
+		number: "04",
+		title: "Attention",
+		subtitle: "The mechanism that lets tokens talk to each other",
+	},
+	{
+		id: "multi-head-attention",
+		number: "05",
+		title: "Multi-Head Attention",
+		subtitle: "Many perspectives, one representation",
+	},
+	{
+		id: "ffn",
+		number: "06",
+		title: "Feed-Forward Network",
+		subtitle: "Per-token computation and memory",
+	},
+	{
+		id: "residual-stream",
+		number: "07",
+		title: "Residual Stream",
+		subtitle: "The information highway through the network",
+	},
+	{
+		id: "output",
+		number: "08",
+		title: "Output",
+		subtitle: "From vectors back to words",
+	},
+	{
+		id: "circuits",
+		number: "09",
+		title: "Circuits",
+		subtitle: "How attention heads compose into algorithms",
+	},
+];
+---
+
+<PageLayout meta={{ title: "How Transformers Work" }}>
+	<article class="transformers-page mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+		{/* Hero Section */}
+		<header class="hero mb-20 pt-8 text-center sm:pt-16">
+			<p class="mb-4 text-sm font-medium uppercase tracking-widest text-accent">
+				Interactive Explainer
+			</p>
+			<h1 class="mb-6 text-4xl font-bold leading-tight text-accent-2 sm:text-5xl lg:text-6xl">
+				How Transformers Work
+			</h1>
+			<p class="mx-auto max-w-2xl text-lg leading-relaxed text-textColor/80 sm:text-xl">
+				A visual, interactive guide to the architecture behind modern AI — from
+				tokens to predictions, attention to circuits.
+			</p>
+			<div class="mt-10 flex items-center justify-center gap-3 text-sm text-textColor/50">
+				<span>Toby Lunt</span>
+				<span class="text-accent/40">|</span>
+				<span>2026</span>
+				<span class="text-accent/40">|</span>
+				<span>~30 min read</span>
+			</div>
+			<div class="mx-auto mt-12 h-px w-24 bg-accent/30"></div>
+		</header>
+
+		{/* Section Placeholders */}
+		{
+			sections.map((section) => (
+				<section
+					id={section.id}
+					class="section-placeholder mb-24 scroll-mt-20"
+				>
+					<div class="mb-8 flex items-baseline gap-4">
+						<span class="font-mono text-sm text-accent/60">
+							{section.number}
+						</span>
+						<div>
+							<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">
+								{section.title}
+							</h2>
+							<p class="mt-1 text-base text-textColor/60">
+								{section.subtitle}
+							</p>
+						</div>
+					</div>
+					<div class="rounded-lg border border-dashed border-textColor/15 bg-bgColor/50 px-6 py-16 text-center">
+						<div class="mb-3 text-3xl text-textColor/20">&#9671;</div>
+						<p class="text-sm text-textColor/40">
+							Interactive content coming soon
+						</p>
+					</div>
+				</section>
+			))
+		}
+	</article>
+</PageLayout>
