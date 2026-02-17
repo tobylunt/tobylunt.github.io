@@ -1167,7 +1167,148 @@ const sections = [
 					</p>
 					<p>
 						But how do these different perspectives get combined into a single output? That&rsquo;s
-						the next step: <strong>concatenation and projection</strong>, covered in the next section.
+						the next step: <strong>concatenation and projection</strong>.
+					</p>
+				</div>
+
+				{/* ===== Feature #13: Concatenation & Projection ===== */}
+				<div class="subsection-divider"></div>
+				<h3 class="subsection-title"><span class="subsection-number">05b</span> Concatenation &amp; Projection</h3>
+
+				<div class="linkage-callout linkage-attention">
+					<span class="linkage-icon">&#8599;</span>
+					<span>The three heads above each produced their own output vectors. Now we <strong>concatenate</strong> them into one wide vector and <strong>project</strong> it back to the model dimension with W<sub>O</sub>.</span>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						Each attention head operates on a <strong>subspace</strong> of the full model dimension.
+						If d<sub>model</sub> = 768 and we have h = 12 heads, each head works with
+						d<sub>k</sub> = 768/12 = 64 dimensions. This is critical: multi-head attention doesn&rsquo;t
+						cost more compute than a single large head &mdash; it just <strong>divides the dimensions</strong>
+						among multiple perspectives.
+					</p>
+					<p>
+						After all heads run in parallel, their outputs are concatenated back into a single
+						vector of the original d<sub>model</sub> size, then multiplied by one final weight matrix
+						W<sub>O</sub> to mix the heads&rsquo; contributions together.
+					</p>
+				</div>
+
+				{/* Formula display */}
+				<div class="mha-formula">
+					MultiHead(Q, K, V) = Concat(head<sub>1</sub>, &hellip;, head<sub>h</sub>) &middot; W<sub>O</sub>
+				</div>
+
+				{/* Concatenation + projection diagram */}
+				<div class="mha-concat-diagram" id="mha-concat-diagram">
+					<div class="mha-concat-title">Concatenation &amp; projection</div>
+
+					{/* Head output vectors */}
+					<div class="mha-concat-heads" id="mha-concat-heads">
+						<div class="mha-concat-head-vec mha-concat-h1" data-head="1">
+							<div class="mha-concat-head-label">Head 1</div>
+							<div class="mha-concat-head-vals">[0.12, 0.45, &hellip;]</div>
+							<div class="mha-concat-head-dim">d<sub>k</sub>=64</div>
+						</div>
+						<div class="mha-concat-head-vec mha-concat-h2" data-head="2">
+							<div class="mha-concat-head-label">Head 2</div>
+							<div class="mha-concat-head-vals">[&minus;0.31, 0.67, &hellip;]</div>
+							<div class="mha-concat-head-dim">d<sub>k</sub>=64</div>
+						</div>
+						<div class="mha-concat-head-vec mha-concat-h3" data-head="3">
+							<div class="mha-concat-head-label">Head 3</div>
+							<div class="mha-concat-head-vals">[0.58, &minus;0.14, &hellip;]</div>
+							<div class="mha-concat-head-dim">d<sub>k</sub>=64</div>
+						</div>
+					</div>
+
+					<div class="mha-concat-arrow">&darr; Concat</div>
+
+					{/* Concatenated wide vector */}
+					<div class="mha-concat-wide" id="mha-concat-wide">
+						<div class="mha-concat-wide-label">Concatenated</div>
+						<div class="mha-concat-wide-bar">
+							<div class="mha-concat-wide-seg mha-seg-h1" data-head="1">H1</div>
+							<div class="mha-concat-wide-seg mha-seg-h2" data-head="2">H2</div>
+							<div class="mha-concat-wide-seg mha-seg-h3" data-head="3">H3</div>
+						</div>
+						<div class="mha-concat-wide-dim">h &times; d<sub>k</sub> = 3 &times; 64 = 192</div>
+					</div>
+
+					<div class="mha-concat-arrow">&darr; &times; W<sub>O</sub></div>
+
+					{/* Projected output vector */}
+					<div class="mha-concat-output" id="mha-concat-output">
+						<div class="mha-concat-output-label">Multi-Head Output</div>
+						<div class="mha-concat-output-vals">[0.23, &minus;0.08, 0.41, 0.55, &hellip;]</div>
+						<div class="mha-concat-output-dim">d<sub>model</sub> = 768</div>
+					</div>
+				</div>
+
+				{/* Interactive head toggle */}
+				<div class="mha-toggle-container" id="mha-toggle-container">
+					<div class="mha-toggle-title">Toggle heads on/off</div>
+					<div class="mha-toggle-desc">Disable a head to see how the output changes. Each head contributes a unique perspective.</div>
+					<div class="mha-toggle-buttons" id="mha-toggle-buttons">
+						<button class="mha-toggle-btn mha-toggle-active" data-head="1" id="mha-toggle-1">
+							<span class="mha-toggle-indicator"></span>
+							Head 1 <span class="mha-toggle-role">positional</span>
+						</button>
+						<button class="mha-toggle-btn mha-toggle-active" data-head="2" id="mha-toggle-2">
+							<span class="mha-toggle-indicator"></span>
+							Head 2 <span class="mha-toggle-role">syntactic</span>
+						</button>
+						<button class="mha-toggle-btn mha-toggle-active" data-head="3" id="mha-toggle-3">
+							<span class="mha-toggle-indicator"></span>
+							Head 3 <span class="mha-toggle-role">identity</span>
+						</button>
+					</div>
+					<div class="mha-toggle-result" id="mha-toggle-result">
+						<div class="mha-toggle-result-label">Combined output for &ldquo;cat&rdquo;:</div>
+						<div class="mha-toggle-result-vec" id="mha-toggle-result-vec">[0.23, &minus;0.08, 0.41, 0.55, &hellip;]</div>
+						<div class="mha-toggle-result-note" id="mha-toggle-result-note">All 3 heads active &mdash; full context from position, syntax, and identity.</div>
+					</div>
+				</div>
+
+				{/* Closing prose + residual stream handoff */}
+				<div class="section-prose">
+					<p>
+						The output of multi-head attention is a vector of the <strong>same dimension</strong> as the input
+						(d<sub>model</sub>). This is by design: the output needs to be <strong>added back</strong> to the original
+						input via a residual connection. The attention output doesn&rsquo;t replace the input &mdash;
+						it <strong>enriches</strong> it with contextual information from other tokens.
+					</p>
+				</div>
+
+				{/* Residual stream handoff diagram */}
+				<div class="mha-residual-handoff">
+					<div class="mha-residual-title">Adding back to the residual stream</div>
+					<div class="mha-residual-flow">
+						<div class="mha-residual-box mha-residual-input">
+							<div class="mha-residual-box-label">Input</div>
+							<div class="mha-residual-box-val">x</div>
+						</div>
+						<div class="mha-residual-plus">+</div>
+						<div class="mha-residual-box mha-residual-attn">
+							<div class="mha-residual-box-label">Multi-Head Attn</div>
+							<div class="mha-residual-box-val">MHA(x)</div>
+						</div>
+						<div class="mha-residual-equals">=</div>
+						<div class="mha-residual-box mha-residual-result">
+							<div class="mha-residual-box-label">Enriched</div>
+							<div class="mha-residual-box-val">x + MHA(x)</div>
+						</div>
+					</div>
+					<div class="mha-residual-caption">This enriched vector then flows into the feed-forward network &mdash; the next stop in the transformer layer.</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						That completes the multi-head attention mechanism. Each token&rsquo;s representation
+						has been enriched with context from every other token, viewed through multiple
+						independent perspectives. Next, the enriched vectors pass through the
+						<strong>feed-forward network</strong> &mdash; where per-token computation and memory storage happen.
 					</p>
 				</div>
 			</section>
@@ -3731,6 +3872,383 @@ const sections = [
 			padding: 0.8rem;
 		}
 	}
+
+	/* ===== Feature #13: Concatenation & Projection ===== */
+
+	.mha-formula {
+		text-align: center;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.88rem;
+		color: hsl(35 90% 55%);
+		padding: 1rem;
+		margin: 1.5rem 0;
+		background: hsl(35 90% 55% / 0.06);
+		border: 1px solid hsl(35 90% 55% / 0.15);
+		border-radius: 8px;
+	}
+
+	/* Concat diagram */
+	.mha-concat-diagram {
+		margin: 2rem 0;
+		padding: 1.5rem;
+		background: hsl(var(--theme-text) / 0.03);
+		border: 1px solid hsl(var(--theme-text) / 0.08);
+		border-radius: 12px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.8rem;
+	}
+
+	.mha-concat-title {
+		font-weight: 600;
+		font-size: 0.85rem;
+		color: hsl(var(--theme-text) / 0.5);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.mha-concat-heads {
+		display: flex;
+		gap: 0.6rem;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	.mha-concat-head-vec {
+		padding: 0.6rem 0.8rem;
+		border-radius: 8px;
+		text-align: center;
+		min-width: 120px;
+		transition: opacity 0.3s ease, transform 0.3s ease;
+	}
+
+	.mha-concat-head-vec.mha-head-disabled {
+		opacity: 0.2;
+		transform: scale(0.95);
+	}
+
+	.mha-concat-h1 {
+		background: hsl(200 60% 50% / 0.12);
+		border: 1px solid hsl(200 60% 50% / 0.3);
+	}
+	.mha-concat-h2 {
+		background: hsl(35 90% 55% / 0.12);
+		border: 1px solid hsl(35 90% 55% / 0.3);
+	}
+	.mha-concat-h3 {
+		background: hsl(280 50% 55% / 0.12);
+		border: 1px solid hsl(280 50% 55% / 0.3);
+	}
+
+	.mha-concat-head-label {
+		font-weight: 700;
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.6);
+		margin-bottom: 0.2rem;
+	}
+
+	.mha-concat-head-vals {
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.7rem;
+		color: hsl(var(--theme-text) / 0.5);
+	}
+
+	.mha-concat-head-dim {
+		font-size: 0.6rem;
+		color: hsl(var(--theme-text) / 0.35);
+		margin-top: 0.2rem;
+	}
+
+	.mha-concat-arrow {
+		font-size: 0.85rem;
+		color: hsl(var(--theme-text) / 0.4);
+		font-weight: 600;
+	}
+
+	/* Wide concatenated bar */
+	.mha-concat-wide {
+		text-align: center;
+	}
+
+	.mha-concat-wide-label {
+		font-size: 0.72rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.5);
+		margin-bottom: 0.3rem;
+	}
+
+	.mha-concat-wide-bar {
+		display: flex;
+		border-radius: 6px;
+		overflow: hidden;
+		max-width: 400px;
+		margin: 0 auto;
+	}
+
+	.mha-concat-wide-seg {
+		flex: 1;
+		padding: 0.5rem 0.8rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.7rem;
+		font-weight: 700;
+		text-align: center;
+		transition: opacity 0.3s ease;
+	}
+
+	.mha-concat-wide-seg.mha-seg-disabled {
+		opacity: 0.15;
+	}
+
+	.mha-seg-h1 {
+		background: hsl(200 60% 50% / 0.25);
+		color: hsl(200 60% 50%);
+	}
+	.mha-seg-h2 {
+		background: hsl(35 90% 55% / 0.25);
+		color: hsl(35 90% 55%);
+	}
+	.mha-seg-h3 {
+		background: hsl(280 50% 55% / 0.25);
+		color: hsl(280 50% 55%);
+	}
+
+	.mha-concat-wide-dim {
+		font-size: 0.6rem;
+		color: hsl(var(--theme-text) / 0.35);
+		margin-top: 0.3rem;
+	}
+
+	/* Output vector */
+	.mha-concat-output {
+		text-align: center;
+		padding: 0.7rem 1.2rem;
+		background: hsl(35 90% 55% / 0.1);
+		border: 2px solid hsl(35 90% 55% / 0.3);
+		border-radius: 8px;
+		transition: all 0.3s ease;
+	}
+
+	.mha-concat-output-label {
+		font-weight: 700;
+		font-size: 0.75rem;
+		color: hsl(35 90% 55%);
+		margin-bottom: 0.15rem;
+	}
+
+	.mha-concat-output-vals {
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.6);
+		transition: color 0.3s ease;
+	}
+
+	.mha-concat-output-dim {
+		font-size: 0.6rem;
+		color: hsl(var(--theme-text) / 0.35);
+		margin-top: 0.15rem;
+	}
+
+	/* Toggle buttons */
+	.mha-toggle-container {
+		margin: 2rem 0;
+		padding: 1.5rem;
+		background: hsl(var(--theme-bg));
+		border: 1px solid hsl(var(--theme-text) / 0.1);
+		border-radius: 12px;
+	}
+
+	.mha-toggle-title {
+		font-weight: 600;
+		font-size: 0.85rem;
+		color: hsl(var(--theme-text) / 0.7);
+		margin-bottom: 0.3rem;
+	}
+
+	.mha-toggle-desc {
+		font-size: 0.75rem;
+		color: hsl(var(--theme-text) / 0.4);
+		margin-bottom: 1rem;
+	}
+
+	.mha-toggle-buttons {
+		display: flex;
+		gap: 0.6rem;
+		justify-content: center;
+		flex-wrap: wrap;
+		margin-bottom: 1rem;
+	}
+
+	.mha-toggle-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.5rem 0.9rem;
+		border-radius: 8px;
+		border: 1px solid hsl(var(--theme-text) / 0.15);
+		background: hsl(var(--theme-text) / 0.04);
+		color: hsl(var(--theme-text) / 0.4);
+		font-size: 0.78rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+
+	.mha-toggle-btn.mha-toggle-active {
+		border-color: hsl(35 90% 55% / 0.4);
+		background: hsl(35 90% 55% / 0.1);
+		color: hsl(var(--theme-text) / 0.8);
+	}
+
+	.mha-toggle-indicator {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background: hsl(var(--theme-text) / 0.15);
+		transition: background 0.2s ease;
+	}
+
+	.mha-toggle-active .mha-toggle-indicator {
+		background: hsl(35 90% 55%);
+	}
+
+	.mha-toggle-role {
+		font-size: 0.65rem;
+		color: hsl(var(--theme-text) / 0.35);
+		font-weight: 400;
+	}
+
+	.mha-toggle-result {
+		text-align: center;
+		padding: 0.8rem;
+		background: hsl(var(--theme-text) / 0.03);
+		border-radius: 8px;
+	}
+
+	.mha-toggle-result-label {
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.5);
+		margin-bottom: 0.3rem;
+	}
+
+	.mha-toggle-result-vec {
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.78rem;
+		color: hsl(35 90% 55%);
+		font-weight: 600;
+		margin-bottom: 0.3rem;
+		transition: color 0.3s ease;
+	}
+
+	.mha-toggle-result-note {
+		font-size: 0.7rem;
+		color: hsl(var(--theme-text) / 0.4);
+		font-style: italic;
+		transition: color 0.3s ease;
+	}
+
+	/* Residual stream handoff */
+	.mha-residual-handoff {
+		margin: 2rem 0;
+		padding: 1.5rem;
+		background: hsl(270 50% 58% / 0.05);
+		border: 1px solid hsl(270 50% 58% / 0.15);
+		border-radius: 12px;
+	}
+
+	.mha-residual-title {
+		text-align: center;
+		font-weight: 600;
+		font-size: 0.85rem;
+		color: hsl(var(--theme-text) / 0.5);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		margin-bottom: 1rem;
+	}
+
+	.mha-residual-flow {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.6rem;
+		flex-wrap: wrap;
+	}
+
+	.mha-residual-box {
+		padding: 0.6rem 1rem;
+		border-radius: 8px;
+		text-align: center;
+	}
+
+	.mha-residual-box-label {
+		font-size: 0.65rem;
+		font-weight: 600;
+		margin-bottom: 0.15rem;
+	}
+
+	.mha-residual-box-val {
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.82rem;
+		font-weight: 700;
+	}
+
+	.mha-residual-input {
+		background: hsl(270 50% 58% / 0.1);
+		border: 1px solid hsl(270 50% 58% / 0.25);
+	}
+	.mha-residual-input .mha-residual-box-label { color: hsl(270 50% 58%); }
+	.mha-residual-input .mha-residual-box-val { color: hsl(270 50% 58%); }
+
+	.mha-residual-attn {
+		background: hsl(35 90% 55% / 0.1);
+		border: 1px solid hsl(35 90% 55% / 0.25);
+	}
+	.mha-residual-attn .mha-residual-box-label { color: hsl(35 90% 55%); }
+	.mha-residual-attn .mha-residual-box-val { color: hsl(35 90% 55%); }
+
+	.mha-residual-result {
+		background: hsl(270 50% 58% / 0.12);
+		border: 2px solid hsl(270 50% 58% / 0.35);
+	}
+	.mha-residual-result .mha-residual-box-label { color: hsl(270 50% 58%); }
+	.mha-residual-result .mha-residual-box-val { color: hsl(270 50% 58%); }
+
+	.mha-residual-plus,
+	.mha-residual-equals {
+		font-size: 1.2rem;
+		font-weight: 700;
+		color: hsl(var(--theme-text) / 0.3);
+	}
+
+	.mha-residual-caption {
+		text-align: center;
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.4);
+		margin-top: 0.8rem;
+		font-style: italic;
+	}
+
+	@media (max-width: 480px) {
+		.mha-concat-heads {
+			flex-direction: column;
+			align-items: center;
+		}
+		.mha-concat-head-vec {
+			min-width: 160px;
+		}
+		.mha-toggle-buttons {
+			flex-direction: column;
+			align-items: center;
+		}
+		.mha-residual-flow {
+			flex-direction: column;
+		}
+		.mha-residual-plus,
+		.mha-residual-equals {
+			transform: rotate(90deg);
+		}
+	}
 </style>
 
 <script define:vars={{ sectionIds: sections.map(s => s.id) }}>
@@ -4903,6 +5421,105 @@ const sections = [
 					cell.title = '"' + mhaTokens[row] + '" → "' + mhaTokens[col] + '": ' + w.toFixed(3);
 					gridEl.appendChild(cell);
 				}
+			}
+		});
+	});
+</script>
+
+<script is:inline>
+	document.addEventListener('DOMContentLoaded', () => {
+		// ===== Feature #13: Head toggle interactive =====
+		const headStates = { 1: true, 2: true, 3: true };
+
+		// Output vectors per head (simulated)
+		const headOutputs = {
+			1: [0.12, 0.45, -0.22, 0.08],
+			2: [-0.31, 0.67, 0.19, 0.44],
+			3: [0.58, -0.14, 0.33, 0.11],
+		};
+
+		// Notes for each combination
+		const stateNotes = {
+			'111': 'All 3 heads active \u2014 full context from position, syntax, and identity.',
+			'110': 'Heads 1+2: positional and syntactic context, but no self-identity preservation.',
+			'101': 'Heads 1+3: positional context with identity, but missing syntactic relationships.',
+			'011': 'Heads 2+3: syntactic and identity info, but no positional awareness.',
+			'100': 'Only positional head \u2014 knows nearby tokens but misses grammar and self-identity.',
+			'010': 'Only syntactic head \u2014 captures grammar but loses position and identity.',
+			'001': 'Only identity head \u2014 preserves self but gains no context from other tokens.',
+			'000': 'All heads disabled \u2014 no attention output. The residual connection still passes through the original input.',
+		};
+
+		function getStateKey() {
+			return (headStates[1] ? '1' : '0') + (headStates[2] ? '1' : '0') + (headStates[3] ? '1' : '0');
+		}
+
+		function computeCombined() {
+			const active = Object.entries(headStates).filter(([_, v]) => v).map(([k]) => parseInt(k));
+			if (active.length === 0) return [0, 0, 0, 0];
+			const result = [0, 0, 0, 0];
+			active.forEach((h) => {
+				headOutputs[h].forEach((v, i) => { result[i] += v; });
+			});
+			// Scale by W_O effect (normalize slightly)
+			const scale = active.length / 3;
+			return result.map((v) => (v * scale));
+		}
+
+		function formatVec(vec) {
+			const formatted = vec.map((v) => v.toFixed(2)).join(', ');
+			return '[' + formatted + ', \u2026]';
+		}
+
+		function updateUI() {
+			const key = getStateKey();
+
+			// Toggle button states
+			[1, 2, 3].forEach((h) => {
+				const btn = document.getElementById('mha-toggle-' + h);
+				if (btn) {
+					btn.classList.toggle('mha-toggle-active', headStates[h]);
+				}
+			});
+
+			// Concat diagram: dim disabled heads
+			[1, 2, 3].forEach((h) => {
+				const headVec = document.querySelector('.mha-concat-h' + h);
+				if (headVec) headVec.classList.toggle('mha-head-disabled', !headStates[h]);
+
+				const seg = document.querySelector('.mha-seg-h' + h);
+				if (seg) seg.classList.toggle('mha-seg-disabled', !headStates[h]);
+			});
+
+			// Update result
+			const combined = computeCombined();
+			const resultVec = document.getElementById('mha-toggle-result-vec');
+			const resultNote = document.getElementById('mha-toggle-result-note');
+
+			if (resultVec) {
+				resultVec.textContent = formatVec(combined);
+				resultVec.style.color = key === '000' ? 'hsl(var(--theme-text) / 0.3)' : '';
+			}
+			if (resultNote) {
+				resultNote.textContent = stateNotes[key] || '';
+			}
+
+			// Update output in concat diagram
+			const outputVals = document.querySelector('.mha-concat-output-vals');
+			if (outputVals) {
+				outputVals.textContent = key === '000' ? '[0.00, 0.00, 0.00, 0.00, \u2026]' : formatVec(combined);
+			}
+		}
+
+		// Attach click handlers
+		[1, 2, 3].forEach((h) => {
+			const btn = document.getElementById('mha-toggle-' + h);
+			if (btn) {
+				btn.addEventListener('click', (e) => {
+					e.stopPropagation();
+					headStates[h] = !headStates[h];
+					updateUI();
+				});
 			}
 		});
 	});
