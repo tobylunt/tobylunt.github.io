@@ -1,0 +1,50 @@
+=== Project Initialized — 2026-02-17 ===
+- Created harness scaffolding: root CLAUDE.md, project CLAUDE.md, features.json, init.sh, claude-progress.txt
+- Created /next-feature slash command in .claude/commands/
+- Configured Playwright MCP server in .mcp.json
+- Populated features.json with 23 features covering the full transformers explainer
+- Branch: feature/transformers-harness
+- Reference style: Distill.pub + Bartosz Ciechanowski + 3Blue1Brown
+- Stack: Astro page with custom web components, canvas/SVG visualizations, Tailwind styling
+- Next: Feature #1 — page scaffold with Base layout, hero section, and section placeholders
+
+=== Feature #1 Completed — 2026-02-17 ===
+- Created src/pages/transformers/index.astro with Base layout wrapper
+- Hero section: "Interactive Explainer" label, "How Transformers Work" title, descriptive subtitle, byline (author, year, read time)
+- 9 placeholder sections with numbered headers, subtitles, and dashed-border content areas: Preamble, Architecture Overview, Embeddings, Attention, Multi-Head Attention, Feed-Forward Network, Residual Stream, Output, Circuits
+- Each section has scroll-mt-20 for future TOC anchor linking
+- Verified in both light and dark themes via Playwright — colors adapt correctly
+- Build passes with 0 errors (pnpm build)
+- Note: CLAUDE.md in transformers/ gets built as a page (/transformers/CLAUDE/) — cosmetic issue, doesn't break anything
+- Note: Astro warns about .txt/.json/.sh files in pages/ dir — non-fatal, kept as-is to preserve protocol paths
+- Commit: 8086978
+- Next: Feature #2 — Sticky table of contents with scroll-tracking
+
+=== Feature #2 Completed — 2026-02-17 ===
+- Major layout refactor: changed from single-column to three-column grid (Alignment Forum style, per user request)
+- Left gutter: sticky TOC with dot navigation, progress track bar, labels that appear on hover/active
+- Center column: main content (hero moved above the grid to span full width)
+- Right gutter: sidenote area (structurally present as <aside>, empty for future content)
+- Desktop (>=1280px): three-column grid with sticky left TOC, IntersectionObserver scroll-tracking
+- Mobile (<1280px): floating button (bottom-left) opens bottom-sheet drawer with all 9 sections
+- Smooth scroll on TOC click (both desktop and mobile)
+- Mobile drawer closes on: entry click, close button, backdrop click
+- All CSS uses hsl(var(--theme-*)) for full dark/light theme support
+- Uses IntersectionObserver (not scroll events) for performance
+- Build passes with 0 errors
+- Verified in Playwright: dark desktop, light desktop (scrolled), mobile light (375px), mobile drawer open/click
+- Commit: 61c6281
+- Next: Feature #3 — Preamble section with motivation, historical context, visual vocabulary
+
+=== Feature #2 TOC Fix — 2026-02-17 ===
+- User feedback: progress bar was overwriting gray dots above current section; dots not aligned with vertical line
+- Replaced progress bar approach with three distinct dot states:
+  - Read (above current): small filled gray dots, scale(0.7)
+  - Active (current): accent-colored with glow ring, scale(1.1)
+  - Unread (below current): hollow circles with subtle border
+- Static vertical line via ::before pseudo-element on .toc-list (centered at left: 4px)
+- Dots sit on top of line with z-index: 1 and background: hsl(var(--theme-bg))
+- Active label now shows in accent color with font-weight: 600
+- Verified in Playwright: both dark and light themes, scrolled to show all three states
+- Commit: 44318a9
+- Next: Feature #3 — Preamble section with motivation, historical context, visual vocabulary
