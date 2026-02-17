@@ -88,3 +88,26 @@
 - Verified in Playwright: dark + light themes, tooltip on hover, animate button
 - Commit: bc63f2b
 - Next: Feature #5 — Tokenization explainer with interactive widget
+
+=== Feature #5 Completed — 2026-02-17 ===
+- Replaced embeddings placeholder with full tokenization explainer section
+- Linkage callout: blue-tinted banner connecting back to the Token Embedding block in the architecture diagram
+- Introductory prose: 3 paragraphs covering tokenization, subword tokenization (BPE), and vocabulary concept
+- Interactive tokenizer widget:
+  - Textarea input with default text "The cat sat on the mat."
+  - Real-time tokenization on input (simulated BPE)
+  - Color-coded token chips: whole word (blue), subword piece (amber with ## prefix), punctuation/special (gray)
+  - Token count display ("Tokens (N)")
+  - Three-color legend below chips
+- Simulated BPE tokenizer in vanilla JS:
+  - ~150 common English words kept whole
+  - Words ≤3 chars always kept whole
+  - Longer unknown words split at ~60% into prefix + ##suffix subword pieces
+  - Handles punctuation, special characters, empty input gracefully
+- Closing prose: explains embedding lookup matrix [vocab_size × d_model], dense vectors, transition to next section
+- Refactored template: preamble + architecture + embeddings rendered as dedicated HTML, sections 04-09 use .map() loop
+- Reusable CSS patterns established: .linkage-callout, .linkage-embedding, .token-chip classes
+- Build passes with 0 errors
+- Verified in Playwright: light + dark themes, default tokenization, subword splitting ("Transformers use unsupervised pretraining for extraordinary performance." → 13 tokens with correct splits)
+- Commit: 2d77dc1
+- Next: Feature #6 — Token embedding visualization (words as vectors in space)

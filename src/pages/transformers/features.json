@@ -52,7 +52,7 @@
   {
     "id": 5,
     "name": "Tokenization explainer — text to tokens interactive",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Navigate to the Embeddings section",
       "LINKAGE: Verify a visual transition or callout connects this section back to the 'token embedding' block in the architecture diagram from feature #4 — the reader should feel they are zooming into that first block",
