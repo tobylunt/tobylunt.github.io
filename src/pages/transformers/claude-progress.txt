@@ -448,3 +448,29 @@
 - Verified in Playwright: dark + light themes, step-by-step navigation (all 12 steps), play auto-advance, color-coded highlights for each component type, annotation updates
 - Commit: bd08b73
 - Next: Feature #18 — Circuits (composing attention heads into functional units)
+
+=== Feature #18 Completed — 2026-02-17 ===
+- Replaced section 09 placeholder with full Circuits section content
+- Amber linkage callout connecting to multi-head attention from sections 04–05
+- Intro prose: heads across different layers compose into circuits, multi-step algorithms
+- Induction head circuit diagram:
+  - Token sequence: … [A] (blue) [B] (amber) … [A] (blue) [?] (dashed amber)
+  - Layer L: Previous-Token Head card with mini heatmap (B→A: 0.82 hot cell, A→…: 0.78)
+  - Purple "Information flows via residual stream" flow connector
+  - Layer L+1: Induction Head card with mini heatmap (A₂→B: 0.89 hot cell with glow)
+  - Result box: "The model predicts B after the second A"
+- Mini heatmaps reuse visual style from Feature #12 (amber-intensity cells, Q↓ K→ corner labels)
+- Prose about induction heads as first circuit discovered by Anthropic, explains in-context learning
+- Circuit types gallery (2×2 grid): Induction Heads, Duplicate Token Heads, Name Mover Heads, Backup Heads — each with amber tag
+- Mechanistic interpretability prose: reverse-engineering what neural networks compute
+- Closing section:
+  - "THE JOURNEY" label with color-coded pipeline: Tokens→Embeddings (blue) → Attention (amber) → FFN (green) → Prediction (rose) → Circuits (amber bordered)
+  - Culminating paragraph: "The box is open."
+  - Follow-up teaser: reproducing circuits locally in Llama 3
+  - End mark (■) — clear visual ending
+- CSS: .linkage-circuits, .circ-induction-*, .circ-tok-*, .circ-head-*, .circ-mini-heatmap, .circ-hm-*, .circ-flow-*, .circ-result-*, .circ-types, .circ-type-*, .circ-closing-*, .circ-journey-*, .circ-j-*
+- Mobile responsive (@media max-width: 480px): single-column types, stacked layers
+- Build passes with 0 errors
+- Verified in Playwright: dark + light themes, heatmap cells render correctly, color-coded tokens (A=blue, B=amber), flow arrow with purple residual stream label, journey pipeline colors match visual vocabulary, end mark visible
+- Commit: cd218f8
+- Next: Feature #19 — Mechanistic interpretability teaser and future post link

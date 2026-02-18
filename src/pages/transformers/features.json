@@ -233,7 +233,7 @@
   {
     "id": 18,
     "name": "Circuits — composing attention heads into functional units",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Navigate to the Circuits section",
       "LINKAGE: Verify this section builds on multi-head attention (#12-13) by showing that heads across DIFFERENT layers can compose. Reuse the head heatmap style from #12 but now show information flowing between layers",
