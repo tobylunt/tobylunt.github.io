@@ -79,3 +79,15 @@
 - Verified: forward/back navigation correctly renders step 5, reset works, build passes, both dark and light themes clean
 - Commit: 8cc8b53
 - Next: Feature #7 — Step 6 layer norm and QKV weight matrix prep
+
+=== Feature #7 Complete — 2026-02-18 ===
+- Implemented Step 6 "Layer Norm + QKV Weights" visualization in the 04e head walkthrough
+- Layout: phase label at top → token labels → 8×5 matrix grid (4 numeric rows + dots row) → dimension label → down arrow → 3 QKV weight cards
+- Animation sequence: (1) matrix appears immediately with green-tinted combined embedding values, (2) at 600ms values swap to normalized (purple tint) with flash animation, phase label updates to "Layer Norm", (3) at 1400ms QKV weight matrices fade in with translateY transition, phase label updates to "Normalized → QKV Projections"
+- Matrix: CSS grid with 8 columns, monospace font, values transition from green (combined) to purple (normalized) via class toggle
+- QKV weight cards: W_Q (blue, hsl 210), W_K (orange, hsl 30), W_V (pink, hsl 340) — each shows d_model × d_head dimensions with color-coded subscripts
+- CSS: hw-norm-* classes for layout, matrix cells, normalization flash keyframe, weight cards; responsive at 480px breakpoint
+- Astro scoping: all dynamically created elements use el() helper with astroAttr; innerHTML subscript elements also get the attribute
+- Verified: forward/back navigation correctly renders step 6, reset works, build passes, both dark and light themes clean
+- Commit: 10ac579
+- Next: Feature #8 — Step 7 Q projection: highlight column, animate through weights, stage output

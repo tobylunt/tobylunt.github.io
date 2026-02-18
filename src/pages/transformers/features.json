@@ -73,7 +73,7 @@
   {
     "id": 7,
     "name": "Step 6 \u2014 Layer norm and QKV weight matrix prep",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Animate consolidation of the per-token green columns into a cohesive matrix table (width = sequence length, height = d_model with '...' truncation)",
       "Animate normalization: swap in new normalized values into the matrix cells",
