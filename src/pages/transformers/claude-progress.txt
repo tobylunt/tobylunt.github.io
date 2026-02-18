@@ -106,3 +106,19 @@
 - Verified: forward/back/reset navigation works, build passes, both dark and light themes clean
 - Commit: b0eebe8
 - Next: Feature #9 — Step 8 V projection: same animation pattern for values
+
+=== Feature #9 Complete — 2026-02-18 ===
+- Implemented Step 8 "Value Projection" visualization in the 04e head walkthrough
+- Layout: horizontal flow — normalized input matrix (X̂) → dot product (·) → W_V weight card → arrow (➜) → V output matrix
+- Input matrix: 8 columns × 4 data rows + dots row, purple-tinted (normalized), "cat" column (index 2) highlighted in pink
+- W_V weight card: pink-themed (hsl 340 65% 55%), 48×48px box with d_model × d_head dimension label
+- V output matrix: 8 columns × 3 data rows + dots row, pink-tinted (hsl 340), T × d_head dimensions
+- Animation sequence: (1) matrix + W_V shown immediately with "cat" column highlighted in pink, (2) at 600ms pulse animation on highlighted column, (3) at 1200ms V output fades in from right, (4) at 1800ms equation row appears, (5) at 2400ms staging area with Q and V boxes appears
+- Staging area: side-by-side Q (blue, from Step 7) and V (pink, new) compact boxes showing both projections are ready
+- Equation: color-coded "V = X̂ · W_V (T×d_model) · (d_model×d_head) = T×d_head"
+- CSS: hw-vproj-* classes for layout, V-specific colors; reused hw-qproj-* classes for shared input matrix with v-highlighted variant
+- Astro scoping: all dynamic elements use el() helper with astroAttr
+- Initially placed renderStep8 in wrong script block (QKV pipeline); moved to correct head-walk lazy-init scope
+- Verified: forward/back/reset navigation works, build passes, both dark and light themes clean
+- Commit: ca7b431
+- Next: Feature #10 — Step 9 K projection with transpose: careful visualization of dimension flip

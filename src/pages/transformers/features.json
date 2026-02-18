@@ -96,7 +96,7 @@
   {
     "id": 9,
     "name": "Step 8 \u2014 V projection: same animation pattern for values",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Same column-highlight and projection animation as step 7, but for V weights",
       "Value vectors appear in the staging area, visually distinct from Q vectors (different color)",
