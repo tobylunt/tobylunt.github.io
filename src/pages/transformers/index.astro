@@ -5271,6 +5271,193 @@ const sections = [
 		}
 	}
 
+	/* ===== Step 6: Layer Norm + QKV Weights ===== */
+	.hw-norm-layout {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10px;
+		padding: 8px 0;
+	}
+
+	.hw-norm-phase-label {
+		font-size: 0.7rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: hsl(var(--theme-text) / 0.5);
+		margin-bottom: 2px;
+	}
+
+	/* Matrix table */
+	.hw-norm-matrix {
+		display: grid;
+		gap: 1px;
+		background: hsl(var(--theme-text) / 0.06);
+		border: 1px solid hsl(var(--theme-text) / 0.12);
+		border-radius: 4px;
+		overflow: hidden;
+	}
+
+	.hw-norm-matrix-cell {
+		background: hsl(152 50% 48% / 0.08);
+		color: hsl(var(--theme-text) / 0.7);
+		font-size: 0.6rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 3px 4px;
+		text-align: center;
+		min-width: 42px;
+		transition: background 0.4s ease, color 0.4s ease;
+	}
+
+	.hw-norm-matrix-cell.hw-norm-dots {
+		font-size: 0.7rem;
+		color: hsl(var(--theme-text) / 0.35);
+		padding: 1px 4px;
+	}
+
+	/* Normalized state: cells shift to purple tint */
+	.hw-norm-matrix-cell.normalized {
+		background: hsl(270 45% 55% / 0.1);
+		color: hsl(270 45% 55% / 0.85);
+	}
+
+	.hw-norm-matrix-cell.hw-norm-dots.normalized {
+		color: hsl(270 45% 55% / 0.4);
+	}
+
+	/* Token labels above matrix */
+	.hw-norm-token-labels {
+		display: grid;
+		gap: 1px;
+	}
+
+	.hw-norm-token-label {
+		font-size: 0.55rem;
+		text-align: center;
+		color: hsl(var(--theme-text) / 0.5);
+		min-width: 42px;
+		padding: 0 4px;
+	}
+
+	/* Dimension labels */
+	.hw-norm-dim-label {
+		font-size: 0.65rem;
+		color: hsl(var(--theme-text) / 0.45);
+		text-align: center;
+		margin-top: 2px;
+	}
+
+	.hw-norm-dim-t { color: hsl(152 50% 48%); }
+	.hw-norm-dim-d { color: hsl(220 70% 55%); }
+	.hw-norm-dim-dh { color: hsl(30 80% 55%); }
+
+	/* Arrow between matrix and weights */
+	.hw-norm-arrow {
+		font-size: 1.1rem;
+		color: hsl(var(--theme-text) / 0.3);
+		margin: 4px 0;
+	}
+
+	/* QKV weight matrices row */
+	.hw-norm-qkv-row {
+		display: flex;
+		gap: 16px;
+		justify-content: center;
+		align-items: flex-start;
+		opacity: 0;
+		transform: translateY(10px);
+		transition: opacity 0.5s ease, transform 0.5s ease;
+	}
+
+	.hw-norm-qkv-row.visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.hw-norm-weight-card {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 4px;
+	}
+
+	.hw-norm-weight-label {
+		font-size: 0.65rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+	}
+
+	.hw-norm-weight-label-q { color: hsl(210 70% 55%); }
+	.hw-norm-weight-label-k { color: hsl(30 80% 55%); }
+	.hw-norm-weight-label-v { color: hsl(340 65% 55%); }
+
+	.hw-norm-weight-box {
+		width: 56px;
+		height: 56px;
+		border-radius: 4px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.55rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		color: hsl(var(--theme-text) / 0.5);
+	}
+
+	.hw-norm-weight-box-q {
+		background: hsl(210 70% 55% / 0.1);
+		border: 1px solid hsl(210 70% 55% / 0.25);
+	}
+
+	.hw-norm-weight-box-k {
+		background: hsl(30 80% 55% / 0.1);
+		border: 1px solid hsl(30 80% 55% / 0.25);
+	}
+
+	.hw-norm-weight-box-v {
+		background: hsl(340 65% 55% / 0.1);
+		border: 1px solid hsl(340 65% 55% / 0.25);
+	}
+
+	.hw-norm-weight-dim {
+		font-size: 0.5rem;
+		color: hsl(var(--theme-text) / 0.4);
+	}
+
+	/* Normalization flash */
+	@keyframes hw-norm-flash {
+		0% { background: hsl(270 45% 55% / 0.3); }
+		100% { background: hsl(270 45% 55% / 0.1); }
+	}
+
+	.hw-norm-matrix-cell.flash {
+		animation: hw-norm-flash 0.4s ease;
+	}
+
+	/* Responsive */
+	@media (max-width: 480px) {
+		.hw-norm-matrix-cell {
+			font-size: 0.5rem;
+			min-width: 34px;
+			padding: 2px 3px;
+		}
+		.hw-norm-token-label {
+			font-size: 0.45rem;
+			min-width: 34px;
+		}
+		.hw-norm-qkv-row {
+			gap: 10px;
+		}
+		.hw-norm-weight-box {
+			width: 44px;
+			height: 44px;
+			font-size: 0.48rem;
+		}
+		.hw-norm-weight-label {
+			font-size: 0.55rem;
+		}
+	}
+
 	/* Step 1 placeholder viz */
 	.hw-step-placeholder {
 		text-align: center;
@@ -9234,6 +9421,138 @@ const sections = [
 			return layout;
 		}
 
+		function renderStep6() {
+			var layout = el('div', 'hw-norm-layout');
+
+			// Phase 1 label: consolidation
+			var phaseLabel = el('div', 'hw-norm-phase-label', 'Combined embeddings \u2192 Matrix');
+			layout.appendChild(phaseLabel);
+
+			// Token labels above the matrix
+			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
+			var tokenLabelRow = el('div', 'hw-norm-token-labels');
+			tokenLabelRow.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+			tokens.forEach(function(tok) {
+				tokenLabelRow.appendChild(el('div', 'hw-norm-token-label', tok));
+			});
+			layout.appendChild(tokenLabelRow);
+
+			// Matrix: 5 visible rows (4 numeric + 1 dots row) x 8 columns
+			// Initial values (green / combined embeddings)
+			var initValues = [
+				[' 0.64', '-0.29', ' 1.10', '-0.71', ' 0.97', '-0.49', ' 0.82', ' 0.64'],
+				['-0.33', ' 0.78', '-0.18', ' 0.56', '-0.62', ' 0.91', '-0.47', '-0.33'],
+				[' 0.47', ' 0.14', ' 0.85', '-0.23', ' 0.41', '-0.67', ' 0.59', ' 0.47'],
+				['-0.81', ' 0.43', '-0.55', ' 0.88', '-0.15', ' 0.33', '-0.72', '-0.81']
+			];
+			// Normalized values (post layer-norm) - roughly zero-mean unit-variance
+			var normValues = [
+				[' 0.91', '-0.52', ' 1.43', '-1.08', ' 1.21', '-0.75', ' 1.04', ' 0.91'],
+				['-0.68', ' 1.12', '-0.40', ' 0.83', '-0.95', ' 1.34', '-0.79', '-0.68'],
+				[' 0.73', ' 0.20', ' 1.18', '-0.47', ' 0.61', '-1.02', ' 0.86', ' 0.73'],
+				['-1.15', ' 0.64', '-0.82', ' 1.24', '-0.30', ' 0.49', '-1.05', '-1.15']
+			];
+
+			var matrixEl = el('div', 'hw-norm-matrix');
+			var numRows = initValues.length + 1; // +1 for dots row
+			matrixEl.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+
+			var cells = []; // track numeric cells for normalization animation
+			initValues.forEach(function(row) {
+				var rowCells = [];
+				row.forEach(function(val) {
+					var cell = el('div', 'hw-norm-matrix-cell', val);
+					matrixEl.appendChild(cell);
+					rowCells.push(cell);
+				});
+				cells.push(rowCells);
+			});
+			// Dots row
+			tokens.forEach(function() {
+				var dotCell = el('div', 'hw-norm-matrix-cell hw-norm-dots', '\u22EE');
+				matrixEl.appendChild(dotCell);
+			});
+			layout.appendChild(matrixEl);
+
+			// Dimension label
+			var dimLabel = el('div', 'hw-norm-dim-label');
+			var dimSpanT = el('span', 'hw-norm-dim-t', '8');
+			var dimText1 = document.createTextNode(' tokens \u00d7 ');
+			var dimSpanD = el('span', 'hw-norm-dim-d');
+			dimSpanD.innerHTML = 'd<sub>model</sub>';
+			if (astroAttr) dimSpanD.querySelector('sub').setAttribute(astroAttr, '');
+			var dimText2 = document.createTextNode(' dimensions');
+			dimLabel.appendChild(dimSpanT);
+			dimLabel.appendChild(dimText1);
+			dimLabel.appendChild(dimSpanD);
+			dimLabel.appendChild(dimText2);
+			layout.appendChild(dimLabel);
+
+			// Arrow
+			var arrowDown = el('div', 'hw-norm-arrow', '\u2193');
+			layout.appendChild(arrowDown);
+
+			// QKV weight matrix row (hidden initially)
+			var qkvRow = el('div', 'hw-norm-qkv-row');
+
+			var weights = [
+				{ label: 'W_Q', cls: 'q', dim: 'd_model \u00d7 d_head' },
+				{ label: 'W_K', cls: 'k', dim: 'd_model \u00d7 d_head' },
+				{ label: 'W_V', cls: 'v', dim: 'd_model \u00d7 d_head' }
+			];
+
+			weights.forEach(function(w) {
+				var card = el('div', 'hw-norm-weight-card');
+				var wLabel = el('div', 'hw-norm-weight-label hw-norm-weight-label-' + w.cls);
+				wLabel.innerHTML = w.label.replace('_', '<sub>') + '</sub>';
+				if (astroAttr) wLabel.querySelector('sub').setAttribute(astroAttr, '');
+				card.appendChild(wLabel);
+
+				var box = el('div', 'hw-norm-weight-box hw-norm-weight-box-' + w.cls, '\u22EF');
+				card.appendChild(box);
+
+				var dimW = el('div', 'hw-norm-weight-dim');
+				var parts = w.dim.split(' \u00d7 ');
+				var dModel = el('span', 'hw-norm-dim-d');
+				dModel.innerHTML = 'd<sub>model</sub>';
+				if (astroAttr) dModel.querySelector('sub').setAttribute(astroAttr, '');
+				var times = document.createTextNode(' \u00d7 ');
+				var dHead = el('span', 'hw-norm-dim-dh');
+				dHead.innerHTML = 'd<sub>head</sub>';
+				if (astroAttr) dHead.querySelector('sub').setAttribute(astroAttr, '');
+				dimW.appendChild(dModel);
+				dimW.appendChild(times);
+				dimW.appendChild(dHead);
+				card.appendChild(dimW);
+
+				qkvRow.appendChild(card);
+			});
+			layout.appendChild(qkvRow);
+
+			// Animation sequence:
+			// 1. At 600ms: normalize (swap values, flash purple)
+			setTimeout(function() {
+				phaseLabel.textContent = 'Layer Norm';
+				cells.forEach(function(row, r) {
+					row.forEach(function(cell, c) {
+						cell.textContent = normValues[r][c];
+						cell.classList.add('normalized', 'flash');
+					});
+				});
+				// Also normalize the dots row
+				var dotCells = matrixEl.querySelectorAll('.hw-norm-dots');
+				dotCells.forEach(function(dc) { dc.classList.add('normalized'); });
+			}, 600);
+
+			// 2. At 1400ms: show QKV weight matrices, update phase label
+			setTimeout(function() {
+				phaseLabel.textContent = 'Normalized \u2192 QKV Projections';
+				qkvRow.classList.add('visible');
+			}, 1400);
+
+			return layout;
+		}
+
 		function showStep(step) {
 			viz.innerHTML = '';
 
@@ -9247,6 +9566,8 @@ const sections = [
 				viz.appendChild(renderStep4());
 			} else if (step === 5) {
 				viz.appendChild(renderStep5());
+			} else if (step === 6) {
+				viz.appendChild(renderStep6());
 			} else {
 				var placeholder = el('div', 'hw-step-placeholder');
 				placeholder.textContent = 'Step ' + step + ' visualization (coming soon)';
