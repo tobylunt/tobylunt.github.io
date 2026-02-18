@@ -4857,6 +4857,154 @@ const sections = [
 		}
 	}
 
+	/* Step 4: Positional Embeddings layout */
+	.hw-pos-layout {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.3rem;
+		width: 100%;
+		padding: 0.5rem 0.25rem;
+	}
+
+	.hw-pos-chips {
+		display: flex;
+		flex-wrap: nowrap;
+		justify-content: center;
+		gap: 4px;
+	}
+
+	.hw-pos-chip {
+		font-size: 0.72rem;
+		padding: 2px 7px;
+	}
+
+	.hw-pos-arrow-row {
+		display: flex;
+		justify-content: center;
+		gap: 4px;
+	}
+
+	.hw-pos-arrow-cell {
+		width: 60px;
+		text-align: center;
+		font-size: 0.75rem;
+		color: hsl(var(--theme-text) / 0.3);
+	}
+
+	.hw-pos-cols-row {
+		display: flex;
+		justify-content: center;
+		gap: 4px;
+	}
+
+	.hw-pos-token-pair {
+		display: flex;
+		gap: 2px;
+		align-items: stretch;
+	}
+
+	.hw-pos-bar {
+		width: 28px;
+		min-height: 90px;
+		border-radius: 3px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 4px;
+		padding: 10px 1px;
+	}
+
+	.hw-pos-bar-tok {
+		background: hsl(210 60% 55% / 0.12);
+		border: 1px solid hsl(210 60% 55% / 0.2);
+		color: hsl(210 60% 55% / 0.6);
+		opacity: 0;
+		animation: hw-col-expand 0.35s ease forwards;
+	}
+
+	.hw-pos-bar-pos {
+		background: hsl(42 90% 55% / 0.12);
+		border: 1px solid hsl(42 90% 55% / 0.25);
+		color: hsl(42 90% 55% / 0.7);
+		opacity: 0;
+		animation: hw-col-expand 0.4s ease forwards;
+	}
+
+	.hw-pos-bar-label {
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.5rem;
+		letter-spacing: 0.02em;
+		text-align: center;
+		line-height: 1.2;
+	}
+
+	.hw-pos-bar-dots {
+		font-size: 0.85rem;
+		line-height: 1;
+		opacity: 0.5;
+		flex: 1;
+		display: flex;
+		align-items: center;
+	}
+
+	.hw-pos-legend {
+		display: flex;
+		justify-content: center;
+		gap: 1.2rem;
+		margin-top: 0.5rem;
+		font-size: 0.65rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		color: hsl(var(--theme-text) / 0.45);
+		opacity: 0;
+		animation: hw-fade-in 0.3s ease 0.8s both;
+	}
+
+	.hw-pos-legend-swatch {
+		display: inline-block;
+		width: 10px;
+		height: 10px;
+		border-radius: 2px;
+		margin-right: 4px;
+		vertical-align: middle;
+	}
+
+	.hw-pos-legend-swatch-tok {
+		background: hsl(210 60% 55% / 0.35);
+	}
+
+	.hw-pos-legend-swatch-pos {
+		background: hsl(42 90% 55% / 0.45);
+	}
+
+	.hw-pos-dim-label {
+		margin-top: 0.3rem;
+		font-size: 0.68rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		color: hsl(var(--theme-text) / 0.35);
+		opacity: 0;
+		animation: hw-fade-in 0.3s ease 1s both;
+	}
+
+	@media (max-width: 480px) {
+		.hw-pos-bar {
+			width: 22px;
+			min-height: 70px;
+			padding: 4px 1px;
+		}
+		.hw-pos-bar-label {
+			font-size: 0.48rem;
+		}
+		.hw-pos-chip {
+			font-size: 0.62rem;
+			padding: 2px 5px;
+		}
+		.hw-pos-legend {
+			font-size: 0.58rem;
+		}
+	}
+
 	/* Step 1 placeholder viz */
 	.hw-step-placeholder {
 		text-align: center;
@@ -8174,6 +8322,78 @@ const sections = [
 			});
 		}
 
+		function renderStep4() {
+			var layout = el('div', 'hw-pos-layout');
+
+			// Token chips row at the top
+			var chipsRow = el('div', 'hw-pos-chips');
+			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
+			var tokenTypes = ['whole', 'whole', 'whole', 'whole', 'sub', 'sub', 'whole', 'whole'];
+
+			tokens.forEach(function(tok, i) {
+				var chip = el('span', 'hw-tok-chip hw-tok-' + tokenTypes[i] + ' hw-pos-chip', tok);
+				chipsRow.appendChild(chip);
+			});
+			layout.appendChild(chipsRow);
+
+			// Down arrows row
+			var arrowRow = el('div', 'hw-pos-arrow-row');
+			tokens.forEach(function() {
+				arrowRow.appendChild(el('span', 'hw-pos-arrow-cell', '\u2193'));
+			});
+			layout.appendChild(arrowRow);
+
+			// Paired columns: blue (token embedding) + yellow (positional embedding)
+			var colsRow = el('div', 'hw-pos-cols-row');
+
+			tokens.forEach(function(tok, i) {
+				var pair = el('div', 'hw-pos-token-pair');
+
+				// Blue token embedding bar (shrunk, no numbers)
+				var tokBar = el('div', 'hw-pos-bar hw-pos-bar-tok');
+				tokBar.style.animationDelay = (200 + i * 50) + 'ms';
+				var tokLabel = el('span', 'hw-pos-bar-label', 'emb');
+				tokBar.appendChild(tokLabel);
+				tokBar.appendChild(el('span', 'hw-pos-bar-dots', '\u22EE'));
+				pair.appendChild(tokBar);
+
+				// Yellow positional embedding bar (animates in after blue)
+				var posBar = el('div', 'hw-pos-bar hw-pos-bar-pos');
+				posBar.style.animationDelay = (500 + i * 60) + 'ms';
+				var posLabel = el('span', 'hw-pos-bar-label', 'pos');
+				posBar.appendChild(posLabel);
+				posBar.appendChild(el('span', 'hw-pos-bar-dots', '\u22EE'));
+				pair.appendChild(posBar);
+
+				colsRow.appendChild(pair);
+			});
+
+			layout.appendChild(colsRow);
+
+			// Legend
+			var legend = el('div', 'hw-pos-legend');
+			var tokLegend = el('span', '');
+			var tokSwatch = el('span', 'hw-pos-legend-swatch hw-pos-legend-swatch-tok');
+			tokLegend.appendChild(tokSwatch);
+			tokLegend.appendChild(document.createTextNode(' Token embedding'));
+			legend.appendChild(tokLegend);
+
+			var posLegend = el('span', '');
+			var posSwatch = el('span', 'hw-pos-legend-swatch hw-pos-legend-swatch-pos');
+			posLegend.appendChild(posSwatch);
+			posLegend.appendChild(document.createTextNode(' Positional embedding'));
+			legend.appendChild(posLegend);
+
+			layout.appendChild(legend);
+
+			// Dimension label
+			var dimLabel = el('div', 'hw-pos-dim-label');
+			dimLabel.textContent = '8 tokens \u00d7 2 embeddings \u00d7 d_model dimensions each';
+			layout.appendChild(dimLabel);
+
+			return layout;
+		}
+
 		function showStep(step) {
 			// step 0 = base state
 			// steps 1-9: token (0-2) × projection (Q=0, K=1, V=2)
@@ -8574,6 +8794,78 @@ const sections = [
 			return layout;
 		}
 
+		function renderStep4() {
+			var layout = el('div', 'hw-pos-layout');
+
+			// Token chips row at the top
+			var chipsRow = el('div', 'hw-pos-chips');
+			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
+			var tokenTypes = ['whole', 'whole', 'whole', 'whole', 'sub', 'sub', 'whole', 'whole'];
+
+			tokens.forEach(function(tok, i) {
+				var chip = el('span', 'hw-tok-chip hw-tok-' + tokenTypes[i] + ' hw-pos-chip', tok);
+				chipsRow.appendChild(chip);
+			});
+			layout.appendChild(chipsRow);
+
+			// Down arrows row
+			var arrowRow = el('div', 'hw-pos-arrow-row');
+			tokens.forEach(function() {
+				arrowRow.appendChild(el('span', 'hw-pos-arrow-cell', '\u2193'));
+			});
+			layout.appendChild(arrowRow);
+
+			// Paired columns: blue (token embedding) + yellow (positional embedding)
+			var colsRow = el('div', 'hw-pos-cols-row');
+
+			tokens.forEach(function(tok, i) {
+				var pair = el('div', 'hw-pos-token-pair');
+
+				// Blue token embedding bar (shrunk, no numbers)
+				var tokBar = el('div', 'hw-pos-bar hw-pos-bar-tok');
+				tokBar.style.animationDelay = (200 + i * 50) + 'ms';
+				var tokLabel = el('span', 'hw-pos-bar-label', 'emb');
+				tokBar.appendChild(tokLabel);
+				tokBar.appendChild(el('span', 'hw-pos-bar-dots', '\u22EE'));
+				pair.appendChild(tokBar);
+
+				// Yellow positional embedding bar (animates in after blue)
+				var posBar = el('div', 'hw-pos-bar hw-pos-bar-pos');
+				posBar.style.animationDelay = (500 + i * 60) + 'ms';
+				var posLabel = el('span', 'hw-pos-bar-label', 'pos');
+				posBar.appendChild(posLabel);
+				posBar.appendChild(el('span', 'hw-pos-bar-dots', '\u22EE'));
+				pair.appendChild(posBar);
+
+				colsRow.appendChild(pair);
+			});
+
+			layout.appendChild(colsRow);
+
+			// Legend
+			var legend = el('div', 'hw-pos-legend');
+			var tokLegend = el('span', '');
+			var tokSwatch = el('span', 'hw-pos-legend-swatch hw-pos-legend-swatch-tok');
+			tokLegend.appendChild(tokSwatch);
+			tokLegend.appendChild(document.createTextNode(' Token embedding'));
+			legend.appendChild(tokLegend);
+
+			var posLegend = el('span', '');
+			var posSwatch = el('span', 'hw-pos-legend-swatch hw-pos-legend-swatch-pos');
+			posLegend.appendChild(posSwatch);
+			posLegend.appendChild(document.createTextNode(' Positional embedding'));
+			legend.appendChild(posLegend);
+
+			layout.appendChild(legend);
+
+			// Dimension label
+			var dimLabel = el('div', 'hw-pos-dim-label');
+			dimLabel.textContent = '8 tokens \u00d7 2 embeddings \u00d7 d_model dimensions each';
+			layout.appendChild(dimLabel);
+
+			return layout;
+		}
+
 		function showStep(step) {
 			viz.innerHTML = '';
 
@@ -8583,6 +8875,8 @@ const sections = [
 				viz.appendChild(renderStep2());
 			} else if (step === 3) {
 				viz.appendChild(renderStep3());
+			} else if (step === 4) {
+				viz.appendChild(renderStep4());
 			} else {
 				var placeholder = el('div', 'hw-step-placeholder');
 				placeholder.textContent = 'Step ' + step + ' visualization (coming soon)';
