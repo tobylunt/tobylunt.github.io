@@ -65,3 +65,17 @@
 - Verified: forward/back navigation correctly renders step 4, build passes, both dark and light themes clean
 - Commit: 0c87fa7
 - Next: Feature #6 — Step 5 combine embeddings: additive merge animation (blue + yellow → green)
+
+=== Feature #6 Complete — 2026-02-18 ===
+- Implemented Step 5 "Combine Embeddings" visualization in the 04e head walkthrough
+- Layout: token chips at top → down arrows → blue+yellow bar pairs with "+" signs → animated merge into green bars
+- Animation: after 600ms delay, each token group merges with staggered 80ms per-token delay via CSS transitions
+- Blue (emb) + yellow (pos) bars transition to width:0/opacity:0 while green merged bar expands to 36px
+- Equation row: color-coded "token emb + pos emb = combined" formula
+- Dimension label: "8 tokens × d_model dimensions"
+- Dismissable sidenote: explains that addition is the standard approach, alternatives (concatenation, learned gating) exist, but addition provides maximal flexibility for the model to learn weighting
+- CSS: hw-combine-* classes with transition-based merge animation (no keyframes needed for the merge), responsive at 480px breakpoint
+- Fixed: initially placed renderStep5 in the wrong script block (QKV pipeline instead of head-walk); moved to correct lazy-init scope
+- Verified: forward/back navigation correctly renders step 5, reset works, build passes, both dark and light themes clean
+- Commit: 8cc8b53
+- Next: Feature #7 — Step 6 layer norm and QKV weight matrix prep
