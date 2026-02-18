@@ -173,3 +173,15 @@
 - Verified: forward/back/reset navigation works, build passes, both dark and light themes clean
 - Commit: 95dceec
 - Next: Feature #13 — Step 12 Residual stream: outputs fed forward
+
+=== Feature #13 Tracking Update — 2026-02-18 ===
+- Feature #13 (Step 12 — Residual Stream) was already implemented in commit ee91bb2
+- This session verified the implementation via Playwright smoke-test:
+  - Step 12 shows: Input(x) + Attn(x) = Enriched output with additive "+" operator visual
+  - Pipeline flow indicator shows: Feed-Forward Network → + residual → Next Layer
+  - Annotation explains residual connections and shows formula Output = Input + Attention(Input)
+  - All 12 steps navigate correctly (forward/back/reset)
+  - Both dark and light themes render cleanly with no issues
+- Updated features.json: set passes to true for feature #13
+- ALL 13 FEATURES ARE NOW COMPLETE — the attention head walkthrough figure is finished
+- Next steps: all features pass; the figure is ready for review and polish

@@ -143,7 +143,7 @@
   {
     "id": 13,
     "name": "Step 12 — Residual stream: outputs fed forward",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Show the attention output being added back to the residual stream (additive connection)",
       "Visual preview of the residual stream concept, which is explained in detail later on the page",
