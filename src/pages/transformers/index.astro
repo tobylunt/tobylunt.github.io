@@ -6340,6 +6340,353 @@ const sections = [
 		}
 	}
 
+	/* ===== Step 10: QK^T Attention Scores ===== */
+	.hw-qkt-layout {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10px;
+		padding: 8px 0;
+	}
+
+	/* Top multiplication row: Q · K^T = Scores */
+	.hw-qkt-mult-row {
+		display: flex;
+		align-items: flex-start;
+		gap: 8px;
+		justify-content: center;
+		width: 100%;
+	}
+
+	/* Compact Q matrix (blue) */
+	.hw-qkt-q-wrap {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2px;
+		flex-shrink: 0;
+	}
+
+	.hw-qkt-q-label {
+		font-size: 0.55rem;
+		font-weight: 600;
+		color: hsl(210 70% 55%);
+		letter-spacing: 0.04em;
+	}
+
+	.hw-qkt-q-grid {
+		display: grid;
+		gap: 1px;
+		background: hsl(210 70% 55% / 0.06);
+		border: 1.5px solid hsl(210 70% 55% / 0.25);
+		border-radius: 3px;
+		overflow: hidden;
+	}
+
+	.hw-qkt-q-cell {
+		background: hsl(210 70% 55% / 0.08);
+		color: hsl(210 70% 55% / 0.7);
+		font-size: 0.38rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 1px 1px;
+		text-align: center;
+		min-width: 18px;
+	}
+
+	.hw-qkt-q-cell.dots-cell {
+		font-size: 0.45rem;
+		color: hsl(210 70% 55% / 0.4);
+		padding: 0px 1px;
+	}
+
+	.hw-qkt-q-dim {
+		font-size: 0.42rem;
+		color: hsl(var(--theme-text) / 0.35);
+	}
+
+	.hw-qkt-q-dim .hw-qkt-dim-cancel {
+		text-decoration: line-through;
+		text-decoration-color: hsl(0 70% 50% / 0.6);
+		text-decoration-thickness: 1.5px;
+		opacity: 0.5;
+	}
+
+	/* Multiply sign */
+	.hw-qkt-times {
+		font-size: 0.8rem;
+		color: hsl(var(--theme-text) / 0.4);
+		align-self: center;
+		padding: 0 2px;
+		padding-top: 14px;
+	}
+
+	/* Compact K^T matrix (orange) */
+	.hw-qkt-kt-wrap {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2px;
+		flex-shrink: 0;
+	}
+
+	.hw-qkt-kt-label {
+		font-size: 0.55rem;
+		font-weight: 600;
+		color: hsl(30 80% 50%);
+		letter-spacing: 0.04em;
+	}
+
+	.hw-qkt-kt-grid {
+		display: grid;
+		gap: 1px;
+		background: hsl(30 80% 50% / 0.06);
+		border: 1.5px solid hsl(30 80% 50% / 0.25);
+		border-radius: 3px;
+		overflow: hidden;
+	}
+
+	.hw-qkt-kt-cell {
+		background: hsl(30 80% 50% / 0.08);
+		color: hsl(30 80% 50% / 0.7);
+		font-size: 0.38rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 1px 1px;
+		text-align: center;
+		min-width: 18px;
+	}
+
+	.hw-qkt-kt-cell.dots-cell {
+		font-size: 0.45rem;
+		color: hsl(30 80% 50% / 0.4);
+		padding: 0px 1px;
+	}
+
+	.hw-qkt-kt-dim {
+		font-size: 0.42rem;
+		color: hsl(var(--theme-text) / 0.35);
+	}
+
+	.hw-qkt-kt-dim .hw-qkt-dim-cancel {
+		text-decoration: line-through;
+		text-decoration-color: hsl(0 70% 50% / 0.6);
+		text-decoration-thickness: 1.5px;
+		opacity: 0.5;
+	}
+
+	/* Equals sign */
+	.hw-qkt-equals {
+		font-size: 0.8rem;
+		color: hsl(var(--theme-text) / 0.4);
+		align-self: center;
+		padding: 0 2px;
+		padding-top: 14px;
+	}
+
+	/* Result T×T attention matrix (green-purple) */
+	.hw-qkt-result-wrap {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2px;
+		flex-shrink: 0;
+		opacity: 0;
+		transform: translateX(8px);
+		transition: opacity 0.5s ease, transform 0.5s ease;
+	}
+
+	.hw-qkt-result-wrap.visible {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	.hw-qkt-result-title {
+		font-size: 0.55rem;
+		font-weight: 600;
+		color: hsl(280 55% 55%);
+		letter-spacing: 0.04em;
+	}
+
+	/* Token labels along left (query tokens) */
+	.hw-qkt-result-row-labels {
+		display: grid;
+		gap: 1px;
+	}
+
+	.hw-qkt-result-row-label {
+		font-size: 0.36rem;
+		text-align: right;
+		color: hsl(210 70% 55% / 0.6);
+		padding: 1px 3px 1px 0;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		min-height: 16px;
+	}
+
+	/* Token labels along top (key tokens) */
+	.hw-qkt-result-col-labels {
+		display: grid;
+		gap: 1px;
+	}
+
+	.hw-qkt-result-col-label {
+		font-size: 0.36rem;
+		text-align: center;
+		color: hsl(30 80% 50% / 0.6);
+		min-width: 22px;
+		padding: 0 1px;
+	}
+
+	/* Grid wrapper with row labels + matrix side by side */
+	.hw-qkt-result-grid-area {
+		display: flex;
+		gap: 2px;
+		align-items: flex-start;
+	}
+
+	.hw-qkt-result-grid {
+		display: grid;
+		gap: 1px;
+		background: hsl(280 55% 55% / 0.06);
+		border: 1.5px solid hsl(280 55% 55% / 0.25);
+		border-radius: 3px;
+		overflow: hidden;
+	}
+
+	.hw-qkt-result-cell {
+		background: hsl(280 55% 55% / 0.06);
+		color: hsl(280 55% 55% / 0.75);
+		font-size: 0.36rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 1px 1px;
+		text-align: center;
+		min-width: 22px;
+		min-height: 16px;
+	}
+
+	.hw-qkt-result-cell.hw-qkt-diag {
+		background: hsl(280 55% 55% / 0.14);
+		color: hsl(280 55% 55% / 0.9);
+		font-weight: 600;
+	}
+
+	.hw-qkt-result-dim {
+		font-size: 0.42rem;
+		color: hsl(var(--theme-text) / 0.35);
+		margin-top: 2px;
+	}
+
+	/* Q axis label and K axis label */
+	.hw-qkt-axis-label-q {
+		font-size: 0.38rem;
+		color: hsl(210 70% 55% / 0.55);
+		font-weight: 600;
+		writing-mode: vertical-lr;
+		transform: rotate(180deg);
+		letter-spacing: 0.06em;
+		padding-right: 2px;
+	}
+
+	.hw-qkt-axis-label-k {
+		font-size: 0.38rem;
+		color: hsl(30 80% 50% / 0.55);
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-align: center;
+	}
+
+	/* Shape equation */
+	.hw-qkt-equation {
+		font-size: 0.55rem;
+		color: hsl(var(--theme-text) / 0.5);
+		text-align: center;
+		margin-top: 4px;
+		opacity: 0;
+		transition: opacity 0.5s ease;
+	}
+
+	.hw-qkt-equation.visible {
+		opacity: 1;
+	}
+
+	.hw-qkt-eq-q { color: hsl(210 70% 55%); font-weight: 600; }
+	.hw-qkt-eq-kt { color: hsl(30 80% 50%); font-weight: 600; }
+	.hw-qkt-eq-result { color: hsl(280 55% 55%); font-weight: 600; }
+	.hw-qkt-eq-dim { color: hsl(var(--theme-text) / 0.4); }
+	.hw-qkt-eq-cancel {
+		text-decoration: line-through;
+		text-decoration-color: hsl(0 70% 50% / 0.6);
+		text-decoration-thickness: 1.5px;
+	}
+
+	/* O(n²) callout */
+	.hw-qkt-callout {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		background: hsl(0 70% 50% / 0.06);
+		border: 1.5px solid hsl(0 70% 50% / 0.2);
+		border-radius: 6px;
+		padding: 4px 12px;
+		margin-top: 4px;
+		opacity: 0;
+		transition: opacity 0.5s ease;
+	}
+
+	.hw-qkt-callout.visible {
+		opacity: 1;
+	}
+
+	.hw-qkt-callout-icon {
+		font-size: 0.65rem;
+		color: hsl(0 70% 50% / 0.7);
+	}
+
+	.hw-qkt-callout-text {
+		font-size: 0.48rem;
+		color: hsl(0 70% 50% / 0.75);
+		font-weight: 600;
+		letter-spacing: 0.03em;
+	}
+
+	/* Cancel animation (strikethrough appearing) */
+	.hw-qkt-dim-cancel {
+		text-decoration: none;
+		transition: text-decoration-color 0.4s ease;
+	}
+
+	.hw-qkt-dim-cancel.active {
+		text-decoration: line-through;
+		text-decoration-color: hsl(0 70% 50% / 0.6);
+		text-decoration-thickness: 1.5px;
+		opacity: 0.5;
+	}
+
+	/* Responsive */
+	@media (max-width: 480px) {
+		.hw-qkt-mult-row {
+			flex-direction: column;
+			align-items: center;
+			gap: 8px;
+		}
+		.hw-qkt-q-cell, .hw-qkt-kt-cell {
+			font-size: 0.34rem;
+			min-width: 16px;
+		}
+		.hw-qkt-result-cell {
+			font-size: 0.32rem;
+			min-width: 18px;
+			min-height: 14px;
+		}
+		.hw-qkt-result-col-label, .hw-qkt-result-row-label {
+			font-size: 0.32rem;
+			min-width: 18px;
+		}
+		.hw-qkt-callout {
+			padding: 3px 8px;
+		}
+	}
+
 	/* Step 1 placeholder viz */
 	.hw-step-placeholder {
 		text-align: center;
@@ -10022,6 +10369,230 @@ const sections = [
 		}
 
 
+		function renderStep10() {
+			var layout = el('div', 'hw-qkt-layout');
+			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
+			var T = tokens.length; // 8
+
+			// Q values from Step 7 (T x d_head, shown as 3 data rows x 8 cols)
+			var qValues = [
+				['.45', '-.72', '1.1', '.31', '-.56', '.89', '-.18', '.45'],
+				['-.33', '.61', '-.49', '.77', '.42', '-.68', '.55', '-.33'],
+				['.81', '-.15', '.63', '-.42', '.28', '.37', '-.71', '.81']
+			];
+
+			// K^T values from Step 9 (d_head x T, same grid as K transposed)
+			var ktValues = [
+				['.33', '-.61', '.82', '.14', '-.47', '.58', '-.22', '.33'],
+				['-.52', '.39', '-.71', '.55', '.28', '-.63', '.44', '-.52'],
+				['.18', '-.44', '.36', '-.29', '.65', '.11', '-.53', '.18']
+			];
+
+			// Attention score matrix (T x T) — synthetic but plausible dot-product values
+			var scoreValues = [
+				['.92', '.11', '.38', '.06', '-.21', '.15', '.34', '.92'],
+				['.14', '.87', '.22', '.41', '.09', '-.18', '.27', '.14'],
+				['.31', '.19', '.95', '.28', '.12', '.35', '-.09', '.31'],
+				['.08', '.43', '.33', '.88', '.16', '.07', '.21', '.08'],
+				['-.15', '.12', '.17', '.21', '.84', '.62', '.11', '-.15'],
+				['.18', '-.11', '.29', '.09', '.58', '.91', '.22', '.18'],
+				['.27', '.22', '-.06', '.18', '.14', '.19', '.86', '.27'],
+				['.92', '.11', '.38', '.06', '-.21', '.15', '.34', '.93']
+			];
+
+			// === Top row: Q · K^T = Scores ===
+			var multRow = el('div', 'hw-qkt-mult-row');
+
+			// --- Q compact matrix (blue) ---
+			var qWrap = el('div', 'hw-qkt-q-wrap');
+			qWrap.appendChild(el('div', 'hw-qkt-q-label', 'Q'));
+
+			var qGrid = el('div', 'hw-qkt-q-grid');
+			qGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
+			qValues.forEach(function(row) {
+				row.forEach(function(val) {
+					qGrid.appendChild(el('div', 'hw-qkt-q-cell', val));
+				});
+			});
+			// Dots row
+			for (var i = 0; i < T; i++) {
+				qGrid.appendChild(el('div', 'hw-qkt-q-cell dots-cell', '\u22EE'));
+			}
+			qWrap.appendChild(qGrid);
+
+			// Q dimension label with cancelable d_head
+			var qDim = el('div', 'hw-qkt-q-dim');
+			var qDimT = el('span', '', 'T');
+			qDimT.style.color = 'hsl(210 70% 55%)';
+			var qDimX = document.createTextNode(' \u00d7 ');
+			var qDimD = el('span', 'hw-qkt-dim-cancel');
+			qDimD.innerHTML = 'd<sub>head</sub>';
+			if (astroAttr) qDimD.querySelector('sub').setAttribute(astroAttr, '');
+			qDim.appendChild(qDimT);
+			qDim.appendChild(qDimX);
+			qDim.appendChild(qDimD);
+			qWrap.appendChild(qDim);
+			multRow.appendChild(qWrap);
+
+			// --- Multiply sign ---
+			multRow.appendChild(el('div', 'hw-qkt-times', '\u00b7'));
+
+			// --- K^T compact matrix (orange) ---
+			var ktWrap = el('div', 'hw-qkt-kt-wrap');
+			var ktLabel = el('div', 'hw-qkt-kt-label');
+			ktLabel.innerHTML = 'K<sup>T</sup>';
+			if (astroAttr) ktLabel.querySelector('sup').setAttribute(astroAttr, '');
+			ktWrap.appendChild(ktLabel);
+
+			var ktGrid = el('div', 'hw-qkt-kt-grid');
+			ktGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
+			ktValues.forEach(function(row) {
+				row.forEach(function(val) {
+					ktGrid.appendChild(el('div', 'hw-qkt-kt-cell', val));
+				});
+			});
+			// Dots row
+			for (var i = 0; i < T; i++) {
+				ktGrid.appendChild(el('div', 'hw-qkt-kt-cell dots-cell', '\u22EE'));
+			}
+			ktWrap.appendChild(ktGrid);
+
+			// K^T dimension label with cancelable d_head
+			var ktDim = el('div', 'hw-qkt-kt-dim');
+			var ktDimD = el('span', 'hw-qkt-dim-cancel');
+			ktDimD.innerHTML = 'd<sub>head</sub>';
+			if (astroAttr) ktDimD.querySelector('sub').setAttribute(astroAttr, '');
+			var ktDimX = document.createTextNode(' \u00d7 ');
+			var ktDimT = el('span', '', 'T');
+			ktDimT.style.color = 'hsl(30 80% 50%)';
+			ktDim.appendChild(ktDimD);
+			ktDim.appendChild(ktDimX);
+			ktDim.appendChild(ktDimT);
+			ktWrap.appendChild(ktDim);
+			multRow.appendChild(ktWrap);
+
+			// --- Equals sign ---
+			multRow.appendChild(el('div', 'hw-qkt-equals', '='));
+
+			// --- Result T×T attention matrix ---
+			var resultWrap = el('div', 'hw-qkt-result-wrap');
+			resultWrap.appendChild(el('div', 'hw-qkt-result-title', 'Attention Scores'));
+
+			// K axis label (top)
+			resultWrap.appendChild(el('div', 'hw-qkt-axis-label-k', 'keys \u2192'));
+
+			// Column labels (key tokens — orange tint)
+			var colLabels = el('div', 'hw-qkt-result-col-labels');
+			colLabels.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
+			colLabels.style.marginLeft = '28px'; // offset for row labels
+			tokens.forEach(function(tok) {
+				colLabels.appendChild(el('div', 'hw-qkt-result-col-label', tok));
+			});
+			resultWrap.appendChild(colLabels);
+
+			// Grid area: row labels + matrix
+			var gridArea = el('div', 'hw-qkt-result-grid-area');
+
+			// Left side: Q axis label + row labels
+			var leftSide = el('div', '');
+			leftSide.style.display = 'flex';
+			leftSide.style.gap = '1px';
+			leftSide.style.alignItems = 'flex-start';
+
+			// Q axis label (vertical on left)
+			var qAxisLabel = el('div', 'hw-qkt-axis-label-q', 'queries');
+			leftSide.appendChild(qAxisLabel);
+
+			// Row labels (query tokens — blue tint)
+			var rowLabels = el('div', 'hw-qkt-result-row-labels');
+			rowLabels.style.gridTemplateRows = 'repeat(' + T + ', 1fr)';
+			tokens.forEach(function(tok) {
+				rowLabels.appendChild(el('div', 'hw-qkt-result-row-label', tok));
+			});
+			leftSide.appendChild(rowLabels);
+			gridArea.appendChild(leftSide);
+
+			// The T x T matrix
+			var resultGrid = el('div', 'hw-qkt-result-grid');
+			resultGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
+			scoreValues.forEach(function(row, r) {
+				row.forEach(function(val, c) {
+					var cell = el('div', 'hw-qkt-result-cell', val);
+					if (r === c) cell.classList.add('hw-qkt-diag');
+					resultGrid.appendChild(cell);
+				});
+			});
+			gridArea.appendChild(resultGrid);
+			resultWrap.appendChild(gridArea);
+
+			// Result dimension label
+			var resultDim = el('div', 'hw-qkt-result-dim');
+			var rDimT1 = el('span', '', 'T');
+			rDimT1.style.color = 'hsl(210 70% 55%)';
+			var rDimX = document.createTextNode(' \u00d7 ');
+			var rDimT2 = el('span', '', 'T');
+			rDimT2.style.color = 'hsl(30 80% 50%)';
+			resultDim.appendChild(rDimT1);
+			resultDim.appendChild(rDimX);
+			resultDim.appendChild(rDimT2);
+			resultWrap.appendChild(resultDim);
+			multRow.appendChild(resultWrap);
+
+			layout.appendChild(multRow);
+
+			// === Shape equation with strikethroughs ===
+			var eqRow = el('div', 'hw-qkt-equation');
+			var eqQ = el('span', 'hw-qkt-eq-q', 'Q');
+			var eqDot = document.createTextNode(' \u00b7 ');
+			var eqKT = el('span', 'hw-qkt-eq-kt');
+			eqKT.innerHTML = 'K<sup>T</sup>';
+			if (astroAttr) eqKT.querySelector('sup').setAttribute(astroAttr, '');
+			var eqEq = document.createTextNode('  ');
+			var eqDimParts = el('span', 'hw-qkt-eq-dim');
+			eqDimParts.innerHTML = '(T\u00d7<span class="hw-qkt-eq-cancel">d</span>) \u00b7 (<span class="hw-qkt-eq-cancel">d</span>\u00d7T) = <span class="hw-qkt-eq-result">T\u00d7T</span>';
+			if (astroAttr) eqDimParts.querySelectorAll('span').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			eqRow.appendChild(eqQ);
+			eqRow.appendChild(eqDot);
+			eqRow.appendChild(eqKT);
+			eqRow.appendChild(eqEq);
+			eqRow.appendChild(eqDimParts);
+			layout.appendChild(eqRow);
+
+			// === O(n²) callout ===
+			var callout = el('div', 'hw-qkt-callout');
+			callout.appendChild(el('span', 'hw-qkt-callout-icon', '\u26A0'));
+			var calloutText = el('span', 'hw-qkt-callout-text');
+			calloutText.innerHTML = 'This is O(n\u00b2) in sequence length \u2014 every token attends to every other token';
+			callout.appendChild(calloutText);
+			layout.appendChild(callout);
+
+			// === Animation sequence ===
+			// Phase 1 (immediate): Q and K^T matrices visible
+			// Phase 2 (800ms): d_head dimensions get strikethrough (canceling)
+			setTimeout(function() {
+				qDimD.classList.add('active');
+				ktDimD.classList.add('active');
+			}, 800);
+
+			// Phase 3 (1400ms): result matrix appears
+			setTimeout(function() {
+				resultWrap.classList.add('visible');
+			}, 1400);
+
+			// Phase 4 (2000ms): equation appears
+			setTimeout(function() {
+				eqRow.classList.add('visible');
+			}, 2000);
+
+			// Phase 5 (2600ms): O(n²) callout appears
+			setTimeout(function() {
+				callout.classList.add('visible');
+			}, 2600);
+
+			return layout;
+		}
+
+
 		function showStep(step) {
 			// step 0 = base state
 			// steps 1-9: token (0-2) × projection (Q=0, K=1, V=2)
@@ -11398,6 +11969,230 @@ const sections = [
 		}
 
 
+		function renderStep10() {
+			var layout = el('div', 'hw-qkt-layout');
+			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
+			var T = tokens.length; // 8
+
+			// Q values from Step 7 (T x d_head, shown as 3 data rows x 8 cols)
+			var qValues = [
+				['.45', '-.72', '1.1', '.31', '-.56', '.89', '-.18', '.45'],
+				['-.33', '.61', '-.49', '.77', '.42', '-.68', '.55', '-.33'],
+				['.81', '-.15', '.63', '-.42', '.28', '.37', '-.71', '.81']
+			];
+
+			// K^T values from Step 9 (d_head x T, same grid as K transposed)
+			var ktValues = [
+				['.33', '-.61', '.82', '.14', '-.47', '.58', '-.22', '.33'],
+				['-.52', '.39', '-.71', '.55', '.28', '-.63', '.44', '-.52'],
+				['.18', '-.44', '.36', '-.29', '.65', '.11', '-.53', '.18']
+			];
+
+			// Attention score matrix (T x T) — synthetic but plausible dot-product values
+			var scoreValues = [
+				['.92', '.11', '.38', '.06', '-.21', '.15', '.34', '.92'],
+				['.14', '.87', '.22', '.41', '.09', '-.18', '.27', '.14'],
+				['.31', '.19', '.95', '.28', '.12', '.35', '-.09', '.31'],
+				['.08', '.43', '.33', '.88', '.16', '.07', '.21', '.08'],
+				['-.15', '.12', '.17', '.21', '.84', '.62', '.11', '-.15'],
+				['.18', '-.11', '.29', '.09', '.58', '.91', '.22', '.18'],
+				['.27', '.22', '-.06', '.18', '.14', '.19', '.86', '.27'],
+				['.92', '.11', '.38', '.06', '-.21', '.15', '.34', '.93']
+			];
+
+			// === Top row: Q · K^T = Scores ===
+			var multRow = el('div', 'hw-qkt-mult-row');
+
+			// --- Q compact matrix (blue) ---
+			var qWrap = el('div', 'hw-qkt-q-wrap');
+			qWrap.appendChild(el('div', 'hw-qkt-q-label', 'Q'));
+
+			var qGrid = el('div', 'hw-qkt-q-grid');
+			qGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
+			qValues.forEach(function(row) {
+				row.forEach(function(val) {
+					qGrid.appendChild(el('div', 'hw-qkt-q-cell', val));
+				});
+			});
+			// Dots row
+			for (var i = 0; i < T; i++) {
+				qGrid.appendChild(el('div', 'hw-qkt-q-cell dots-cell', '\u22EE'));
+			}
+			qWrap.appendChild(qGrid);
+
+			// Q dimension label with cancelable d_head
+			var qDim = el('div', 'hw-qkt-q-dim');
+			var qDimT = el('span', '', 'T');
+			qDimT.style.color = 'hsl(210 70% 55%)';
+			var qDimX = document.createTextNode(' \u00d7 ');
+			var qDimD = el('span', 'hw-qkt-dim-cancel');
+			qDimD.innerHTML = 'd<sub>head</sub>';
+			if (astroAttr) qDimD.querySelector('sub').setAttribute(astroAttr, '');
+			qDim.appendChild(qDimT);
+			qDim.appendChild(qDimX);
+			qDim.appendChild(qDimD);
+			qWrap.appendChild(qDim);
+			multRow.appendChild(qWrap);
+
+			// --- Multiply sign ---
+			multRow.appendChild(el('div', 'hw-qkt-times', '\u00b7'));
+
+			// --- K^T compact matrix (orange) ---
+			var ktWrap = el('div', 'hw-qkt-kt-wrap');
+			var ktLabel = el('div', 'hw-qkt-kt-label');
+			ktLabel.innerHTML = 'K<sup>T</sup>';
+			if (astroAttr) ktLabel.querySelector('sup').setAttribute(astroAttr, '');
+			ktWrap.appendChild(ktLabel);
+
+			var ktGrid = el('div', 'hw-qkt-kt-grid');
+			ktGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
+			ktValues.forEach(function(row) {
+				row.forEach(function(val) {
+					ktGrid.appendChild(el('div', 'hw-qkt-kt-cell', val));
+				});
+			});
+			// Dots row
+			for (var i = 0; i < T; i++) {
+				ktGrid.appendChild(el('div', 'hw-qkt-kt-cell dots-cell', '\u22EE'));
+			}
+			ktWrap.appendChild(ktGrid);
+
+			// K^T dimension label with cancelable d_head
+			var ktDim = el('div', 'hw-qkt-kt-dim');
+			var ktDimD = el('span', 'hw-qkt-dim-cancel');
+			ktDimD.innerHTML = 'd<sub>head</sub>';
+			if (astroAttr) ktDimD.querySelector('sub').setAttribute(astroAttr, '');
+			var ktDimX = document.createTextNode(' \u00d7 ');
+			var ktDimT = el('span', '', 'T');
+			ktDimT.style.color = 'hsl(30 80% 50%)';
+			ktDim.appendChild(ktDimD);
+			ktDim.appendChild(ktDimX);
+			ktDim.appendChild(ktDimT);
+			ktWrap.appendChild(ktDim);
+			multRow.appendChild(ktWrap);
+
+			// --- Equals sign ---
+			multRow.appendChild(el('div', 'hw-qkt-equals', '='));
+
+			// --- Result T×T attention matrix ---
+			var resultWrap = el('div', 'hw-qkt-result-wrap');
+			resultWrap.appendChild(el('div', 'hw-qkt-result-title', 'Attention Scores'));
+
+			// K axis label (top)
+			resultWrap.appendChild(el('div', 'hw-qkt-axis-label-k', 'keys \u2192'));
+
+			// Column labels (key tokens — orange tint)
+			var colLabels = el('div', 'hw-qkt-result-col-labels');
+			colLabels.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
+			colLabels.style.marginLeft = '28px'; // offset for row labels
+			tokens.forEach(function(tok) {
+				colLabels.appendChild(el('div', 'hw-qkt-result-col-label', tok));
+			});
+			resultWrap.appendChild(colLabels);
+
+			// Grid area: row labels + matrix
+			var gridArea = el('div', 'hw-qkt-result-grid-area');
+
+			// Left side: Q axis label + row labels
+			var leftSide = el('div', '');
+			leftSide.style.display = 'flex';
+			leftSide.style.gap = '1px';
+			leftSide.style.alignItems = 'flex-start';
+
+			// Q axis label (vertical on left)
+			var qAxisLabel = el('div', 'hw-qkt-axis-label-q', 'queries');
+			leftSide.appendChild(qAxisLabel);
+
+			// Row labels (query tokens — blue tint)
+			var rowLabels = el('div', 'hw-qkt-result-row-labels');
+			rowLabels.style.gridTemplateRows = 'repeat(' + T + ', 1fr)';
+			tokens.forEach(function(tok) {
+				rowLabels.appendChild(el('div', 'hw-qkt-result-row-label', tok));
+			});
+			leftSide.appendChild(rowLabels);
+			gridArea.appendChild(leftSide);
+
+			// The T x T matrix
+			var resultGrid = el('div', 'hw-qkt-result-grid');
+			resultGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
+			scoreValues.forEach(function(row, r) {
+				row.forEach(function(val, c) {
+					var cell = el('div', 'hw-qkt-result-cell', val);
+					if (r === c) cell.classList.add('hw-qkt-diag');
+					resultGrid.appendChild(cell);
+				});
+			});
+			gridArea.appendChild(resultGrid);
+			resultWrap.appendChild(gridArea);
+
+			// Result dimension label
+			var resultDim = el('div', 'hw-qkt-result-dim');
+			var rDimT1 = el('span', '', 'T');
+			rDimT1.style.color = 'hsl(210 70% 55%)';
+			var rDimX = document.createTextNode(' \u00d7 ');
+			var rDimT2 = el('span', '', 'T');
+			rDimT2.style.color = 'hsl(30 80% 50%)';
+			resultDim.appendChild(rDimT1);
+			resultDim.appendChild(rDimX);
+			resultDim.appendChild(rDimT2);
+			resultWrap.appendChild(resultDim);
+			multRow.appendChild(resultWrap);
+
+			layout.appendChild(multRow);
+
+			// === Shape equation with strikethroughs ===
+			var eqRow = el('div', 'hw-qkt-equation');
+			var eqQ = el('span', 'hw-qkt-eq-q', 'Q');
+			var eqDot = document.createTextNode(' \u00b7 ');
+			var eqKT = el('span', 'hw-qkt-eq-kt');
+			eqKT.innerHTML = 'K<sup>T</sup>';
+			if (astroAttr) eqKT.querySelector('sup').setAttribute(astroAttr, '');
+			var eqEq = document.createTextNode('  ');
+			var eqDimParts = el('span', 'hw-qkt-eq-dim');
+			eqDimParts.innerHTML = '(T\u00d7<span class="hw-qkt-eq-cancel">d</span>) \u00b7 (<span class="hw-qkt-eq-cancel">d</span>\u00d7T) = <span class="hw-qkt-eq-result">T\u00d7T</span>';
+			if (astroAttr) eqDimParts.querySelectorAll('span').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			eqRow.appendChild(eqQ);
+			eqRow.appendChild(eqDot);
+			eqRow.appendChild(eqKT);
+			eqRow.appendChild(eqEq);
+			eqRow.appendChild(eqDimParts);
+			layout.appendChild(eqRow);
+
+			// === O(n²) callout ===
+			var callout = el('div', 'hw-qkt-callout');
+			callout.appendChild(el('span', 'hw-qkt-callout-icon', '\u26A0'));
+			var calloutText = el('span', 'hw-qkt-callout-text');
+			calloutText.innerHTML = 'This is O(n\u00b2) in sequence length \u2014 every token attends to every other token';
+			callout.appendChild(calloutText);
+			layout.appendChild(callout);
+
+			// === Animation sequence ===
+			// Phase 1 (immediate): Q and K^T matrices visible
+			// Phase 2 (800ms): d_head dimensions get strikethrough (canceling)
+			setTimeout(function() {
+				qDimD.classList.add('active');
+				ktDimD.classList.add('active');
+			}, 800);
+
+			// Phase 3 (1400ms): result matrix appears
+			setTimeout(function() {
+				resultWrap.classList.add('visible');
+			}, 1400);
+
+			// Phase 4 (2000ms): equation appears
+			setTimeout(function() {
+				eqRow.classList.add('visible');
+			}, 2000);
+
+			// Phase 5 (2600ms): O(n²) callout appears
+			setTimeout(function() {
+				callout.classList.add('visible');
+			}, 2600);
+
+			return layout;
+		}
+
+
 		function showStep(step) {
 			viz.innerHTML = '';
 
@@ -11419,6 +12214,8 @@ const sections = [
 				viz.appendChild(renderStep8());
 			} else if (step === 9) {
 				viz.appendChild(renderStep9());
+			} else if (step === 10) {
+				viz.appendChild(renderStep10());
 			} else {
 				var placeholder = el('div', 'hw-step-placeholder');
 				placeholder.textContent = 'Step ' + step + ' visualization (coming soon)';
