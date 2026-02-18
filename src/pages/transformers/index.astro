@@ -230,7 +230,7 @@ const sections = [
 				</div>
 
 				{/* Black box teaser */}
-				<div class="preamble-teaser">
+				<div class="preamble-teaser reveal">
 					<div class="teaser-box">
 						<div class="teaser-label-in">tokens in</div>
 						<div class="teaser-blackbox">
@@ -366,12 +366,12 @@ const sections = [
 				</div>
 
 				{/* Linkage callout */}
-				<div class="linkage-callout linkage-embedding">
+				<div class="linkage-callout reveal linkage-embedding">
 					<span class="linkage-icon">&#8599;</span>
 					<span>We're now zooming into the <strong>Token Embedding</strong> block at the bottom of the architecture diagram.</span>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Before a transformer can do anything, it needs to convert raw text into numbers.
 						This happens in two steps: first, the text is split into <strong>tokens</strong> —
@@ -416,7 +416,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Each token maps to a unique integer ID — its index in the vocabulary table.
 						The embedding layer then looks up this ID in a learned matrix of shape
@@ -477,7 +477,7 @@ const sections = [
 					<div class="embed-scatter-legend" id="embed-scatter-legend"></div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						The key insight is that embedding vectors aren't random — <strong>meaning is
 						encoded in geometry.</strong> Words that are used in similar contexts end up
@@ -493,7 +493,7 @@ const sections = [
 				</div>
 
 				{/* ===== Positional Encoding subsection ===== */}
-				<div class="subsection-divider"></div>
+				<div class="subsection-divider reveal"></div>
 
 				<h3 class="subsection-title">
 					<span class="subsection-label">03b</span>
@@ -501,12 +501,12 @@ const sections = [
 				</h3>
 
 				{/* Linkage callout */}
-				<div class="linkage-callout linkage-embedding">
+				<div class="linkage-callout reveal linkage-embedding">
 					<span class="linkage-icon">&#8599;</span>
 					<span>We're now at the <strong>+ Positional Encoding</strong> block — the second step in the input pipeline, right after token embedding.</span>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Self-attention is <strong>permutation-invariant</strong> — it treats all tokens
 						the same regardless of order. "The cat sat on the mat" and "mat the on sat cat the"
@@ -532,7 +532,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Low dimensions oscillate rapidly (high frequency), capturing fine-grained position.
 						Higher dimensions oscillate slowly (low frequency), capturing broad position. Together,
@@ -582,7 +582,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Each row in the heatmap is a position's encoding — its unique fingerprint.
 						Notice the striped pattern: low-numbered dimensions (left) oscillate rapidly
@@ -629,12 +629,12 @@ const sections = [
 				</div>
 
 				{/* LINKAGE: Receiving combined vectors from Feature #7 */}
-				<div class="linkage-callout linkage-attention">
+				<div class="linkage-callout reveal linkage-attention">
 					<span class="linkage-icon">&#8599;</span>
 					<span>We're now zooming into the <strong>Multi-Head Attention</strong> block in the architecture diagram. The input vectors — carrying both meaning and position — arrive here.</span>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Each input vector knows <em>what</em> a token means and <em>where</em> it sits — but
 						so far, tokens are completely independent of each other. The word “bank” has the
@@ -669,7 +669,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Think of it like a library lookup. Each token broadcasts a <strong class="qkv-q-text">query</strong>
 						(“I'm looking for adjectives that describe me”), every token has a
@@ -709,7 +709,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Each of the three weight matrices (<strong class="qkv-q-text">W<sub>Q</sub></strong>,
 						<strong class="qkv-k-text">W<sub>K</sub></strong>,
@@ -730,15 +730,15 @@ const sections = [
 				</div>
 
 				{/* ===== Feature #9: Dot product attention + softmax ===== */}
-				<div class="subsection-divider"></div>
+				<div class="subsection-divider reveal"></div>
 				<h3 class="subsection-title"><span class="subsection-label">04b</span> Dot Product Attention &amp; Softmax</h3>
 
-				<div class="linkage-callout linkage-attention">
+				<div class="linkage-callout reveal linkage-attention">
 					<span class="linkage-icon">&#8599;</span>
 					<span>We now take the <strong class="qkv-q-text">Q</strong> and <strong class="qkv-k-text">K</strong> matrices from the previous step and use them to compute <strong>attention scores</strong> — how much each token should attend to every other token.</span>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						How does a token decide which other tokens are relevant? By comparing its
 						<strong class="qkv-q-text">query</strong> against every other token’s
@@ -756,7 +756,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Let’s break this down. For a sequence of three tokens, the dot product
 						<strong class="qkv-q-text">Q</strong><strong class="qkv-k-text">K</strong><sup>T</sup>
@@ -823,7 +823,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						At temperature 1.0 (the default), “cat” attends most strongly to itself and
 						to “sat” — tokens that are semantically and syntactically close. Lower the
@@ -840,15 +840,15 @@ const sections = [
 				</div>
 
 				{/* ===== Feature #10: Attention pattern heatmap ===== */}
-				<div class="subsection-divider"></div>
+				<div class="subsection-divider reveal"></div>
 				<h3 class="subsection-title"><span class="subsection-label">04c</span> Attention Pattern Heatmap</h3>
 
-				<div class="linkage-callout linkage-attention">
+				<div class="linkage-callout reveal linkage-attention">
 					<span class="linkage-icon">&#8599;</span>
 					<span>In the previous step, we computed attention weights for one query token. When we do this for <strong>every</strong> token in the sequence, the result is a full <strong>attention matrix</strong> — a square grid showing how much each token attends to every other.</span>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						The attention matrix is the heart of the transformer's context-gathering mechanism.
 						Each row is one token's attention distribution (from the softmax we just saw), and each
@@ -881,7 +881,7 @@ const sections = [
 					<div class="attn-heatmap-legend-caption">Attention weight (darker = stronger)</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Notice the diagonal tendency — tokens often attend to themselves, which makes sense
 						because a word's own context is usually relevant. But the off-diagonal cells are where
@@ -897,15 +897,15 @@ const sections = [
 				</div>
 
 				{/* ===== Feature #11: Value-weighted output animation ===== */}
-				<div class="subsection-divider"></div>
+				<div class="subsection-divider reveal"></div>
 				<h3 class="subsection-title"><span class="subsection-label">04d</span> Value-Weighted Output</h3>
 
-				<div class="linkage-callout linkage-attention">
+				<div class="linkage-callout reveal linkage-attention">
 					<span class="linkage-icon">&#8599;</span>
 					<span>Now we combine the <strong class="qkv-v-text">value vectors</strong> from step 04a with the <strong>attention weights</strong> from the heatmap — producing the final output of one attention head.</span>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Each token's output is a <strong>weighted sum</strong> of all value vectors, where the weights
 						come from the attention scores. A high attention weight means "pull in a lot of
@@ -980,7 +980,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						The output vector for "cat" is mostly "cat" (46%) blended with "sat" (33%) and
 						a smaller contribution from "The" (21%). This is the attention mechanism's whole
@@ -1022,7 +1022,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						That's the complete single-head attention pipeline. Every token goes through
 						this process in parallel, producing context-enriched output vectors. But one
@@ -1044,12 +1044,12 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="linkage-callout linkage-attention">
+				<div class="linkage-callout reveal linkage-attention">
 					<span class="linkage-icon">&#8599;</span>
 					<span>In the previous section, we built a <strong>single attention head</strong> &mdash; a complete pipeline from input vectors to context-enriched outputs. Now we&rsquo;ll see why one head isn&rsquo;t enough, and what happens when we run <strong>several heads in parallel</strong>.</span>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						A single attention head can only learn <strong>one type of relationship</strong> at a time.
 						It might learn to connect subjects to verbs, or to link pronouns to their antecedents &mdash;
@@ -1108,7 +1108,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Each head receives the <strong>same input vectors</strong> but learns completely
 						different weight matrices. This means each head computes its own Q, K, V
@@ -1150,7 +1150,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Head 1 acts like a <strong>positional head</strong> &mdash; it focuses on adjacent tokens,
 						helping each word understand its immediate context. Head 2 is a <strong>syntactic head</strong> &mdash;
@@ -1172,15 +1172,15 @@ const sections = [
 				</div>
 
 				{/* ===== Feature #13: Concatenation & Projection ===== */}
-				<div class="subsection-divider"></div>
+				<div class="subsection-divider reveal"></div>
 				<h3 class="subsection-title"><span class="subsection-number">05b</span> Concatenation &amp; Projection</h3>
 
-				<div class="linkage-callout linkage-attention">
+				<div class="linkage-callout reveal linkage-attention">
 					<span class="linkage-icon">&#8599;</span>
 					<span>The three heads above each produced their own output vectors. Now we <strong>concatenate</strong> them into one wide vector and <strong>project</strong> it back to the model dimension with W<sub>O</sub>.</span>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Each attention head operates on a <strong>subspace</strong> of the full model dimension.
 						If d<sub>model</sub> = 768 and we have h = 12 heads, each head works with
@@ -1272,7 +1272,7 @@ const sections = [
 				</div>
 
 				{/* Closing prose + residual stream handoff */}
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						The output of multi-head attention is a vector of the <strong>same dimension</strong> as the input
 						(d<sub>model</sub>). This is by design: the output needs to be <strong>added back</strong> to the original
@@ -1303,7 +1303,7 @@ const sections = [
 					<div class="mha-residual-caption">This enriched vector then flows into the feed-forward network &mdash; the next stop in the transformer layer.</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						That completes the multi-head attention mechanism. Each token&rsquo;s representation
 						has been enriched with context from every other token, viewed through multiple
@@ -1324,12 +1324,12 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="linkage-callout linkage-ffn">
+				<div class="linkage-callout reveal linkage-ffn">
 					<span class="linkage-icon">&#8599;</span>
 					<span>We&rsquo;re now in the <strong>Feed-Forward Network</strong> block &mdash; the second half of each transformer layer. The enriched vectors from multi-head attention (x + MHA(x)) arrive here for per-token processing.</span>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						After attention has mixed information across tokens, each token passes independently
 						through a <strong>feed-forward network</strong> (FFN). Unlike attention, which lets tokens
@@ -1381,7 +1381,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						The expansion ratio is typically <strong>4&times;</strong>: a 768-dimensional input becomes
 						a 3072-dimensional hidden representation, then gets compressed back to 768.
@@ -1413,7 +1413,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Researchers have found that the FFN layers act as a kind of <strong>key-value memory</strong>.
 						Each neuron in the expanded layer acts like a &ldquo;pattern detector&rdquo; &mdash; it activates
@@ -1446,7 +1446,7 @@ const sections = [
 					<div class="ffn-residual-caption">This completes one transformer layer. The output x&prime; then flows into the next layer &mdash; through another attention + FFN cycle &mdash; or, if this is the final layer, into the output head.</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						That&rsquo;s one complete transformer layer: <strong>multi-head attention</strong> for cross-token
 						communication, then a <strong>feed-forward network</strong> for per-token processing, both
@@ -1470,12 +1470,12 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="linkage-callout linkage-residual">
+				<div class="linkage-callout reveal linkage-residual">
 					<span class="linkage-icon">&#8599;</span>
 					<span>We&rsquo;ve now seen both halves of a single transformer layer: <strong>multi-head attention</strong> for cross-token communication and the <strong>feed-forward network</strong> for per-token processing. But what connects them &mdash; and what lets information flow through dozens of these layers? The <strong>residual stream</strong>.</span>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Imagine a <strong>highway</strong> that runs through the entire transformer. At each layer,
 						attention and FFN blocks are like <strong>on-ramps and off-ramps</strong> &mdash; they read
@@ -1530,7 +1530,7 @@ const sections = [
 					<div class="res-highway-caption">The purple highway is the residual stream. Attention (amber) and FFN (green) read from it, compute, and add their results back. The original signal x flows straight through.</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Here&rsquo;s the key insight: each sublayer (attention or FFN) computes a <strong>delta</strong>
 						&mdash; a change to apply &mdash; rather than replacing the stream. This means every
@@ -1601,7 +1601,7 @@ const sections = [
 					<div class="res-layers-caption">Each row shows the composition of the residual stream at that point. As layers accumulate, the stream becomes a rich mix of contributions from embedding, attention, and FFN blocks.</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						But there&rsquo;s a problem. As values flow through dozens of addition operations, they
 						can grow uncontrollably large &mdash; or different dimensions can drift to wildly
@@ -1611,12 +1611,12 @@ const sections = [
 				</div>
 
 				{/* Layer normalization interactive */}
-				<h3 class="subsection-divider" id="layer-norm">
+				<h3 class="subsection-divider reveal" id="layer-norm">
 					<span class="subsection-number">07b</span>
 					<span class="subsection-title">Layer Normalization</span>
 				</h3>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Layer normalization is a <strong>normalization gate</strong> that sits before each sublayer
 						(in the &ldquo;Pre-Norm&rdquo; variant used by most modern transformers). It rescales each
@@ -1653,7 +1653,7 @@ const sections = [
 					<div class="ln-caption">Click &ldquo;Randomize&rdquo; to see how layer norm handles different input distributions. The output always has mean &asymp; 0 and std &asymp; 1, regardless of the input scale.</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Modern transformers (GPT-2 onward) typically use <strong>Pre-Norm</strong> ordering: layer norm
 						is applied <em>before</em> each sublayer, not after. This makes training more stable because
@@ -1702,7 +1702,7 @@ const sections = [
 					<div class="res-prenorm-caption">In Pre-Norm, layer normalization comes <em>before</em> each sublayer. The &ldquo;+ x&rdquo; nodes are the residual additions, feeding back into the stream.</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						Finally, let&rsquo;s see how stacking these layers creates the full transformer.
 						A typical model has <strong>12&ndash;96 layers</strong>, each running the same
@@ -1735,12 +1735,12 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="linkage-callout linkage-output">
+				<div class="linkage-callout reveal linkage-output">
 					<span class="linkage-icon">&nearr;</span>
 					<span>The vector has traveled through all N layers of attention and feed-forward processing. It now carries a rich, abstract representation of the token in context. We&rsquo;re at the <strong>Unembedding</strong> block at the very top of the architecture diagram &mdash; the final step before a prediction emerges.</span>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						At the start of this explainer, we turned words into vectors &mdash; each token became a point in
 						a high-dimensional space, carrying meaning and position. Now we need to do the <strong>reverse</strong>:
@@ -1793,7 +1793,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						The logits are raw scores &mdash; they can be any real number, positive or negative.
 						To turn them into a proper probability distribution, we apply <strong>softmax</strong>:
@@ -1860,7 +1860,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						At temperature 1.0 (the default), the model&rsquo;s raw confidence shows through &mdash;
 						&ldquo;mat&rdquo; is the clear favorite for &ldquo;The cat sat on the ___&rdquo;. Lower the temperature
@@ -1886,13 +1886,13 @@ const sections = [
 
 			{/* ===== Section 08b: Putting It All Together — Full Walkthrough ===== */}
 			<section class="wt-section mb-24 scroll-mt-20">
-				<div class="subsection-divider"></div>
+				<div class="subsection-divider reveal"></div>
 				<h3 class="subsection-title">
 					<span class="subsection-number">08b</span>
 					Putting It All Together
 				</h3>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						In the preamble, we showed you a black box &mdash; tokens in, prediction out.
 						Over the past eight sections, we&rsquo;ve opened every layer of that box. Now let&rsquo;s
@@ -1901,7 +1901,7 @@ const sections = [
 					</p>
 				</div>
 
-				<div class="wt-walkthrough">
+				<div class="wt-walkthrough reveal">
 					{/* Controls */}
 					<div class="wt-controls">
 						<button id="wt-prev-btn" class="wt-ctrl-btn" disabled>
@@ -2015,7 +2015,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose" style="margin-top: 2rem;">
+				<div class="section-prose reveal" style="margin-top: 2rem;">
 					<p>
 						The black box is fully open. Every arrow, every matrix multiplication, every nonlinearity &mdash;
 						you&rsquo;ve seen them all. What started as an opaque mapping from input tokens to output
@@ -2041,7 +2041,7 @@ const sections = [
 				</div>
 
 				{/* Linkage callout */}
-				<div class="linkage-callout linkage-circuits">
+				<div class="linkage-callout reveal linkage-circuits">
 					<span class="linkage-icon">&uarr;</span>
 					<span>
 						In sections 04&ndash;05, we saw how <strong>individual attention heads</strong> learn
@@ -2050,7 +2050,7 @@ const sections = [
 					</span>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						A single attention head is powerful, but limited &mdash; it can only look at one
 						step of the input at a time. The real magic of transformers emerges when heads in
@@ -2068,7 +2068,7 @@ const sections = [
 				</div>
 
 				{/* Induction Head Circuit Diagram */}
-				<div class="circ-induction-wrap">
+				<div class="circ-induction-wrap reveal">
 					<div class="circ-induction-title">The induction head circuit</div>
 					<div class="circ-induction-subtitle">Two heads across two layers learn to copy patterns</div>
 
@@ -2234,7 +2234,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						This is an <strong>induction head</strong> &mdash; one of the first circuits discovered by
 						researchers at Anthropic. It&rsquo;s remarkably simple (just two heads across two layers)
@@ -2248,7 +2248,7 @@ const sections = [
 				</div>
 
 				{/* Circuit types gallery */}
-				<div class="circ-types">
+				<div class="circ-types reveal">
 					<div class="circ-type-card">
 						<div class="circ-type-name">Induction Heads</div>
 						<div class="circ-type-desc">Copy patterns: &ldquo;[A][B]&hellip;[A] &rarr; predict [B]&rdquo;</div>
@@ -2271,7 +2271,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						The ability to identify and understand these circuits is the foundation of
 						<strong>mechanistic interpretability</strong> &mdash; the project of reverse-engineering
@@ -2280,7 +2280,7 @@ const sections = [
 				</div>
 
 				{/* Why mechanistic interpretability matters */}
-				<div class="mi-teaser">
+				<div class="mi-teaser reveal">
 					<div class="mi-teaser-label">Why it matters</div>
 					<div class="mi-teaser-cards">
 						<div class="mi-teaser-card mi-card-safety">
@@ -2301,7 +2301,7 @@ const sections = [
 					</div>
 				</div>
 
-				<div class="section-prose">
+				<div class="section-prose reveal">
 					<p>
 						This is one of the most exciting frontiers in AI research. The transformer architecture
 						you&rsquo;ve learned in this explainer isn&rsquo;t just an engineering artifact &mdash;
@@ -2311,7 +2311,7 @@ const sections = [
 				</div>
 
 				{/* Closing: tying back to the preamble */}
-				<div class="circ-closing">
+				<div class="circ-closing reveal">
 					<div class="circ-closing-divider"></div>
 					<div class="circ-closing-journey">
 						<div class="circ-closing-title">The journey</div>
@@ -2331,7 +2331,7 @@ const sections = [
 					</div>
 
 					{/* Opened box — mirrors the preamble\'s closed black box */}
-					<div class="mi-openbox-wrap">
+					<div class="mi-openbox-wrap reveal">
 						<div class="mi-openbox-label-in">tokens in</div>
 						<div class="mi-openbox">
 							<span class="mi-ob-component mi-ob-embed" title="Embedding">E</span>
@@ -2353,7 +2353,7 @@ const sections = [
 					</p>
 
 					{/* Follow-up post callout */}
-					<div class="mi-followup">
+					<div class="mi-followup reveal">
 						<div class="mi-followup-tag">Coming next</div>
 						<div class="mi-followup-title">Hands-on Mechanistic Interpretability with Llama&nbsp;3</div>
 						<div class="mi-followup-desc">
@@ -7155,6 +7155,31 @@ const sections = [
 		}
 	}
 
+	/* ── Feature #20: Scroll-triggered reveal animations ── */
+	.reveal {
+		opacity: 0;
+		transform: translateY(24px);
+		transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+	}
+	.reveal.revealed {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	/* Stagger children within a section */
+	.reveal.reveal-d1 { transition-delay: 0.08s; }
+	.reveal.reveal-d2 { transition-delay: 0.16s; }
+	.reveal.reveal-d3 { transition-delay: 0.24s; }
+
+	/* Reduced motion: instant reveal, no animation */
+	@media (prefers-reduced-motion: reduce) {
+		.reveal {
+			opacity: 1;
+			transform: none;
+			transition: none;
+		}
+	}
+
 </style>
 
 <script define:vars={{ sectionIds: sections.map(s => s.id) }}>
@@ -8973,4 +8998,42 @@ const sections = [
 
 		updateUI();
 	});
+</script>
+
+<script is:inline>
+	// Feature #20: Scroll-triggered reveal animations
+	(function() {
+		// Respect prefers-reduced-motion
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+		// Select all elements that should reveal on scroll
+		var targets = document.querySelectorAll('.reveal');
+		if (!targets.length) return;
+
+		var io = new IntersectionObserver(function(entries) {
+			entries.forEach(function(entry) {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('revealed');
+					io.unobserve(entry.target);
+				}
+			});
+		}, {
+			rootMargin: '0px 0px -12% 0px',
+			threshold: 0.01
+		});
+
+		targets.forEach(function(el) { io.observe(el); });
+
+		// Immediately reveal anything already in the viewport on load
+		// (above the fold — so it doesn't flash invisible then animate)
+		requestAnimationFrame(function() {
+			targets.forEach(function(el) {
+				var rect = el.getBoundingClientRect();
+				if (rect.top < window.innerHeight * 0.88) {
+					el.classList.add('revealed');
+					io.unobserve(el);
+				}
+			});
+		});
+	})();
 </script>
