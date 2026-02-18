@@ -2030,35 +2030,296 @@ const sections = [
 				</div>
 			</section>
 
-			{/* ===== Section 09: Placeholder ===== */}
-			{
-				sections.filter(s => !['preamble','architecture','embeddings','attention','multi-head-attention','ffn','residual-stream','output'].includes(s.id)).map((section) => (
-					<section
-						id={section.id}
-						class="section-placeholder mb-24 scroll-mt-20"
-					>
-						<div class="mb-8 flex items-baseline gap-4">
-							<span class="font-mono text-sm text-accent/60">
-								{section.number}
-							</span>
-							<div>
-								<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">
-									{section.title}
-								</h2>
-								<p class="mt-1 text-base text-textColor/60">
-									{section.subtitle}
-								</p>
+			{/* ===== Section 09: Circuits ===== */}
+			<section id="circuits" class="mb-24 scroll-mt-20">
+				<div class="mb-8 flex items-baseline gap-4">
+					<span class="font-mono text-sm text-accent/60">09</span>
+					<div>
+						<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">Circuits</h2>
+						<p class="mt-1 text-base text-textColor/60">How attention heads compose into algorithms</p>
+					</div>
+				</div>
+
+				{/* Linkage callout */}
+				<div class="linkage-callout linkage-circuits">
+					<span class="linkage-icon">&uarr;</span>
+					<span>
+						In sections 04&ndash;05, we saw how <strong>individual attention heads</strong> learn
+						different patterns &mdash; positional, syntactic, identity. Now we&rsquo;ll see what happens
+						when heads across <strong>different layers</strong> learn to work together.
+					</span>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						A single attention head is powerful, but limited &mdash; it can only look at one
+						step of the input at a time. The real magic of transformers emerges when heads in
+						<strong>different layers</strong> learn to compose, forming <strong>circuits</strong>
+						that implement surprisingly sophisticated algorithms.
+					</p>
+					<p>
+						Think of it this way: a head in Layer 1 might identify a pattern (&ldquo;I see the
+						token <em>A B</em> appeared earlier&rdquo;). A head in Layer 2 can <em>read</em> what
+						Layer 1 wrote to the residual stream and act on it (&ldquo;Since <em>A B</em>
+						appeared before, and now I see <em>A</em> again, I should predict
+						<em>B</em>&rdquo;). Together, these two heads form a <strong>circuit</strong> &mdash;
+						a multi-step algorithm distributed across layers.
+					</p>
+				</div>
+
+				{/* Induction Head Circuit Diagram */}
+				<div class="circ-induction-wrap">
+					<div class="circ-induction-title">The induction head circuit</div>
+					<div class="circ-induction-subtitle">Two heads across two layers learn to copy patterns</div>
+
+					{/* Token sequence */}
+					<div class="circ-sequence">
+						<div class="circ-seq-label">Input sequence:</div>
+						<div class="circ-tokens">
+							<span class="circ-tok">&hellip;</span>
+							<span class="circ-tok circ-tok-a">A</span>
+							<span class="circ-tok circ-tok-b">B</span>
+							<span class="circ-tok">&hellip;</span>
+							<span class="circ-tok circ-tok-a">A</span>
+							<span class="circ-tok circ-tok-predict">?</span>
+						</div>
+					</div>
+
+					{/* Two-layer circuit diagram */}
+					<div class="circ-layers">
+						{/* Layer 1: Previous-Token Head */}
+						<div class="circ-layer">
+							<div class="circ-layer-label">Layer <em>L</em></div>
+							<div class="circ-head-card circ-head-prev">
+								<div class="circ-head-name">Previous-Token Head</div>
+								<div class="circ-head-desc">
+									Each token attends to the token <strong>immediately before</strong> it.
+									This copies &ldquo;what came before A&rdquo; into A&rsquo;s residual stream.
+								</div>
+								{/* Mini heatmap */}
+								<div class="circ-mini-heatmap">
+									<div class="circ-hm-header">
+										<span class="circ-hm-corner">Q&darr; K&rarr;</span>
+										<span class="circ-hm-col">&hellip;</span>
+										<span class="circ-hm-col circ-hm-col-a">A</span>
+										<span class="circ-hm-col circ-hm-col-b">B</span>
+										<span class="circ-hm-col">&hellip;</span>
+										<span class="circ-hm-col circ-hm-col-a">A</span>
+									</div>
+									<div class="circ-hm-row">
+										<span class="circ-hm-row-label">&hellip;</span>
+										<span class="circ-hm-cell" style="opacity:0.3">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.1">&middot;</span>
+									</div>
+									<div class="circ-hm-row">
+										<span class="circ-hm-row-label circ-hm-col-a">A</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+									</div>
+									<div class="circ-hm-row">
+										<span class="circ-hm-row-label circ-hm-col-b">B</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell circ-hm-hot" style="opacity:0.95">0.82</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.1">&middot;</span>
+									</div>
+									<div class="circ-hm-row">
+										<span class="circ-hm-row-label">&hellip;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.3">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+									</div>
+									<div class="circ-hm-row">
+										<span class="circ-hm-row-label circ-hm-col-a">A</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell circ-hm-hot" style="opacity:0.9">0.78</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+									</div>
+								</div>
+								<div class="circ-head-insight">B attends to A &mdash; copies &ldquo;what came before me&rdquo; into the stream</div>
 							</div>
 						</div>
-						<div class="rounded-lg border border-dashed border-textColor/15 bg-bgColor/50 px-6 py-16 text-center">
-							<div class="mb-3 text-3xl text-textColor/20">&#9671;</div>
-							<p class="text-sm text-textColor/40">
-								Interactive content coming soon
-							</p>
+
+						{/* Flow arrow between layers */}
+						<div class="circ-flow-arrow">
+							<div class="circ-flow-line"></div>
+							<div class="circ-flow-label">Information flows via <strong>residual stream</strong></div>
+							<div class="circ-flow-line"></div>
 						</div>
-					</section>
-				))
-			}
+
+						{/* Layer 2: Induction Head */}
+						<div class="circ-layer">
+							<div class="circ-layer-label">Layer <em>L+1</em></div>
+							<div class="circ-head-card circ-head-induction">
+								<div class="circ-head-name">Induction Head</div>
+								<div class="circ-head-desc">
+									The second A attends to <strong>B</strong> (the token that followed A last time).
+									It reads: &ldquo;After A came B before, so B should come next.&rdquo;
+								</div>
+								{/* Mini heatmap */}
+								<div class="circ-mini-heatmap">
+									<div class="circ-hm-header">
+										<span class="circ-hm-corner">Q&darr; K&rarr;</span>
+										<span class="circ-hm-col">&hellip;</span>
+										<span class="circ-hm-col circ-hm-col-a">A</span>
+										<span class="circ-hm-col circ-hm-col-b">B</span>
+										<span class="circ-hm-col">&hellip;</span>
+										<span class="circ-hm-col circ-hm-col-a">A</span>
+									</div>
+									<div class="circ-hm-row">
+										<span class="circ-hm-row-label">&hellip;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+									</div>
+									<div class="circ-hm-row">
+										<span class="circ-hm-row-label circ-hm-col-a">A</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+									</div>
+									<div class="circ-hm-row">
+										<span class="circ-hm-row-label circ-hm-col-b">B</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+									</div>
+									<div class="circ-hm-row">
+										<span class="circ-hm-row-label">&hellip;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.3">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+									</div>
+									<div class="circ-hm-row">
+										<span class="circ-hm-row-label circ-hm-col-a">A<sub>2</sub></span>
+										<span class="circ-hm-cell" style="opacity:0.1">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.1">&middot;</span>
+										<span class="circ-hm-cell circ-hm-hot circ-hm-induction" style="opacity:0.95">0.89</span>
+										<span class="circ-hm-cell" style="opacity:0.1">&middot;</span>
+										<span class="circ-hm-cell" style="opacity:0.15">&middot;</span>
+									</div>
+								</div>
+								<div class="circ-head-insight">The second A attends to B &mdash; predicting &ldquo;B comes next&rdquo;</div>
+							</div>
+						</div>
+					</div>
+
+					{/* Circuit result */}
+					<div class="circ-result">
+						<div class="circ-result-arrow">&darr;</div>
+						<div class="circ-result-box">
+							<strong>Result:</strong> The model predicts <strong class="circ-tok-b-text">B</strong>
+							after the second <strong class="circ-tok-a-text">A</strong> &mdash;
+							it learned to copy patterns from context.
+						</div>
+					</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						This is an <strong>induction head</strong> &mdash; one of the first circuits discovered by
+						researchers at Anthropic. It&rsquo;s remarkably simple (just two heads across two layers)
+						but explains a core capability: <strong>in-context learning</strong>. When you give a
+						language model a few examples in your prompt and it learns the pattern, induction heads
+						are a key mechanism making that work.
+					</p>
+					<p>
+						Induction heads are just one example. Researchers have discovered many other circuit types:
+					</p>
+				</div>
+
+				{/* Circuit types gallery */}
+				<div class="circ-types">
+					<div class="circ-type-card">
+						<div class="circ-type-name">Induction Heads</div>
+						<div class="circ-type-desc">Copy patterns: &ldquo;[A][B]&hellip;[A] &rarr; predict [B]&rdquo;</div>
+						<div class="circ-type-tag">In-context learning</div>
+					</div>
+					<div class="circ-type-card">
+						<div class="circ-type-name">Duplicate Token Heads</div>
+						<div class="circ-type-desc">Detect when a token has appeared before in the sequence</div>
+						<div class="circ-type-tag">Copy suppression</div>
+					</div>
+					<div class="circ-type-card">
+						<div class="circ-type-name">Name Mover Heads</div>
+						<div class="circ-type-desc">Move a name from its first mention to where it&rsquo;s needed later</div>
+						<div class="circ-type-tag">Indirect object identification</div>
+					</div>
+					<div class="circ-type-card">
+						<div class="circ-type-name">Backup Heads</div>
+						<div class="circ-type-desc">Compensate when primary heads are ablated &mdash; redundancy in the network</div>
+						<div class="circ-type-tag">Robustness</div>
+					</div>
+				</div>
+
+				<div class="section-prose">
+					<p>
+						The ability to identify and understand these circuits is the foundation of
+						<strong>mechanistic interpretability</strong> &mdash; the project of reverse-engineering
+						what neural networks actually compute, rather than just observing what they output.
+						If we can understand the algorithms transformers learn, we can begin to predict their
+						behavior, identify failure modes, and build models we can genuinely trust.
+					</p>
+					<p>
+						This is one of the most exciting frontiers in AI research. The transformer architecture
+						you&rsquo;ve learned in this explainer isn&rsquo;t just an engineering artifact &mdash;
+						it&rsquo;s a computational structure that <em>we can study scientifically</em>,
+						uncovering the algorithms hidden within its weights.
+					</p>
+				</div>
+
+				{/* Closing: tying back to the preamble */}
+				<div class="circ-closing">
+					<div class="circ-closing-divider"></div>
+					<div class="circ-closing-journey">
+						<div class="circ-closing-title">The journey</div>
+						<div class="circ-journey-steps">
+							<span class="circ-j-step circ-j-embed">Tokens</span>
+							<span class="circ-j-arrow">&rarr;</span>
+							<span class="circ-j-step circ-j-embed">Embeddings</span>
+							<span class="circ-j-arrow">&rarr;</span>
+							<span class="circ-j-step circ-j-attn">Attention</span>
+							<span class="circ-j-arrow">&rarr;</span>
+							<span class="circ-j-step circ-j-ffn">FFN</span>
+							<span class="circ-j-arrow">&rarr;</span>
+							<span class="circ-j-step circ-j-output">Prediction</span>
+							<span class="circ-j-arrow">&rarr;</span>
+							<span class="circ-j-step circ-j-circuits">Circuits</span>
+						</div>
+					</div>
+					<p class="circ-closing-text">
+						We started with a black box. Now you know how tokens become vectors, how attention
+						lets tokens communicate, how feed-forward layers store knowledge, how residual
+						connections carry information through dozens of layers, and how all of it composes
+						into circuits that implement real algorithms. The box is open.
+					</p>
+					<p class="circ-closing-text circ-closing-cta">
+						<em>In a follow-up post, we&rsquo;ll go hands-on &mdash; reproducing these circuits
+						locally in Llama&nbsp;3 using tools from the mechanistic interpretability community.
+						Stay tuned.</em>
+					</p>
+					<div class="circ-closing-end">&#9632;</div>
+				</div>
+			</section>
 		</article>
 
 		{/* Right sidenote gutter — desktop only, content added by future features */}
@@ -6344,6 +6605,368 @@ const sections = [
 		.wt-annotation {
 			padding: 16px;
 			min-height: 150px;
+		}
+	}
+
+	/* ===== Section 09: Circuits ===== */
+	.linkage-circuits {
+		background: hsl(35 90% 55% / 0.06);
+		border-color: hsl(35 90% 55% / 0.2);
+	}
+	.linkage-circuits .linkage-icon { color: hsl(35 90% 55%); }
+
+	/* Induction head circuit diagram */
+	.circ-induction-wrap {
+		margin: 1.5rem 0 2rem;
+		padding: 24px;
+		border: 1px solid hsl(var(--theme-text) / 0.08);
+		border-radius: 12px;
+		background: hsl(var(--theme-text) / 0.015);
+	}
+	.circ-induction-title {
+		font-size: 0.9rem;
+		font-weight: 600;
+		text-align: center;
+		color: hsl(var(--theme-text) / 0.8);
+		margin-bottom: 4px;
+	}
+	.circ-induction-subtitle {
+		font-size: 0.75rem;
+		text-align: center;
+		color: hsl(var(--theme-text) / 0.45);
+		margin-bottom: 20px;
+	}
+
+	/* Token sequence */
+	.circ-sequence {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		justify-content: center;
+		margin-bottom: 20px;
+	}
+	.circ-seq-label {
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.4);
+	}
+	.circ-tokens {
+		display: flex;
+		gap: 4px;
+	}
+	.circ-tok {
+		padding: 4px 10px;
+		border-radius: 4px;
+		font-size: 0.8rem;
+		font-weight: 500;
+		font-family: 'SF Mono', 'Fira Code', monospace;
+		background: hsl(var(--theme-text) / 0.04);
+		color: hsl(var(--theme-text) / 0.45);
+		border: 1px solid hsl(var(--theme-text) / 0.06);
+	}
+	.circ-tok-a {
+		background: hsl(210 70% 55% / 0.1);
+		color: hsl(210 70% 55%);
+		border-color: hsl(210 70% 55% / 0.25);
+		font-weight: 700;
+	}
+	.circ-tok-b {
+		background: hsl(35 90% 55% / 0.1);
+		color: hsl(35 90% 55%);
+		border-color: hsl(35 90% 55% / 0.25);
+		font-weight: 700;
+	}
+	.circ-tok-predict {
+		background: hsl(35 90% 55% / 0.08);
+		color: hsl(35 90% 55%);
+		border: 1.5px dashed hsl(35 90% 55% / 0.35);
+		font-weight: 700;
+	}
+
+	/* Two-layer layout */
+	.circ-layers {
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+	}
+	.circ-layer {
+		display: flex;
+		align-items: flex-start;
+		gap: 16px;
+	}
+	.circ-layer-label {
+		width: 70px;
+		flex-shrink: 0;
+		font-size: 0.72rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.4);
+		padding-top: 14px;
+		text-align: right;
+	}
+	.circ-layer-label em {
+		font-style: italic;
+	}
+
+	.circ-head-card {
+		flex: 1;
+		padding: 14px 16px;
+		border-radius: 8px;
+		border: 1px solid hsl(var(--theme-text) / 0.08);
+		background: hsl(var(--theme-text) / 0.02);
+	}
+	.circ-head-prev {
+		border-color: hsl(35 90% 55% / 0.2);
+		background: hsl(35 90% 55% / 0.03);
+	}
+	.circ-head-induction {
+		border-color: hsl(35 90% 55% / 0.3);
+		background: hsl(35 90% 55% / 0.05);
+	}
+	.circ-head-name {
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: hsl(35 90% 55%);
+		margin-bottom: 6px;
+	}
+	.circ-head-desc {
+		font-size: 0.78rem;
+		line-height: 1.5;
+		color: hsl(var(--theme-text) / 0.6);
+		margin-bottom: 12px;
+	}
+	.circ-head-insight {
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.45);
+		margin-top: 8px;
+		font-style: italic;
+	}
+
+	/* Mini heatmaps (reusing heatmap visual style from #12) */
+	.circ-mini-heatmap {
+		display: grid;
+		grid-template-columns: auto repeat(5, 1fr);
+		gap: 2px;
+		max-width: 320px;
+	}
+	.circ-hm-header {
+		display: contents;
+	}
+	.circ-hm-corner {
+		font-size: 0.58rem;
+		color: hsl(var(--theme-text) / 0.3);
+		padding: 2px 4px;
+		text-align: center;
+	}
+	.circ-hm-col {
+		font-size: 0.65rem;
+		font-weight: 500;
+		color: hsl(var(--theme-text) / 0.4);
+		text-align: center;
+		padding: 2px 0;
+	}
+	.circ-hm-col-a { color: hsl(210 70% 55%); font-weight: 700; }
+	.circ-hm-col-b { color: hsl(35 90% 55%); font-weight: 700; }
+
+	.circ-hm-row {
+		display: contents;
+	}
+	.circ-hm-row-label {
+		font-size: 0.65rem;
+		font-weight: 500;
+		color: hsl(var(--theme-text) / 0.4);
+		padding: 4px 4px;
+		text-align: right;
+	}
+	.circ-hm-cell {
+		background: hsl(35 90% 55% / var(--cell-opacity, 0.15));
+		border-radius: 3px;
+		text-align: center;
+		font-size: 0.6rem;
+		color: hsl(var(--theme-text) / 0.3);
+		padding: 4px 2px;
+		min-width: 36px;
+		min-height: 28px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.circ-hm-hot {
+		background: hsl(35 90% 55% / 0.7);
+		color: white;
+		font-weight: 700;
+		font-size: 0.65rem;
+	}
+	.circ-hm-induction {
+		background: hsl(35 90% 55% / 0.85);
+		box-shadow: 0 0 8px hsl(35 90% 55% / 0.3);
+	}
+
+	/* Flow arrow */
+	.circ-flow-arrow {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 8px 0 8px 86px;
+	}
+	.circ-flow-line {
+		flex: 1;
+		height: 1px;
+		background: hsl(270 50% 58% / 0.25);
+	}
+	.circ-flow-label {
+		font-size: 0.68rem;
+		color: hsl(270 50% 58% / 0.7);
+		white-space: nowrap;
+	}
+	.circ-flow-label strong {
+		color: hsl(270 50% 58%);
+	}
+
+	/* Circuit result */
+	.circ-result {
+		text-align: center;
+		margin-top: 16px;
+	}
+	.circ-result-arrow {
+		font-size: 1.2rem;
+		color: hsl(var(--theme-text) / 0.2);
+		margin-bottom: 6px;
+	}
+	.circ-result-box {
+		display: inline-block;
+		padding: 10px 18px;
+		border-radius: 8px;
+		background: hsl(35 90% 55% / 0.06);
+		border: 1px solid hsl(35 90% 55% / 0.2);
+		font-size: 0.82rem;
+		color: hsl(var(--theme-text) / 0.7);
+	}
+	.circ-tok-a-text { color: hsl(210 70% 55%); }
+	.circ-tok-b-text { color: hsl(35 90% 55%); }
+
+	/* Circuit types gallery */
+	.circ-types {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 12px;
+		margin: 1.5rem 0;
+	}
+	.circ-type-card {
+		padding: 14px 16px;
+		border-radius: 8px;
+		border: 1px solid hsl(var(--theme-text) / 0.08);
+		background: hsl(var(--theme-text) / 0.015);
+	}
+	.circ-type-name {
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.8);
+		margin-bottom: 4px;
+	}
+	.circ-type-desc {
+		font-size: 0.75rem;
+		line-height: 1.5;
+		color: hsl(var(--theme-text) / 0.55);
+		margin-bottom: 8px;
+	}
+	.circ-type-tag {
+		display: inline-block;
+		padding: 2px 8px;
+		border-radius: 4px;
+		background: hsl(35 90% 55% / 0.08);
+		color: hsl(35 90% 55% / 0.8);
+		font-size: 0.65rem;
+		font-weight: 600;
+	}
+
+	/* Closing section */
+	.circ-closing {
+		margin-top: 2rem;
+	}
+	.circ-closing-divider {
+		width: 60px;
+		height: 2px;
+		background: hsl(var(--theme-text) / 0.1);
+		margin: 0 auto 24px;
+	}
+	.circ-closing-journey {
+		text-align: center;
+		margin-bottom: 20px;
+	}
+	.circ-closing-title {
+		font-size: 0.75rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: hsl(var(--theme-text) / 0.35);
+		margin-bottom: 10px;
+	}
+	.circ-journey-steps {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		flex-wrap: wrap;
+	}
+	.circ-j-step {
+		padding: 4px 10px;
+		border-radius: 4px;
+		font-size: 0.72rem;
+		font-weight: 600;
+	}
+	.circ-j-embed { background: hsl(210 70% 55% / 0.1); color: hsl(210 70% 55%); }
+	.circ-j-attn { background: hsl(35 90% 55% / 0.1); color: hsl(35 90% 55%); }
+	.circ-j-ffn { background: hsl(150 55% 45% / 0.1); color: hsl(150 55% 45%); }
+	.circ-j-output { background: hsl(350 65% 55% / 0.1); color: hsl(350 65% 55%); }
+	.circ-j-circuits { background: hsl(35 90% 55% / 0.12); color: hsl(35 90% 55%); border: 1px solid hsl(35 90% 55% / 0.25); }
+	.circ-j-arrow {
+		color: hsl(var(--theme-text) / 0.2);
+		font-size: 0.72rem;
+	}
+
+	.circ-closing-text {
+		font-size: 0.9rem;
+		line-height: 1.7;
+		color: hsl(var(--theme-text) / 0.65);
+		text-align: center;
+		max-width: 600px;
+		margin: 0 auto 12px;
+	}
+	.circ-closing-cta {
+		color: hsl(var(--theme-text) / 0.5);
+	}
+	.circ-closing-end {
+		text-align: center;
+		font-size: 0.8rem;
+		color: hsl(var(--theme-text) / 0.15);
+		margin-top: 24px;
+	}
+
+	/* Mobile */
+	@media (max-width: 480px) {
+		.circ-types {
+			grid-template-columns: 1fr;
+		}
+		.circ-layer {
+			flex-direction: column;
+			gap: 6px;
+		}
+		.circ-layer-label {
+			width: auto;
+			text-align: left;
+			padding-top: 0;
+		}
+		.circ-flow-arrow {
+			padding-left: 0;
+		}
+		.circ-mini-heatmap {
+			max-width: 100%;
+		}
+		.circ-journey-steps {
+			gap: 4px;
+		}
+		.circ-j-step {
+			font-size: 0.65rem;
+			padding: 3px 7px;
 		}
 	}
 
