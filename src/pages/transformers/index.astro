@@ -4682,6 +4682,181 @@ const sections = [
 		}
 	}
 
+	/* Step 3: Token Embeddings layout */
+	.hw-embed-layout {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.4rem;
+		width: 100%;
+		padding: 0.5rem 0.25rem;
+	}
+
+	.hw-embed-chips {
+		display: flex;
+		flex-wrap: nowrap;
+		justify-content: center;
+		gap: 4px;
+	}
+
+	.hw-embed-chip {
+		font-size: 0.72rem;
+		padding: 2px 7px;
+		opacity: 0;
+		transform: translateY(0);
+		animation: hw-chip-in 0.3s ease forwards;
+	}
+
+	.hw-embed-arrow-row {
+		display: flex;
+		justify-content: center;
+		gap: 4px;
+	}
+
+	.hw-embed-arrow-cell {
+		width: 52px;
+		text-align: center;
+		font-size: 0.85rem;
+		color: hsl(210 60% 55% / 0.5);
+		opacity: 0;
+		animation: hw-fade-in 0.25s ease forwards;
+	}
+
+	.hw-embed-grid {
+		display: flex;
+		justify-content: center;
+		gap: 4px;
+	}
+
+	.hw-embed-col {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		opacity: 0;
+		transform: translateY(-6px);
+		animation: hw-col-expand 0.4s ease forwards;
+	}
+
+	.hw-embed-cell {
+		width: 52px;
+		padding: 3px 4px;
+		text-align: center;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.65rem;
+		line-height: 1.3;
+		background: hsl(210 60% 55% / 0.08);
+		color: hsl(210 60% 55%);
+		border: 1px solid hsl(210 60% 55% / 0.15);
+		border-radius: 3px;
+	}
+
+	.hw-embed-dots {
+		background: transparent;
+		border: 1px dashed hsl(210 60% 55% / 0.2);
+		color: hsl(210 60% 55% / 0.5);
+		font-size: 0.85rem;
+		line-height: 1;
+	}
+
+	.hw-embed-dim-label {
+		margin-top: 0.4rem;
+		font-size: 0.7rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		color: hsl(var(--theme-text) / 0.4);
+		animation: hw-fade-in 0.3s ease 1s both;
+	}
+
+	.hw-embed-dim-t {
+		color: hsl(var(--theme-text) / 0.6);
+		font-weight: 500;
+	}
+
+	.hw-embed-dim-d {
+		color: hsl(210 60% 55% / 0.8);
+		font-weight: 500;
+	}
+
+	/* Transitory sidenote within figure */
+	.hw-embed-sidenote {
+		margin-top: 0.6rem;
+		padding: 0.5rem 0.75rem;
+		font-size: 0.72rem;
+		line-height: 1.5;
+		color: hsl(var(--theme-text) / 0.55);
+		border-left: 2px solid hsl(210 60% 55% / 0.25);
+		background: hsl(210 60% 55% / 0.04);
+		border-radius: 0 4px 4px 0;
+		max-width: 480px;
+		display: flex;
+		align-items: flex-start;
+		gap: 0.5rem;
+		opacity: 0;
+		animation: hw-fade-in 0.4s ease 1.2s both;
+		transition: opacity 0.3s ease, max-height 0.3s ease;
+	}
+
+	.hw-embed-sidenote.hw-hidden {
+		opacity: 0 !important;
+		max-height: 0;
+		padding: 0;
+		margin: 0;
+		overflow: hidden;
+		pointer-events: none;
+	}
+
+	.hw-embed-sn-text {
+		flex: 1;
+	}
+
+	.hw-embed-sn-text strong {
+		color: hsl(var(--theme-text) / 0.7);
+	}
+
+	.hw-embed-sn-close {
+		background: none;
+		border: none;
+		color: hsl(var(--theme-text) / 0.3);
+		font-size: 0.9rem;
+		cursor: pointer;
+		padding: 0 2px;
+		line-height: 1;
+		flex-shrink: 0;
+	}
+
+	.hw-embed-sn-close:hover {
+		color: hsl(var(--theme-text) / 0.6);
+	}
+
+	@keyframes hw-col-expand {
+		from {
+			opacity: 0;
+			transform: translateY(-6px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@media (max-width: 480px) {
+		.hw-embed-cell {
+			width: 40px;
+			font-size: 0.58rem;
+			padding: 2px 2px;
+		}
+		.hw-embed-arrow-cell {
+			width: 40px;
+			font-size: 0.75rem;
+		}
+		.hw-embed-chip {
+			font-size: 0.62rem;
+			padding: 2px 5px;
+		}
+		.hw-embed-sidenote {
+			font-size: 0.65rem;
+		}
+	}
+
 	/* Step 1 placeholder viz */
 	.hw-step-placeholder {
 		text-align: center;
@@ -8316,6 +8491,89 @@ const sections = [
 			return layout;
 		}
 
+		function renderStep3() {
+			var layout = el('div', 'hw-embed-layout');
+
+			// Token chips row at the top
+			var chipsRow = el('div', 'hw-embed-chips');
+			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
+			var tokenTypes = ['whole', 'whole', 'whole', 'whole', 'sub', 'sub', 'whole', 'whole'];
+
+			tokens.forEach(function(tok, i) {
+				var chip = el('span', 'hw-tok-chip hw-tok-' + tokenTypes[i] + ' hw-embed-chip', tok);
+				chip.style.animationDelay = (i * 40) + 'ms';
+				chipsRow.appendChild(chip);
+			});
+			layout.appendChild(chipsRow);
+
+			// Down arrows row
+			var arrowRow = el('div', 'hw-embed-arrow-row');
+			tokens.forEach(function(tok, i) {
+				var arrow = el('span', 'hw-embed-arrow-cell', '\u2193');
+				arrow.style.animationDelay = (200 + i * 50) + 'ms';
+				arrowRow.appendChild(arrow);
+			});
+			layout.appendChild(arrowRow);
+
+			// Embedding vectors grid — each token gets a column of numbers
+			var vecGrid = el('div', 'hw-embed-grid');
+
+			// Sample embedding values (4 visible + ellipsis per token)
+			var sampleVecs = [
+				[0.12, -0.84, 0.31, 0.67],
+				[-0.45, 0.22, 0.91, -0.33],
+				[0.78, -0.15, -0.62, 0.44],
+				[-0.29, 0.56, 0.08, -0.71],
+				[0.63, -0.38, 0.47, 0.19],
+				[-0.11, 0.73, -0.55, 0.82],
+				[0.34, -0.67, 0.25, -0.48],
+				[0.52, 0.14, -0.39, 0.66]
+			];
+
+			tokens.forEach(function(tok, i) {
+				var col = el('div', 'hw-embed-col');
+				col.style.animationDelay = (350 + i * 60) + 'ms';
+
+				sampleVecs[i].forEach(function(val) {
+					var cell = el('div', 'hw-embed-cell', val.toFixed(2));
+					col.appendChild(cell);
+				});
+				// Truncation indicator
+				var dots = el('div', 'hw-embed-cell hw-embed-dots', '\u22EE');
+				col.appendChild(dots);
+
+				vecGrid.appendChild(col);
+			});
+
+			layout.appendChild(vecGrid);
+
+			// Dimension label
+			var dimLabel = el('div', 'hw-embed-dim-label');
+			dimLabel.innerHTML = '<span class="hw-embed-dim-t">8 tokens</span> \u00d7 <span class="hw-embed-dim-d">d<sub>model</sub> dimensions</span>';
+			if (astroAttr) {
+				dimLabel.querySelectorAll('span, sub').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			}
+			layout.appendChild(dimLabel);
+
+			// Transitory sidenote (dismissable)
+			var sn = el('div', 'hw-embed-sidenote');
+			var snText = el('span', 'hw-embed-sn-text');
+			snText.innerHTML = '<strong>Embedding lookup:</strong> The model learns a unique vector for every token in its vocabulary (often 30k\u2013100k+ entries). At inference time, this is a simple table lookup\u200a\u2014\u200ano computation, just retrieve the row.';
+			if (astroAttr) {
+				snText.querySelectorAll('strong').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			}
+			var snClose = el('button', 'hw-embed-sn-close', '\u00d7');
+			snClose.setAttribute('aria-label', 'Dismiss');
+			snClose.addEventListener('click', function() {
+				sn.classList.add('hw-hidden');
+			});
+			sn.appendChild(snText);
+			sn.appendChild(snClose);
+			layout.appendChild(sn);
+
+			return layout;
+		}
+
 		function showStep(step) {
 			viz.innerHTML = '';
 
@@ -8323,6 +8581,8 @@ const sections = [
 				viz.appendChild(renderStep1());
 			} else if (step === 2) {
 				viz.appendChild(renderStep2());
+			} else if (step === 3) {
+				viz.appendChild(renderStep3());
 			} else {
 				var placeholder = el('div', 'hw-step-placeholder');
 				placeholder.textContent = 'Step ' + step + ' visualization (coming soon)';

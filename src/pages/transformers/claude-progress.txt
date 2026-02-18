@@ -40,3 +40,15 @@
 - Build passes (pnpm build)
 - Commit: c6a5310
 - Next: Feature #4 — Step 3 vector embeddings: animate token expansion into embedding vectors
+
+=== Feature #4 Complete — 2026-02-18 ===
+- Implemented Step 3 "Token Embeddings" visualization in the 04e head walkthrough
+- Layout: token chips at top → down arrows → blue embedding vector columns (4 sample values + ⋮ truncation per token)
+- 8 columns (one per token), each with staggered CSS animation (hw-col-expand) for visual cascade effect
+- Dimension label: "8 tokens × d_model dimensions" with color-coded spans
+- Transitory sidenote: dismissable info box explaining embeddings are learned lookup parameters (30k–100k+ vocab entries), simple table lookup at inference
+- Sidenote uses × close button with hw-hidden class toggle; resets to visible on step re-render
+- CSS: hw-embed-* classes for layout, grid, cells, arrows; responsive at 480px breakpoint
+- Verified: both dark and light themes clean, mobile responsive (scroll wrapper handles overflow), build passes
+- Commit: d2130d5
+- Next: Feature #5 — Step 4 positional embeddings: add second column per token
