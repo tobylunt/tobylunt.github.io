@@ -1884,6 +1884,152 @@ const sections = [
 				</div>
 			</section>
 
+			{/* ===== Section 08b: Putting It All Together — Full Walkthrough ===== */}
+			<section class="wt-section mb-24 scroll-mt-20">
+				<div class="subsection-divider"></div>
+				<h3 class="subsection-title">
+					<span class="subsection-number">08b</span>
+					Putting It All Together
+				</h3>
+
+				<div class="section-prose">
+					<p>
+						In the preamble, we showed you a black box &mdash; tokens in, prediction out.
+						Over the past eight sections, we&rsquo;ve opened every layer of that box. Now let&rsquo;s
+						watch it all work together. Press <strong>Step</strong> to advance one stage at a time,
+						or <strong>Play</strong> to watch the token &ldquo;cat&rdquo; flow through the entire transformer.
+					</p>
+				</div>
+
+				<div class="wt-walkthrough">
+					{/* Controls */}
+					<div class="wt-controls">
+						<button id="wt-prev-btn" class="wt-ctrl-btn" disabled>
+							<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polygon points="9,1 3,6 9,11" fill="currentColor"/></svg>
+							Back
+						</button>
+						<button id="wt-play-btn" class="wt-ctrl-btn wt-ctrl-play">
+							<svg id="wt-play-icon" width="12" height="12" viewBox="0 0 12 12" fill="none"><polygon points="2,1 10,6 2,11" fill="currentColor"/></svg>
+							<span id="wt-play-label">Play</span>
+						</button>
+						<button id="wt-next-btn" class="wt-ctrl-btn">
+							Step
+							<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polygon points="3,1 9,6 3,11" fill="currentColor"/></svg>
+						</button>
+						<button id="wt-reset-btn" class="wt-ctrl-btn">
+							<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1,6 A5,5 0 1,1 6,11" stroke="currentColor" stroke-width="1.5" fill="none"/><polygon points="1,3 1,7 4,5" fill="currentColor"/></svg>
+							Reset
+						</button>
+						<span class="wt-step-counter" id="wt-step-counter">Start</span>
+					</div>
+
+					{/* Pipeline + Annotation layout */}
+					<div class="wt-body">
+						{/* Vertical pipeline */}
+						<div class="wt-pipeline">
+							<div class="wt-stage wt-embed" data-wt="0">
+								<span class="wt-stage-dot"></span>
+								<span class="wt-stage-label">Input tokens</span>
+							</div>
+							<div class="wt-connector"></div>
+							<div class="wt-stage wt-embed" data-wt="1">
+								<span class="wt-stage-dot"></span>
+								<span class="wt-stage-label">Token Embedding</span>
+								<span class="wt-stage-ref">&sect;03</span>
+							</div>
+							<div class="wt-connector"></div>
+							<div class="wt-stage wt-embed" data-wt="2">
+								<span class="wt-stage-dot"></span>
+								<span class="wt-stage-label">+ Positional Encoding</span>
+								<span class="wt-stage-ref">&sect;03b</span>
+							</div>
+							<div class="wt-connector"></div>
+							<div class="wt-layer-bracket">
+								<span class="wt-bracket-label">&times;N layers</span>
+								<div class="wt-layer-inner">
+									<div class="wt-stage wt-norm" data-wt="3">
+										<span class="wt-stage-dot"></span>
+										<span class="wt-stage-label">Layer Norm</span>
+										<span class="wt-stage-ref">&sect;07b</span>
+									</div>
+									<div class="wt-connector"></div>
+									<div class="wt-stage wt-attn" data-wt="4">
+										<span class="wt-stage-dot"></span>
+										<span class="wt-stage-label">Multi-Head Attention</span>
+										<span class="wt-stage-ref">&sect;04&ndash;05</span>
+									</div>
+									<div class="wt-connector"></div>
+									<div class="wt-stage wt-residual" data-wt="5">
+										<span class="wt-stage-dot"></span>
+										<span class="wt-stage-label">+ Residual</span>
+										<span class="wt-stage-ref">&sect;07</span>
+									</div>
+									<div class="wt-connector"></div>
+									<div class="wt-stage wt-norm" data-wt="6">
+										<span class="wt-stage-dot"></span>
+										<span class="wt-stage-label">Layer Norm</span>
+									</div>
+									<div class="wt-connector"></div>
+									<div class="wt-stage wt-ffn" data-wt="7">
+										<span class="wt-stage-dot"></span>
+										<span class="wt-stage-label">Feed-Forward Network</span>
+										<span class="wt-stage-ref">&sect;06</span>
+									</div>
+									<div class="wt-connector"></div>
+									<div class="wt-stage wt-residual" data-wt="8">
+										<span class="wt-stage-dot"></span>
+										<span class="wt-stage-label">+ Residual</span>
+										<span class="wt-stage-ref">&sect;07</span>
+									</div>
+								</div>
+							</div>
+							<div class="wt-connector"></div>
+							<div class="wt-stage wt-norm" data-wt="9">
+								<span class="wt-stage-dot"></span>
+								<span class="wt-stage-label">Final Layer Norm</span>
+							</div>
+							<div class="wt-connector"></div>
+							<div class="wt-stage wt-output" data-wt="10">
+								<span class="wt-stage-dot"></span>
+								<span class="wt-stage-label">Unembedding</span>
+								<span class="wt-stage-ref">&sect;08</span>
+							</div>
+							<div class="wt-connector"></div>
+							<div class="wt-stage wt-output" data-wt="11">
+								<span class="wt-stage-dot"></span>
+								<span class="wt-stage-label">Softmax &rarr; Prediction</span>
+								<span class="wt-stage-ref">&sect;08</span>
+							</div>
+						</div>
+
+						{/* Annotation panel */}
+						<div class="wt-annotation" id="wt-annotation">
+							<div class="wt-ann-title" id="wt-ann-title">The black box, opened</div>
+							<div class="wt-ann-text" id="wt-ann-text">
+								In section 01, the transformer was a mystery: tokens in, prediction out.
+								Now you know every step. Press <strong>Play</strong> or <strong>Step</strong>
+								to watch &ldquo;cat&rdquo; flow through the pipeline.
+							</div>
+							<div class="wt-ann-token" id="wt-ann-token"></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="section-prose" style="margin-top: 2rem;">
+					<p>
+						The black box is fully open. Every arrow, every matrix multiplication, every nonlinearity &mdash;
+						you&rsquo;ve seen them all. What started as an opaque mapping from input tokens to output
+						probabilities is now a transparent pipeline of learned transformations, each building on the last.
+					</p>
+					<p>
+						But understanding the components is only half the story. The real magic happens when
+						attention heads across <strong>different layers</strong> learn to work together &mdash; composing into
+						<strong>circuits</strong> that implement surprisingly sophisticated algorithms. That&rsquo;s
+						what we&rsquo;ll explore next.
+					</p>
+				</div>
+			</section>
+
 			{/* ===== Section 09: Placeholder ===== */}
 			{
 				sections.filter(s => !['preamble','architecture','embeddings','attention','multi-head-attention','ffn','residual-stream','output'].includes(s.id)).map((section) => (
@@ -5956,6 +6102,251 @@ const sections = [
 		}
 	}
 
+	/* ===== Section 08b: Walkthrough ===== */
+	.wt-section {
+		padding-top: 1rem;
+	}
+
+	.wt-walkthrough {
+		margin-top: 1.5rem;
+		border: 1px solid hsl(var(--theme-text) / 0.08);
+		border-radius: 12px;
+		background: hsl(var(--theme-text) / 0.015);
+		overflow: hidden;
+	}
+
+	.wt-controls {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 12px 16px;
+		border-bottom: 1px solid hsl(var(--theme-text) / 0.06);
+		background: hsl(var(--theme-text) / 0.02);
+		flex-wrap: wrap;
+	}
+
+	.wt-ctrl-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		padding: 5px 12px;
+		border-radius: 6px;
+		border: 1px solid hsl(var(--theme-text) / 0.12);
+		background: hsl(var(--theme-text) / 0.03);
+		color: hsl(var(--theme-text) / 0.65);
+		font-size: 0.75rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: background 0.15s, color 0.15s, border-color 0.15s;
+	}
+	.wt-ctrl-btn:hover:not(:disabled) {
+		background: hsl(var(--theme-accent) / 0.08);
+		color: hsl(var(--theme-accent));
+	}
+	.wt-ctrl-btn:disabled {
+		opacity: 0.35;
+		cursor: default;
+	}
+	.wt-ctrl-play.playing {
+		color: hsl(var(--theme-accent));
+		border-color: hsl(var(--theme-accent) / 0.3);
+		background: hsl(var(--theme-accent) / 0.06);
+	}
+
+	.wt-step-counter {
+		margin-left: auto;
+		font-family: 'SF Mono', 'Fira Code', monospace;
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.45);
+	}
+
+	/* Pipeline + Annotation body */
+	.wt-body {
+		display: grid;
+		grid-template-columns: 260px 1fr;
+		gap: 0;
+		min-height: 440px;
+	}
+
+	/* Vertical pipeline */
+	.wt-pipeline {
+		padding: 20px 16px 20px 20px;
+		border-right: 1px solid hsl(var(--theme-text) / 0.06);
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.wt-stage {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 6px 10px;
+		border-radius: 6px;
+		border: 1.5px solid transparent;
+		transition: all 0.35s ease;
+		cursor: pointer;
+		position: relative;
+	}
+	.wt-stage:hover {
+		background: hsl(var(--theme-text) / 0.03);
+	}
+
+	.wt-stage-dot {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: hsl(var(--theme-text) / 0.15);
+		flex-shrink: 0;
+		transition: all 0.35s ease;
+	}
+
+	.wt-stage-label {
+		font-size: 0.78rem;
+		font-weight: 500;
+		color: hsl(var(--theme-text) / 0.6);
+		transition: color 0.35s ease;
+	}
+
+	.wt-stage-ref {
+		margin-left: auto;
+		font-size: 0.65rem;
+		color: hsl(var(--theme-text) / 0.25);
+		font-family: 'SF Mono', 'Fira Code', monospace;
+	}
+
+	.wt-connector {
+		width: 2px;
+		height: 10px;
+		background: hsl(var(--theme-text) / 0.08);
+		margin-left: 23px;
+		flex-shrink: 0;
+	}
+
+	/* Layer bracket */
+	.wt-layer-bracket {
+		border: 1px dashed hsl(var(--theme-text) / 0.1);
+		border-radius: 8px;
+		padding: 8px 6px;
+		position: relative;
+	}
+	.wt-bracket-label {
+		position: absolute;
+		top: -9px;
+		right: 10px;
+		background: hsl(var(--theme-bg));
+		padding: 0 6px;
+		font-size: 0.65rem;
+		color: hsl(var(--theme-text) / 0.35);
+		font-family: 'SF Mono', 'Fira Code', monospace;
+	}
+	.wt-layer-inner {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	/* Color-coded stage active states */
+	.wt-stage.active.wt-embed {
+		background: hsl(210 70% 55% / 0.1);
+		border-color: hsl(210 70% 55% / 0.35);
+	}
+	.wt-stage.active.wt-embed .wt-stage-dot { background: hsl(210 70% 55%); box-shadow: 0 0 6px hsl(210 70% 55% / 0.5); }
+	.wt-stage.active.wt-embed .wt-stage-label { color: hsl(210 70% 55%); font-weight: 600; }
+
+	.wt-stage.active.wt-attn {
+		background: hsl(35 90% 55% / 0.1);
+		border-color: hsl(35 90% 55% / 0.35);
+	}
+	.wt-stage.active.wt-attn .wt-stage-dot { background: hsl(35 90% 55%); box-shadow: 0 0 6px hsl(35 90% 55% / 0.5); }
+	.wt-stage.active.wt-attn .wt-stage-label { color: hsl(35 90% 55%); font-weight: 600; }
+
+	.wt-stage.active.wt-ffn {
+		background: hsl(150 55% 45% / 0.1);
+		border-color: hsl(150 55% 45% / 0.35);
+	}
+	.wt-stage.active.wt-ffn .wt-stage-dot { background: hsl(150 55% 45%); box-shadow: 0 0 6px hsl(150 55% 45% / 0.5); }
+	.wt-stage.active.wt-ffn .wt-stage-label { color: hsl(150 55% 45%); font-weight: 600; }
+
+	.wt-stage.active.wt-residual {
+		background: hsl(270 50% 58% / 0.1);
+		border-color: hsl(270 50% 58% / 0.35);
+	}
+	.wt-stage.active.wt-residual .wt-stage-dot { background: hsl(270 50% 58%); box-shadow: 0 0 6px hsl(270 50% 58% / 0.5); }
+	.wt-stage.active.wt-residual .wt-stage-label { color: hsl(270 50% 58%); font-weight: 600; }
+
+	.wt-stage.active.wt-norm {
+		background: hsl(var(--theme-text) / 0.06);
+		border-color: hsl(var(--theme-text) / 0.2);
+	}
+	.wt-stage.active.wt-norm .wt-stage-dot { background: hsl(var(--theme-text) / 0.55); box-shadow: 0 0 6px hsl(var(--theme-text) / 0.25); }
+	.wt-stage.active.wt-norm .wt-stage-label { color: hsl(var(--theme-text) / 0.85); font-weight: 600; }
+
+	.wt-stage.active.wt-output {
+		background: hsl(350 65% 55% / 0.1);
+		border-color: hsl(350 65% 55% / 0.35);
+	}
+	.wt-stage.active.wt-output .wt-stage-dot { background: hsl(350 65% 55%); box-shadow: 0 0 6px hsl(350 65% 55% / 0.5); }
+	.wt-stage.active.wt-output .wt-stage-label { color: hsl(350 65% 55%); font-weight: 600; }
+
+	/* Visited (past) stages get a subtle tint */
+	.wt-stage.visited .wt-stage-dot { background: hsl(var(--theme-text) / 0.3); }
+	.wt-stage.visited .wt-stage-label { color: hsl(var(--theme-text) / 0.5); }
+
+	/* Annotation panel */
+	.wt-annotation {
+		padding: 24px 24px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+	.wt-ann-title {
+		font-size: 1rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.85);
+		margin-bottom: 8px;
+		transition: color 0.3s ease;
+	}
+	.wt-ann-text {
+		font-size: 0.85rem;
+		line-height: 1.6;
+		color: hsl(var(--theme-text) / 0.6);
+		transition: opacity 0.3s ease;
+	}
+	.wt-ann-text strong {
+		color: hsl(var(--theme-text) / 0.8);
+	}
+	.wt-ann-token {
+		margin-top: 14px;
+		padding: 10px 14px;
+		border-radius: 8px;
+		background: hsl(var(--theme-text) / 0.03);
+		border: 1px solid hsl(var(--theme-text) / 0.06);
+		font-family: 'SF Mono', 'Fira Code', monospace;
+		font-size: 0.78rem;
+		color: hsl(var(--theme-text) / 0.55);
+		line-height: 1.5;
+		min-height: 40px;
+		transition: opacity 0.3s ease;
+	}
+	.wt-ann-token:empty { display: none; }
+
+	/* Mobile: stack vertically */
+	@media (max-width: 640px) {
+		.wt-body {
+			grid-template-columns: 1fr;
+		}
+		.wt-pipeline {
+			border-right: none;
+			border-bottom: 1px solid hsl(var(--theme-text) / 0.06);
+			padding: 16px 12px;
+		}
+		.wt-annotation {
+			padding: 16px;
+			min-height: 150px;
+		}
+	}
+
 </style>
 
 <script define:vars={{ sectionIds: sections.map(s => s.id) }}>
@@ -7606,5 +7997,172 @@ const sections = [
 		});
 
 		render(1.0);
+	});
+</script>
+
+<script is:inline>
+	// === Section 08b: Putting It All Together — Walkthrough ===
+	document.addEventListener('DOMContentLoaded', () => {
+		const stages = document.querySelectorAll('[data-wt]');
+		const prevBtn = document.getElementById('wt-prev-btn');
+		const nextBtn = document.getElementById('wt-next-btn');
+		const playBtn = document.getElementById('wt-play-btn');
+		const resetBtn = document.getElementById('wt-reset-btn');
+		const playLabel = document.getElementById('wt-play-label');
+		const playIcon = document.getElementById('wt-play-icon');
+		const stepCounter = document.getElementById('wt-step-counter');
+		const annTitle = document.getElementById('wt-ann-title');
+		const annText = document.getElementById('wt-ann-text');
+		const annToken = document.getElementById('wt-ann-token');
+
+		if (!stages.length || !prevBtn) return;
+
+		const TOTAL = stages.length; // 0..11
+		let current = -1; // -1 = start state
+		let playing = false;
+		let timer = null;
+
+		const stepData = [
+			{
+				title: 'Input tokens',
+				text: 'Raw text is split into tokens — the atomic units the model operates on. Our sentence <strong>"The cat sat on the"</strong> becomes 5 tokens. We\'ll follow <strong>"cat"</strong> through the pipeline.',
+				token: '"The"  "cat"  "sat"  "on"  "the"  →  focus: "cat"'
+			},
+			{
+				title: 'Token Embedding',
+				text: 'Each token is looked up in a learned embedding table, converting it from a discrete ID into a <strong>dense vector</strong> (typically 768 or 1024 dimensions). "Cat" becomes a point in high-dimensional space, near other animals.',
+				token: '"cat" → W_E[4821] → [0.23, −0.41, 0.87, 0.05, …]₇₆₈'
+			},
+			{
+				title: '+ Positional Encoding',
+				text: 'Sine and cosine waves at different frequencies encode <strong>position</strong>. "Cat" is at position 1, so it gets that position\'s unique fingerprint added to its embedding. Now the vector carries both meaning and position.',
+				token: '[0.23, −0.41, …] + PE(pos=1) → [0.31, −0.28, 0.92, …]₇₆₈'
+			},
+			{
+				title: 'Layer Norm',
+				text: 'Before attention, <strong>layer normalization</strong> rescales the vector to zero mean and unit variance. This stabilizes training and ensures each sublayer receives well-conditioned inputs.',
+				token: 'LayerNorm(x) → μ=0.00, σ=1.00'
+			},
+			{
+				title: 'Multi-Head Attention',
+				text: 'The vector is projected into <strong style="color:hsl(210 70% 55%)">Q</strong>, <strong style="color:hsl(25 85% 55%)">K</strong>, and <strong style="color:hsl(150 55% 45%)">V</strong> across multiple heads. Each head computes attention scores (QK<sup>T</sup>/√d<sub>k</sub>), applies softmax, and produces a weighted sum of values. "Cat" attends strongly to "sat" (subject→verb) and to itself.',
+				token: 'Q·K^T → softmax → ×V\nHead 1 (positional): cat→The 0.42, cat→cat 0.33\nHead 2 (syntactic): cat→sat 0.62'
+			},
+			{
+				title: '+ Residual Connection',
+				text: 'The attention output is <strong>added back</strong> to the original input via the residual stream — the information highway. The original signal is never destroyed; it just accumulates new context. Gradients flow through the shortcut, keeping training stable.',
+				token: 'x + MHA(x) → enriched vector (meaning + position + context)'
+			},
+			{
+				title: 'Layer Norm',
+				text: 'A second layer normalization before the feed-forward network. Same principle: stabilize the scale before the next computation.',
+				token: 'LayerNorm(x + MHA(x)) → μ=0.00, σ=1.00'
+			},
+			{
+				title: 'Feed-Forward Network',
+				text: 'The vector <strong>expands</strong> to 4× its size (768→3072), passes through a nonlinear activation (GELU), then <strong>compresses</strong> back. This is where factual knowledge lives — each neuron acts as a pattern detector. "Cat" activates animal-related features.',
+				token: 'x → W₁(768→3072) → GELU → W₂(3072→768) → FFN(x)'
+			},
+			{
+				title: '+ Residual Connection',
+				text: 'The FFN output is added back to the stream. One full transformer layer is now complete: attention for cross-token communication, FFN for per-token processing, both connected by residual additions. <strong>This cycle repeats N times</strong> (12–96 layers).',
+				token: 'x\' = x + MHA(x) + FFN(x + MHA(x))\n→ flows into the next layer…'
+			},
+			{
+				title: 'Final Layer Norm',
+				text: 'After all N layers, one final normalization prepares the vector for the output projection. The vector now carries a rich, abstract representation — meaning, position, context from every token, processed through dozens of attention and FFN cycles.',
+				token: 'LayerNorm(final residual) → stable vector for unembedding'
+			},
+			{
+				title: 'Unembedding',
+				text: 'The <strong>reverse of embedding</strong>: multiply by W<sub>U</sub> (often ≈ W<sub>E</sub><sup>T</sup>) to project the d<sub>model</sub> vector back to vocabulary size. Each entry is a <strong>logit</strong> — a raw score for how likely that token is to come next.',
+				token: '[…]₇₆₈ × W_U → [3.2, −1.1, 0.4, 5.8, …]₅₀ₖ (logits)'
+			},
+			{
+				title: 'Softmax → Prediction',
+				text: 'Softmax converts logits into a <strong>probability distribution</strong> over the full vocabulary. At temperature 1.0, "mat" gets 74.7% — the model\'s best guess for "The cat sat on the ___". Sample from this distribution, append the token, and repeat. <strong>That\'s autoregressive generation.</strong>',
+				token: 'softmax([…, 5.8, …]) →  mat: 74.7%  floor: 11.2%  bed: 5.5%\n→ sample: "mat"  →  "The cat sat on the mat"'
+			}
+		];
+
+		function updateUI() {
+			// Update stage highlights
+			stages.forEach((s, i) => {
+				s.classList.remove('active', 'visited');
+				if (i === current) s.classList.add('active');
+				else if (i < current) s.classList.add('visited');
+			});
+
+			// Update buttons
+			prevBtn.disabled = current <= 0;
+			nextBtn.disabled = current >= TOTAL - 1;
+
+			// Update counter
+			if (current < 0) {
+				stepCounter.textContent = 'Start';
+			} else {
+				stepCounter.textContent = 'Step ' + (current + 1) + ' / ' + TOTAL;
+			}
+
+			// Update annotation
+			if (current >= 0 && current < stepData.length) {
+				const d = stepData[current];
+				annTitle.innerHTML = d.title;
+				annText.innerHTML = d.text;
+				annToken.textContent = d.token;
+			} else if (current < 0) {
+				annTitle.textContent = 'The black box, opened';
+				annText.innerHTML = 'In section 01, the transformer was a mystery: tokens in, prediction out. Now you know every step. Press <strong>Play</strong> or <strong>Step</strong> to watch "cat" flow through the pipeline.';
+				annToken.textContent = '';
+			}
+
+			// Auto-stop play at end
+			if (current >= TOTAL - 1 && playing) {
+				stopPlay();
+			}
+		}
+
+		function goTo(step) {
+			current = Math.max(-1, Math.min(TOTAL - 1, step));
+			updateUI();
+		}
+
+		function stopPlay() {
+			playing = false;
+			clearInterval(timer);
+			timer = null;
+			playLabel.textContent = 'Play';
+			playIcon.innerHTML = '<polygon points="2,1 10,6 2,11" fill="currentColor"/>';
+			playBtn.classList.remove('playing');
+		}
+
+		function startPlay() {
+			if (current >= TOTAL - 1) goTo(-1); // reset if at end
+			playing = true;
+			playLabel.textContent = 'Pause';
+			playIcon.innerHTML = '<rect x="2" y="1" width="3" height="10" fill="currentColor"/><rect x="7" y="1" width="3" height="10" fill="currentColor"/>';
+			playBtn.classList.add('playing');
+			// Advance immediately once, then on interval
+			goTo(current + 1);
+			timer = setInterval(() => {
+				if (current >= TOTAL - 1) { stopPlay(); return; }
+				goTo(current + 1);
+			}, 2200);
+		}
+
+		nextBtn.addEventListener('click', () => { stopPlay(); goTo(current + 1); });
+		prevBtn.addEventListener('click', () => { stopPlay(); goTo(current - 1); });
+		resetBtn.addEventListener('click', () => { stopPlay(); goTo(-1); });
+		playBtn.addEventListener('click', () => { playing ? stopPlay() : startPlay(); });
+
+		// Clicking a stage jumps to it
+		stages.forEach(s => {
+			s.addEventListener('click', () => {
+				stopPlay();
+				goTo(parseInt(s.getAttribute('data-wt')));
+			});
+		});
+
+		updateUI();
 	});
 </script>
