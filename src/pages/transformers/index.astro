@@ -2276,9 +2276,32 @@ const sections = [
 						The ability to identify and understand these circuits is the foundation of
 						<strong>mechanistic interpretability</strong> &mdash; the project of reverse-engineering
 						what neural networks actually compute, rather than just observing what they output.
-						If we can understand the algorithms transformers learn, we can begin to predict their
-						behavior, identify failure modes, and build models we can genuinely trust.
 					</p>
+				</div>
+
+				{/* Why mechanistic interpretability matters */}
+				<div class="mi-teaser">
+					<div class="mi-teaser-label">Why it matters</div>
+					<div class="mi-teaser-cards">
+						<div class="mi-teaser-card mi-card-safety">
+							<div class="mi-card-icon">&Delta;</div>
+							<div class="mi-card-title">Safety</div>
+							<div class="mi-card-desc">If we can identify the circuits behind model behavior, we can catch failure modes <em>before</em> deployment &mdash; not after.</div>
+						</div>
+						<div class="mi-teaser-card mi-card-understanding">
+							<div class="mi-card-icon">&oplus;</div>
+							<div class="mi-card-title">Understanding</div>
+							<div class="mi-card-desc">Moving beyond &ldquo;it works&rdquo; to <em>how</em> it works. Circuits give us a scientific vocabulary for transformer computation.</div>
+						</div>
+						<div class="mi-teaser-card mi-card-control">
+							<div class="mi-card-icon">&sect;</div>
+							<div class="mi-card-title">Control</div>
+							<div class="mi-card-desc">Once you know which heads implement a behavior, you can steer, edit, or ablate it &mdash; precise intervention instead of blunt fine-tuning.</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="section-prose">
 					<p>
 						This is one of the most exciting frontiers in AI research. The transformer architecture
 						you&rsquo;ve learned in this explainer isn&rsquo;t just an engineering artifact &mdash;
@@ -2306,17 +2329,40 @@ const sections = [
 							<span class="circ-j-step circ-j-circuits">Circuits</span>
 						</div>
 					</div>
+
+					{/* Opened box — mirrors the preamble\'s closed black box */}
+					<div class="mi-openbox-wrap">
+						<div class="mi-openbox-label-in">tokens in</div>
+						<div class="mi-openbox">
+							<span class="mi-ob-component mi-ob-embed" title="Embedding">E</span>
+							<span class="mi-ob-arrow">&rarr;</span>
+							<span class="mi-ob-component mi-ob-attn" title="Attention">A</span>
+							<span class="mi-ob-arrow">&rarr;</span>
+							<span class="mi-ob-component mi-ob-ffn" title="FFN">F</span>
+							<span class="mi-ob-arrow">&rarr;</span>
+							<span class="mi-ob-component mi-ob-output" title="Prediction">P</span>
+						</div>
+						<div class="mi-openbox-label-out">prediction out</div>
+					</div>
+
 					<p class="circ-closing-text">
 						We started with a black box. Now you know how tokens become vectors, how attention
 						lets tokens communicate, how feed-forward layers store knowledge, how residual
 						connections carry information through dozens of layers, and how all of it composes
-						into circuits that implement real algorithms. The box is open.
+						into circuits that implement real algorithms. <strong>The box is open.</strong>
 					</p>
-					<p class="circ-closing-text circ-closing-cta">
-						<em>In a follow-up post, we&rsquo;ll go hands-on &mdash; reproducing these circuits
-						locally in Llama&nbsp;3 using tools from the mechanistic interpretability community.
-						Stay tuned.</em>
-					</p>
+
+					{/* Follow-up post callout */}
+					<div class="mi-followup">
+						<div class="mi-followup-tag">Coming next</div>
+						<div class="mi-followup-title">Hands-on Mechanistic Interpretability with Llama&nbsp;3</div>
+						<div class="mi-followup-desc">
+							We&rsquo;ll reproduce induction heads, name mover circuits, and more &mdash;
+							running real mechinterp experiments locally using open-source tools and an
+							open-weight model.
+						</div>
+					</div>
+
 					<div class="circ-closing-end">&#9632;</div>
 				</div>
 			</section>
@@ -6877,6 +6923,145 @@ const sections = [
 		font-size: 0.65rem;
 		font-weight: 600;
 	}
+
+	/* ── Feature #19: Mechinterp teaser ── */
+	.mi-teaser {
+		margin: 2rem 0;
+	}
+	.mi-teaser-label {
+		font-size: 0.72rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: hsl(var(--theme-text) / 0.35);
+		text-align: center;
+		margin-bottom: 14px;
+	}
+	.mi-teaser-cards {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 12px;
+	}
+	.mi-teaser-card {
+		padding: 20px 16px;
+		border-radius: 10px;
+		border: 1px solid hsl(var(--theme-text) / 0.08);
+		background: hsl(var(--theme-text) / 0.02);
+	}
+	.mi-card-icon {
+		font-size: 1.4rem;
+		margin-bottom: 8px;
+		line-height: 1;
+	}
+	.mi-card-title {
+		font-size: 0.82rem;
+		font-weight: 700;
+		margin-bottom: 6px;
+	}
+	.mi-card-desc {
+		font-size: 0.78rem;
+		line-height: 1.55;
+		color: hsl(var(--theme-text) / 0.6);
+	}
+	.mi-card-safety .mi-card-icon { color: hsl(350 65% 55%); }
+	.mi-card-safety .mi-card-title { color: hsl(350 65% 55%); }
+	.mi-card-safety { border-color: hsl(350 65% 55% / 0.15); }
+	.mi-card-understanding .mi-card-icon { color: hsl(210 70% 55%); }
+	.mi-card-understanding .mi-card-title { color: hsl(210 70% 55%); }
+	.mi-card-understanding { border-color: hsl(210 70% 55% / 0.15); }
+	.mi-card-control .mi-card-icon { color: hsl(270 50% 58%); }
+	.mi-card-control .mi-card-title { color: hsl(270 50% 58%); }
+	.mi-card-control { border-color: hsl(270 50% 58% / 0.15); }
+
+	/* Opened box visual — mirrors .teaser-blackbox from preamble */
+	.mi-openbox-wrap {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1.2rem;
+		margin: 24px auto 20px;
+	}
+	.mi-openbox-label-in,
+	.mi-openbox-label-out {
+		font-family: ui-monospace, monospace;
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.4);
+		letter-spacing: 0.02em;
+	}
+	.mi-openbox {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		padding: 12px 18px;
+		border-radius: 12px;
+		border: 1.5px solid hsl(var(--theme-text) / 0.15);
+		background: transparent;
+	}
+	.mi-ob-component {
+		width: 32px;
+		height: 32px;
+		border-radius: 6px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.72rem;
+		font-weight: 700;
+		font-family: ui-monospace, monospace;
+	}
+	.mi-ob-embed { background: hsl(210 70% 55% / 0.15); color: hsl(210 70% 55%); }
+	.mi-ob-attn { background: hsl(35 90% 55% / 0.15); color: hsl(35 90% 55%); }
+	.mi-ob-ffn { background: hsl(150 55% 45% / 0.15); color: hsl(150 55% 45%); }
+	.mi-ob-output { background: hsl(350 65% 55% / 0.15); color: hsl(350 65% 55%); }
+	.mi-ob-arrow {
+		color: hsl(var(--theme-text) / 0.2);
+		font-size: 0.7rem;
+	}
+
+	/* Follow-up post callout */
+	.mi-followup {
+		margin: 24px auto;
+		max-width: 480px;
+		padding: 20px 24px;
+		border-radius: 10px;
+		border: 1px solid hsl(35 90% 55% / 0.2);
+		background: hsl(35 90% 55% / 0.04);
+		text-align: center;
+	}
+	.mi-followup-tag {
+		font-size: 0.65rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: hsl(35 90% 55%);
+		margin-bottom: 8px;
+	}
+	.mi-followup-title {
+		font-size: 0.95rem;
+		font-weight: 700;
+		color: hsl(var(--theme-text) / 0.85);
+		margin-bottom: 8px;
+		line-height: 1.35;
+	}
+	.mi-followup-desc {
+		font-size: 0.8rem;
+		line-height: 1.6;
+		color: hsl(var(--theme-text) / 0.55);
+	}
+
+	@media (max-width: 480px) {
+		.mi-teaser-cards {
+			grid-template-columns: 1fr;
+		}
+		.mi-openbox-wrap {
+			gap: 0.8rem;
+		}
+		.mi-ob-component {
+			width: 26px;
+			height: 26px;
+			font-size: 0.65rem;
+		}
+	}
+
 
 	/* Closing section */
 	.circ-closing {
