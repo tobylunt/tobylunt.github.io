@@ -61,10 +61,7 @@ const sections = [
 
 <PageLayout meta={{ title: "How Transformers Work" }}>
 	{/* Hero — full width, above the three-column layout */}
-	<header class="hero mx-auto max-w-3xl px-4 pb-16 pt-8 text-center sm:px-6 sm:pt-16">
-		<p class="mb-4 text-sm font-medium uppercase tracking-widest text-accent">
-			Interactive Explainer
-		</p>
+	<header class="hero mx-auto max-w-4xl px-4 pb-16 pt-8 text-center sm:px-6 sm:pt-16">
 		<h1 class="mb-6 text-4xl font-bold leading-tight text-accent-2 sm:text-5xl lg:text-6xl">
 			How Transformers Work
 		</h1>
@@ -150,97 +147,20 @@ const sections = [
 					</p>
 				</div>
 
-				{/* Timeline: RNNs → LSTMs → Attention → Transformers */}
-				<div class="preamble-timeline" aria-label="Evolution from RNNs to Transformers">
-					<div class="timeline-track"></div>
-					<div class="timeline-item">
-						<div class="timeline-dot timeline-dot-past"></div>
-						<div class="timeline-content">
-							<span class="timeline-year">~2014</span>
-							<span class="timeline-label">RNNs &amp; LSTMs</span>
-							<span class="timeline-desc">Sequential processing, one token at a time</span>
-						</div>
-					</div>
-					<div class="timeline-item">
-						<div class="timeline-dot timeline-dot-past"></div>
-						<div class="timeline-content">
-							<span class="timeline-year">2015</span>
-							<span class="timeline-label">Attention (Bahdanau)</span>
-							<span class="timeline-desc">Learned to focus on relevant input positions</span>
-						</div>
-					</div>
-					<div class="timeline-item">
-						<div class="timeline-dot timeline-dot-present"></div>
-						<div class="timeline-content">
-							<span class="timeline-year">2017</span>
-							<span class="timeline-label">Transformer</span>
-							<span class="timeline-desc">Attention is all you need — no recurrence</span>
-						</div>
-					</div>
-					<div class="timeline-item">
-						<div class="timeline-dot timeline-dot-future"></div>
-						<div class="timeline-content">
-							<span class="timeline-year">2018+</span>
-							<span class="timeline-label">GPT, BERT, and beyond</span>
-							<span class="timeline-desc">Scaling transforms everything</span>
-						</div>
-					</div>
-				</div>
-
-				{/* Visual vocabulary — component color legend */}
-				<div class="preamble-vocab">
-					<p class="vocab-intro">
-						Components are color-coded throughout. Each architectural block maps to a consistent color:
-					</p>
-					<div class="vocab-grid">
-						<div class="vocab-item">
-							<div class="vocab-swatch vocab-embedding"></div>
-							<div class="vocab-meta">
-								<span class="vocab-name">Embedding</span>
-								<span class="vocab-hint">Token → d-dim vector</span>
-							</div>
-						</div>
-						<div class="vocab-item">
-							<div class="vocab-swatch vocab-attention"></div>
-							<div class="vocab-meta">
-								<span class="vocab-name">Attention</span>
-								<span class="vocab-hint">Pairwise interactions</span>
-							</div>
-						</div>
-						<div class="vocab-item">
-							<div class="vocab-swatch vocab-ffn"></div>
-							<div class="vocab-meta">
-								<span class="vocab-name">Feed-Forward</span>
-								<span class="vocab-hint">Position-wise MLP</span>
-							</div>
-						</div>
-						<div class="vocab-item">
-							<div class="vocab-swatch vocab-residual"></div>
-							<div class="vocab-meta">
-								<span class="vocab-name">Residual Stream</span>
-								<span class="vocab-hint">Running sum / skip connections</span>
-							</div>
-						</div>
-						<div class="vocab-item">
-							<div class="vocab-swatch vocab-output"></div>
-							<div class="vocab-meta">
-								<span class="vocab-name">Output</span>
-								<span class="vocab-hint">Logits → softmax → sampling</span>
-							</div>
-						</div>
-					</div>
-				</div>
-
 				{/* Black box teaser */}
 				<div class="preamble-teaser reveal">
 					<div class="teaser-box">
 						<div class="teaser-label-in">tokens in</div>
+						<span class="teaser-arrow">→</span>
 						<div class="teaser-blackbox">
 							<span class="teaser-q">?</span>
 						</div>
+						<span class="teaser-arrow">→</span>
 						<div class="teaser-label-out">prediction out</div>
 					</div>
-					<p class="teaser-text">
+				</div>
+				<div class="section-prose reveal">
+					<p>
 						The transformer is a black box: tokens in, a probability distribution over next tokens out.
 						The following sections decompose this mapping into its constituent operations —
 						tokenization, embedding, self-attention, feed-forward layers, and the residual
@@ -273,13 +193,6 @@ const sections = [
 
 				{/* Interactive block diagram */}
 				<div class="arch-diagram-wrap">
-					<div class="arch-controls">
-						<button id="arch-animate-btn" class="arch-animate-btn">
-							<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polygon points="3,1 12,7 3,13" fill="currentColor"/></svg>
-							Animate
-						</button>
-					</div>
-
 					<div class="arch-diagram" id="arch-diagram">
 						{/* Output / Softmax */}
 						<div class="arch-block arch-output" data-arch-id="output" data-tip="Converts the final vector into a probability distribution over the vocabulary — picking the next token.">
@@ -291,45 +204,39 @@ const sections = [
 							<span class="arch-block-label">Unembedding</span>
 						</div>
 
-						<div class="arch-arrow">&#8593;</div>
+						<div class="arch-arrow">&#8595;</div>
 
 						{/* Layer norm (final) */}
 						<div class="arch-block arch-norm" data-arch-id="final-norm" data-tip="A final layer normalization that stabilizes the output before unembedding.">
 							<span class="arch-block-label">Layer Norm</span>
 						</div>
 
+						<div class="arch-arrow">&#8595;</div>
+
 						{/* Transformer layer (repeated) */}
 						<div class="arch-layer-group">
 							<div class="arch-layer-bracket">&times;N layers</div>
 
-							{/* Residual + FFN */}
-							<div class="arch-residual-wrap">
-								<div class="arch-residual-line" data-tip="The residual connection adds the FFN output back to the stream, preserving earlier information."></div>
-								<div class="arch-block arch-ffn" data-arch-id="ffn" data-tip="A two-layer neural network (expand → activate → compress) applied independently to each token. Acts as a learned lookup table.">
-									<span class="arch-block-label">Feed-Forward Network</span>
-								</div>
-								<div class="arch-block arch-norm arch-norm-sm" data-arch-id="norm2" data-tip="Layer normalization before the feed-forward network.">
-									<span class="arch-block-label">Layer Norm</span>
-								</div>
+							<div class="arch-add-label">+ residual</div>
+							{/* FFN sub-block */}
+							<div class="arch-block arch-ffn" data-arch-id="ffn" data-tip="A two-layer neural network (expand → activate → compress) applied independently to each token. Acts as a learned lookup table.">
+								<span class="arch-block-label">Feed-Forward Network</span>
+							</div>
+							<div class="arch-block arch-norm arch-norm-sm" data-arch-id="norm2" data-tip="Layer normalization before the feed-forward network.">
+								<span class="arch-block-label">Layer Norm</span>
 							</div>
 
 							<div class="arch-add-label">+ residual</div>
-
-							{/* Residual + Attention */}
-							<div class="arch-residual-wrap">
-								<div class="arch-residual-line" data-tip="The residual connection adds the attention output back to the stream — this is what makes deep transformers trainable."></div>
-								<div class="arch-block arch-attention" data-arch-id="attention" data-tip="Multi-head self-attention: every token computes queries, keys, and values, then attends to every other token to gather context.">
-									<span class="arch-block-label">Multi-Head Attention</span>
-								</div>
-								<div class="arch-block arch-norm arch-norm-sm" data-arch-id="norm1" data-tip="Layer normalization before the attention mechanism.">
-									<span class="arch-block-label">Layer Norm</span>
-								</div>
+							{/* Attention sub-block */}
+							<div class="arch-block arch-attention" data-arch-id="attention" data-tip="Multi-head self-attention: every token computes queries, keys, and values, then attends to every other token to gather context.">
+								<span class="arch-block-label">Multi-Head Attention</span>
 							</div>
-
-							<div class="arch-add-label">+ residual</div>
+							<div class="arch-block arch-norm arch-norm-sm" data-arch-id="norm1" data-tip="Layer normalization before the attention mechanism.">
+								<span class="arch-block-label">Layer Norm</span>
+							</div>
 						</div>
 
-						<div class="arch-arrow">&#8593;</div>
+						<div class="arch-arrow">&#8595;</div>
 
 						{/* Positional encoding */}
 						<div class="arch-block arch-embedding" data-arch-id="pos-enc" data-tip="Adds position information (sine/cosine waves) to each embedding, so the model knows word order.">
@@ -341,7 +248,7 @@ const sections = [
 							<span class="arch-block-label">Token Embedding</span>
 						</div>
 
-						<div class="arch-arrow">&#8593;</div>
+						<div class="arch-arrow">&#8595;</div>
 
 						{/* Input */}
 						<div class="arch-input-label">Input tokens</div>
@@ -396,7 +303,7 @@ const sections = [
 						id="tokenizer-input"
 						class="tokenizer-input"
 						rows="2"
-						placeholder="The cat sat on the mat."
+						placeholder="The fat cat sat quietly on the mat."
 						spellcheck="false"
 					></textarea>
 					<div class="tokenizer-output-wrap">
@@ -744,52 +651,20 @@ const sections = [
 				</div>
 
 				{/* Interactive dot product + softmax visualization */}
-				<div class="attn-dotprod-container">
-					{/* Dot product grid: Q row × K columns */}
-					<div class="attn-dotprod-grid">
-						<div class="attn-grid-label">Raw scores for <span class="qkv-q-text">q<sub>2</sub></span> (“cat”) attending to each key:</div>
-						<div class="attn-grid-row" id="attn-raw-scores">
-							{/* Populated by JS */}
-						</div>
+				<div class="attn-pipeline-card">
+					<div class="attn-pipeline-header">
+						How <span class="qkv-q-text">q<sub>2</sub></span> ("big") attends to each key
 					</div>
-
-					{/* Scaling step */}
-					<div class="attn-step-arrow">
-						<span class="attn-step-label">&divide; &radic;d<sub>k</sub></span>
-						<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 5V19M12 19L6 13M12 19L18 13" stroke="currentColor" stroke-width="1.5"/></svg>
+					<div class="attn-pipeline-table" id="attn-pipeline-table">
+						{/* Populated by JS — 3 columns (tokens) × 3 rows (raw, scaled, softmax) */}
 					</div>
-
-					{/* Scaled scores */}
-					<div class="attn-dotprod-grid">
-						<div class="attn-grid-label">Scaled scores (/ &radic;d<sub>k</sub>):</div>
-						<div class="attn-grid-row" id="attn-scaled-scores">
-							{/* Populated by JS */}
-						</div>
-					</div>
-
-					{/* Temperature slider */}
-					<div class="attn-temp-control">
+					<div class="attn-pipeline-temp">
 						<label class="attn-temp-label" id="attn-temp-display">Temperature: 1.0</label>
 						<input type="range" id="attn-temp-slider" class="attn-temp-slider" min="0.1" max="3.0" step="0.1" value="1.0" />
 						<div class="attn-temp-range">
 							<span>0.1 (sharp)</span>
 							<span>3.0 (smooth)</span>
 						</div>
-					</div>
-
-					{/* Softmax step */}
-					<div class="attn-step-arrow">
-						<span class="attn-step-label">softmax</span>
-						<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 5V19M12 19L6 13M12 19L18 13" stroke="currentColor" stroke-width="1.5"/></svg>
-					</div>
-
-					{/* Softmax bar chart */}
-					<div class="attn-softmax-chart">
-						<div class="attn-grid-label">Attention weights (softmax output):</div>
-						<div class="attn-bars-container" id="attn-bars">
-							{/* Populated by JS */}
-						</div>
-						<div class="attn-bars-sum" id="attn-sum">Sum = 1.000</div>
 					</div>
 				</div>
 
@@ -825,11 +700,16 @@ const sections = [
 				</div>
 
 				<div class="attn-heatmap-container" id="attn-heatmap">
-					<div class="attn-heatmap-title">Attention weights for "The cat sat"</div>
-					<div class="attn-heatmap-subtitle">Each row shows where that token looks (query → key)</div>
+					<div class="attn-heatmap-title">Attention weights for “The big cat sat quietly”</div>
+					<div class="attn-heatmap-subtitle">Each row is one token’s attention distribution across all keys</div>
 
-					{/* Single flat grid: 4 columns (label + 3 cells), 4 rows (header + 3 data) */}
-					<div class="attn-heatmap-grid" id="heatmap-grid"></div>
+					<div class="attn-heatmap-wrap">
+						<div class="attn-heatmap-axis-query">query</div>
+						<div class="attn-heatmap-inner">
+							<div class="attn-heatmap-axis-key">key</div>
+							<div class="attn-heatmap-grid" id="heatmap-grid"></div>
+						</div>
+					</div>
 
 					{/* Tooltip */}
 					<div class="attn-heatmap-tooltip" id="heatmap-tooltip"></div>
@@ -941,46 +821,34 @@ const sections = [
 					</p>
 				</div>
 
-				{/* Pipeline recap mini-diagram */}
-				<div class="attn-pipeline-recap">
-					<div class="attn-pipeline-title">Single attention head — full pipeline</div>
-					<div class="attn-pipeline-flow">
-						<div class="attn-pipeline-box attn-pipe-input">Input vectors</div>
-						<div class="attn-pipeline-arrow">&rarr;</div>
-						<div class="attn-pipeline-box attn-pipe-qkv">
-							<span class="qkv-q-text">Q</span> <span class="qkv-k-text">K</span> <span class="qkv-v-text">V</span>
-						</div>
-						<div class="attn-pipeline-arrow">&rarr;</div>
-						<div class="attn-pipeline-box attn-pipe-dot">QK<sup>T</sup>/&radic;d<sub>k</sub></div>
-						<div class="attn-pipeline-arrow">&rarr;</div>
-						<div class="attn-pipeline-box attn-pipe-softmax">softmax</div>
-						<div class="attn-pipeline-arrow">&rarr;</div>
-						<div class="attn-pipeline-box attn-pipe-wv">&times; V</div>
-						<div class="attn-pipeline-arrow">&rarr;</div>
-						<div class="attn-pipeline-box attn-pipe-output">Output</div>
-					</div>
-					<div class="attn-pipeline-labels">
-						<span>04a</span>
-						<span></span>
-						<span>04a</span>
-						<span></span>
-						<span>04b</span>
-						<span></span>
-						<span>04b</span>
-						<span></span>
-						<span>04d</span>
-						<span></span>
-						<span>04d</span>
-					</div>
+				{/* 04e: Inside One Attention Head — Stepped Walkthrough */}
+				<div class="subsection-divider"></div>
+				<h3 class="subsection-title">04e: Inside One Attention Head</h3>
+
+				<div class="linkage-callout reveal linkage-attention">
+					<span class="linkage-icon">&#8599;</span>
+					<span><strong>Synthesis</strong> — Sections 04a–04d covered each component in isolation. This walkthrough opens the black box
+					and traces a single input through every operation inside one attention head — 
+					from raw text to contextualized output.</span>
 				</div>
 
-				<div class="section-prose reveal">
-					<p>
-						This completes single-head attention: project to Q, K, V; compute scaled dot-product
-						scores; normalize via softmax; take the weighted sum of values. A single head learns
-						one compatibility function. Multiple heads (§05) decompose the representation space
-						into independent subspaces, each learning different relational patterns.
-					</p>
+				<div class="head-walk-container reveal">
+					<div class="head-walk-controls">
+						<button id="head-walk-back-btn" class="qkv-btn" disabled>◀ Back</button>
+						<button id="head-walk-step-btn" class="qkv-btn qkv-btn-step">Next ▶</button>
+						<button id="head-walk-reset-btn" class="qkv-btn">Reset</button>
+						<span id="head-walk-step-label" class="qkv-step-label">Step 1 / 12</span>
+					</div>
+					<div class="head-walk-body">
+						<div class="head-walk-viz-scroll">
+							<div id="head-walk-viz" class="head-walk-viz"></div>
+						</div>
+						<div class="head-walk-annotation">
+							<div id="head-walk-ann-title" class="head-walk-ann-title">The Black Box</div>
+							<div id="head-walk-ann-text" class="head-walk-ann-text">We will open this black box step by step, tracing an input sentence through every operation inside a single attention head.</div>
+							<div id="head-walk-ann-shape" class="head-walk-ann-shape"></div>
+						</div>
+					</div>
 				</div>
 			</section>
 
@@ -1177,30 +1045,6 @@ const sections = [
 					</div>
 				</div>
 
-				{/* Interactive head toggle */}
-				<div class="mha-toggle-container" id="mha-toggle-container">
-					<div class="mha-toggle-title">Toggle heads on/off</div>
-					<div class="mha-toggle-desc">Disable a head to see how the output changes. Each head contributes a unique perspective.</div>
-					<div class="mha-toggle-buttons" id="mha-toggle-buttons">
-						<button class="mha-toggle-btn mha-toggle-active" data-head="1" id="mha-toggle-1">
-							<span class="mha-toggle-indicator"></span>
-							Head 1 <span class="mha-toggle-role">positional</span>
-						</button>
-						<button class="mha-toggle-btn mha-toggle-active" data-head="2" id="mha-toggle-2">
-							<span class="mha-toggle-indicator"></span>
-							Head 2 <span class="mha-toggle-role">syntactic</span>
-						</button>
-						<button class="mha-toggle-btn mha-toggle-active" data-head="3" id="mha-toggle-3">
-							<span class="mha-toggle-indicator"></span>
-							Head 3 <span class="mha-toggle-role">identity</span>
-						</button>
-					</div>
-					<div class="mha-toggle-result" id="mha-toggle-result">
-						<div class="mha-toggle-result-label">Combined output for &ldquo;cat&rdquo;:</div>
-						<div class="mha-toggle-result-vec" id="mha-toggle-result-vec">[0.23, &minus;0.08, 0.41, 0.55, &hellip;]</div>
-						<div class="mha-toggle-result-note" id="mha-toggle-result-note">All 3 heads active &mdash; full context from position, syntax, and identity.</div>
-					</div>
-				</div>
 
 				{/* Closing prose + residual stream handoff */}
 				<div class="section-prose reveal">
@@ -2546,11 +2390,11 @@ const sections = [
 	/* ===== Sidenote elements (gutter-positioned on desktop) ===== */
 	.sidenote {
 		position: absolute;
-		left: 0;
+		left: -2rem;
 		right: 0;
 		font-size: 0.78rem;
 		line-height: 1.45;
-		color: hsl(var(--theme-text) / 0.55);
+		color: hsl(var(--theme-text) / 0.38);
 		transition: color 0.15s ease, opacity 0.15s ease;
 	}
 
@@ -2788,151 +2632,9 @@ const sections = [
 		font-weight: 600;
 	}
 
-	/* ===== Timeline ===== */
-	.preamble-timeline {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		gap: 0;
-		padding: 2.5rem 0 2rem 1.5rem;
-		margin: 2rem 0;
-	}
-
-	.timeline-track {
-		position: absolute;
-		left: 7px;
-		top: 2.5rem;
-		bottom: 2rem;
-		width: 2px;
-		background: hsl(var(--theme-text) / 0.08);
-		border-radius: 1px;
-	}
-
-	.timeline-item {
-		display: flex;
-		align-items: flex-start;
-		gap: 1rem;
-		padding: 0.75rem 0;
-		position: relative;
-	}
-
-	.timeline-dot {
-		flex-shrink: 0;
-		width: 16px;
-		height: 16px;
-		border-radius: 50%;
-		border: 2px solid;
-		position: relative;
-		left: -1.5rem;
-		margin-right: -1.5rem;
-		z-index: 1;
-	}
-
-	.timeline-dot-past {
-		border-color: hsl(var(--theme-text) / 0.2);
-		background: hsl(var(--theme-bg));
-	}
-
-	.timeline-dot-present {
-		border-color: hsl(var(--theme-accent));
-		background: hsl(var(--theme-accent));
-		box-shadow: 0 0 0 4px hsl(var(--theme-accent) / 0.15);
-	}
-
-	.timeline-dot-future {
-		border-color: hsl(var(--theme-accent) / 0.4);
-		background: hsl(var(--theme-bg));
-	}
-
-	.timeline-content {
-		display: flex;
-		flex-direction: column;
-		gap: 2px;
-		padding-left: 0.5rem;
-	}
-
-	.timeline-year {
-		font-family: ui-monospace, monospace;
-		font-size: 0.72rem;
-		font-weight: 600;
-		color: hsl(var(--theme-accent) / 0.7);
-		letter-spacing: 0.03em;
-	}
-
-	.timeline-label {
-		font-size: 0.95rem;
-		font-weight: 600;
-		color: hsl(var(--theme-text) / 0.85);
-	}
-
-	.timeline-desc {
-		font-size: 0.82rem;
-		color: hsl(var(--theme-text) / 0.5);
-	}
-
-	/* ===== Visual vocabulary ===== */
-	.preamble-vocab {
-		margin: 2.5rem 0;
-	}
-
-	.vocab-intro {
-		font-size: 1.05rem;
-		line-height: 1.75;
-		color: hsl(var(--theme-text) / 0.78);
-		margin-bottom: 1.25rem;
-		max-width: 52rem;
-	}
-
-	.vocab-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-		gap: 12px;
-	}
-
-	.vocab-item {
-		display: flex;
-		align-items: center;
-		gap: 12px;
-		padding: 10px 14px;
-		border-radius: 8px;
-		border: 1px solid hsl(var(--theme-text) / 0.06);
-		background: hsl(var(--theme-text) / 0.02);
-	}
-
-	.vocab-swatch {
-		flex-shrink: 0;
-		width: 28px;
-		height: 28px;
-		border-radius: 6px;
-	}
-
-	/* Component colors — these will be reused in all subsequent sections */
-	.vocab-embedding  { background: hsl(210 70% 55%); } /* blue */
-	.vocab-attention  { background: hsl(35 90% 55%); }  /* amber/orange */
-	.vocab-ffn        { background: hsl(150 55% 45%); } /* green */
-	.vocab-residual   { background: hsl(270 50% 58%); } /* purple */
-	.vocab-output     { background: hsl(350 65% 55%); } /* rose/red */
-
-	.vocab-meta {
-		display: flex;
-		flex-direction: column;
-		gap: 1px;
-	}
-
-	.vocab-name {
-		font-size: 0.85rem;
-		font-weight: 600;
-		color: hsl(var(--theme-text) / 0.85);
-	}
-
-	.vocab-hint {
-		font-size: 0.72rem;
-		color: hsl(var(--theme-text) / 0.45);
-	}
-
 	/* ===== Black box teaser ===== */
 	.preamble-teaser {
-		margin: 3rem 0 1rem;
+		margin: 2rem 0;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -2942,7 +2644,12 @@ const sections = [
 	.teaser-box {
 		display: flex;
 		align-items: center;
-		gap: 1.5rem;
+		gap: 0.75rem;
+	}
+
+	.teaser-arrow {
+		font-size: 1.2rem;
+		color: hsl(var(--theme-text) / 0.25);
 	}
 
 	.teaser-label-in,
@@ -2988,9 +2695,6 @@ const sections = [
 			width: 90px;
 			height: 64px;
 		}
-		.vocab-grid {
-			grid-template-columns: 1fr;
-		}
 	}
 
 	/* ===== Architecture diagram ===== */
@@ -3022,37 +2726,6 @@ const sections = [
 	.arch-diagram-wrap {
 		position: relative;
 		margin: 1.5rem 0;
-	}
-
-	.arch-controls {
-		display: flex;
-		justify-content: flex-end;
-		margin-bottom: 0.75rem;
-	}
-
-	.arch-animate-btn {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		padding: 6px 14px;
-		border-radius: 6px;
-		border: 1px solid hsl(var(--theme-text) / 0.12);
-		background: hsl(var(--theme-text) / 0.03);
-		color: hsl(var(--theme-text) / 0.65);
-		font-size: 0.78rem;
-		font-weight: 500;
-		cursor: pointer;
-		transition: background 0.15s ease, color 0.15s ease;
-	}
-
-	.arch-animate-btn:hover {
-		background: hsl(var(--theme-accent) / 0.08);
-		color: hsl(var(--theme-accent));
-	}
-
-	.arch-animate-btn.running {
-		color: hsl(var(--theme-accent));
-		border-color: hsl(var(--theme-accent) / 0.3);
 	}
 
 	.arch-diagram {
@@ -3190,33 +2863,13 @@ const sections = [
 		user-select: none;
 	}
 
-	/* Residual connection wrapper */
-	.arch-residual-wrap {
-		position: relative;
-		display: flex;
-		flex-direction: column-reverse;
-		align-items: center;
-		gap: 6px;
-		width: 100%;
-		padding-left: 24px;
-	}
-
-	.arch-residual-line {
-		position: absolute;
-		left: 6px;
-		top: 8px;
-		bottom: 8px;
-		width: 3px;
-		border-radius: 2px;
-		background: hsl(270 50% 58% / 0.18);
-	}
 
 	/* Tooltip */
 	.arch-tooltip {
 		position: absolute;
-		bottom: 100%;
-		left: 50%;
-		transform: translateX(-50%) translateY(-8px);
+		top: 0;
+		left: 0;
+		transform: translateY(-50%);
 		max-width: 320px;
 		padding: 10px 14px;
 		border-radius: 8px;
@@ -3235,17 +2888,6 @@ const sections = [
 		opacity: 1;
 	}
 
-	/* Animation: data flow pulse */
-	.arch-block.arch-flow-active {
-		animation: archPulse 0.5s ease;
-	}
-
-	@keyframes archPulse {
-		0%   { transform: scale(1); box-shadow: none; }
-		50%  { transform: scale(1.06); box-shadow: 0 0 12px hsl(var(--theme-accent) / 0.3); }
-		100% { transform: scale(1); box-shadow: none; }
-	}
-
 	@media (max-width: 640px) {
 		.arch-block {
 			max-width: none;
@@ -3256,9 +2898,6 @@ const sections = [
 		}
 		.arch-norm-sm {
 			max-width: none;
-		}
-		.arch-residual-wrap {
-			padding-left: 18px;
 		}
 		.arch-tooltip {
 			max-width: 260px;
@@ -3427,9 +3066,9 @@ const sections = [
 
 	/* Punctuation / special */
 	.token-special {
-		background: hsl(var(--theme-text) / 0.06);
-		color: hsl(var(--theme-text) / 0.5);
-		border: 1px solid hsl(var(--theme-text) / 0.1);
+		background: hsl(350 50% 55% / 0.1);
+		color: hsl(350 50% 55%);
+		border: 1px solid hsl(350 50% 55% / 0.2);
 	}
 
 	/* Legend swatches */
@@ -3450,7 +3089,7 @@ const sections = [
 
 	.token-whole-example { background: hsl(210 60% 55% / 0.25); width: 12px; height: 12px; border-radius: 3px; }
 	.token-sub-example { background: hsl(35 80% 50% / 0.25); width: 12px; height: 12px; border-radius: 3px; }
-	.token-special-example { background: hsl(var(--theme-text) / 0.15); width: 12px; height: 12px; border-radius: 3px; }
+	.token-special-example { background: hsl(350 50% 55% / 0.25); width: 12px; height: 12px; border-radius: 3px; }
 
 	/* ===== Embedding transition (token → vector) ===== */
 	.embed-transition {
@@ -4075,68 +3714,122 @@ const sections = [
 		padding-bottom: 1px;
 	}
 
-	.attn-dotprod-container {
+	/* ===== Dot product pipeline card ===== */
+	.attn-pipeline-card {
 		margin: 2rem 0;
+		padding: 1.5rem;
+		border-radius: 12px;
+		border: 1px solid hsl(var(--theme-text) / 0.08);
+		background: hsl(var(--theme-text) / 0.015);
 		max-width: 52rem;
 	}
 
-	.attn-dotprod-grid {
-		margin-bottom: 0.5rem;
-	}
-
-	.attn-grid-label {
-		font-size: 0.85rem;
-		color: hsl(var(--theme-text) / 0.55);
-		margin-bottom: 8px;
-	}
-
-	.attn-grid-row {
-		display: flex;
-		gap: 10px;
-	}
-
-	.attn-score-cell {
-		flex: 1;
-		padding: 12px 8px;
-		border-radius: 8px;
-		text-align: center;
-		border: 1.5px solid hsl(var(--theme-text) / 0.12);
-		background: hsl(var(--theme-text) / 0.02);
-		transition: background 0.2s, border-color 0.2s;
-	}
-
-	.attn-score-token {
-		font-size: 0.75rem;
+	.attn-pipeline-header {
+		font-size: 0.78rem;
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
 		color: hsl(var(--theme-text) / 0.45);
-		margin-bottom: 4px;
+		margin-bottom: 1rem;
+		text-align: center;
 	}
 
-	.attn-score-value {
-		font-size: 1.1rem;
-		font-weight: 600;
+	.attn-pipeline-table {
+		display: grid;
+		grid-template-columns: auto repeat(5, 1fr);
+		gap: 0;
 		font-variant-numeric: tabular-nums;
-		color: hsl(var(--theme-text) / 0.85);
 	}
 
-	.attn-step-arrow {
+	.attn-pl-label {
+		display: flex;
+		align-items: center;
+		padding: 8px 12px 8px 0;
+		font-size: 0.75rem;
+		font-weight: 500;
+		color: hsl(var(--theme-text) / 0.45);
+		white-space: nowrap;
+	}
+
+	.attn-pl-cell {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 2px;
-		margin: 10px 0;
-		color: hsl(var(--theme-text) / 0.35);
+		justify-content: center;
+		padding: 10px 8px;
+		border-bottom: 1px solid hsl(var(--theme-text) / 0.06);
+		gap: 4px;
 	}
 
-	.attn-step-label {
-		font-size: 0.8rem;
+	.attn-pl-cell-head {
+		font-size: 0.72rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.55);
+		padding: 6px 8px 8px;
+		text-align: center;
+		border-bottom: 1px solid hsl(var(--theme-text) / 0.1);
+	}
+
+	.attn-pl-value {
+		font-size: 1rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.85);
+	}
+
+	.attn-pl-arrow-row {
+		grid-column: 1 / -1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		padding: 4px 0;
+		color: hsl(var(--theme-text) / 0.25);
+		font-size: 0.78rem;
+	}
+
+	.attn-pl-arrow-label {
+		font-size: 0.75rem;
 		font-weight: 500;
-		color: hsl(35 90% 55% / 0.8);
-		font-family: Georgia, serif;
+		color: hsl(35 90% 55% / 0.7);
+		font-style: italic;
 	}
 
-	.attn-temp-control {
-		margin: 16px 0;
+	.attn-pl-bar-cell {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: flex-end;
+		padding: 8px;
+		gap: 4px;
+	}
+
+	.attn-pl-bar-wrap {
+		width: 100%;
+		height: 60px;
+		display: flex;
+		align-items: flex-end;
+	}
+
+	.attn-pl-bar {
+		width: 100%;
+		border-radius: 3px 3px 0 0;
+		transition: height 0.3s ease, background 0.3s ease;
+		min-height: 2px;
+	}
+
+	.attn-pl-weight {
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.8);
+	}
+
+	.attn-pipeline-temp {
+		margin-top: 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid hsl(var(--theme-text) / 0.06);
 		max-width: 320px;
+		margin-left: auto;
+		margin-right: auto;
 	}
 
 	.attn-temp-label {
@@ -4146,6 +3839,7 @@ const sections = [
 		color: hsl(var(--theme-text) / 0.7);
 		margin-bottom: 6px;
 		font-variant-numeric: tabular-nums;
+		text-align: center;
 	}
 
 	.attn-temp-slider {
@@ -4187,69 +3881,10 @@ const sections = [
 		margin-top: 4px;
 	}
 
-	.attn-softmax-chart {
-		margin-top: 0.5rem;
-	}
-
-	.attn-bars-container {
-		display: flex;
-		gap: 10px;
-		align-items: flex-end;
-		height: 140px;
-		padding-bottom: 24px;
-		position: relative;
-	}
-
-	.attn-bar-col {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		height: 100%;
-		justify-content: flex-end;
-	}
-
-	.attn-bar {
-		width: 100%;
-		border-radius: 4px 4px 0 0;
-		transition: height 0.3s ease, background 0.3s ease;
-		min-height: 2px;
-	}
-
-	.attn-bar-value {
-		font-size: 0.75rem;
-		font-weight: 600;
-		color: hsl(var(--theme-text) / 0.7);
-		margin-bottom: 4px;
-		font-variant-numeric: tabular-nums;
-	}
-
-	.attn-bar-token {
-		font-size: 0.72rem;
-		color: hsl(var(--theme-text) / 0.45);
-		margin-top: 6px;
-		position: absolute;
-		bottom: 0;
-	}
-
-	.attn-bars-sum {
-		text-align: center;
-		font-size: 0.78rem;
-		color: hsl(var(--theme-text) / 0.4);
-		margin-top: 8px;
-		font-variant-numeric: tabular-nums;
-	}
-
 	@media (max-width: 480px) {
-		.attn-grid-row {
-			gap: 6px;
-		}
-		.attn-score-cell {
-			padding: 8px 4px;
-		}
-		.attn-score-value {
-			font-size: 0.9rem;
-		}
+		.attn-pipeline-card { padding: 1rem; }
+		.attn-pl-value { font-size: 0.85rem; }
+		.attn-pl-bar-wrap { height: 40px; }
 	}
 
 	/* ===== Feature #10: Attention heatmap ===== */
@@ -4276,30 +3911,57 @@ const sections = [
 		margin-bottom: 1.25rem;
 	}
 
+	.attn-heatmap-wrap {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+	}
+
+	.attn-heatmap-axis-query {
+		font-size: 0.7rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: hsl(var(--theme-text) / 0.3);
+		writing-mode: vertical-lr;
+		transform: rotate(180deg);
+	}
+
+	.attn-heatmap-inner {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.attn-heatmap-axis-key {
+		font-size: 0.7rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: hsl(var(--theme-text) / 0.3);
+		margin-bottom: 4px;
+	}
+
 	.attn-heatmap-grid {
 		display: grid;
-		grid-template-columns: auto repeat(3, 80px);
-		grid-template-rows: auto repeat(3, 80px);
-		gap: 4px;
-		justify-content: center;
+		grid-template-columns: 80px repeat(5, 58px);
+		grid-template-rows: auto repeat(5, 48px);
+		gap: 2px;
 		align-items: center;
 	}
 
 	.attn-heatmap-corner {
-		font-size: 0.7rem;
-		color: hsl(var(--theme-text) / 0.4);
-		text-align: right;
-		padding-right: 10px;
-		padding-bottom: 4px;
-		line-height: 1.2;
+		width: 1px;
+		height: 1px;
 	}
 
 	.attn-heatmap-col-label {
 		text-align: center;
-		font-size: 0.82rem;
-		font-weight: 600;
+		font-size: 0.78rem;
+		font-weight: 500;
 		padding: 4px 0;
-		color: hsl(var(--theme-text) / 0.7);
+		color: hsl(var(--theme-text) / 0.5);
 		transition: color 0.15s, opacity 0.15s;
 	}
 
@@ -4314,28 +3976,35 @@ const sections = [
 	.attn-heatmap-row-label {
 		font-size: 0.82rem;
 		font-weight: 600;
-		color: hsl(var(--theme-text) / 0.7);
+		color: hsl(var(--theme-text) / 0.75);
 		text-align: right;
-		padding-right: 10px;
+		padding: 0 14px 0 4px;
+		min-width: 80px;
 		transition: color 0.15s, opacity 0.15s;
+		border-radius: 4px 0 0 4px;
 	}
 
 	.attn-heatmap-row-label.highlight {
-		color: hsl(35 90% 55%);
+		color: hsl(35 80% 48%);
+		font-weight: 700;
 	}
 
 	.attn-heatmap-row-label.dimmed {
 		opacity: 0.3;
 	}
 
+	.attn-heatmap-row-alt {
+		background-color: hsl(var(--theme-text) / 0.025);
+	}
+
 	.attn-heatmap-cell {
-		width: 80px;
-		height: 80px;
-		border-radius: 8px;
+		width: 58px;
+		height: 48px;
+		border-radius: 4px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 0.85rem;
+		font-size: 0.78rem;
 		font-weight: 600;
 		font-variant-numeric: tabular-nums;
 		cursor: pointer;
@@ -4350,7 +4019,11 @@ const sections = [
 	}
 
 	.attn-heatmap-cell.dimmed {
-		opacity: 0.3;
+		opacity: 0.25;
+	}
+
+	.attn-heatmap-cell.row-active {
+		transform: scale(1.02);
 	}
 
 	.attn-heatmap-tooltip {
@@ -4409,22 +4082,28 @@ const sections = [
 
 	@media (max-width: 480px) {
 		.attn-heatmap-container {
-			padding: 1rem;
+			padding: 0.75rem;
+		}
+		.attn-heatmap-axis-query {
+			display: none;
 		}
 		.attn-heatmap-grid {
-			grid-template-columns: auto repeat(3, 60px);
-			grid-template-rows: auto repeat(3, 60px);
+			grid-template-columns: auto repeat(5, 44px);
+			grid-template-rows: auto repeat(5, 38px);
+			gap: 1px;
 		}
 		.attn-heatmap-cell {
-			width: 60px;
-			height: 60px;
-			font-size: 0.75rem;
+			width: 44px;
+			height: 38px;
+			font-size: 0.65rem;
+			border-radius: 3px;
 		}
 		.attn-heatmap-row-label {
-			font-size: 0.75rem;
+			font-size: 0.68rem;
+			padding-right: 6px;
 		}
 		.attn-heatmap-col-label {
-			font-size: 0.75rem;
+			font-size: 0.65rem;
 		}
 	}
 
@@ -4667,6 +4346,118 @@ const sections = [
 
 	.attn-pipeline-labels span:empty {
 		min-width: 1rem;
+	}
+
+	/* 04e: Head walkthrough — attention head stepped figure */
+	.head-walk-container {
+		margin: 2rem 0;
+		padding: 1.5rem;
+		background: hsl(var(--theme-text) / 0.02);
+		border: 1px solid hsl(var(--theme-text) / 0.08);
+		border-radius: 12px;
+	}
+
+	.head-walk-controls {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-bottom: 12px;
+		flex-wrap: wrap;
+	}
+
+	.head-walk-controls button:disabled {
+		opacity: 0.35;
+		cursor: not-allowed;
+	}
+
+	.head-walk-body {
+		display: grid;
+		grid-template-columns: 1fr 280px;
+		gap: 1rem;
+		align-items: start;
+	}
+
+	.head-walk-viz-scroll {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.head-walk-viz {
+		width: 100%;
+		min-width: 520px;
+		min-height: 340px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+	}
+
+	.head-walk-annotation {
+		padding: 1rem 1.2rem;
+		border-left: 2px solid hsl(var(--theme-text) / 0.08);
+		min-height: 180px;
+	}
+
+	.head-walk-ann-title {
+		font-size: 0.88rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.85);
+		margin-bottom: 0.5rem;
+		transition: color 0.3s;
+	}
+
+	.head-walk-ann-text {
+		font-size: 0.82rem;
+		line-height: 1.55;
+		color: hsl(var(--theme-text) / 0.65);
+		transition: opacity 0.3s;
+	}
+
+	.head-walk-ann-shape {
+		margin-top: 0.8rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.78rem;
+		color: hsl(var(--theme-text) / 0.55);
+		line-height: 1.6;
+	}
+
+	.head-walk-dim-n {
+		color: hsl(320 60% 55%);
+		font-weight: 600;
+	}
+
+	.head-walk-dim-d {
+		color: hsl(185 60% 45%);
+		font-weight: 600;
+	}
+
+	/* Step 1 placeholder viz */
+	.hw-step-placeholder {
+		text-align: center;
+		color: hsl(var(--theme-text) / 0.4);
+		font-size: 0.85rem;
+		font-style: italic;
+	}
+
+	@media (max-width: 640px) {
+		.head-walk-body {
+			grid-template-columns: 1fr;
+		}
+		.head-walk-annotation {
+			border-left: none;
+			border-top: 1px solid hsl(var(--theme-text) / 0.08);
+			padding: 0.8rem 0 0;
+			min-height: auto;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.head-walk-viz {
+			min-width: 400px;
+		}
+		.head-walk-container {
+			padding: 1rem;
+		}
 	}
 
 	@media (max-width: 480px) {
@@ -5087,104 +4878,6 @@ const sections = [
 		margin-top: 0.15rem;
 	}
 
-	/* Toggle buttons */
-	.mha-toggle-container {
-		margin: 2rem 0;
-		padding: 1.5rem;
-		background: hsl(var(--theme-bg));
-		border: 1px solid hsl(var(--theme-text) / 0.1);
-		border-radius: 12px;
-	}
-
-	.mha-toggle-title {
-		font-weight: 600;
-		font-size: 0.85rem;
-		color: hsl(var(--theme-text) / 0.7);
-		margin-bottom: 0.3rem;
-	}
-
-	.mha-toggle-desc {
-		font-size: 0.75rem;
-		color: hsl(var(--theme-text) / 0.4);
-		margin-bottom: 1rem;
-	}
-
-	.mha-toggle-buttons {
-		display: flex;
-		gap: 0.6rem;
-		justify-content: center;
-		flex-wrap: wrap;
-		margin-bottom: 1rem;
-	}
-
-	.mha-toggle-btn {
-		display: flex;
-		align-items: center;
-		gap: 0.4rem;
-		padding: 0.5rem 0.9rem;
-		border-radius: 8px;
-		border: 1px solid hsl(var(--theme-text) / 0.15);
-		background: hsl(var(--theme-text) / 0.04);
-		color: hsl(var(--theme-text) / 0.4);
-		font-size: 0.78rem;
-		font-weight: 600;
-		cursor: pointer;
-		transition: all 0.2s ease;
-	}
-
-	.mha-toggle-btn.mha-toggle-active {
-		border-color: hsl(35 90% 55% / 0.4);
-		background: hsl(35 90% 55% / 0.1);
-		color: hsl(var(--theme-text) / 0.8);
-	}
-
-	.mha-toggle-indicator {
-		width: 10px;
-		height: 10px;
-		border-radius: 50%;
-		background: hsl(var(--theme-text) / 0.15);
-		transition: background 0.2s ease;
-	}
-
-	.mha-toggle-active .mha-toggle-indicator {
-		background: hsl(35 90% 55%);
-	}
-
-	.mha-toggle-role {
-		font-size: 0.65rem;
-		color: hsl(var(--theme-text) / 0.35);
-		font-weight: 400;
-	}
-
-	.mha-toggle-result {
-		text-align: center;
-		padding: 0.8rem;
-		background: hsl(var(--theme-text) / 0.03);
-		border-radius: 8px;
-	}
-
-	.mha-toggle-result-label {
-		font-size: 0.75rem;
-		font-weight: 600;
-		color: hsl(var(--theme-text) / 0.5);
-		margin-bottom: 0.3rem;
-	}
-
-	.mha-toggle-result-vec {
-		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		font-size: 0.78rem;
-		color: hsl(35 90% 55%);
-		font-weight: 600;
-		margin-bottom: 0.3rem;
-		transition: color 0.3s ease;
-	}
-
-	.mha-toggle-result-note {
-		font-size: 0.7rem;
-		color: hsl(var(--theme-text) / 0.4);
-		font-style: italic;
-		transition: color 0.3s ease;
-	}
 
 	/* Residual stream handoff */
 	.mha-residual-handoff {
@@ -5275,11 +4968,7 @@ const sections = [
 		.mha-concat-head-vec {
 			min-width: 160px;
 		}
-		.mha-toggle-buttons {
-			flex-direction: column;
-			align-items: center;
-		}
-		.mha-residual-flow {
+.mha-residual-flow {
 			flex-direction: column;
 		}
 		.mha-residual-plus,
@@ -7390,6 +7079,12 @@ const sections = [
 		const tokCount = document.getElementById('tokenizer-count');
 
 		if (tokInput && tokOutput) {
+			// Find Astro scoping attribute for dynamic elements
+			var tokAstroAttr = null;
+			Array.from(tokOutput.attributes).forEach(function(attr) {
+				if (attr.name.indexOf('data-astro-cid-') === 0) tokAstroAttr = attr.name;
+			});
+
 			// Simple BPE-like tokenizer simulation
 			// Splits text into tokens that approximate real subword tokenization
 			function simpleTokenize(text) {
@@ -7448,9 +7143,9 @@ const sections = [
 							// Simulate subword splitting
 							const prefix = seg.slice(0, Math.ceil(seg.length * 0.6));
 							const suffix = seg.slice(prefix.length);
-							tokens.push({ text: (tokens.length === 0 ? '' : leading) + prefix, type: 'whole' });
+							tokens.push({ text: (tokens.length === 0 ? '' : leading) + prefix, type: 'sub' });
 							if (suffix) {
-								tokens.push({ text: '##' + suffix, type: 'sub' });
+								tokens.push({ text: suffix, type: 'sub' });
 							}
 						}
 					}
@@ -7474,6 +7169,7 @@ const sections = [
 				tokens.forEach((tok, i) => {
 					const chip = document.createElement('span');
 					chip.className = 'token-chip token-' + tok.type;
+					if (tokAstroAttr) chip.setAttribute(tokAstroAttr, '');
 					chip.textContent = tok.text;
 					chip.title = 'Token ' + i + ' [' + tok.type + ']';
 					tokOutput.appendChild(chip);
@@ -7483,7 +7179,7 @@ const sections = [
 			tokInput.addEventListener('input', () => renderTokens(tokInput.value));
 
 			// Show default example on load
-			const defaultText = 'The cat sat on the mat.';
+			const defaultText = 'The fat cat sat quietly on the mat.';
 			tokInput.value = defaultText;
 			renderTokens(defaultText);
 		}
@@ -7784,8 +7480,6 @@ const sections = [
 		// --- Architecture diagram: tooltips + animation ---
 		const archDiagram = document.getElementById('arch-diagram');
 		const archTooltip = document.getElementById('arch-tooltip');
-		const animateBtn = document.getElementById('arch-animate-btn');
-
 		if (archDiagram && archTooltip) {
 			// Tooltip on hover/click
 			const allBlocks = archDiagram.querySelectorAll('[data-tip]');
@@ -7795,16 +7489,16 @@ const sections = [
 				if (!tip) return;
 				archTooltip.textContent = tip;
 				archTooltip.classList.add('visible');
-				// Position relative to diagram wrap
+				// Position to the right of the hovered block
 				const wrap = archDiagram.parentElement;
 				const wrapRect = wrap.getBoundingClientRect();
 				const elRect = el.getBoundingClientRect();
-				const tooltipLeft = elRect.left + elRect.width / 2 - wrapRect.left;
-				const tooltipTop = elRect.top - wrapRect.top - 8;
+				const tooltipLeft = elRect.right - wrapRect.left + 12;
+				const tooltipTop = elRect.top - wrapRect.top + elRect.height / 2;
 				archTooltip.style.left = tooltipLeft + 'px';
 				archTooltip.style.top = tooltipTop + 'px';
 				archTooltip.style.bottom = 'auto';
-				archTooltip.style.transform = 'translateX(-50%)';
+				archTooltip.style.transform = 'translateY(-50%)';
 			}
 
 			function hideTooltip() {
@@ -7823,35 +7517,6 @@ const sections = [
 			});
 		}
 
-		// Animate data flow
-		if (animateBtn && archDiagram) {
-			animateBtn.addEventListener('click', () => {
-				if (animateBtn.classList.contains('running')) return;
-				animateBtn.classList.add('running');
-
-				// Collect blocks in bottom-to-top visual order (column-reverse means DOM order is top-to-bottom visual, so reverse)
-				const blocks = Array.from(archDiagram.querySelectorAll('.arch-block'));
-				const orderedBlocks = blocks.reverse(); // now bottom-to-top
-
-				let i = 0;
-				function pulseNext() {
-					if (i >= orderedBlocks.length) {
-						animateBtn.classList.remove('running');
-						return;
-					}
-					const block = orderedBlocks[i];
-					block.classList.remove('arch-flow-active');
-					void block.offsetWidth; // force reflow
-					block.classList.add('arch-flow-active');
-					block.addEventListener('animationend', () => {
-						block.classList.remove('arch-flow-active');
-					}, { once: true });
-					i++;
-					setTimeout(pulseNext, 300);
-				}
-				pulseNext();
-			});
-		}
 	});
 </script>
 
@@ -7926,6 +7591,17 @@ const sections = [
 		}
 
 		function addRect(parent, x, y, w, h, opts = {}) {
+			// Opaque backing: draw a solid bg rect first so arrows behind don't show through
+			if (opts.opaque) {
+				const bg = ns('rect');
+				bg.setAttribute('x', x);
+				bg.setAttribute('y', y);
+				bg.setAttribute('width', w);
+				bg.setAttribute('height', h);
+				bg.setAttribute('rx', opts.rx || 5);
+				bg.setAttribute('fill', COL_BG);
+				parent.appendChild(bg);
+			}
 			const el = ns('rect');
 			el.setAttribute('x', x);
 			el.setAttribute('y', y);
@@ -7977,28 +7653,36 @@ const sections = [
 			return el;
 		}
 
+		// SVG layers: edges behind, nodes in front
+		var edgeLayer, nodeLayer;
+
 		function drawBase() {
 			svg.innerHTML = '';
+			edgeLayer = ns('g');
+			nodeLayer = ns('g');
+			svg.appendChild(edgeLayer);
+			svg.appendChild(nodeLayer);
 
 			// Column labels
-			addText(svg, INPUT_X + VEC_W / 2, 35, 'Input Vectors', { size: '12', fill: COL_INPUT, weight: '600' });
-			addText(svg, INPUT_X + VEC_W / 2, 50, '(embedding + position)', { size: '10', fill: COL_DIM });
-			addText(svg, MATRIX_X + MATRIX_W / 2, 35, 'Weight Matrices', { size: '12', fill: COL_DIM, weight: '600' });
-			addText(svg, OUTPUT_X + VEC_W / 2, 35, 'Projections', { size: '12', fill: COL_DIM, weight: '600' });
+			addText(nodeLayer, INPUT_X + VEC_W / 2, 35, 'Input Vectors', { size: '12', fill: COL_INPUT, weight: '600' });
+			addText(nodeLayer, INPUT_X + VEC_W / 2, 50, '(embedding + position)', { size: '10', fill: COL_DIM });
+			addText(nodeLayer, MATRIX_X + MATRIX_W / 2, 35, 'Weight Matrices', { size: '12', fill: COL_DIM, weight: '600' });
+			addText(nodeLayer, OUTPUT_X + VEC_W / 2, 35, 'Projections', { size: '12', fill: COL_DIM, weight: '600' });
 
 			// Draw input vectors (always visible)
 			tokens.forEach((tok, i) => {
 				const y = ROW_Y[i];
-				addRect(svg, INPUT_X, y - VEC_H / 2, VEC_W, VEC_H, {
+				addRect(nodeLayer, INPUT_X, y - VEC_H / 2, VEC_W, VEC_H, {
 					fill: withAlpha(COL_INPUT, 0.15),
 					stroke: COL_INPUT,
-					sw: 1.5
+					sw: 1.5,
+					opaque: true
 				});
-				addText(svg, INPUT_X + VEC_W / 2, y + 1, `x${String.fromCharCode(8321 + i)}`, {
+				addText(nodeLayer, INPUT_X + VEC_W / 2, y + 1, `x${String.fromCharCode(8321 + i)}`, {
 					size: '14', fill: COL_INPUT, weight: '600', family: 'Georgia, serif'
 				});
 				// Token label below
-				addText(svg, INPUT_X + VEC_W / 2, y + VEC_H / 2 + 16, `"${tok}"`, {
+				addText(nodeLayer, INPUT_X + VEC_W / 2, y + VEC_H / 2 + 16, `"${tok}"`, {
 					size: '11', fill: COL_DIM
 				});
 			});
@@ -8013,11 +7697,12 @@ const sections = [
 			matrices.forEach((m, mi) => {
 				const mx = MATRIX_X;
 				const my = ROW_Y[mi];
-				addRect(svg, mx, my - MATRIX_H / 2, MATRIX_W, MATRIX_H, {
+				addRect(nodeLayer, mx, my - MATRIX_H / 2, MATRIX_W, MATRIX_H, {
 					fill: withAlpha(m.color, 0.08),
 					stroke: m.color,
 					sw: 1.5,
-					dash: '4 3'
+					dash: '4 3',
+					opaque: true
 				});
 				// W subscript label
 				const wText = ns('text');
@@ -8029,7 +7714,7 @@ const sections = [
 				wText.setAttribute('font-weight', '600');
 				wText.setAttribute('font-family', 'Georgia, serif');
 				wText.innerHTML = `W<tspan baseline-shift="sub" font-size="11">${m.sub}</tspan>`;
-				svg.appendChild(wText);
+				nodeLayer.appendChild(wText);
 			});
 
 			// Draw output placeholders (3 outputs per token = 9 boxes arranged in grid)
@@ -8043,7 +7728,7 @@ const sections = [
 				projections.forEach((p, pi) => {
 					const ox = OUTPUT_X + pi * (VEC_W + 12);
 					const oy = ROW_Y[ti];
-					addRect(svg, ox, oy - VEC_H / 2, VEC_W, VEC_H, {
+					addRect(nodeLayer, ox, oy - VEC_H / 2, VEC_W, VEC_H, {
 						fill: 'transparent',
 						stroke: COL_DIM,
 						sw: 1,
@@ -8057,7 +7742,7 @@ const sections = [
 			// Output column sub-labels
 			projections.forEach((p, pi) => {
 				const ox = OUTPUT_X + pi * (VEC_W + 12);
-				addText(svg, ox + VEC_W / 2, 50, p.label, {
+				addText(nodeLayer, ox + VEC_W / 2, 50, p.label, {
 					size: '13', fill: p.color, weight: '700', family: 'Georgia, serif'
 				});
 			});
@@ -8086,29 +7771,29 @@ const sections = [
 				const outputY = ROW_Y[ti];
 				const ox = OUTPUT_X + pi * (VEC_W + 12);
 
-				// Arrow: input → matrix
-				addArrow(svg, INPUT_X + VEC_W, inputY, MATRIX_X, matrixY, col, {
+				// Arrows go into edgeLayer (rendered behind nodes)
+				addArrow(edgeLayer, INPUT_X + VEC_W, inputY, MATRIX_X, matrixY, col, {
 					sw: isActive ? 2 : 1.2,
 					opacity: isActive ? '1' : '0.35',
 					cls: isActive ? 'qkv-arrow-active' : ''
 				});
 
-				// Arrow: matrix → output
-				addArrow(svg, MATRIX_X + MATRIX_W, matrixY, ox, outputY, col, {
+				addArrow(edgeLayer, MATRIX_X + MATRIX_W, matrixY, ox, outputY, col, {
 					sw: isActive ? 2 : 1.2,
 					opacity: isActive ? '1' : '0.35',
 					cls: isActive ? 'qkv-arrow-active' : ''
 				});
 
-				// Fill the output box
-				addRect(svg, ox, outputY - VEC_H / 2, VEC_W, VEC_H, {
+				// Output boxes + labels go into nodeLayer (rendered in front)
+				addRect(nodeLayer, ox, outputY - VEC_H / 2, VEC_W, VEC_H, {
 					fill: withAlpha(col, isActive ? 0.2 : 0.1),
 					stroke: col,
 					sw: isActive ? 2 : 1.2,
-					opacity: isActive ? '1' : '0.6'
+					opacity: isActive ? '1' : '0.6',
+					opaque: true
 				});
 				const subscript = String.fromCharCode(8321 + ti);
-				addText(svg, ox + VEC_W / 2, outputY + 1, `${projLabels[pi]}${subscript}`, {
+				addText(nodeLayer, ox + VEC_W / 2, outputY + 1, `${projLabels[pi]}${subscript}`, {
 					size: '13',
 					fill: col,
 					weight: isActive ? '700' : '500',
@@ -8179,156 +7864,354 @@ const sections = [
 </script>
 
 <script is:inline>
-	document.addEventListener('DOMContentLoaded', () => {
-		// --- Dot product attention + softmax interactive ---
-		const rawScoresEl = document.getElementById('attn-raw-scores');
-		const scaledScoresEl = document.getElementById('attn-scaled-scores');
-		const barsEl = document.getElementById('attn-bars');
-		const sumEl = document.getElementById('attn-sum');
-		const tempSlider = document.getElementById('attn-temp-slider');
-		const tempDisplay = document.getElementById('attn-temp-display');
+	// 04e: Head walkthrough — attention head stepped figure (lazy-init)
+	document.addEventListener('DOMContentLoaded', function() {
+		var _hwViz = document.getElementById('head-walk-viz');
+		if (!_hwViz) return;
+		function _hwInit() {
 
-		if (!rawScoresEl || !scaledScoresEl || !barsEl || !tempSlider) return;
+		var viz = document.getElementById('head-walk-viz');
+		if (!viz) return;
 
-		// Simulated dot product scores for q2 ("cat") attending to ["The", "cat", "sat"]
-		const tokens = ['The', 'cat', 'sat'];
-		const rawScores = [2.1, 8.4, 5.7]; // q2·k1, q2·k2, q2·k3
-		const dk = 64; // typical d_k
-		const sqrtDk = Math.sqrt(dk); // 8
+		var backBtn = document.getElementById('head-walk-back-btn');
+		var stepBtn = document.getElementById('head-walk-step-btn');
+		var resetBtn = document.getElementById('head-walk-reset-btn');
+		var stepLabel = document.getElementById('head-walk-step-label');
+		var annTitle = document.getElementById('head-walk-ann-title');
+		var annText = document.getElementById('head-walk-ann-text');
+		var annShape = document.getElementById('head-walk-ann-shape');
 
-		const scaledBase = rawScores.map(s => s / sqrtDk);
-
-		function softmax(scores, temperature) {
-			const scaled = scores.map(s => s / temperature);
-			const maxS = Math.max(...scaled);
-			const exps = scaled.map(s => Math.exp(s - maxS));
-			const sum = exps.reduce((a, b) => a + b, 0);
-			return exps.map(e => e / sum);
+		// Detect Astro scoping attribute
+		var astroAttr = null;
+		Array.from(viz.attributes).forEach(function(attr) {
+			if (attr.name.indexOf('data-astro-cid-') === 0) astroAttr = attr.name;
+		});
+		function el(tag, cls, text) {
+			var e = document.createElement(tag);
+			if (cls) e.className = cls;
+			if (text !== undefined) e.textContent = text;
+			if (astroAttr) e.setAttribute(astroAttr, '');
+			return e;
 		}
 
-		// Render raw score cells
-		function renderRawScores() {
-			rawScoresEl.innerHTML = '';
-			tokens.forEach((tok, i) => {
-				const cell = document.createElement('div');
-				cell.className = 'attn-score-cell';
-				const highlight = rawScores[i] === Math.max(...rawScores) ? ' style="border-color: hsl(35 90% 55% / 0.4); background: hsl(35 90% 55% / 0.06)"' : '';
-				cell.innerHTML = '<div class="attn-score-token">q\u2082 \u00b7 k' + String.fromCharCode(8321 + i) + ' ("' + tok + '")</div>' +
-					'<div class="attn-score-value"' + highlight + '>' + rawScores[i].toFixed(1) + '</div>';
-				rawScoresEl.appendChild(cell);
-			});
+		var TOTAL_STEPS = 12;
+		var currentStep = 1;
+
+		// Step metadata: title, description text, shape info
+		var STEP_DATA = [
+			null, // index 0 unused (1-indexed)
+			{
+				title: 'Step 1: The Black Box',
+				text: 'A transformer takes an input text sequence and predicts the next token. The internals are opaque\u200a\u2014\u200awe will open this black box step by step.',
+				shape: 'Input \u2192 [Transformer] \u2192 Output'
+			},
+			{
+				title: 'Step 2: Tokenize',
+				text: 'The raw text is split into tokens. Most words map to a single token; longer or rarer words are broken into subword pieces.',
+				shape: '\u201cThe fat cat sat quietly on the\u201d \u2192 9 tokens'
+			},
+			{
+				title: 'Step 3: Token Embeddings',
+				text: 'Each token is mapped to a dense vector via a learned embedding lookup. The vector length (d_model) is a core architectural choice\u200a\u2014\u200atypically hundreds to thousands of dimensions.',
+				shape: 'T tokens \u00d7 d_model dimensions'
+			},
+			{
+				title: 'Step 4: Positional Embeddings',
+				text: 'A second set of learned vectors encodes position in the sequence. Without these, the model cannot distinguish word order.',
+				shape: 'Token embedding + Positional embedding'
+			},
+			{
+				title: 'Step 5: Combine Embeddings',
+				text: 'Token and positional embeddings are added element-wise, producing a single vector per token that encodes both identity and position.',
+				shape: 'Combined: T \u00d7 d_model'
+			},
+			{
+				title: 'Step 6: Layer Norm + QKV Weights',
+				text: 'The combined embeddings are normalized, then three learned weight matrices (W_Q, W_K, W_V) prepare the input for attention.',
+				shape: 'X\u0302 (T \u00d7 d_model) \u2192 Q, K, V via learned projections'
+			},
+			{
+				title: 'Step 7: Query Projection',
+				text: 'Each token\u2019s normalized embedding is multiplied by W_Q to produce a query vector\u200a\u2014\u200a\u201cwhat am I looking for?\u201d',
+				shape: 'Q = X\u0302 \u00b7 W_Q \u2192 (T \u00d7 d_head)'
+			},
+			{
+				title: 'Step 8: Value Projection',
+				text: 'The same input is multiplied by W_V to produce value vectors\u200a\u2014\u200a\u201cwhat information do I carry?\u201d',
+				shape: 'V = X\u0302 \u00b7 W_V \u2192 (T \u00d7 d_head)'
+			},
+			{
+				title: 'Step 9: Key Projection + Transpose',
+				text: 'Keys are produced by W_K, then transposed. K\u1d40 flips from (T \u00d7 d_head) to (d_head \u00d7 T)\u200a\u2014\u200athe inner dimensions will match and cancel during multiplication.',
+				shape: 'K\u1d40: (d_head \u00d7 T)'
+			},
+			{
+				title: 'Step 10: QK\u1d40 \u2014 Attention Scores',
+				text: 'Q \u00b7 K\u1d40 computes all pairwise token similarities at once. The d_head inner dimensions cancel, leaving a T \u00d7 T matrix. This is O(n\u00b2) in sequence length.',
+				shape: '(T\u00d7d) \u00b7 (d\u00d7T) = T\u00d7T'
+			},
+			{
+				title: 'Step 11: Attention \u00d7 V',
+				text: 'The attention weights (T \u00d7 T) multiply V (T \u00d7 d_head), restoring the original dimensionality. Each output row is a weighted blend of value vectors.',
+				shape: '(T\u00d7T) \u00b7 (T\u00d7d) = T\u00d7d'
+			},
+			{
+				title: 'Step 12: Residual Stream',
+				text: 'The attention output is added back to the original input (residual connection). This allows information to flow unchanged while attention adds its contribution, then feeds forward to the next layer.',
+				shape: 'Output = Input + Attention(Input)'
+			}
+		];
+
+		function updateAnnotation(step) {
+			var d = STEP_DATA[step];
+			annTitle.textContent = d.title;
+			annText.innerHTML = d.text;
+			annShape.innerHTML = d.shape;
+			stepLabel.textContent = 'Step ' + step + ' / ' + TOTAL_STEPS;
 		}
 
-		// Render scaled score cells
-		function renderScaledScores() {
-			scaledScoresEl.innerHTML = '';
-			tokens.forEach((tok, i) => {
-				const cell = document.createElement('div');
-				cell.className = 'attn-score-cell';
-				cell.innerHTML = '<div class="attn-score-token">"' + tok + '"</div>' +
-					'<div class="attn-score-value">' + scaledBase[i].toFixed(3) + '</div>';
-				scaledScoresEl.appendChild(cell);
-			});
+		function updateButtons() {
+			backBtn.disabled = (currentStep <= 1);
+			stepBtn.disabled = (currentStep >= TOTAL_STEPS);
 		}
 
-		// Render softmax bars
-		function renderBars(temperature) {
-			const weights = softmax(scaledBase, temperature);
-			barsEl.innerHTML = '';
+		function showStep(step) {
+			viz.innerHTML = '';
+			var placeholder = el('div', 'hw-step-placeholder');
+			placeholder.textContent = 'Step ' + step + ' visualization (coming soon)';
+			viz.appendChild(placeholder);
 
-			const maxWeight = Math.max(...weights);
+			updateAnnotation(step);
+			updateButtons();
+		}
 
-			tokens.forEach((tok, i) => {
-				const col = document.createElement('div');
-				col.className = 'attn-bar-col';
-
-				const valLabel = document.createElement('div');
-				valLabel.className = 'attn-bar-value';
-				valLabel.textContent = weights[i].toFixed(3);
-
-				const bar = document.createElement('div');
-				bar.className = 'attn-bar';
-				const heightPct = (weights[i] / maxWeight) * 100;
-				const intensity = 0.3 + weights[i] * 0.7;
-				bar.style.height = Math.max(heightPct, 2) + '%';
-				bar.style.background = 'hsl(35 90% 55% / ' + intensity.toFixed(2) + ')';
-
-				const tokLabel = document.createElement('div');
-				tokLabel.className = 'attn-bar-token';
-				tokLabel.textContent = '"' + tok + '"';
-
-				col.appendChild(valLabel);
-				col.appendChild(bar);
-				col.appendChild(tokLabel);
-				barsEl.appendChild(col);
-			});
-
-			if (sumEl) {
-				const sum = weights.reduce((a, b) => a + b, 0);
-				sumEl.textContent = 'Sum = ' + sum.toFixed(3);
+		function stepForward() {
+			if (currentStep < TOTAL_STEPS) {
+				currentStep++;
+				showStep(currentStep);
 			}
 		}
 
-		// Temperature slider handler
-		tempSlider.addEventListener('input', () => {
-			const temp = parseFloat(tempSlider.value);
-			if (tempDisplay) tempDisplay.textContent = 'Temperature: ' + temp.toFixed(1);
-			renderBars(temp);
-		});
+		function stepBack() {
+			if (currentStep > 1) {
+				currentStep--;
+				showStep(currentStep);
+			}
+		}
+
+		function resetWalk() {
+			currentStep = 1;
+			showStep(1);
+		}
+
+		backBtn.addEventListener('click', stepBack);
+		stepBtn.addEventListener('click', stepForward);
+		resetBtn.addEventListener('click', resetWalk);
 
 		// Initial render
-		renderRawScores();
-		renderScaledScores();
-		renderBars(1.0);
+		showStep(1);
+
+		}
+		// Lazy: init now if near viewport, else wait
+		var _hwr = _hwViz.getBoundingClientRect();
+		if (_hwr.top < window.innerHeight * 1.5) {
+			_hwInit();
+		} else {
+			var _hwio = new IntersectionObserver(function(entries) {
+				if (entries[0].isIntersecting) { _hwio.disconnect(); _hwInit(); }
+			}, { rootMargin: '200px 0px' });
+			_hwio.observe(_hwViz);
+		}
+	});
+</script>
+
+<script is:inline>
+	document.addEventListener('DOMContentLoaded', function() {
+		// --- Dot product pipeline table ---
+		var tableEl = document.getElementById('attn-pipeline-table');
+		var tempSlider = document.getElementById('attn-temp-slider');
+		var tempDisplay = document.getElementById('attn-temp-display');
+		if (!tableEl || !tempSlider) return;
+
+		// Detect Astro scoping attribute
+		var astroAttr = null;
+		Array.from(tableEl.attributes).forEach(function(attr) {
+			if (attr.name.indexOf('data-astro-cid-') === 0) astroAttr = attr.name;
+		});
+		function el(tag, cls, text) {
+			var e = document.createElement(tag);
+			if (cls) e.className = cls;
+			if (text !== undefined) e.textContent = text;
+			if (astroAttr) e.setAttribute(astroAttr, '');
+			return e;
+		}
+
+		var tokens = ['The', 'big', 'cat', 'sat', 'quietly'];
+		var rawScores = [0.9, 2.4, 13.6, 2.1, 0.7];
+		var dk = 64;
+		var sqrtDk = Math.sqrt(dk);
+		var scaledBase = rawScores.map(function(s) { return s / sqrtDk; });
+
+		function softmax(scores, temperature) {
+			var scaled = scores.map(function(s) { return s / temperature; });
+			var maxS = Math.max.apply(null, scaled);
+			var exps = scaled.map(function(s) { return Math.exp(s - maxS); });
+			var sum = exps.reduce(function(a, b) { return a + b; }, 0);
+			return exps.map(function(e) { return e / sum; });
+		}
+
+		// Store references to dynamic elements for updates
+		var barEls = [];
+		var weightEls = [];
+
+		function buildTable(temperature) {
+			tableEl.innerHTML = '';
+			barEls = [];
+			weightEls = [];
+			var weights = softmax(scaledBase, temperature);
+			var maxWeight = Math.max.apply(null, weights);
+
+			// Row 1: Header — empty label + token names
+			tableEl.appendChild(el('div', 'attn-pl-label', ''));
+			tokens.forEach(function(tok) {
+				tableEl.appendChild(el('div', 'attn-pl-cell-head', '\u201c' + tok + '\u201d'));
+			});
+
+			// Row 2: Raw scores
+			tableEl.appendChild(el('div', 'attn-pl-label', 'q\u2082 \u00b7 k\u1d62'));
+			tokens.forEach(function(tok, i) {
+				var cell = el('div', 'attn-pl-cell');
+				cell.appendChild(el('span', 'attn-pl-value', rawScores[i].toFixed(1)));
+				tableEl.appendChild(cell);
+			});
+
+			// Arrow row: ÷√d_k
+			var arrowRow1 = el('div', 'attn-pl-arrow-row');
+			arrowRow1.innerHTML = '\u2193 <span class="attn-pl-arrow-label">\u00f7\u221a' + dk + ' = \u00f7' + sqrtDk.toFixed(0) + '</span>';
+			if (astroAttr) {
+				var innerSpans = arrowRow1.querySelectorAll('span');
+				for (var s = 0; s < innerSpans.length; s++) innerSpans[s].setAttribute(astroAttr, '');
+			}
+			tableEl.appendChild(arrowRow1);
+
+			// Row 3: Scaled scores
+			tableEl.appendChild(el('div', 'attn-pl-label', 'scaled'));
+			tokens.forEach(function(tok, i) {
+				var cell = el('div', 'attn-pl-cell');
+				cell.appendChild(el('span', 'attn-pl-value', scaledBase[i].toFixed(3)));
+				tableEl.appendChild(cell);
+			});
+
+			// Arrow row: softmax
+			var arrowRow2 = el('div', 'attn-pl-arrow-row');
+			arrowRow2.innerHTML = '\u2193 <span class="attn-pl-arrow-label">softmax</span>';
+			if (astroAttr) {
+				var innerSpans2 = arrowRow2.querySelectorAll('span');
+				for (var s2 = 0; s2 < innerSpans2.length; s2++) innerSpans2[s2].setAttribute(astroAttr, '');
+			}
+			tableEl.appendChild(arrowRow2);
+
+			// Row 4: Softmax bars + weights
+			tableEl.appendChild(el('div', 'attn-pl-label', 'weight'));
+			tokens.forEach(function(tok, i) {
+				var cell = el('div', 'attn-pl-bar-cell');
+				var wrap = el('div', 'attn-pl-bar-wrap');
+				var bar = el('div', 'attn-pl-bar');
+				var heightPct = (weights[i] / maxWeight) * 100;
+				var intensity = 0.3 + weights[i] * 0.7;
+				bar.style.height = Math.max(heightPct, 2) + '%';
+				bar.style.background = 'hsl(35 90% 55% / ' + intensity.toFixed(2) + ')';
+				wrap.appendChild(bar);
+				cell.appendChild(wrap);
+				var wt = el('div', 'attn-pl-weight', weights[i].toFixed(3));
+				cell.appendChild(wt);
+				barEls.push(bar);
+				weightEls.push(wt);
+				tableEl.appendChild(cell);
+			});
+		}
+
+		function updateBars(temperature) {
+			var weights = softmax(scaledBase, temperature);
+			var maxWeight = Math.max.apply(null, weights);
+			tokens.forEach(function(tok, i) {
+				var heightPct = (weights[i] / maxWeight) * 100;
+				var intensity = 0.3 + weights[i] * 0.7;
+				barEls[i].style.height = Math.max(heightPct, 2) + '%';
+				barEls[i].style.background = 'hsl(35 90% 55% / ' + intensity.toFixed(2) + ')';
+				weightEls[i].textContent = weights[i].toFixed(3);
+			});
+		}
+
+		tempSlider.addEventListener('input', function() {
+			var temp = parseFloat(tempSlider.value);
+			if (tempDisplay) tempDisplay.textContent = 'Temperature: ' + temp.toFixed(1);
+			updateBars(temp);
+		});
+
+		buildTable(1.0);
 	});
 </script>
 
 <script is:inline>
 	document.addEventListener('DOMContentLoaded', () => {
 		// ===== Feature #10: Attention pattern heatmap =====
-		const tokens = ['The', 'cat', 'sat'];
-		// Realistic attention weights (each row sums to ~1.0)
+		const tokens = ['The', 'big', 'cat', 'sat', 'quietly'];
+		// Realistic attention weights (each row sums to 1.0)
 		// Row = query token, Col = key token
+		// Patterns: adj→noun ("big"→"cat"), adv→verb ("quietly"→"sat"), verb→subject ("sat"→"cat")
 		const attnWeights = [
-			[0.42, 0.31, 0.27],  // "The" attends to: self (0.42), cat (0.31), sat (0.27)
-			[0.21, 0.46, 0.33],  // "cat" attends to: The (0.21), self (0.46), sat (0.33)
-			[0.15, 0.38, 0.47],  // "sat" attends to: The (0.15), cat (0.38), self (0.47)
+			[0.38, 0.08, 0.32, 0.14, 0.08],  // "The": self + determiner→noun
+			[0.07, 0.18, 0.53, 0.14, 0.08],  // "big": adjective→noun (cat)
+			[0.12, 0.24, 0.30, 0.24, 0.10],  // "cat": balanced, self + neighbors
+			[0.06, 0.10, 0.44, 0.25, 0.15],  // "sat": verb→subject (cat)
+			[0.04, 0.06, 0.13, 0.55, 0.22],  // "quietly": adverb→verb (sat)
 		];
 
 		const gridEl = document.getElementById('heatmap-grid');
 		const tooltipEl = document.getElementById('heatmap-tooltip');
 		if (!gridEl || !tooltipEl) return;
 
+		// Detect Astro scoping attribute for dynamic elements
+		var hmAstroAttr = null;
+		Array.from(gridEl.attributes).forEach(function(attr) {
+			if (attr.name.indexOf('data-astro-cid-') === 0) hmAstroAttr = attr.name;
+		});
+		function hmEl(tag, cls) {
+			var e = document.createElement(tag);
+			if (cls) e.className = cls;
+			if (hmAstroAttr) e.setAttribute(hmAstroAttr, '');
+			return e;
+		}
+
 		const allCells = [];
 		const allRowLabels = [];
 		const allColLabels = [];
 
-		// Row 0: corner + column labels
-		const corner = document.createElement('div');
-		corner.className = 'attn-heatmap-corner';
-		corner.innerHTML = 'Key →<br>Query ↓';
+		// Row 0: blank corner + column labels
+		const corner = hmEl('div', 'attn-heatmap-corner');
 		gridEl.appendChild(corner);
 
 		tokens.forEach((tok) => {
-			const label = document.createElement('div');
-			label.className = 'attn-heatmap-col-label';
-			label.textContent = '"' + tok + '"';
+			const label = hmEl('div', 'attn-heatmap-col-label');
+			label.textContent = tok;
 			gridEl.appendChild(label);
 			allColLabels.push(label);
 		});
 
-		// Rows 1-3: row label + cells
+		// Data rows
 		for (let ri = 0; ri < tokens.length; ri++) {
-			const rowLabel = document.createElement('div');
-			rowLabel.className = 'attn-heatmap-row-label';
-			rowLabel.textContent = '"' + tokens[ri] + '"';
+			const rowLabel = hmEl('div', 'attn-heatmap-row-label');
+			rowLabel.dataset.row = ri;
+			rowLabel.textContent = tokens[ri];
+			if (ri % 2 === 1) rowLabel.classList.add('attn-heatmap-row-alt');
 			gridEl.appendChild(rowLabel);
 			allRowLabels.push(rowLabel);
 
 			for (let ci = 0; ci < tokens.length; ci++) {
 				const weight = attnWeights[ri][ci];
-				const cell = document.createElement('div');
-				cell.className = 'attn-heatmap-cell';
+				const cell = hmEl('div', 'attn-heatmap-cell');
+				if (ri % 2 === 1) cell.classList.add('attn-heatmap-row-alt');
 				cell.textContent = weight.toFixed(2);
 				cell.dataset.row = ri;
 				cell.dataset.col = ci;
@@ -8344,37 +8227,33 @@ const sections = [
 					cell.style.color = 'hsl(var(--theme-text) / 0.7)';
 				}
 
-				cell.addEventListener('mouseenter', () => highlightCell(ri, ci));
+				// Row hover: highlight full row on enter, clear on leave
+				cell.addEventListener('mouseenter', () => highlightRow(ri));
 				cell.addEventListener('mouseleave', clearHighlight);
-				cell.addEventListener('click', (e) => {
-					e.stopPropagation();
-					highlightCell(ri, ci);
-				});
 
 				gridEl.appendChild(cell);
 				allCells.push(cell);
 			}
 		}
 
-		function highlightCell(row, col) {
-			const weight = attnWeights[row][col];
-
+		function highlightRow(row) {
 			allRowLabels.forEach((label, i) => {
 				label.classList.toggle('highlight', i === row);
 				label.classList.toggle('dimmed', i !== row);
 			});
-			allColLabels.forEach((label, i) => {
-				label.classList.toggle('highlight', i === col);
-				label.classList.toggle('dimmed', i !== col);
+			allColLabels.forEach((label) => {
+				label.classList.remove('highlight', 'dimmed');
 			});
 
 			allCells.forEach((c) => {
 				const cr = parseInt(c.dataset.row);
-				const cc = parseInt(c.dataset.col);
-				c.classList.toggle('dimmed', cr !== row || cc !== col);
+				c.classList.toggle('dimmed', cr !== row);
+				c.classList.toggle('row-active', cr === row);
 			});
 
-			tooltipEl.textContent = '"' + tokens[row] + '" → "' + tokens[col] + '": ' + weight.toFixed(3);
+			// Show row summary in tooltip
+			const maxIdx = attnWeights[row].indexOf(Math.max(...attnWeights[row]));
+			tooltipEl.textContent = '\u201c' + tokens[row] + '\u201d attends most to \u201c' + tokens[maxIdx] + '\u201d (' + attnWeights[row][maxIdx].toFixed(2) + ')';
 			tooltipEl.classList.add('visible');
 		}
 
@@ -8386,7 +8265,7 @@ const sections = [
 				label.classList.remove('highlight', 'dimmed');
 			});
 			allCells.forEach((c) => {
-				c.classList.remove('dimmed');
+				c.classList.remove('dimmed', 'row-active');
 			});
 			tooltipEl.classList.remove('visible');
 		}
@@ -8488,105 +8367,6 @@ const sections = [
 			}, { rootMargin: '200px 0px' });
 			_lio.observe(_lazyEl);
 		}
-	});
-</script>
-
-<script is:inline>
-	document.addEventListener('DOMContentLoaded', () => {
-		// ===== Feature #13: Head toggle interactive =====
-		const headStates = { 1: true, 2: true, 3: true };
-
-		// Output vectors per head (simulated)
-		const headOutputs = {
-			1: [0.12, 0.45, -0.22, 0.08],
-			2: [-0.31, 0.67, 0.19, 0.44],
-			3: [0.58, -0.14, 0.33, 0.11],
-		};
-
-		// Notes for each combination
-		const stateNotes = {
-			'111': 'All 3 heads active \u2014 full context from position, syntax, and identity.',
-			'110': 'Heads 1+2: positional and syntactic context, but no self-identity preservation.',
-			'101': 'Heads 1+3: positional context with identity, but missing syntactic relationships.',
-			'011': 'Heads 2+3: syntactic and identity info, but no positional awareness.',
-			'100': 'Only positional head \u2014 knows nearby tokens but misses grammar and self-identity.',
-			'010': 'Only syntactic head \u2014 captures grammar but loses position and identity.',
-			'001': 'Only identity head \u2014 preserves self but gains no context from other tokens.',
-			'000': 'All heads disabled \u2014 no attention output. The residual connection still passes through the original input.',
-		};
-
-		function getStateKey() {
-			return (headStates[1] ? '1' : '0') + (headStates[2] ? '1' : '0') + (headStates[3] ? '1' : '0');
-		}
-
-		function computeCombined() {
-			const active = Object.entries(headStates).filter(([_, v]) => v).map(([k]) => parseInt(k));
-			if (active.length === 0) return [0, 0, 0, 0];
-			const result = [0, 0, 0, 0];
-			active.forEach((h) => {
-				headOutputs[h].forEach((v, i) => { result[i] += v; });
-			});
-			// Scale by W_O effect (normalize slightly)
-			const scale = active.length / 3;
-			return result.map((v) => (v * scale));
-		}
-
-		function formatVec(vec) {
-			const formatted = vec.map((v) => v.toFixed(2)).join(', ');
-			return '[' + formatted + ', \u2026]';
-		}
-
-		function updateUI() {
-			const key = getStateKey();
-
-			// Toggle button states
-			[1, 2, 3].forEach((h) => {
-				const btn = document.getElementById('mha-toggle-' + h);
-				if (btn) {
-					btn.classList.toggle('mha-toggle-active', headStates[h]);
-				}
-			});
-
-			// Concat diagram: dim disabled heads
-			[1, 2, 3].forEach((h) => {
-				const headVec = document.querySelector('.mha-concat-h' + h);
-				if (headVec) headVec.classList.toggle('mha-head-disabled', !headStates[h]);
-
-				const seg = document.querySelector('.mha-seg-h' + h);
-				if (seg) seg.classList.toggle('mha-seg-disabled', !headStates[h]);
-			});
-
-			// Update result
-			const combined = computeCombined();
-			const resultVec = document.getElementById('mha-toggle-result-vec');
-			const resultNote = document.getElementById('mha-toggle-result-note');
-
-			if (resultVec) {
-				resultVec.textContent = formatVec(combined);
-				resultVec.style.color = key === '000' ? 'hsl(var(--theme-text) / 0.3)' : '';
-			}
-			if (resultNote) {
-				resultNote.textContent = stateNotes[key] || '';
-			}
-
-			// Update output in concat diagram
-			const outputVals = document.querySelector('.mha-concat-output-vals');
-			if (outputVals) {
-				outputVals.textContent = key === '000' ? '[0.00, 0.00, 0.00, 0.00, \u2026]' : formatVec(combined);
-			}
-		}
-
-		// Attach click handlers
-		[1, 2, 3].forEach((h) => {
-			const btn = document.getElementById('mha-toggle-' + h);
-			if (btn) {
-				btn.addEventListener('click', (e) => {
-					e.stopPropagation();
-					headStates[h] = !headStates[h];
-					updateUI();
-				});
-			}
-		});
 	});
 </script>
 
