@@ -1,0 +1,42 @@
+=== Attention Head Figure — Project Initialized — 2026-02-18 ===
+- Created features.json with 13 features for the attention head walkthrough figure
+- This replaces the existing 04e section with a much more detailed stepped visualization
+- Features cover: scaffold, tokenization, embeddings, positional encodings, layer norm,
+  Q/K/V projections, transpose, QK^T multiplication, attention × V, residual stream
+- Reference: attention-head-figure.md in repo root contains the original design notes
+- Branch: feature/transformers-harness
+- Next: Feature #1 — scaffold the new figure container with back/forward/reset controls
+
+=== Feature #1 Complete — 2026-02-18 ===
+- Replaced old 04e section (7-step SVG matrix walkthrough) with new 12-step attention head scaffold
+- HTML: new container with back/forward/reset controls, div-based viz area, annotation panel
+- CSS: updated styles for div-based viz (removed SVG-specific styles), added disabled button styling
+- JS: new 12-step system (1-indexed), back/forward/reset logic, lazy-init pattern preserved
+- All 12 steps have placeholder text and annotation data ready for per-step visualizations
+- Verified: buttons disable correctly at boundaries, build passes, dark/light themes look clean
+- Commit: 2db7a89
+- Next: Feature #2 — Step 1 loading state: input text, black box, predicted output
+
+=== Feature #2 Complete — 2026-02-18 ===
+- Implemented Step 1 "The Black Box" visualization in the 04e head walkthrough
+- Layout: input tokens (The/fat/cat/sat/quietly/on/the) → arrow → dark "Transformer ?" box → arrow → green "mat" prediction chip
+- CSS: flexbox layout with INPUT/PREDICTION labels, fixed dark box color (hsl(220 15% 12%)) for both themes
+- Mobile: responsive via existing scroll wrapper + smaller box/token sizing at 480px breakpoint
+- Fixed dark theme bug: box used hsl(var(--theme-text) / 0.88) which resolved to light in dark mode; replaced with fixed color
+- showStep() now dispatches to renderStep1() for step 1, placeholder for steps 2–12
+- Verified: forward/back navigation correctly re-renders step 1, build passes, both themes clean
+- Commit: b84586e
+- Next: Feature #3 — Step 2 tokenization: animate separation of words into tokens
+
+=== Feature #3 Complete — 2026-02-18 ===
+- Implemented Step 2 "Tokenize" visualization in the 04e head walkthrough
+- Layout: original sentence text → down arrow → color-coded token chips → token count
+- Tokens: The, fat, cat, sat, quiet, ly, on, the (8 tokens from 7 words)
+- Color coding matches section 03: blue (.hw-tok-whole) for whole words, amber (.hw-tok-sub) for subword pieces
+- "quietly" splits into "quiet" + "ly" with amber styling and a "← quietly" bracket label beneath
+- Staggered CSS animation (hw-chip-in) with per-token delay for visual separation effect
+- Fixed STEP_DATA shape annotation: corrected token count from 9 to 8
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: c6a5310
+- Next: Feature #4 — Step 3 vector embeddings: animate token expansion into embedding vectors

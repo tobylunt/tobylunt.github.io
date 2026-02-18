@@ -4558,6 +4558,130 @@ const sections = [
 		}
 	}
 
+	/* Step 2: Tokenize — animation layout */
+	.hw-tokenize-layout {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.5rem;
+		width: 100%;
+		padding: 1rem 0.5rem;
+	}
+
+	.hw-tok-sentence {
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.92rem;
+		color: hsl(var(--theme-text) / 0.75);
+		letter-spacing: 0.01em;
+		line-height: 1.6;
+		text-align: center;
+		transition: opacity 0.4s ease;
+	}
+
+	.hw-tok-sentence.hw-hidden {
+		opacity: 0;
+		position: absolute;
+		pointer-events: none;
+	}
+
+	.hw-tok-arrow-down {
+		font-size: 1.4rem;
+		color: hsl(var(--theme-text) / 0.25);
+		line-height: 1;
+		animation: hw-fade-in 0.3s ease 0.3s both;
+	}
+
+	.hw-tok-chips-row {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 6px;
+		max-width: 480px;
+	}
+
+	.hw-tok-chip {
+		display: inline-block;
+		padding: 4px 10px;
+		border-radius: 4px;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.82rem;
+		font-weight: 500;
+		line-height: 1.4;
+		white-space: nowrap;
+		opacity: 0;
+		transform: translateY(-8px);
+		animation: hw-chip-in 0.35s ease forwards;
+	}
+
+	/* Whole word token — blue (matches section 03) */
+	.hw-tok-whole {
+		background: hsl(210 60% 55% / 0.12);
+		color: hsl(210 60% 55%);
+		border: 1px solid hsl(210 60% 55% / 0.2);
+	}
+
+	/* Subword piece — amber (matches section 03) */
+	.hw-tok-sub {
+		background: hsl(35 80% 50% / 0.12);
+		color: hsl(35 80% 50%);
+		border: 1px solid hsl(35 80% 50% / 0.2);
+	}
+
+	.hw-tok-split-group {
+		display: inline-flex;
+		gap: 2px;
+		position: relative;
+	}
+
+	.hw-tok-split-bracket {
+		position: absolute;
+		bottom: -16px;
+		left: 0;
+		right: 0;
+		text-align: center;
+		font-size: 0.62rem;
+		color: hsl(35 80% 50% / 0.65);
+		white-space: nowrap;
+		animation: hw-fade-in 0.3s ease 0.5s both;
+	}
+
+	.hw-tok-count {
+		margin-top: 0.5rem;
+		font-size: 0.72rem;
+		color: hsl(var(--theme-text) / 0.4);
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		animation: hw-fade-in 0.3s ease 0.8s both;
+	}
+
+	@keyframes hw-chip-in {
+		from {
+			opacity: 0;
+			transform: translateY(-8px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes hw-fade-in {
+		from { opacity: 0; }
+		to { opacity: 1; }
+	}
+
+	@media (max-width: 480px) {
+		.hw-tok-chips-row {
+			gap: 4px;
+		}
+		.hw-tok-chip {
+			font-size: 0.72rem;
+			padding: 3px 7px;
+		}
+		.hw-tok-sentence {
+			font-size: 0.82rem;
+		}
+	}
+
 	/* Step 1 placeholder viz */
 	.hw-step-placeholder {
 		text-align: center;
@@ -8035,7 +8159,7 @@ const sections = [
 			{
 				title: 'Step 2: Tokenize',
 				text: 'The raw text is split into tokens. Most words map to a single token; longer or rarer words are broken into subword pieces.',
-				shape: '\u201cThe fat cat sat quietly on the\u201d \u2192 9 tokens'
+				shape: '\u201cThe fat cat sat quietly on the\u201d \u2192 8 tokens'
 			},
 			{
 				title: 'Step 3: Token Embeddings',
@@ -8135,11 +8259,70 @@ const sections = [
 			return layout;
 		}
 
+		function renderStep2() {
+			var layout = el('div', 'hw-tokenize-layout');
+
+			// Original sentence (fades away)
+			var sentence = el('div', 'hw-tok-sentence', 'The  fat  cat  sat  quietly  on  the');
+			layout.appendChild(sentence);
+
+			// Downward arrow
+			layout.appendChild(el('div', 'hw-tok-arrow-down', '\u2193'));
+
+			// Token chips row
+			var chipsRow = el('div', 'hw-tok-chips-row');
+
+			// Token data: [text, type ('whole' or 'sub'), stagger delay ms]
+			var tokens = [
+				['The', 'whole', 0],
+				['fat', 'whole', 60],
+				['cat', 'whole', 120],
+				['sat', 'whole', 180],
+				['quiet', 'sub', 260],
+				['ly', 'sub', 320],
+				['on', 'whole', 400],
+				['the', 'whole', 460]
+			];
+
+			var splitGroupStarted = false;
+			var splitGroup = null;
+
+			tokens.forEach(function(tok) {
+				var chip = el('span', 'hw-tok-chip hw-tok-' + tok[1], tok[0]);
+				chip.style.animationDelay = tok[2] + 'ms';
+
+				// Group the two subword pieces together
+				if (tok[1] === 'sub' && !splitGroupStarted) {
+					splitGroupStarted = true;
+					splitGroup = el('span', 'hw-tok-split-group');
+					splitGroup.appendChild(chip);
+					chipsRow.appendChild(splitGroup);
+				} else if (tok[1] === 'sub' && splitGroupStarted) {
+					splitGroup.appendChild(chip);
+					// Add bracket label under the split group
+					var bracket = el('span', 'hw-tok-split-bracket', '\u2190 quietly');
+					splitGroup.appendChild(bracket);
+					splitGroupStarted = false;
+				} else {
+					chipsRow.appendChild(chip);
+				}
+			});
+
+			layout.appendChild(chipsRow);
+
+			// Token count label
+			layout.appendChild(el('div', 'hw-tok-count', '8 tokens'));
+
+			return layout;
+		}
+
 		function showStep(step) {
 			viz.innerHTML = '';
 
 			if (step === 1) {
 				viz.appendChild(renderStep1());
+			} else if (step === 2) {
+				viz.appendChild(renderStep2());
 			} else {
 				var placeholder = el('div', 'hw-step-placeholder');
 				placeholder.textContent = 'Step ' + step + ' visualization (coming soon)';
