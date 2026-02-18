@@ -284,7 +284,7 @@
   {
     "id": 22,
     "name": "Performance audit — lazy loading, animation efficiency, bundle size",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Load the page and verify initial load does not block on off-screen visualizations",
       "Scroll through the entire page and verify smooth 60fps scrolling (no jank)",

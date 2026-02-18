@@ -572,3 +572,34 @@ Date: 2026-02-17
 
 ### Commit: d47449d
 ### Next: Feature #22 — Performance audit (lazy loading, animation efficiency, bundle size)
+
+## Session — Feature #22: Performance audit — lazy loading, animation efficiency, bundle size
+Date: 2026-02-17
+
+### What was done
+- Audited all 11 script blocks for computation weight on DOMContentLoaded
+- Identified 4 heaviest scripts for lazy-loading optimization:
+  1. QKV projection animation (~45 SVG elements created on init)
+  2. Multi-head attention heatmaps (48 DOM elements across 3 grids)
+  3. Activation function canvas (250+ canvas drawing operations)
+  4. Residual stream animations (animation loops + bar chart rendering)
+- Wrapped each in IntersectionObserver-based lazy-init pattern:
+  - On DOMContentLoaded, checks if root element is within 1.5× viewport height
+  - If yes: initialize immediately (above-the-fold or near-fold)
+  - If no: create IntersectionObserver with rootMargin '200px 0px' to init when approaching viewport
+  - Observer disconnects after init (one-shot)
+- Used Python script (scripts/insert-feature22.py) with generic `wrap_lazy()` helper
+- Build passes with 0 TypeScript errors
+- Console: only pre-existing favicon 404 (site-level issue, not page-specific)
+
+### Verification
+- On page load: QKV SVG has 0 children, MHA heatmaps have 0 children (deferred)
+- After scrolling to QKV: 31 SVG children created (lazy init triggered)
+- After scrolling to MHA: 16 children per heatmap (3 grids initialized)
+- After scrolling to canvas: ReLU curve drawn correctly
+- After full scroll: all visualizations initialized, 0 JS console errors
+- Light theme: all visualizations render correctly
+- Dark theme: all visualizations render correctly
+
+### Commit: 16d709f
+### STATUS: ALL 22 FEATURES COMPLETE! The transformers explainer page is fully implemented.
