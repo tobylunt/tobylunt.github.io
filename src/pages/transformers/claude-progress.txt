@@ -158,3 +158,18 @@
 - Verified: forward/back/reset navigation works, build passes, both dark and light themes clean
 - Commit: f0769da
 - Next: Feature #12 — Step 11 Attention × V: restore dimensions to T × d_head
+
+=== Feature #12 Complete — 2026-02-18 ===
+- Implemented Step 11 "Attention × V" visualization in the 04e head walkthrough
+- Layout: horizontal flow — Attention matrix (purple, T×T) · V matrix (pink, T×d_head) = Output matrix (green, T×d_head)
+- Attention matrix: 8 columns × 4 data rows + dots row, purple-tinted (same scores from Step 10)
+- V matrix: 8 columns × 3 data rows + dots row, pink-tinted (same V values from Step 8)
+- Output matrix: 8 columns × 3 data rows + dots row, green-tinted (hsl 145), with token column labels above
+- T inner dimensions cancel: animated strikethrough (line-through with red decoration) appears at 800ms on both Attention and V dimension labels
+- Shape equation: color-coded "Attn · V  (T×T) · (T×d) = T×d" with strikethrough on inner T dimensions
+- Animation sequence: (1) Attn + V shown immediately, (2) 800ms T strikethrough, (3) 1400ms output matrix fades in, (4) 2000ms equation
+- CSS: hw-attnv-* classes for layout, matrices, output grid, equation, cancel animation; responsive at 480px breakpoint
+- Astro scoping: all dynamic elements use el() helper with astroAttr; innerHTML sub elements also get attribute
+- Verified: forward/back/reset navigation works, build passes, both dark and light themes clean
+- Commit: 95dceec
+- Next: Feature #13 — Step 12 Residual stream: outputs fed forward

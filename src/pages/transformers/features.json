@@ -132,7 +132,7 @@
   {
     "id": 12,
     "name": "Step 11 — Attention × V: restore dimensions to T × d_model",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Animate the attention weights (T × T) multiplied by V (T × d_head) producing output (T × d_head)",
       "Show the T inner dimension canceling, d_head dimension restored",
