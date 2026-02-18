@@ -219,7 +219,7 @@
   {
     "id": 17,
     "name": "Full architecture animated walkthrough — bringing it all together",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Navigate to a 'Putting It All Together' section (or return to the architecture diagram)",
       "LINKAGE: This is the CULMINATION. Verify it reuses the architecture diagram from feature #4 but now enhanced — each block can be expanded or highlighted to show the detailed visualization from its corresponding section (#5-16)",

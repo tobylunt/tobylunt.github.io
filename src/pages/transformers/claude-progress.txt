@@ -413,3 +413,38 @@
 - Verified in Playwright: dark + light themes, bar chart rendering (inline styles fix confirmed), temperature slider interaction (T=0.1 → 100% mat, T=1.0 → 74.7% mat, T=3.0 → 30.1% mat with spread distribution)
 - Commit: 920527f
 - Next: Feature #17 — Circuits and mechanistic interpretability (the final section)
+
+=== Feature #17 Completed — 2026-02-17 ===
+- Added subsection "08b Putting It All Together" as a full architecture animated walkthrough
+- Positioned between section 08 (Output) and section 09 (Circuits placeholder)
+- Intro prose: references the black box from the preamble, invites reader to watch the token flow
+- Interactive walkthrough widget with 12 pipeline stages:
+  0. Input tokens (blue/embed)
+  1. Token Embedding §03 (blue/embed)
+  2. + Positional Encoding §03b (blue/embed)
+  3. Layer Norm §07b (neutral/norm) — inside ×N layers bracket
+  4. Multi-Head Attention §04–05 (amber/attn)
+  5. + Residual §07 (purple/residual)
+  6. Layer Norm (neutral/norm)
+  7. Feed-Forward Network §06 (green/ffn)
+  8. + Residual §07 (purple/residual) — end of ×N layers bracket
+  9. Final Layer Norm (neutral/norm)
+  10. Unembedding §08 (rose/output)
+  11. Softmax → Prediction §08 (rose/output)
+- Controls: Back, Play/Pause, Step, Reset, step counter
+- Play mode: auto-advances at 2.2s intervals, shows Pause button, auto-stops at end
+- Reset: returns to initial "The black box, opened" state, resets if at end before play
+- Clicking any pipeline stage jumps directly to it
+- Color-coded active states match visual vocabulary: blue (embed), amber (attn), green (ffn), purple (residual), rose (output), neutral (norm)
+- Visited (past) stages show subtle dot styling
+- Annotation panel shows: title, descriptive text with HTML formatting (Q/K/V colors, bold terms), monospace token representation
+- Each step's annotation references the specific computation and reuses exact terminology from earlier sections
+- Final step culmination: "That's autoregressive generation" with full prediction result
+- Closing prose: "The black box is fully open" + transition to circuits
+- CSS: .wt-walkthrough, .wt-controls, .wt-ctrl-btn, .wt-pipeline, .wt-stage (with color variants), .wt-connector, .wt-layer-bracket, .wt-annotation, .wt-ann-*
+- Mobile responsive: grid stacks vertically at 640px
+- JS in <script is:inline>: step state management, play/pause interval, stage click handlers
+- Build passes with 0 errors
+- Verified in Playwright: dark + light themes, step-by-step navigation (all 12 steps), play auto-advance, color-coded highlights for each component type, annotation updates
+- Commit: bd08b73
+- Next: Feature #18 — Circuits (composing attention heads into functional units)
