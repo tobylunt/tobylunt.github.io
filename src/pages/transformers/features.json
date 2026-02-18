@@ -51,7 +51,7 @@
   {
     "id": 5,
     "name": "Step 4 — Positional embeddings: add second column per token",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Shrink the blue embedding vectors (remove internal numbers) to make room",
       "Animate a second column expanding down from each token, colored yellow, representing positional embeddings",

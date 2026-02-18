@@ -52,3 +52,16 @@
 - Verified: both dark and light themes clean, mobile responsive (scroll wrapper handles overflow), build passes
 - Commit: d2130d5
 - Next: Feature #5 — Step 4 positional embeddings: add second column per token
+
+=== Feature #5 Complete — 2026-02-18 ===
+- Implemented Step 4 "Positional Embeddings" visualization in the 04e head walkthrough
+- Layout: token chips at top → down arrows → paired columns per token (blue = token embedding, yellow = positional embedding)
+- Blue bars (hw-pos-bar-tok): shrunk from Step 3's numeric columns to compact bars with "emb" label and ⋮ truncation
+- Yellow bars (hw-pos-bar-pos): animate in after blue bars with staggered delay, "pos" label and ⋮ truncation
+- Legend below columns: color swatches with "Token embedding" and "Positional embedding" labels
+- Dimension label: "8 tokens × 2 embeddings × d_model dimensions each"
+- CSS: hw-pos-* classes for layout, bars (28px wide, 90px min-height), legend, responsive at 480px breakpoint
+- Sizing: 492px total width fits within 520px viz container without overflow
+- Verified: forward/back navigation correctly renders step 4, build passes, both dark and light themes clean
+- Commit: 0c87fa7
+- Next: Feature #6 — Step 5 combine embeddings: additive merge animation (blue + yellow → green)
