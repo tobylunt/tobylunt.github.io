@@ -258,7 +258,7 @@
   {
     "id": 20,
     "name": "Scroll-triggered animations and section transitions",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Scroll through the entire page from top to bottom",
       "Verify visualizations animate in as they enter the viewport (not all loaded at once)",

@@ -508,3 +508,37 @@ Date: 2026-02-17 (continued session)
 
 ### Commit: ef64605
 ### Next: All 19 features complete! The transformers explainer page is fully implemented.
+
+## Session — Feature #20: Scroll-triggered animations and section transitions
+Date: 2026-02-17
+
+### What was done
+- Added scroll-triggered reveal animation system using IntersectionObserver
+- Created CSS classes: `.reveal` (initial: opacity 0, translateY 24px) and `.revealed` (opacity 1, translateY 0) with 0.6s ease-out transition
+- Added stagger delay classes: `.reveal-d1` (0.08s), `.reveal-d2` (0.16s), `.reveal-d3` (0.24s)
+- Added `@media (prefers-reduced-motion: reduce)` — sets opacity 1, no transform, no transition
+- Created IntersectionObserver (rootMargin: '0px 0px -12% 0px', threshold: 0.01) that:
+  - Watches all `.reveal` elements
+  - Adds `.revealed` when element enters viewport
+  - Unobserves after reveal (one-shot)
+  - On load, immediately reveals above-the-fold elements via requestAnimationFrame check
+  - Respects prefers-reduced-motion (JS early returns)
+- Applied `.reveal` class to 69 content elements across all sections:
+  - .section-prose, .subsection-divider, .linkage-callout
+  - Visualization wrappers: arch-pipeline, embed-*, attn-*, mha-*, ffn-*, rs-*, out-*
+  - Feature 17-19 elements: wt-walkthrough, circ-*, mi-*
+  - Preamble: preamble-teaser, vocab-legend
+- Used Python script (scripts/insert-feature20.py) for tab-safe insertion
+
+### Verification
+- Build passes with 0 errors
+- Above-the-fold content visible immediately (no flash)
+- IntersectionObserver fires correctly: 69 elements revealed during scroll-through
+- 2 elements initially missed by instant scrollTo(bottom) but caught on re-scroll (expected: instant jumps can skip observer callbacks)
+- prefers-reduced-motion CSS media query confirmed present in stylesheet
+- Dark theme: all content visible after scroll
+- Light theme: all content visible, no contrast issues
+- No scroll event listeners used — only IntersectionObserver
+
+### Commit: 5ce80c8
+### Next: Feature #21 — Mobile responsive layout for all sections and visualizations
