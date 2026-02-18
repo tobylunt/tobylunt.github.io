@@ -7859,7 +7859,11 @@ const sections = [
 </script>
 
 <script is:inline>
+	// QKV projection (lazy-init: Feature #22)
 	document.addEventListener('DOMContentLoaded', () => {
+		var _lazyEl = document.getElementById('qkv-svg');
+		if (!_lazyEl) return;
+		function _lazyInit() {
 		// --- QKV projection animation ---
 		const svg = document.getElementById('qkv-svg');
 		if (!svg) return;
@@ -8163,6 +8167,17 @@ const sections = [
 
 		// Initial render
 		showStep(0);
+		}
+		// Lazy: init now if near viewport, else wait
+		var _r = _lazyEl.getBoundingClientRect();
+		if (_r.top < window.innerHeight * 1.5) {
+			_lazyInit();
+		} else {
+			var _lio = new IntersectionObserver(function(entries) {
+				if (entries[0].isIntersecting) { _lio.disconnect(); _lazyInit(); }
+			}, { rootMargin: '200px 0px' });
+			_lio.observe(_lazyEl);
+		}
 	});
 </script>
 
@@ -8384,7 +8399,11 @@ const sections = [
 </script>
 
 <script is:inline>
+	// Multi-head heatmaps (lazy-init: Feature #22)
 	document.addEventListener('DOMContentLoaded', () => {
+		var _lazyEl = document.getElementById('mha-heatmap-1');
+		if (!_lazyEl) return;
+		function _lazyInit() {
 		// ===== Feature #12: Multi-Head Attention heatmaps =====
 		const mhaTokens = ['The', 'cat', 'sat'];
 
@@ -8461,6 +8480,17 @@ const sections = [
 				}
 			}
 		});
+		}
+		// Lazy: init now if near viewport, else wait
+		var _r = _lazyEl.getBoundingClientRect();
+		if (_r.top < window.innerHeight * 1.5) {
+			_lazyInit();
+		} else {
+			var _lio = new IntersectionObserver(function(entries) {
+				if (entries[0].isIntersecting) { _lio.disconnect(); _lazyInit(); }
+			}, { rootMargin: '200px 0px' });
+			_lio.observe(_lazyEl);
+		}
 	});
 </script>
 
@@ -8564,7 +8594,11 @@ const sections = [
 </script>
 
 <script is:inline>
+	// Activation function canvas (lazy-init: Feature #22)
 	document.addEventListener('DOMContentLoaded', () => {
+		var _lazyEl = document.getElementById('ffn-activation-canvas');
+		if (!_lazyEl) return;
+		function _lazyInit() {
 		// ===== Feature #14: Activation function canvas =====
 		const canvas = document.getElementById('ffn-activation-canvas');
 		if (!canvas) return;
@@ -8735,11 +8769,26 @@ const sections = [
 			attributes: true,
 			attributeFilter: ['data-theme'],
 		});
+		}
+		// Lazy: init now if near viewport, else wait
+		var _r = _lazyEl.getBoundingClientRect();
+		if (_r.top < window.innerHeight * 1.5) {
+			_lazyInit();
+		} else {
+			var _lio = new IntersectionObserver(function(entries) {
+				if (entries[0].isIntersecting) { _lio.disconnect(); _lazyInit(); }
+			}, { rootMargin: '200px 0px' });
+			_lio.observe(_lazyEl);
+		}
 	});
 </script>
 
 <script is:inline>
+	// Residual stream animations (lazy-init: Feature #22)
 	document.addEventListener('DOMContentLoaded', () => {
+		var _lazyEl = document.getElementById('res-animate-btn');
+		if (!_lazyEl) return;
+		function _lazyInit() {
 		// ===== Feature #15: Residual stream animations =====
 
 		// --- Layer accumulation animation ---
@@ -8850,6 +8899,17 @@ const sections = [
 
 		if (randomizeBtn) randomizeBtn.addEventListener('click', update);
 		update(); // Initial render
+		}
+		// Lazy: init now if near viewport, else wait
+		var _r = _lazyEl.getBoundingClientRect();
+		if (_r.top < window.innerHeight * 1.5) {
+			_lazyInit();
+		} else {
+			var _lio = new IntersectionObserver(function(entries) {
+				if (entries[0].isIntersecting) { _lio.disconnect(); _lazyInit(); }
+			}, { rootMargin: '200px 0px' });
+			_lio.observe(_lazyEl);
+		}
 	});
 </script>
 
