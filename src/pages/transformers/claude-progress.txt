@@ -91,3 +91,18 @@
 - Verified: forward/back navigation correctly renders step 6, reset works, build passes, both dark and light themes clean
 - Commit: 10ac579
 - Next: Feature #8 — Step 7 Q projection: highlight column, animate through weights, stage output
+
+=== Feature #8 Complete — 2026-02-18 ===
+- Implemented Step 7 "Query Projection" visualization in the 04e head walkthrough
+- Layout: horizontal flow — normalized input matrix (X̂) → dot product (·) → W_Q weight card → arrow (➜) → Q output matrix
+- Input matrix: 8 columns × 4 data rows + dots row, purple-tinted (normalized), "cat" column (index 2) highlighted in blue
+- W_Q weight card: blue-themed (hsl 210), 48×48px box with d_model × d_head dimension label
+- Q output matrix: 8 columns × 3 data rows + dots row, blue-tinted (hsl 210), T × d_head dimensions
+- Animation sequence: (1) matrix + W_Q shown immediately with "cat" column highlighted, (2) at 600ms pulse animation on highlighted column, (3) at 1200ms Q output fades in from right, (4) at 1800ms equation row appears
+- Equation: color-coded "Q = X̂ · W_Q (T×d_model) · (d_model×d_head) = T×d_head"
+- Compact cell sizing: 22px min-width, 0.42rem font to fit entire layout within 520px viz container
+- CSS: hw-qproj-* classes for layout, matrices, highlights, pulse animation, output staging; responsive at 480px (stacks vertically)
+- Astro scoping: all dynamic elements use el() helper with astroAttr; innerHTML subscripts also get attribute
+- Verified: forward/back/reset navigation works, build passes, both dark and light themes clean
+- Commit: b0eebe8
+- Next: Feature #9 — Step 8 V projection: same animation pattern for values

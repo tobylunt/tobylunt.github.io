@@ -84,7 +84,7 @@
   {
     "id": 8,
     "name": "Step 7 \u2014 Q projection: highlight column, animate through weights, stage output",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Highlight a column in the input matrix (corresponding to one token)",
       "Animate movement of that column through the Q weight matrix",
