@@ -246,7 +246,7 @@
   {
     "id": 19,
     "name": "Mechanistic interpretability teaser and future post link",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Navigate to the final section",
       "Verify a brief teaser describes what mechanistic interpretability is and why it matters (safety, understanding)",

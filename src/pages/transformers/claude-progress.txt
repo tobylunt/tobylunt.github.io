@@ -474,3 +474,37 @@
 - Verified in Playwright: dark + light themes, heatmap cells render correctly, color-coded tokens (A=blue, B=amber), flow arrow with purple residual stream label, journey pipeline colors match visual vocabulary, end mark visible
 - Commit: cd218f8
 - Next: Feature #19 — Mechanistic interpretability teaser and future post link
+
+## Session — Feature #19: Mechanistic interpretability teaser and future post link
+Date: 2026-02-17 (continued session)
+
+### What was done
+- Enhanced the closing section of the Circuits page to fully satisfy Feature #19 requirements
+- Used Python script (scripts/insert-feature19.py) for tab-safe insertion (Edit tool fails due to tab/space mismatch — recurring issue)
+- Added "Why it matters" teaser card grid:
+  - Safety (rose, Δ icon): catch failure modes before deployment
+  - Understanding (blue, ⊕ icon): scientific vocabulary for transformer computation
+  - Control (purple, § icon): precise intervention via head steering/ablation
+- Split mechinterp prose: first paragraph introduces mechinterp, cards expand on why, second paragraph closes with "study scientifically"
+- Added "opened box" visual mirroring the preamble's closed black box:
+  - Preamble: tokens in → [?] → prediction out (opaque gray box)
+  - Closing: tokens in → [E→A→F→P] → prediction out (transparent box with color-coded components: E=blue, A=amber, F=green, P=rose)
+- Added prominent "COMING NEXT" follow-up post callout card:
+  - Amber accent border and tag
+  - Title: "Hands-on Mechanistic Interpretability with Llama 3"
+  - Description of what the follow-up will cover
+- "The box is open." now in bold for emphasis
+- CSS: .mi-teaser, .mi-teaser-card, .mi-card-safety/understanding/control, .mi-openbox-wrap, .mi-openbox, .mi-ob-component (color variants), .mi-followup, .mi-followup-tag/title/desc
+- Mobile responsive: cards stack to 1-column, opened box components shrink at 480px
+
+### Verification
+- Build passes with 0 errors
+- Verified in Playwright dark theme: cards render with correct colors, opened box shows E→A→F→P, followup card has amber accent
+- Verified in Playwright light theme: all elements readable, good contrast
+- Preamble black box still intact — visual bookend works correctly
+
+### Issues
+- Edit tool failed initially due to tab/space mismatch (tabs in file displayed as spaces in Read output). Solved by using Python script approach consistent with Features #17 and #18.
+
+### Commit: ef64605
+### Next: All 19 features complete! The transformers explainer page is fully implemented.
