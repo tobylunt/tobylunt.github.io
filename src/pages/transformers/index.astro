@@ -5458,6 +5458,274 @@ const sections = [
 		}
 	}
 
+	/* Step 7: Q Projection */
+	.hw-qproj-layout {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 8px;
+		padding: 8px 0;
+	}
+
+	.hw-qproj-top-row {
+		display: flex;
+		align-items: flex-start;
+		gap: 10px;
+		justify-content: center;
+		width: 100%;
+	}
+
+	/* Compact input matrix (left side) */
+	.hw-qproj-matrix-wrap {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 3px;
+		flex-shrink: 0;
+	}
+
+	.hw-qproj-matrix-label {
+		font-size: 0.55rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		color: hsl(270 45% 55% / 0.8);
+	}
+
+	.hw-qproj-token-labels {
+		display: grid;
+		gap: 1px;
+	}
+
+	.hw-qproj-token-label {
+		font-size: 0.42rem;
+		text-align: center;
+		color: hsl(var(--theme-text) / 0.45);
+		min-width: 22px;
+		padding: 0 1px;
+		transition: color 0.3s ease, font-weight 0.3s ease;
+	}
+
+	.hw-qproj-token-label.highlighted {
+		color: hsl(210 70% 55%);
+		font-weight: 700;
+	}
+
+	.hw-qproj-matrix {
+		display: grid;
+		gap: 1px;
+		background: hsl(var(--theme-text) / 0.06);
+		border: 1px solid hsl(var(--theme-text) / 0.12);
+		border-radius: 3px;
+		overflow: hidden;
+	}
+
+	.hw-qproj-cell {
+		background: hsl(270 45% 55% / 0.08);
+		color: hsl(var(--theme-text) / 0.55);
+		font-size: 0.42rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 2px 1px;
+		text-align: center;
+		min-width: 22px;
+		transition: background 0.4s ease, box-shadow 0.4s ease;
+	}
+
+	.hw-qproj-cell.dots-cell {
+		font-size: 0.5rem;
+		color: hsl(var(--theme-text) / 0.3);
+		padding: 1px 1px;
+	}
+
+	.hw-qproj-cell.highlighted {
+		background: hsl(210 70% 55% / 0.2);
+		box-shadow: inset 0 0 0 1.5px hsl(210 70% 55% / 0.5);
+		color: hsl(210 70% 55% / 0.9);
+	}
+
+	.hw-qproj-dim-label {
+		font-size: 0.45rem;
+		color: hsl(var(--theme-text) / 0.35);
+	}
+
+	/* Multiply sign between matrix and weight */
+	.hw-qproj-times {
+		display: flex;
+		align-items: center;
+		font-size: 1rem;
+		color: hsl(var(--theme-text) / 0.3);
+		align-self: center;
+		padding-top: 14px;
+	}
+
+	/* W_Q weight card (center) */
+	.hw-qproj-weight-wrap {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 3px;
+		flex-shrink: 0;
+		align-self: center;
+		padding-top: 14px;
+	}
+
+	.hw-qproj-weight-label {
+		font-size: 0.65rem;
+		font-weight: 700;
+		color: hsl(210 70% 55%);
+	}
+
+	.hw-qproj-weight-box {
+		width: 48px;
+		height: 48px;
+		border-radius: 4px;
+		background: hsl(210 70% 55% / 0.1);
+		border: 1.5px solid hsl(210 70% 55% / 0.3);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.45rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		color: hsl(var(--theme-text) / 0.45);
+	}
+
+	.hw-qproj-weight-dim {
+		font-size: 0.42rem;
+		color: hsl(var(--theme-text) / 0.35);
+	}
+
+	/* Arrow between weight and output */
+	.hw-qproj-arrow-right {
+		display: flex;
+		align-items: center;
+		font-size: 1rem;
+		color: hsl(var(--theme-text) / 0.3);
+		align-self: center;
+		padding-top: 14px;
+	}
+
+	/* Output Q staging area (right) */
+	.hw-qproj-output-wrap {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 3px;
+		flex-shrink: 0;
+		padding-top: 14px;
+		opacity: 0;
+		transform: translateX(8px);
+		transition: opacity 0.5s ease, transform 0.5s ease;
+	}
+
+	.hw-qproj-output-wrap.visible {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	.hw-qproj-output-label {
+		font-size: 0.55rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: hsl(210 70% 55% / 0.8);
+	}
+
+	.hw-qproj-output-token-labels {
+		display: grid;
+		gap: 1px;
+	}
+
+	.hw-qproj-output-token-label {
+		font-size: 0.42rem;
+		text-align: center;
+		color: hsl(210 70% 55% / 0.6);
+		min-width: 22px;
+		padding: 0 1px;
+	}
+
+	.hw-qproj-output-matrix {
+		display: grid;
+		gap: 1px;
+		background: hsl(210 70% 55% / 0.06);
+		border: 1.5px solid hsl(210 70% 55% / 0.2);
+		border-radius: 3px;
+		overflow: hidden;
+	}
+
+	.hw-qproj-output-cell {
+		background: hsl(210 70% 55% / 0.08);
+		color: hsl(210 70% 55% / 0.75);
+		font-size: 0.42rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 2px 1px;
+		text-align: center;
+		min-width: 22px;
+	}
+
+	.hw-qproj-output-cell.dots-cell {
+		font-size: 0.5rem;
+		color: hsl(210 70% 55% / 0.4);
+		padding: 1px 1px;
+	}
+
+	.hw-qproj-output-dim {
+		font-size: 0.45rem;
+		color: hsl(var(--theme-text) / 0.35);
+	}
+
+	/* Equation row */
+	.hw-qproj-equation {
+		font-size: 0.55rem;
+		color: hsl(var(--theme-text) / 0.5);
+		text-align: center;
+		margin-top: 4px;
+		opacity: 0;
+		transition: opacity 0.5s ease;
+	}
+
+	.hw-qproj-equation.visible {
+		opacity: 1;
+	}
+
+	.hw-qproj-eq-norm { color: hsl(270 45% 55% / 0.8); }
+	.hw-qproj-eq-wq { color: hsl(210 70% 55%); }
+	.hw-qproj-eq-q { color: hsl(210 70% 55%); font-weight: 600; }
+	.hw-qproj-eq-dim { color: hsl(var(--theme-text) / 0.4); }
+
+	/* Pulse animation on highlighted column */
+	@keyframes hw-qproj-pulse {
+		0%, 100% { box-shadow: inset 0 0 0 1.5px hsl(210 70% 55% / 0.5); }
+		50% { box-shadow: inset 0 0 0 1.5px hsl(210 70% 55% / 0.8); }
+	}
+
+	.hw-qproj-cell.pulse {
+		animation: hw-qproj-pulse 1s ease infinite;
+	}
+
+	/* Responsive */
+	@media (max-width: 480px) {
+		.hw-qproj-top-row {
+			flex-direction: column;
+			align-items: center;
+			gap: 10px;
+		}
+		.hw-qproj-times, .hw-qproj-arrow-right {
+			transform: rotate(90deg);
+			padding-top: 0;
+		}
+		.hw-qproj-weight-wrap, .hw-qproj-output-wrap {
+			padding-top: 0;
+		}
+		.hw-qproj-cell, .hw-qproj-output-cell {
+			font-size: 0.38rem;
+			min-width: 20px;
+			padding: 2px 1px;
+		}
+		.hw-qproj-token-label, .hw-qproj-output-token-label {
+			font-size: 0.36rem;
+			min-width: 20px;
+		}
+	}
+
 	/* Step 1 placeholder viz */
 	.hw-step-placeholder {
 		text-align: center;
@@ -9553,6 +9821,182 @@ const sections = [
 			return layout;
 		}
 
+		function renderStep7() {
+			var layout = el('div', 'hw-qproj-layout');
+			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
+
+			// Normalized values from Step 6 (truncated display)
+			var normValues = [
+				['.91', '-.52', '1.4', '-1.1', '1.2', '-.75', '1.0', '.91'],
+				['-.68', '1.1', '-.40', '.83', '-.95', '1.3', '-.79', '-.68'],
+				['.73', '.20', '1.2', '-.47', '.61', '-1.0', '.86', '.73'],
+				['-1.2', '.64', '-.82', '1.2', '-.30', '.49', '-1.1', '-1.2']
+			];
+
+			// Q output values (projected through W_Q)
+			var qValues = [
+				['.42', '.18', '.73', '-.31', '.56', '-.24', '.48', '.42'],
+				['-.19', '.55', '-.08', '.41', '-.33', '.62', '-.27', '-.19'],
+				['.31', '-.12', '.54', '-.22', '.28', '-.45', '.37', '.31']
+			];
+
+			var highlightCol = 2; // "cat" token
+
+			// === Top row: input matrix + multiply + W_Q + arrow + Q output ===
+			var topRow = el('div', 'hw-qproj-top-row');
+
+			// --- Input matrix (compact normalized) ---
+			var matWrap = el('div', 'hw-qproj-matrix-wrap');
+			var matLabel = el('div', 'hw-qproj-matrix-label');
+			matLabel.innerHTML = 'X\u0302 <span class="hw-qproj-dim-label">(normalized)</span>';
+			if (astroAttr) matLabel.querySelectorAll('span').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			matWrap.appendChild(matLabel);
+
+			// Token labels
+			var tokenRow = el('div', 'hw-qproj-token-labels');
+			tokenRow.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+			tokens.forEach(function(tok, i) {
+				var lbl = el('div', 'hw-qproj-token-label', tok);
+				if (i === highlightCol) lbl.classList.add('highlighted');
+				tokenRow.appendChild(lbl);
+			});
+			matWrap.appendChild(tokenRow);
+
+			// Matrix grid
+			var matrixEl = el('div', 'hw-qproj-matrix');
+			matrixEl.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+			var matCells = [];
+			normValues.forEach(function(row) {
+				row.forEach(function(val, c) {
+					var cell = el('div', 'hw-qproj-cell', val);
+					if (c === highlightCol) cell.classList.add('highlighted');
+					matrixEl.appendChild(cell);
+					matCells.push({ el: cell, col: c });
+				});
+			});
+			// Dots row
+			tokens.forEach(function(tok, c) {
+				var dotCell = el('div', 'hw-qproj-cell dots-cell', '\u22EE');
+				if (c === highlightCol) dotCell.classList.add('highlighted');
+				matrixEl.appendChild(dotCell);
+			});
+			matWrap.appendChild(matrixEl);
+
+			// Dimension label
+			var matDim = el('div', 'hw-qproj-dim-label', 'T \u00d7 d_model');
+			matWrap.appendChild(matDim);
+			topRow.appendChild(matWrap);
+
+			// --- Multiply sign ---
+			topRow.appendChild(el('div', 'hw-qproj-times', '\u00b7'));
+
+			// --- W_Q weight card ---
+			var wWrap = el('div', 'hw-qproj-weight-wrap');
+			var wLabel = el('div', 'hw-qproj-weight-label');
+			wLabel.innerHTML = 'W<sub>Q</sub>';
+			if (astroAttr) wLabel.querySelector('sub').setAttribute(astroAttr, '');
+			wWrap.appendChild(wLabel);
+			wWrap.appendChild(el('div', 'hw-qproj-weight-box', '\u22EF'));
+			var wDim = el('div', 'hw-qproj-weight-dim');
+			var wDimD = el('span', 'hw-norm-dim-d');
+			wDimD.innerHTML = 'd<sub>model</sub>';
+			if (astroAttr) wDimD.querySelector('sub').setAttribute(astroAttr, '');
+			var wDimTimes = document.createTextNode(' \u00d7 ');
+			var wDimH = el('span', 'hw-norm-dim-dh');
+			wDimH.innerHTML = 'd<sub>head</sub>';
+			if (astroAttr) wDimH.querySelector('sub').setAttribute(astroAttr, '');
+			wDim.appendChild(wDimD);
+			wDim.appendChild(wDimTimes);
+			wDim.appendChild(wDimH);
+			wWrap.appendChild(wDim);
+			topRow.appendChild(wWrap);
+
+			// --- Arrow ---
+			topRow.appendChild(el('div', 'hw-qproj-arrow-right', '\u279C'));
+
+			// --- Q output staging area ---
+			var outWrap = el('div', 'hw-qproj-output-wrap');
+			var outLabel = el('div', 'hw-qproj-output-label', 'Q');
+			outWrap.appendChild(outLabel);
+
+			// Output token labels
+			var outTokenRow = el('div', 'hw-qproj-output-token-labels');
+			outTokenRow.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+			tokens.forEach(function(tok) {
+				outTokenRow.appendChild(el('div', 'hw-qproj-output-token-label', tok));
+			});
+			outWrap.appendChild(outTokenRow);
+
+			// Output matrix (3 rows + dots = d_head height)
+			var outMatrix = el('div', 'hw-qproj-output-matrix');
+			outMatrix.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+			qValues.forEach(function(row) {
+				row.forEach(function(val) {
+					outMatrix.appendChild(el('div', 'hw-qproj-output-cell', val));
+				});
+			});
+			// Dots row
+			tokens.forEach(function() {
+				outMatrix.appendChild(el('div', 'hw-qproj-output-cell dots-cell', '\u22EE'));
+			});
+			outWrap.appendChild(outMatrix);
+
+			// Dimension label
+			var outDim = el('div', 'hw-qproj-output-dim');
+			var outDimT = el('span', 'hw-norm-dim-t');
+			outDimT.innerHTML = 'T';
+			var outDimTimes = document.createTextNode(' \u00d7 ');
+			var outDimH = el('span', 'hw-norm-dim-dh');
+			outDimH.innerHTML = 'd<sub>head</sub>';
+			if (astroAttr) outDimH.querySelector('sub').setAttribute(astroAttr, '');
+			outDim.appendChild(outDimT);
+			outDim.appendChild(outDimTimes);
+			outDim.appendChild(outDimH);
+			outWrap.appendChild(outDim);
+			topRow.appendChild(outWrap);
+
+			layout.appendChild(topRow);
+
+			// === Equation row ===
+			var eqRow = el('div', 'hw-qproj-equation');
+			var eqQ = el('span', 'hw-qproj-eq-q', 'Q');
+			var eqEq = document.createTextNode(' = ');
+			var eqNorm = el('span', 'hw-qproj-eq-norm', 'X\u0302');
+			var eqDot = document.createTextNode(' \u00b7 ');
+			var eqWq = el('span', 'hw-qproj-eq-wq');
+			eqWq.innerHTML = 'W<sub>Q</sub>';
+			if (astroAttr) eqWq.querySelector('sub').setAttribute(astroAttr, '');
+			var eqDim = el('span', 'hw-qproj-eq-dim', '  (T\u00d7d_model) \u00b7 (d_model\u00d7d_head) = T\u00d7d_head');
+			eqRow.appendChild(eqQ);
+			eqRow.appendChild(eqEq);
+			eqRow.appendChild(eqNorm);
+			eqRow.appendChild(eqDot);
+			eqRow.appendChild(eqWq);
+			eqRow.appendChild(eqDim);
+			layout.appendChild(eqRow);
+
+			// === Animation sequence ===
+			// Phase 1 (immediate): matrix and W_Q shown, "cat" column highlighted
+			// Phase 2 (600ms): add pulse to highlighted column
+			setTimeout(function() {
+				matCells.forEach(function(mc) {
+					if (mc.col === highlightCol) mc.el.classList.add('pulse');
+				});
+			}, 600);
+
+			// Phase 3 (1200ms): Q output appears
+			setTimeout(function() {
+				outWrap.classList.add('visible');
+			}, 1200);
+
+			// Phase 4 (1800ms): equation appears
+			setTimeout(function() {
+				eqRow.classList.add('visible');
+			}, 1800);
+
+			return layout;
+		}
+
 		function showStep(step) {
 			viz.innerHTML = '';
 
@@ -9568,6 +10012,8 @@ const sections = [
 				viz.appendChild(renderStep5());
 			} else if (step === 6) {
 				viz.appendChild(renderStep6());
+			} else if (step === 7) {
+				viz.appendChild(renderStep7());
 			} else {
 				var placeholder = el('div', 'hw-step-placeholder');
 				placeholder.textContent = 'Step ' + step + ' visualization (coming soon)';
