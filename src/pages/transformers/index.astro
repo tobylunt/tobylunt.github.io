@@ -6,55 +6,55 @@ const sections = [
 		id: "preamble",
 		number: "01",
 		title: "Preamble",
-		subtitle: "Why transformers changed everything",
+		subtitle: "Historical context and architectural motivation",
 	},
 	{
 		id: "architecture",
 		number: "02",
 		title: "Architecture Overview",
-		subtitle: "The full picture, from input to output",
+		subtitle: "Full forward-pass data flow",
 	},
 	{
 		id: "embeddings",
 		number: "03",
 		title: "Embeddings",
-		subtitle: "Turning words into numbers",
+		subtitle: "Tokenization, embedding matrices, and positional encoding",
 	},
 	{
 		id: "attention",
 		number: "04",
 		title: "Attention",
-		subtitle: "The mechanism that lets tokens talk to each other",
+		subtitle: "Scaled dot-product attention and QKV projections",
 	},
 	{
 		id: "multi-head-attention",
 		number: "05",
 		title: "Multi-Head Attention",
-		subtitle: "Many perspectives, one representation",
+		subtitle: "Structured decomposition into parallel subspaces",
 	},
 	{
 		id: "ffn",
 		number: "06",
 		title: "Feed-Forward Network",
-		subtitle: "Per-token computation and memory",
+		subtitle: "Position-wise MLP and learned key-value memories",
 	},
 	{
 		id: "residual-stream",
 		number: "07",
 		title: "Residual Stream",
-		subtitle: "The information highway through the network",
+		subtitle: "Residual connections, running sums, and layer normalization",
 	},
 	{
 		id: "output",
 		number: "08",
 		title: "Output",
-		subtitle: "From vectors back to words",
+		subtitle: "Unembedding, softmax, and autoregressive sampling",
 	},
 	{
 		id: "circuits",
 		number: "09",
 		title: "Circuits",
-		subtitle: "How attention heads compose into algorithms",
+		subtitle: "Cross-layer head composition and mechanistic interpretability",
 	},
 ];
 ---
@@ -69,8 +69,8 @@ const sections = [
 			How Transformers Work
 		</h1>
 		<p class="mx-auto max-w-2xl text-lg leading-relaxed text-textColor/80 sm:text-xl">
-			A visual, interactive guide to the architecture behind modern AI — from
-			tokens to predictions, attention to circuits.
+			An interactive technical reference to the transformer architecture — from
+			tokenization to circuits, with inline citations.
 		</p>
 		<div class="mt-10 flex items-center justify-center gap-3 text-sm text-textColor/50">
 			<span>Toby Lunt</span>
@@ -116,34 +116,37 @@ const sections = [
 					<span class="font-mono text-sm text-accent/60">01</span>
 					<div>
 						<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">Preamble</h2>
-						<p class="mt-1 text-base text-textColor/60">Why transformers changed everything</p>
+						<p class="mt-1 text-base text-textColor/60">Historical context and architectural motivation</p>
 					</div>
 				</div>
 
 				{/* Introductory prose */}
 				<div class="preamble-prose">
 					<p>
-						In 2017, a team at Google published a paper with an unassuming title:
-						<em>"Attention Is All You Need."</em> It introduced the <strong>transformer</strong> — an
-						architecture that would go on to power GPT, BERT, Claude, Stable Diffusion,
-						AlphaFold, and nearly every major AI breakthrough since.
+						The transformer architecture, introduced by Vaswani et al. in 2017,<span class="sn-marker" data-sn="sn-vaswani">1</span>
+						replaced recurrent sequence modeling with a fundamentally different computational
+						primitive: <strong>self-attention</strong>. The result has been a near-complete displacement
+						of prior architectures across language modeling, machine translation, protein structure
+						prediction, image generation, and code synthesis.
 					</p>
 					<p>
-						Before transformers, sequence models processed tokens one at a time.
-						Recurrent neural networks (RNNs) and their variants — LSTMs and GRUs —
-						passed a hidden state forward step by step, like reading a book one word
-						at a time and trying to remember the whole plot through a single bottleneck of memory.
+						The core limitation of recurrent models (RNNs, LSTMs, GRUs) was their sequential
+						bottleneck. Processing a sequence of length <code>n</code> required <code>O(n)</code>
+						serial operations, each compressing the entire history into a fixed-dimensional hidden
+						state <code>h ∈ ℝ<sup>d</sup></code>. This imposed both a computational constraint
+						(no parallelism across timesteps) and an information-theoretic one: long-range dependencies
+						had to survive repeated lossy compressions through the same bottleneck. Bahdanau-style
+						attention<span class="sn-marker" data-sn="sn-bahdanau">2</span> partially addressed the
+						information constraint by allowing the decoder to attend to all encoder states, but the
+						sequential processing requirement remained.
 					</p>
 					<p>
-						This sequential constraint meant two things: training was slow (you couldn't
-						parallelize), and long-range dependencies were hard to capture. By the time
-						the model reached the end of a long paragraph, the beginning had faded.
-					</p>
-					<p>
-						The transformer's key insight was radical: <strong>throw away recurrence entirely.</strong>
-						Instead, let every token attend to every other token simultaneously. This
-						mechanism — <em>self-attention</em> — lets the model look at the entire input at
-						once, deciding which parts matter for each part.
+						The transformer eliminated recurrence entirely. Self-attention computes pairwise interactions
+						between all positions in <code>O(1)</code> sequential depth, at the cost of <code>O(n²)</code>
+						total computation per layer.<span class="sn-marker" data-sn="sn-quadratic">3</span> Every token
+						attends to every other token simultaneously — the full context is available at every layer,
+						without compression into a fixed-size state. This architectural choice made deep
+						models trainable on long sequences and unlocked massive parallelism on modern hardware.
 					</p>
 				</div>
 
@@ -187,43 +190,42 @@ const sections = [
 				{/* Visual vocabulary — component color legend */}
 				<div class="preamble-vocab">
 					<p class="vocab-intro">
-						Throughout this explainer, we'll use a consistent visual language.
-						Each major component has its own color, so you'll always know what you're looking at:
+						Components are color-coded throughout. Each architectural block maps to a consistent color:
 					</p>
 					<div class="vocab-grid">
 						<div class="vocab-item">
 							<div class="vocab-swatch vocab-embedding"></div>
 							<div class="vocab-meta">
 								<span class="vocab-name">Embedding</span>
-								<span class="vocab-hint">Words &rarr; vectors</span>
+								<span class="vocab-hint">Token → d-dim vector</span>
 							</div>
 						</div>
 						<div class="vocab-item">
 							<div class="vocab-swatch vocab-attention"></div>
 							<div class="vocab-meta">
 								<span class="vocab-name">Attention</span>
-								<span class="vocab-hint">Tokens talk to each other</span>
+								<span class="vocab-hint">Pairwise interactions</span>
 							</div>
 						</div>
 						<div class="vocab-item">
 							<div class="vocab-swatch vocab-ffn"></div>
 							<div class="vocab-meta">
 								<span class="vocab-name">Feed-Forward</span>
-								<span class="vocab-hint">Per-token computation</span>
+								<span class="vocab-hint">Position-wise MLP</span>
 							</div>
 						</div>
 						<div class="vocab-item">
 							<div class="vocab-swatch vocab-residual"></div>
 							<div class="vocab-meta">
 								<span class="vocab-name">Residual Stream</span>
-								<span class="vocab-hint">The information highway</span>
+								<span class="vocab-hint">Running sum / skip connections</span>
 							</div>
 						</div>
 						<div class="vocab-item">
 							<div class="vocab-swatch vocab-output"></div>
 							<div class="vocab-meta">
 								<span class="vocab-name">Output</span>
-								<span class="vocab-hint">Vectors &rarr; words</span>
+								<span class="vocab-hint">Logits → softmax → sampling</span>
 							</div>
 						</div>
 					</div>
@@ -239,9 +241,10 @@ const sections = [
 						<div class="teaser-label-out">prediction out</div>
 					</div>
 					<p class="teaser-text">
-						Right now, the transformer is a black box. Tokens go in, a prediction comes out.
-						Over the next eight sections, we'll open this box — layer by layer, mechanism
-						by mechanism — until there's nothing left to hide.
+						The transformer is a black box: tokens in, a probability distribution over next tokens out.
+						The following sections decompose this mapping into its constituent operations —
+						tokenization, embedding, self-attention, feed-forward layers, and the residual
+						stream that connects them.
 					</p>
 				</div>
 			</section>
@@ -252,19 +255,19 @@ const sections = [
 					<span class="font-mono text-sm text-accent/60">02</span>
 					<div>
 						<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">Architecture Overview</h2>
-						<p class="mt-1 text-base text-textColor/60">The full picture, from input to output</p>
+						<p class="mt-1 text-base text-textColor/60">Full forward-pass data flow</p>
 					</div>
 				</div>
 
 				<div class="arch-prose">
 					<p>
-						Here's the entire transformer, laid out as a pipeline. Data flows upward: raw text enters
-						at the bottom, and a prediction emerges at the top. Each block is something we'll explore
-						in depth — think of this diagram as the <strong>map</strong> for the rest of the page.
-					</p>
-					<p>
-						Hover over any block to learn what it does. When you're ready, press
-						<strong>Animate</strong> to watch data flow through the full architecture.
+						The diagram below shows the full forward pass of a decoder-only transformer.<span class="sn-marker" data-sn="sn-decoder-only">4</span>
+						An input sequence is tokenized, embedded, summed with positional encodings, then passed
+						through <code>N</code> identical layers — each comprising layer normalization, multi-head
+						self-attention, a residual addition, layer normalization, a position-wise feed-forward
+						network, and a second residual addition.<span class="sn-marker" data-sn="sn-prenorm">5</span>
+						The final representation is projected to vocabulary size via an unembedding matrix and
+						normalized with softmax to produce a distribution over next tokens.
 					</p>
 				</div>
 
@@ -349,9 +352,10 @@ const sections = [
 				</div>
 
 				<p class="arch-outro">
-					In the sections that follow, we'll zoom into each of these blocks — starting
-					with how raw text becomes vectors (embeddings), then diving into the attention
-					mechanism, feed-forward networks, and the residual stream that ties it all together.
+					The sections below decompose each block: tokenization and embedding (§03),
+					scaled dot-product attention (§04), multi-head decomposition (§05),
+					position-wise FFN (§06), residual connections and layer normalization (§07),
+					and the output projection (§08).
 				</p>
 			</section>
 
@@ -361,33 +365,27 @@ const sections = [
 					<span class="font-mono text-sm text-accent/60">03</span>
 					<div>
 						<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">Embeddings</h2>
-						<p class="mt-1 text-base text-textColor/60">Turning words into numbers</p>
+						<p class="mt-1 text-base text-textColor/60">Tokenization, embedding matrices, and positional encoding</p>
 					</div>
 				</div>
 
 				{/* Linkage callout */}
 				<div class="linkage-callout reveal linkage-embedding">
 					<span class="linkage-icon">&#8599;</span>
-					<span>We're now zooming into the <strong>Token Embedding</strong> block at the bottom of the architecture diagram.</span>
+					<span>Corresponds to the <strong>Token Embedding</strong> and <strong>+ Positional Encoding</strong> blocks in the architecture diagram.</span>
 				</div>
 
 				<div class="section-prose reveal">
 					<p>
-						Before a transformer can do anything, it needs to convert raw text into numbers.
-						This happens in two steps: first, the text is split into <strong>tokens</strong> —
-						small pieces that the model treats as its atomic units — and then each token is
-						looked up in a table to produce a dense vector.
+						Transformers operate on sequences of discrete tokens, not raw text. The standard
+						tokenization algorithm is Byte Pair Encoding (BPE),<span class="sn-marker" data-sn="sn-bpe">6</span>
+						which iteratively merges the most frequent adjacent byte pairs in the training corpus
+						to build a vocabulary of subword units (typically 32k–100k tokens). High-frequency
+						words remain intact; rare or novel words decompose into shorter subword pieces, ensuring
+						complete coverage of arbitrary input text with a fixed vocabulary.
 					</p>
 					<p>
-						Modern models don't tokenize by whole words. Instead, they use <strong>subword
-						tokenization</strong> (like BPE — Byte Pair Encoding). Common words stay whole,
-						but rare or long words get broken into smaller pieces. This lets the model handle
-						any text — even words it's never seen — with a fixed-size vocabulary
-						(typically 32k–100k tokens).
-					</p>
-					<p>
-						Try typing below to see how text gets split into tokens. Notice how common words
-						often stay intact, while rarer words get broken into subword pieces.
+						The interactive tokenizer below demonstrates this decomposition:
 					</p>
 				</div>
 
@@ -418,10 +416,12 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						Each token maps to a unique integer ID — its index in the vocabulary table.
-						The embedding layer then looks up this ID in a learned matrix of shape
-						<code>[vocab_size &times; d_model]</code>, producing a dense vector (typically
-						768 or 1024 dimensions) that encodes the token's meaning.
+						Each token ID indexes into a learned embedding matrix
+						<code>W<sub>E</sub> &isin; &reals;<sup>|V| &times; d</sup></code>, producing a dense
+						vector <code>e = W<sub>E</sub>[token_id]</code>. These embeddings are trained end-to-end;
+						the model discovers a geometry where tokens used in similar distributional
+						contexts<span class="sn-marker" data-sn="sn-distributional">7</span> cluster together
+						in the <code>d</code>-dimensional space.
 					</p>
 				</div>
 
@@ -446,9 +446,9 @@ const sections = [
 						</div>
 					</div>
 					<p class="embed-transition-note">
-						Notice that <strong>cat</strong> and <strong>dog</strong> have similar vectors — they're both animals.
-						<strong>King</strong> points in a completely different direction. When we project these high-dimensional
-						vectors down to 2D, similar words cluster together:
+						<strong>cat</strong> and <strong>dog</strong> occupy nearby regions of embedding space (both animals);
+						<strong>king</strong> lies in a distant subspace. Projecting to 2D via PCA or t-SNE
+						reveals these semantic clusters:
 					</p>
 				</div>
 
@@ -479,16 +479,12 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						The key insight is that embedding vectors aren't random — <strong>meaning is
-						encoded in geometry.</strong> Words that are used in similar contexts end up
-						with similar vectors, forming clusters in the high-dimensional space. The model
-						learns these representations during training, and they capture surprisingly rich
-						semantic relationships.
-					</p>
-					<p>
-						But there's a problem: these vectors know <em>what</em> each token means, but they
-						don't know <em>where</em> each token is. The word "bank" has the same embedding whether
-						it's the first or last word in a sentence. The transformer needs position information too.
+						The embedding space exhibits geometric structure: semantically related tokens
+						occupy nearby regions, and linear directions encode relational properties
+						(the classic <code>king − man + woman ≈ queen</code> phenomenon). However,
+						the embedding matrix is permutation-equivariant with respect to input position —
+						<code>W<sub>E</sub>[token]</code> is identical regardless of where in the sequence
+						the token appears. Position information must be injected separately.
 					</p>
 				</div>
 
@@ -503,23 +499,16 @@ const sections = [
 				{/* Linkage callout */}
 				<div class="linkage-callout reveal linkage-embedding">
 					<span class="linkage-icon">&#8599;</span>
-					<span>We're now at the <strong>+ Positional Encoding</strong> block — the second step in the input pipeline, right after token embedding.</span>
+					<span>Corresponds to the <strong>+ Positional Encoding</strong> block, the second input-stage operation.</span>
 				</div>
 
 				<div class="section-prose reveal">
 					<p>
-						Self-attention is <strong>permutation-invariant</strong> — it treats all tokens
-						the same regardless of order. "The cat sat on the mat" and "mat the on sat cat the"
-						would produce identical attention patterns without positional information. That's
-						a problem, because word order carries meaning.
-					</p>
-					<p>
-						The solution: <strong>add</strong> a unique positional signal to each embedding vector.
-						The original transformer uses sine and cosine waves at different frequencies — each
-						position gets a unique "fingerprint" that the model can learn to interpret.
-					</p>
-					<p>
-						The formula is elegant: for position <em>pos</em> and dimension <em>i</em>:
+						Self-attention is permutation-equivariant: the output for each token depends only
+						on the set of input vectors, not their ordering. Without positional information,
+						permuting the input sequence produces correspondingly permuted outputs — the
+						model cannot distinguish word order. The original transformer addresses this by
+						additive sinusoidal positional encodings:<span class="sn-marker" data-sn="sn-rope">8</span>
 					</p>
 				</div>
 
@@ -534,10 +523,11 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						Low dimensions oscillate rapidly (high frequency), capturing fine-grained position.
-						Higher dimensions oscillate slowly (low frequency), capturing broad position. Together,
-						they give each position a unique signature. Drag the slider below to see how the
-						encoding vector changes at each position:
+						The wavelengths form a geometric progression from <code>2π</code> to
+						<code>2π · 10000</code>, giving each position a unique binary-like
+						encoding across dimensions. The low-index dimensions oscillate rapidly
+						(fine positional resolution); high-index dimensions change slowly
+						(coarse resolution):
 					</p>
 				</div>
 
@@ -584,10 +574,11 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						Each row in the heatmap is a position's encoding — its unique fingerprint.
-						Notice the striped pattern: low-numbered dimensions (left) oscillate rapidly
-						across positions, while higher dimensions (right) change slowly. No two rows
-						are identical, so the model can always tell positions apart.
+						The heatmap shows the full positional encoding matrix. Each row is a unique vector —
+						the leftmost columns oscillate at high frequency (capturing fine position),
+						while rightmost columns vary slowly. The sinusoidal design also allows the model to
+						learn relative position via linear projections, since
+						<code>PE(pos+k)</code> can be expressed as a linear function of <code>PE(pos)</code>.
 					</p>
 				</div>
 
@@ -611,9 +602,10 @@ const sections = [
 						</div>
 					</div>
 					<p class="posenc-handoff-note">
-						Each token now carries both its <strong>meaning</strong> (from the embedding) and its
-						<strong>position</strong> (from the positional encoding). These combined vectors are what
-						flow into the attention mechanism — the subject of the next section.
+						The input to the first transformer layer is the elementwise sum
+						<code>x = W<sub>E</sub>[token] + PE(pos)</code>.<span class="sn-marker" data-sn="sn-shared-space">9</span>
+						This vector encodes both token identity and sequential position in a single
+						<code>d</code>-dimensional representation.
 					</p>
 				</div>
 			</section>
@@ -624,14 +616,14 @@ const sections = [
 					<span class="font-mono text-sm text-accent/60">04</span>
 					<div>
 						<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">Attention</h2>
-						<p class="mt-1 text-base text-textColor/60">The mechanism that lets tokens talk to each other</p>
+						<p class="mt-1 text-base text-textColor/60">Scaled dot-product attention and QKV projections</p>
 					</div>
 				</div>
 
 				{/* LINKAGE: Receiving combined vectors from Feature #7 */}
 				<div class="linkage-callout reveal linkage-attention">
 					<span class="linkage-icon">&#8599;</span>
-					<span>We're now zooming into the <strong>Multi-Head Attention</strong> block in the architecture diagram. The input vectors — carrying both meaning and position — arrive here.</span>
+					<span>Corresponds to the <strong>Multi-Head Attention</strong> block. Input: position-augmented token embeddings.</span>
 				</div>
 
 				<div class="section-prose reveal">
@@ -655,33 +647,28 @@ const sections = [
 					<div class="qkv-card qkv-card-q">
 						<div class="qkv-card-letter">Q</div>
 						<div class="qkv-card-name">Query</div>
-						<div class="qkv-card-desc">“What am I looking for?”</div>
+						<div class="qkv-card-desc">Retrieval signal: xW<sub>Q</sub></div>
 					</div>
 					<div class="qkv-card qkv-card-k">
 						<div class="qkv-card-letter">K</div>
 						<div class="qkv-card-name">Key</div>
-						<div class="qkv-card-desc">“What do I contain?”</div>
+						<div class="qkv-card-desc">Match target: xW<sub>K</sub></div>
 					</div>
 					<div class="qkv-card qkv-card-v">
 						<div class="qkv-card-letter">V</div>
 						<div class="qkv-card-name">Value</div>
-						<div class="qkv-card-desc">“What do I offer?”</div>
+						<div class="qkv-card-desc">Content payload: xW<sub>V</sub></div>
 					</div>
 				</div>
 
-				<div class="section-prose reveal">
+								<div class="section-prose reveal">
 					<p>
-						Think of it like a library lookup. Each token broadcasts a <strong class="qkv-q-text">query</strong>
-						(“I'm looking for adjectives that describe me”), every token has a
-						<strong class="qkv-k-text">key</strong> (“I'm an adjective”), and every token holds
-						a <strong class="qkv-v-text">value</strong> (“here's my information”). When a query
-						matches a key, the corresponding value gets pulled in — that's how context flows
-						between tokens.
-					</p>
-					<p>
-						Below, watch how three input tokens get projected through the weight matrices.
-						Press <strong>Step</strong> to advance one step at a time, or <strong>Play</strong>
-						to see the full animation.
+						The <strong class="qkv-q-text">query</strong> encodes what information a token is seeking;
+						the <strong class="qkv-k-text">key</strong> encodes what information it offers for matching;
+						the <strong class="qkv-v-text">value</strong> encodes the content to be retrieved when a
+						match occurs.<span class="sn-marker" data-sn="sn-associative">10</span> Compatibility between
+						a query and key is measured by their dot product, and the result gates how much of the
+						corresponding value is incorporated into the output.
 					</p>
 				</div>
 
@@ -711,21 +698,12 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						Each of the three weight matrices (<strong class="qkv-q-text">W<sub>Q</sub></strong>,
-						<strong class="qkv-k-text">W<sub>K</sub></strong>,
-						<strong class="qkv-v-text">W<sub>V</sub></strong>) has shape
-						<code>[d<sub>model</sub> &times; d<sub>k</sub>]</code>.
-						The multiplication projects each <code>d<sub>model</sub></code>-dimensional input down to a
-						<code>d<sub>k</sub></code>-dimensional query, key, or value — a different <em>view</em>
-						of the same token, optimized for a different purpose.
-					</p>
-					<p>
-						These three projections happen in parallel for every token in the sequence.
-						The result: three matrices — <strong class="qkv-q-text">Q</strong>,
-						<strong class="qkv-k-text">K</strong>, and <strong class="qkv-v-text">V</strong> — each
-						containing one row per token. Next, the queries and keys will be compared to compute
-						<strong>attention scores</strong> — determining how much each token should attend to
-						every other token.
+						Each projection maps from <code>d<sub>model</sub></code> to <code>d<sub>k</sub></code>
+						dimensions. For a sequence of <code>n</code> tokens, this produces three matrices:
+						<strong class="qkv-q-text">Q</strong>,
+						<strong class="qkv-k-text">K</strong>,
+						<strong class="qkv-v-text">V</strong> <code>&isin; &reals;<sup>n &times; d<sub>k</sub></sup></code>.
+						The next step computes pairwise compatibility scores between all query-key pairs.
 					</p>
 				</div>
 
@@ -735,17 +713,15 @@ const sections = [
 
 				<div class="linkage-callout reveal linkage-attention">
 					<span class="linkage-icon">&#8599;</span>
-					<span>We now take the <strong class="qkv-q-text">Q</strong> and <strong class="qkv-k-text">K</strong> matrices from the previous step and use them to compute <strong>attention scores</strong> — how much each token should attend to every other token.</span>
+					<span>Using <strong class="qkv-q-text">Q</strong> and <strong class="qkv-k-text">K</strong> from 04a to compute scaled dot-product attention scores.</span>
 				</div>
 
 				<div class="section-prose reveal">
 					<p>
-						How does a token decide which other tokens are relevant? By comparing its
-						<strong class="qkv-q-text">query</strong> against every other token’s
-						<strong class="qkv-k-text">key</strong>. The comparison is a <strong>dot product</strong> —
-						the simplest measure of how aligned two vectors are. If a query and key point in
-						similar directions, their dot product is large (high attention). If they’re
-						orthogonal, it’s near zero (no attention).
+						Attention scores are computed via the dot product
+						<code>q<sub>i</sub><sup>T</sup> k<sub>j</sub></code>, which measures the alignment
+						between token <code>i</code>’s query and token <code>j</code>’s key in the projected space.
+						The full attention function:
 					</p>
 				</div>
 
@@ -758,18 +734,12 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						Let’s break this down. For a sequence of three tokens, the dot product
-						<strong class="qkv-q-text">Q</strong><strong class="qkv-k-text">K</strong><sup>T</sup>
-						produces a 3×3 matrix of raw scores. Each cell (i, j) measures how much
-						token i wants to attend to token j. But these raw scores can be huge, so we
-						divide by &radic;d<sub>k</sub> to keep gradients stable. Then <strong>softmax</strong>
-						converts each row into a probability distribution that sums to 1.
-					</p>
-					<p>
-						Below, see how the raw dot-product scores for one token (“cat”) get transformed
-						into attention weights. Use the <strong>temperature slider</strong> to see how
-						sharpening (low temperature) makes the model focus on one token, while smoothing
-						(high temperature) spreads attention evenly.
+						<code>QK<sup>T</sup></code> produces an <code>n × n</code> matrix of raw scores.
+						The <code>1/√d<sub>k</sub></code> scaling prevents softmax saturation: without it,
+						for large <code>d<sub>k</sub></code> the dot products grow as
+						<code>O(√d<sub>k</sub>)</code> in expectation (assuming unit-variance entries),
+						pushing softmax into regions with vanishing gradients.<span class="sn-marker" data-sn="sn-scaling">11</span>
+						After scaling, softmax normalizes each row to a probability distribution.
 					</p>
 				</div>
 
@@ -825,17 +795,13 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						At temperature 1.0 (the default), “cat” attends most strongly to itself and
-						to “sat” — tokens that are semantically and syntactically close. Lower the
-						temperature toward 0.1 and the distribution becomes nearly one-hot: the model
-						focuses on a single token. Raise it to 3.0 and attention spreads almost uniformly.
-					</p>
-					<p>
-						The final step multiplies these attention weights by the
-						<strong class="qkv-v-text">value</strong> vectors — producing a weighted
-						sum that becomes the output of this attention head. Each token’s output is a
-						blend of information from the tokens it attended to, with the attention weights
-						controlling the mix.
+						The temperature parameter (<code>T</code>) controls the entropy of the attention
+						distribution.<span class="sn-marker" data-sn="sn-temperature">12</span>
+						As <code>T → 0</code>, softmax approaches argmax (hard attention);
+						as <code>T → ∞</code>, it approaches a uniform distribution. The output of
+						each attention head is the weighted sum of value vectors:
+						<code>output<sub>i</sub> = ∑<sub>j</sub> α<sub>ij</sub> v<sub>j</sub></code>,
+						a convex combination (since attention weights sum to 1).
 					</p>
 				</div>
 
@@ -845,20 +811,16 @@ const sections = [
 
 				<div class="linkage-callout reveal linkage-attention">
 					<span class="linkage-icon">&#8599;</span>
-					<span>In the previous step, we computed attention weights for one query token. When we do this for <strong>every</strong> token in the sequence, the result is a full <strong>attention matrix</strong> — a square grid showing how much each token attends to every other.</span>
+					<span>Computing attention weights for all query positions yields the full <code>n × n</code> attention matrix.</span>
 				</div>
 
 				<div class="section-prose reveal">
 					<p>
-						The attention matrix is the heart of the transformer's context-gathering mechanism.
-						Each row is one token's attention distribution (from the softmax we just saw), and each
-						column shows how much that key token is attended to. The matrix is always square —
-						<em>n</em> tokens produce an <em>n</em>&times;<em>n</em> grid.
-					</p>
-					<p>
-						Hover over any cell below to see the exact attention weight and the source/target
-						tokens. Notice the patterns: the model has learned which words are relevant to
-						which — even in this short sentence.
+						Row <code>i</code> of the attention matrix is the softmax distribution for query token
+						<code>i</code>; column <code>j</code> shows the total attention received by key token
+						<code>j</code>. In causal (autoregressive) models, the upper triangle is masked to
+						<code>-∞</code> before softmax, preventing tokens from attending to future
+						positions.<span class="sn-marker" data-sn="sn-causal">13</span>
 					</p>
 				</div>
 
@@ -883,16 +845,10 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						Notice the diagonal tendency — tokens often attend to themselves, which makes sense
-						because a word's own context is usually relevant. But the off-diagonal cells are where
-						the magic happens: "cat" attending strongly to "sat" captures the subject-verb
-						relationship, while "sat" attending to "cat" lets the verb know its subject.
-					</p>
-					<p>
-						This matrix is computed once per attention head. In a real transformer, there are
-						multiple heads (typically 8&ndash;96), each learning to attend to different patterns —
-						some capture syntax, some semantics, some positional relationships. We'll see how
-						they combine in the next section.
+						The diagonal captures self-attention (identity-preserving); off-diagonal entries
+						capture inter-token dependencies — e.g., subject-verb agreement or coreference.
+						This matrix is computed independently per attention head; multiple heads operating
+						in parallel learn to capture different relational patterns (§05).
 					</p>
 				</div>
 
@@ -902,19 +858,15 @@ const sections = [
 
 				<div class="linkage-callout reveal linkage-attention">
 					<span class="linkage-icon">&#8599;</span>
-					<span>Now we combine the <strong class="qkv-v-text">value vectors</strong> from step 04a with the <strong>attention weights</strong> from the heatmap — producing the final output of one attention head.</span>
+					<span>The attention weights from 04b are multiplied with the <strong class="qkv-v-text">V</strong> matrix to produce the head output.</span>
 				</div>
 
 				<div class="section-prose reveal">
 					<p>
-						Each token's output is a <strong>weighted sum</strong> of all value vectors, where the weights
-						come from the attention scores. A high attention weight means "pull in a lot of
-						information from this token"; a low weight means "mostly ignore it."
-					</p>
-					<p>
-						Let's compute the output for "cat" (token 2). Its attention weights are
-						<strong>0.21</strong> for "The", <strong>0.46</strong> for "cat", and <strong>0.33</strong> for "sat".
-						Watch how each value vector gets scaled by its weight and then summed:
+						For each query position <code>i</code>, the output is the convex combination
+						<code>o<sub>i</sub> = ∑<sub>j</sub> α<sub>ij</sub> v<sub>j</sub></code>.
+						The attention weights <code>α<sub>ij</sub></code> determine how much of each
+						value vector contributes. For "cat" (token 2) with weights 0.21, 0.46, 0.33:
 					</p>
 				</div>
 
@@ -982,10 +934,10 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						The output vector for "cat" is mostly "cat" (46%) blended with "sat" (33%) and
-						a smaller contribution from "The" (21%). This is the attention mechanism's whole
-						job: it lets each token incorporate relevant context from other tokens. The output
-						is no longer just "cat" — it's "cat, informed by sat and The."
+						The output for "cat" is a weighted blend: 46% from its own value vector, 33% from
+						"sat," and 21% from "The." The representation now encodes contextual
+						information — "cat" has been updated to reflect its relationship with the
+						surrounding tokens.<span class="sn-marker" data-sn="sn-kvcache">14</span>
 					</p>
 				</div>
 
@@ -1024,11 +976,10 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						That's the complete single-head attention pipeline. Every token goes through
-						this process in parallel, producing context-enriched output vectors. But one
-						attention head can only capture one type of relationship. In the next section,
-						we'll see what happens when we run <strong>multiple heads in parallel</strong> —
-						each learning to focus on different aspects of the input.
+						This completes single-head attention: project to Q, K, V; compute scaled dot-product
+						scores; normalize via softmax; take the weighted sum of values. A single head learns
+						one compatibility function. Multiple heads (§05) decompose the representation space
+						into independent subspaces, each learning different relational patterns.
 					</p>
 				</div>
 			</section>
@@ -1040,27 +991,25 @@ const sections = [
 					<span class="font-mono text-sm text-accent/60">05</span>
 					<div>
 						<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">Multi-Head Attention</h2>
-						<p class="mt-1 text-base text-textColor/60">Many perspectives, one representation</p>
+						<p class="mt-1 text-base text-textColor/60">Structured decomposition into parallel subspaces</p>
 					</div>
 				</div>
 
 				<div class="linkage-callout reveal linkage-attention">
 					<span class="linkage-icon">&#8599;</span>
-					<span>In the previous section, we built a <strong>single attention head</strong> &mdash; a complete pipeline from input vectors to context-enriched outputs. Now we&rsquo;ll see why one head isn&rsquo;t enough, and what happens when we run <strong>several heads in parallel</strong>.</span>
+					<span>Single-head attention learns one compatibility function. Multi-head attention decomposes <code>d<sub>model</sub></code> into <code>h</code> parallel subspaces, each learning independent relational patterns.</span>
 				</div>
 
 				<div class="section-prose reveal">
 					<p>
-						A single attention head can only learn <strong>one type of relationship</strong> at a time.
-						It might learn to connect subjects to verbs, or to link pronouns to their antecedents &mdash;
-						but it can&rsquo;t do both simultaneously. Language is far too rich for a single perspective.
-					</p>
-					<p>
-						The solution is <strong>multi-head attention</strong>: run multiple attention heads in parallel,
-						each with its own learned W<sub>Q</sub>, W<sub>K</sub>, W<sub>V</sub> weight matrices.
-						Each head independently decides what to attend to, learning to capture different
-						aspects of the input. Think of it like looking at a sentence from multiple angles
-						at once &mdash; one head for grammar, another for meaning, another for proximity.
+						A single attention head learns one compatibility function &mdash; it cannot simultaneously
+						capture syntactic agreement, semantic similarity, and positional adjacency. Multi-head
+						attention addresses this by partitioning the <code>d<sub>model</sub></code>-dimensional
+						representation into <code>h</code> independent subspaces of dimension
+						<code>d<sub>k</sub> = d<sub>model</sub>/h</code>. Each head has its own
+						<code>W<sub>Q</sub><sup>(i)</sup></code>, <code>W<sub>K</sub><sup>(i)</sup></code>,
+						<code>W<sub>V</sub><sup>(i)</sup></code> projections and learns to attend to different
+						relational patterns.<span class="sn-marker" data-sn="sn-head-taxonomy">15</span>
 					</p>
 				</div>
 
@@ -1110,15 +1059,10 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						Each head receives the <strong>same input vectors</strong> but learns completely
-						different weight matrices. This means each head computes its own Q, K, V
-						projections and its own attention pattern. The result is that different heads
-						specialize in different tasks &mdash; without anyone telling them to. The
-						specialization emerges naturally during training.
-					</p>
-					<p>
-						Below are three example attention patterns for our familiar sentence &ldquo;The cat sat.&rdquo;
-						Notice how each head learns to focus on completely different relationships:
+						All heads receive the same input but learn different projection matrices.
+						Head specialization emerges from training without explicit supervision &mdash;
+						different gradient signals cause different heads to converge on different
+						relational functions. Example attention patterns for three heads:
 					</p>
 				</div>
 
@@ -1152,22 +1096,13 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						Head 1 acts like a <strong>positional head</strong> &mdash; it focuses on adjacent tokens,
-						helping each word understand its immediate context. Head 2 is a <strong>syntactic head</strong> &mdash;
-						it links grammatically related words like subjects and verbs, even across distance.
-						Head 3 is a <strong>self-identity head</strong> &mdash; it lets each token preserve its own
-						representation while blending in a little context from everything else.
-					</p>
-					<p>
-						In real transformers, this effect scales dramatically. GPT-2 has 12 heads per layer;
-						GPT-4 and Claude likely have 64&ndash;96+. Researchers have discovered heads that specialize
-						in <strong>induction</strong> (copying patterns), <strong>previous-token</strong> (always looking one step back),
-						<strong>duplicate-token</strong> (finding repeated words), and many more. The model figures out
-						which perspectives are useful entirely on its own.
-					</p>
-					<p>
-						But how do these different perspectives get combined into a single output? That&rsquo;s
-						the next step: <strong>concatenation and projection</strong>.
+						Head 1 implements a positional attention pattern (attending to adjacent tokens).
+						Head 2 captures syntactic dependencies (subject-verb). Head 3 acts as an
+						identity / broad-context head. In production models (GPT-2: 12 heads/layer;
+						Llama 3: 32&ndash;64), researchers have identified many specialized head
+						types:<span class="sn-marker" data-sn="sn-head-pruning">16</span> induction heads
+						(pattern copying), previous-token heads, duplicate-token heads, and name mover
+						heads. This specialization is emergent.
 					</p>
 				</div>
 
@@ -1182,16 +1117,12 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						Each attention head operates on a <strong>subspace</strong> of the full model dimension.
-						If d<sub>model</sub> = 768 and we have h = 12 heads, each head works with
-						d<sub>k</sub> = 768/12 = 64 dimensions. This is critical: multi-head attention doesn&rsquo;t
-						cost more compute than a single large head &mdash; it just <strong>divides the dimensions</strong>
-						among multiple perspectives.
-					</p>
-					<p>
-						After all heads run in parallel, their outputs are concatenated back into a single
-						vector of the original d<sub>model</sub> size, then multiplied by one final weight matrix
-						W<sub>O</sub> to mix the heads&rsquo; contributions together.
+						The total computation is equivalent to a single <code>d<sub>model</sub></code>-dimensional
+						attention head: each of <code>h</code> heads operates on <code>d<sub>k</sub> = d<sub>model</sub>/h</code>
+						dimensions, and the outputs are concatenated back to <code>d<sub>model</sub></code>.
+						The output projection <code>W<sub>O</sub> &isin; &reals;<sup>d<sub>model</sub> &times; d<sub>model</sub></sup></code>
+						mixes information across heads, enabling cross-head
+						interaction.<span class="sn-marker" data-sn="sn-gqa">17</span>
 					</p>
 				</div>
 
@@ -1274,10 +1205,10 @@ const sections = [
 				{/* Closing prose + residual stream handoff */}
 				<div class="section-prose reveal">
 					<p>
-						The output of multi-head attention is a vector of the <strong>same dimension</strong> as the input
-						(d<sub>model</sub>). This is by design: the output needs to be <strong>added back</strong> to the original
-						input via a residual connection. The attention output doesn&rsquo;t replace the input &mdash;
-						it <strong>enriches</strong> it with contextual information from other tokens.
+						The output dimensionality matches the input (<code>d<sub>model</sub></code>) by construction,
+						enabling the residual addition <code>x + MHA(x)</code>. The attention sublayer computes
+						a delta &mdash; contextual information to be added to the representation &mdash;
+						rather than replacing it.
 					</p>
 				</div>
 
@@ -1305,10 +1236,9 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						That completes the multi-head attention mechanism. Each token&rsquo;s representation
-						has been enriched with context from every other token, viewed through multiple
-						independent perspectives. Next, the enriched vectors pass through the
-						<strong>feed-forward network</strong> &mdash; where per-token computation and memory storage happen.
+						Multi-head attention computes a context-dependent update to each token&rsquo;s representation
+						via <code>h</code> parallel compatibility functions. The enriched representations
+						now pass to the position-wise feed-forward network (§06).
 					</p>
 				</div>
 			</section>
@@ -1320,29 +1250,24 @@ const sections = [
 					<span class="font-mono text-sm text-accent/60">06</span>
 					<div>
 						<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">Feed-Forward Network</h2>
-						<p class="mt-1 text-base text-textColor/60">Per-token computation and memory</p>
+						<p class="mt-1 text-base text-textColor/60">Position-wise MLP and memory</p>
 					</div>
 				</div>
 
 				<div class="linkage-callout reveal linkage-ffn">
 					<span class="linkage-icon">&#8599;</span>
-					<span>We&rsquo;re now in the <strong>Feed-Forward Network</strong> block &mdash; the second half of each transformer layer. The enriched vectors from multi-head attention (x + MHA(x)) arrive here for per-token processing.</span>
+					<span>Corresponds to the <strong>Feed-Forward Network</strong> block. Input: residual stream after attention addition, <code>x + MHA(x)</code>.</span>
 				</div>
 
 				<div class="section-prose reveal">
 					<p>
-						After attention has mixed information across tokens, each token passes independently
-						through a <strong>feed-forward network</strong> (FFN). Unlike attention, which lets tokens
-						communicate, the FFN processes each token in isolation &mdash; the same weights
-						applied to every position. Think of attention as a <strong>meeting</strong> where tokens
-						exchange information, and the FFN as <strong>individual work time</strong> where each token
-						processes what it learned.
-					</p>
-					<p>
-						The FFN has a distinctive two-layer structure: it <strong>expands</strong> the vector to a
-						higher dimension, applies a nonlinear activation function, then <strong>compresses</strong>
-						it back. This expand-activate-compress pattern is where much of the transformer&rsquo;s
-						&ldquo;knowledge&rdquo; is stored.
+						The feed-forward network is a position-wise two-layer MLP applied independently
+						to each token (shared weights across positions). It performs the computation
+						<code>FFN(x) = W<sub>2</sub> · σ(W<sub>1</sub>x + b<sub>1</sub>) + b<sub>2</sub></code>,
+						where <code>W<sub>1</sub></code> expands to a higher dimension
+						(<code>d<sub>ff</sub> = 4 × d<sub>model</sub></code> by convention),
+						the activation function introduces nonlinearity, and <code>W<sub>2</sub></code>
+						compresses back to <code>d<sub>model</sub></code>.<span class="sn-marker" data-sn="sn-gelu">18</span>
 					</p>
 				</div>
 
@@ -1383,18 +1308,13 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						The expansion ratio is typically <strong>4&times;</strong>: a 768-dimensional input becomes
-						a 3072-dimensional hidden representation, then gets compressed back to 768.
-						This &ldquo;bulge&rdquo; creates a much larger space for the network to work in &mdash;
-						like expanding into a bigger workshop, doing detailed work, then packing
-						the results back into a compact form.
-					</p>
-					<p>
-						The nonlinear <strong>activation function</strong> between the two linear layers is what
-						gives the FFN its power. Without it, stacking two linear transformations would
-						just be one bigger linear transformation &mdash; nothing interesting.
-						The activation introduces the <strong>nonlinearity</strong> that lets the network learn
-						complex patterns.
+						The 4&times; expansion ratio creates a bottleneck architecture: the intermediate
+						representation has four times the dimensionality of the input/output, providing
+						a much larger space for nonlinear computation. The activation function σ is
+						critical &mdash; without it, <code>W<sub>2</sub>(W<sub>1</sub>x)</code> collapses to a
+						single linear map. Modern transformers have moved from ReLU to smoother
+						alternatives, and gated variants provide additional
+						expressivity:<span class="sn-marker" data-sn="sn-swiglu">19</span>
 					</p>
 				</div>
 
@@ -1415,12 +1335,13 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						Researchers have found that the FFN layers act as a kind of <strong>key-value memory</strong>.
-						Each neuron in the expanded layer acts like a &ldquo;pattern detector&rdquo; &mdash; it activates
-						when it recognizes certain features in the input. The first linear layer (W<sub>1</sub>) selects
-						which patterns match, the activation function gates them, and the second linear layer
-						(W<sub>2</sub>) maps the activated patterns back to the output space. This is where much of the
-						transformer&rsquo;s factual knowledge lives.
+						Geva et al. (2021) showed that FFN layers function as key-value
+						memories:<span class="sn-marker" data-sn="sn-ffn-memory">20</span> rows of
+						<code>W<sub>1</sub></code> act as keys (pattern detectors that activate on specific
+						input features), the activation function gates them, and columns of
+						<code>W<sub>2</sub></code> act as values (the information written to the residual stream
+						when a pattern matches). A large fraction of the transformer&rsquo;s factual knowledge
+						is stored in these FFN parameters.
 					</p>
 				</div>
 
@@ -1448,11 +1369,10 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						That&rsquo;s one complete transformer layer: <strong>multi-head attention</strong> for cross-token
-						communication, then a <strong>feed-forward network</strong> for per-token processing, both
-						connected through <strong>residual connections</strong>. In a typical model, this pattern
-						repeats 12&ndash;96 times. The residual stream &mdash; the highway that carries
-						information through all these layers &mdash; is the subject of the next section.
+						One transformer layer: attention for inter-token communication, FFN for per-token
+						computation, both connected via residual additions. This layer is repeated
+						<code>N</code> times (12&ndash;96 in practice). The residual stream formalism
+						that connects these layers is the subject of §07.
 					</p>
 				</div>
 			</section>
@@ -1466,28 +1386,29 @@ const sections = [
 					<span class="font-mono text-sm text-accent/60">07</span>
 					<div>
 						<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">Residual Stream</h2>
-						<p class="mt-1 text-base text-textColor/60">The information highway through the network</p>
+						<p class="mt-1 text-base text-textColor/60">Residual connections, running sums, and layer normalization</p>
 					</div>
 				</div>
 
 				<div class="linkage-callout reveal linkage-residual">
 					<span class="linkage-icon">&#8599;</span>
-					<span>We&rsquo;ve now seen both halves of a single transformer layer: <strong>multi-head attention</strong> for cross-token communication and the <strong>feed-forward network</strong> for per-token processing. But what connects them &mdash; and what lets information flow through dozens of these layers? The <strong>residual stream</strong>.</span>
+					<span>The <strong>residual stream</strong> is the shared communication channel connecting all sublayers. Each attention and FFN block reads from and writes to this stream via additive residual connections.</span>
 				</div>
 
 				<div class="section-prose reveal">
 					<p>
-						Imagine a <strong>highway</strong> that runs through the entire transformer. At each layer,
-						attention and FFN blocks are like <strong>on-ramps and off-ramps</strong> &mdash; they read
-						from the highway, do their computation, and <strong>add</strong> their output back. The
-						original signal is never destroyed; it just accumulates new information at each stop.
+						The residual stream formalism, articulated by Elhage et al. (2021),<span class="sn-marker" data-sn="sn-elhage">21</span>
+						frames the transformer as a sequence of additive updates to a running sum.
+						Each sublayer computes a delta and adds it to the stream:
+						<code>x′ = x + f(x)</code>. The original signal is never destroyed &mdash;
+						it persists through the identity branch of each residual connection.
 					</p>
 					<p>
-						This is the <strong>residual connection</strong> &mdash; a deceptively simple idea
-						(just add the input to the output) that turns out to be critical. Without it,
-						gradients vanish as they backpropagate through dozens of layers, making deep
-						networks impossible to train. With it, the gradient has a &ldquo;shortcut&rdquo; that
-						bypasses every layer, keeping the signal strong.
+						This identity path also provides a gradient shortcut during
+						backpropagation,<span class="sn-marker" data-sn="sn-resnet">22</span> ensuring
+						that gradients can flow through the full depth of the network without vanishing.
+						Without residual connections, training transformers with dozens of layers would be
+						intractable.
 					</p>
 				</div>
 
@@ -1532,11 +1453,11 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						Here&rsquo;s the key insight: each sublayer (attention or FFN) computes a <strong>delta</strong>
-						&mdash; a change to apply &mdash; rather than replacing the stream. This means every
-						layer has access to information from <em>all</em> previous layers, not just the one before it.
-						The residual stream is a <strong>shared workspace</strong> that every component can read from
-						and write to.
+						Each sublayer writes an additive update rather than replacing the stream.
+						Consequently, every layer has read access to the outputs of all preceding layers
+						(not just the immediately previous one), enabling cross-layer composition of features.
+						The residual stream is a shared linear workspace &mdash; components communicate by
+						reading from and writing to different subspaces of this vector.
 					</p>
 				</div>
 
@@ -1603,10 +1524,9 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						But there&rsquo;s a problem. As values flow through dozens of addition operations, they
-						can grow uncontrollably large &mdash; or different dimensions can drift to wildly
-						different scales. Training becomes unstable. This is where <strong>layer normalization</strong>
-						comes in.
+						Repeated additions can cause the residual stream’s magnitude to grow unboundedly,
+						and different dimensions may drift to different scales. Layer normalization addresses
+						this by rescaling before each sublayer.
 					</p>
 				</div>
 
@@ -1618,16 +1538,13 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						Layer normalization is a <strong>normalization gate</strong> that sits before each sublayer
-						(in the &ldquo;Pre-Norm&rdquo; variant used by most modern transformers). It rescales each
-						vector so the values across dimensions have <strong>zero mean</strong> and <strong>unit variance</strong>,
-						then applies learned scale (&gamma;) and shift (&beta;) parameters.
-					</p>
-					<p>
-						The effect is simple but powerful: no matter how large or skewed the values
-						in the residual stream become, layer norm brings them back to a stable range
-						before each sublayer processes them. Think of it as a <strong>reset button for scale</strong>
-						&mdash; it preserves the direction (meaning) of the vector while standardizing its magnitude.
+						Layer normalization<span class="sn-marker" data-sn="sn-layernorm">23</span> computes per-vector
+						statistics: <code>LayerNorm(x) = γ · (x − μ) / σ + β</code>,
+						where <code>μ</code> and <code>σ</code> are the mean and standard deviation across
+						the <code>d</code> dimensions of a single vector, and <code>γ</code>, <code>β</code>
+						are learned affine parameters. This normalizes each vector to zero mean and unit variance
+						before each sublayer, stabilizing the input distribution regardless of the residual
+						stream’s accumulated magnitude.
 					</p>
 				</div>
 
@@ -1655,9 +1572,12 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						Modern transformers (GPT-2 onward) typically use <strong>Pre-Norm</strong> ordering: layer norm
-						is applied <em>before</em> each sublayer, not after. This makes training more stable because
-						each sublayer receives well-conditioned inputs. The pattern for each layer is:
+						Modern transformers use Pre-Norm ordering: layer normalization is applied <em>before</em>
+						each sublayer, not after (as in the original Vaswani et al. formulation). Pre-Norm
+						ensures each sublayer receives well-conditioned inputs, enabling stable training at
+						greater depth. Some architectures further simplify to
+						RMSNorm,<span class="sn-marker" data-sn="sn-rmsnorm">24</span> which drops the
+						mean-centering step:
 					</p>
 				</div>
 
@@ -1704,23 +1624,15 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						Finally, let&rsquo;s see how stacking these layers creates the full transformer.
-						A typical model has <strong>12&ndash;96 layers</strong>, each running the same
-						attention &rarr; residual &rarr; FFN &rarr; residual cycle. The residual stream flows through
-						all of them, accumulating increasingly abstract representations.
+						Stacking <code>N</code> layers (12&ndash;96 in practice) produces a hierarchy of increasingly
+						abstract representations. Empirically, early layers learn local syntactic features
+						(POS tagging, constituent structure) while later layers encode semantic and factual
+						knowledge. The residual stream enables this gradual refinement: each layer reads the
+						cumulative output of all preceding layers and adds its own contribution.
 					</p>
 					<p>
-						Early layers tend to learn <strong>local, syntactic patterns</strong> (like part-of-speech tagging),
-						while later layers capture <strong>abstract, semantic relationships</strong> (like factual knowledge
-						and reasoning). The residual stream is what makes this gradual refinement possible &mdash;
-						each layer can read what previous layers wrote and build on it, rather than starting from scratch.
-					</p>
-					<p>
-						The residual stream also connects back to the architecture diagram from section 02 &mdash;
-						it&rsquo;s the vertical highway labeled &ldquo;+ residual&rdquo; that runs through the &ldquo;&times;N layers&rdquo;
-						block. Now that we understand what happens inside each layer and how they connect,
-						the next step is to see what happens at the very end: turning the final residual vector
-						back into a word prediction.
+						After the final layer, a last layer normalization stabilizes the output before
+						the unembedding projection (§08).
 					</p>
 				</div>
 			</section>
@@ -1731,26 +1643,24 @@ const sections = [
 					<span class="font-mono text-sm text-accent/60">08</span>
 					<div>
 						<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">Output</h2>
-						<p class="mt-1 text-base text-textColor/60">From vectors back to words</p>
+						<p class="mt-1 text-base text-textColor/60">Unembedding, softmax, and autoregressive sampling</p>
 					</div>
 				</div>
 
 				<div class="linkage-callout reveal linkage-output">
 					<span class="linkage-icon">&nearr;</span>
-					<span>The vector has traveled through all N layers of attention and feed-forward processing. It now carries a rich, abstract representation of the token in context. We&rsquo;re at the <strong>Unembedding</strong> block at the very top of the architecture diagram &mdash; the final step before a prediction emerges.</span>
+					<span>The residual stream has passed through all <code>N</code> layers. The final representation is projected back to vocabulary space via the <strong>Unembedding</strong> matrix.</span>
 				</div>
 
 				<div class="section-prose reveal">
 					<p>
-						At the start of this explainer, we turned words into vectors &mdash; each token became a point in
-						a high-dimensional space, carrying meaning and position. Now we need to do the <strong>reverse</strong>:
-						take the final vector from the residual stream and turn it back into a word prediction.
-					</p>
-					<p>
-						This is the job of the <strong>unembedding layer</strong>. It takes the d<sub>model</sub>-dimensional
-						vector and projects it to a vector of size <strong>|V|</strong> (the vocabulary size &mdash; typically
-						32k&ndash;100k). Each entry in this vector is a <strong>logit</strong>: a raw, unnormalized score
-						for how likely that token is to come next.
+						The unembedding layer projects the final <code>d<sub>model</sub></code>-dimensional residual
+						vector to a <code>|V|</code>-dimensional vector of logits via
+						<code>logits = W<sub>U</sub> · h<sub>final</sub></code>, where
+						<code>W<sub>U</sub> &isin; &reals;<sup>|V| &times; d</sup></code>. In many
+						architectures, the unembedding matrix is tied to the embedding matrix:
+						<code>W<sub>U</sub> = W<sub>E</sub><sup>T</sup></code>.<span class="sn-marker" data-sn="sn-weight-tying">25</span>
+						Each logit is an unnormalized score for the corresponding vocabulary token.
 					</p>
 				</div>
 
@@ -1795,17 +1705,13 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						The logits are raw scores &mdash; they can be any real number, positive or negative.
-						To turn them into a proper probability distribution, we apply <strong>softmax</strong>:
-						each logit is exponentiated and then divided by the sum of all exponentiated logits.
-						The result is a probability for every token in the vocabulary, summing to 1.
-					</p>
-					<p>
-						But before applying softmax, we can introduce a <strong>temperature</strong> parameter
-						that controls how &ldquo;sharp&rdquo; or &ldquo;flat&rdquo; the distribution is. Low temperature
-						(&lt; 1) makes the model more confident &mdash; it concentrates probability on the top
-						choices. High temperature (&gt; 1) makes the model more creative &mdash; it spreads
-						probability more evenly across alternatives.
+						Softmax converts logits to a probability distribution:
+						<code>P(token<sub>i</sub>) = exp(z<sub>i</sub>/T) / ∑<sub>j</sub> exp(z<sub>j</sub>/T)</code>,
+						where <code>T</code> is the temperature parameter. At <code>T = 1</code>, the raw model
+						confidence is preserved. As <code>T → 0</code>, sampling converges to greedy
+						(argmax) decoding. As <code>T → ∞</code>, the distribution approaches uniform.
+						Practical generation also applies truncation strategies like nucleus
+						sampling.<span class="sn-marker" data-sn="sn-nucleus">26</span>
 					</p>
 				</div>
 
@@ -1862,24 +1768,16 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						At temperature 1.0 (the default), the model&rsquo;s raw confidence shows through &mdash;
-						&ldquo;mat&rdquo; is the clear favorite for &ldquo;The cat sat on the ___&rdquo;. Lower the temperature
-						toward 0.1 and the distribution collapses to near-certainty on &ldquo;mat.&rdquo; Raise it to 3.0
-						and suddenly &ldquo;floor,&rdquo; &ldquo;bed,&rdquo; and other alternatives become plausible &mdash;
-						the model becomes more <strong>creative</strong> but less <strong>predictable</strong>.
+						The temperature-probability tradeoff is fundamental to LLM deployment:
+						low <code>T</code> produces deterministic, high-confidence outputs; high <code>T</code>
+						increases diversity at the cost of coherence.
 					</p>
 					<p>
-						This temperature parameter is what you&rsquo;re adjusting when you set &ldquo;temperature&rdquo; in
-						an LLM API. At T=0, the model always picks the highest-probability token (greedy decoding).
-						As T increases, sampling becomes more random, leading to more diverse and surprising text &mdash;
-						but also more likely to produce nonsense.
-					</p>
-					<p>
-						And that&rsquo;s the complete pipeline. A sequence of tokens enters the transformer, flows
-						through embedding, positional encoding, N layers of attention and feed-forward processing
-						(connected by the residual stream), and finally emerges as a probability distribution
-						over the next token. The model generates text by sampling from this distribution,
-						appending the chosen token, and repeating &mdash; autoregressively, one token at a time.
+						Autoregressive generation proceeds by sampling from <code>P(token | context)</code>,
+						appending the sampled token to the context, and repeating. The KV cache
+						avoids recomputing previous tokens’ key and value vectors, reducing per-step cost
+						from <code>O(n · d<sup>2</sup>)</code> to
+						<code>O(d<sup>2</sup>)</code>.<span class="sn-marker" data-sn="sn-kvcache-gen">27</span>
 					</p>
 				</div>
 			</section>
@@ -1894,10 +1792,9 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						In the preamble, we showed you a black box &mdash; tokens in, prediction out.
-						Over the past eight sections, we&rsquo;ve opened every layer of that box. Now let&rsquo;s
-						watch it all work together. Press <strong>Step</strong> to advance one stage at a time,
-						or <strong>Play</strong> to watch the token &ldquo;cat&rdquo; flow through the entire transformer.
+						The full forward pass, end to end: tokenization &rarr; embedding &rarr; positional encoding
+						&rarr; N &times; (LayerNorm &rarr; MHA &rarr; residual &rarr; LayerNorm &rarr; FFN &rarr; residual)
+						&rarr; final LayerNorm &rarr; unembedding &rarr; softmax. Step through each stage below.
 					</p>
 				</div>
 
@@ -2017,15 +1914,10 @@ const sections = [
 
 				<div class="section-prose reveal" style="margin-top: 2rem;">
 					<p>
-						The black box is fully open. Every arrow, every matrix multiplication, every nonlinearity &mdash;
-						you&rsquo;ve seen them all. What started as an opaque mapping from input tokens to output
-						probabilities is now a transparent pipeline of learned transformations, each building on the last.
-					</p>
-					<p>
-						But understanding the components is only half the story. The real magic happens when
-						attention heads across <strong>different layers</strong> learn to work together &mdash; composing into
-						<strong>circuits</strong> that implement surprisingly sophisticated algorithms. That&rsquo;s
-						what we&rsquo;ll explore next.
+						Every operation in the forward pass is now explicit: learned linear projections,
+						normalization, softmax, elementwise addition. The remaining question is how these
+						components compose across layers to implement higher-order algorithms &mdash;
+						the subject of mechanistic interpretability (§09).
 					</p>
 				</div>
 			</section>
@@ -2036,7 +1928,7 @@ const sections = [
 					<span class="font-mono text-sm text-accent/60">09</span>
 					<div>
 						<h2 class="text-2xl font-semibold text-accent-2 sm:text-3xl">Circuits</h2>
-						<p class="mt-1 text-base text-textColor/60">How attention heads compose into algorithms</p>
+						<p class="mt-1 text-base text-textColor/60">Cross-layer head composition and mechanistic interpretability</p>
 					</div>
 				</div>
 
@@ -2044,26 +1936,20 @@ const sections = [
 				<div class="linkage-callout reveal linkage-circuits">
 					<span class="linkage-icon">&uarr;</span>
 					<span>
-						In sections 04&ndash;05, we saw how <strong>individual attention heads</strong> learn
-						different patterns &mdash; positional, syntactic, identity. Now we&rsquo;ll see what happens
-						when heads across <strong>different layers</strong> learn to work together.
+						Individual attention heads learn single relational patterns (§04&ndash;05).
+						This section examines how heads across <strong>different layers</strong>
+						compose via the residual stream to implement multi-step algorithms.
 					</span>
 				</div>
 
 				<div class="section-prose reveal">
 					<p>
-						A single attention head is powerful, but limited &mdash; it can only look at one
-						step of the input at a time. The real magic of transformers emerges when heads in
-						<strong>different layers</strong> learn to compose, forming <strong>circuits</strong>
-						that implement surprisingly sophisticated algorithms.
-					</p>
-					<p>
-						Think of it this way: a head in Layer 1 might identify a pattern (&ldquo;I see the
-						token <em>A B</em> appeared earlier&rdquo;). A head in Layer 2 can <em>read</em> what
-						Layer 1 wrote to the residual stream and act on it (&ldquo;Since <em>A B</em>
-						appeared before, and now I see <em>A</em> again, I should predict
-						<em>B</em>&rdquo;). Together, these two heads form a <strong>circuit</strong> &mdash;
-						a multi-step algorithm distributed across layers.
+						Because the residual stream is a shared linear workspace, a head in layer <code>L+1</code>
+						can read the output of a head in layer <code>L</code> &mdash; the two compose via matrix
+						multiplication through the residual stream. When specific heads across layers cooperate
+						to implement a coherent function, the result is a <strong>circuit</strong>: a multi-step
+						algorithm distributed across the network’s computational
+						graph.<span class="sn-marker" data-sn="sn-circuits-olah">28</span>
 					</p>
 				</div>
 
@@ -2236,14 +2122,13 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						This is an <strong>induction head</strong> &mdash; one of the first circuits discovered by
-						researchers at Anthropic. It&rsquo;s remarkably simple (just two heads across two layers)
-						but explains a core capability: <strong>in-context learning</strong>. When you give a
-						language model a few examples in your prompt and it learns the pattern, induction heads
-						are a key mechanism making that work.
-					</p>
-					<p>
-						Induction heads are just one example. Researchers have discovered many other circuit types:
+						This <strong>induction head</strong> circuit was characterized by Olsson et al.
+						(2022)<span class="sn-marker" data-sn="sn-induction">29</span> and explains a
+						significant fraction of in-context learning: the ability to continue patterns from
+						few-shot examples. The previous-token head (layer <code>L</code>) writes
+						&ldquo;the token before me&rdquo; into B’s residual stream; the induction head
+						(layer <code>L+1</code>) uses this to match [A] &rarr; [B] and predict B after the
+						second A. Other documented circuits include:
 					</p>
 				</div>
 
@@ -2273,9 +2158,10 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						The ability to identify and understand these circuits is the foundation of
-						<strong>mechanistic interpretability</strong> &mdash; the project of reverse-engineering
-						what neural networks actually compute, rather than just observing what they output.
+						Identifying these circuits is the core methodology of <strong>mechanistic
+						interpretability</strong><span class="sn-marker" data-sn="sn-mi-olah">30</span> &mdash;
+						reverse-engineering the algorithms implemented by trained neural networks at the
+						resolution of individual components, rather than treating the model as a black box.
 					</p>
 				</div>
 
@@ -2303,10 +2189,12 @@ const sections = [
 
 				<div class="section-prose reveal">
 					<p>
-						This is one of the most exciting frontiers in AI research. The transformer architecture
-						you&rsquo;ve learned in this explainer isn&rsquo;t just an engineering artifact &mdash;
-						it&rsquo;s a computational structure that <em>we can study scientifically</em>,
-						uncovering the algorithms hidden within its weights.
+						The transformer architecture admits principled scientific investigation:
+						its linear residual stream, discrete attention patterns, and structured layer
+						composition make it more amenable to reverse-engineering than arbitrary neural
+						networks. Recent work on sparse autoencoders and dictionary
+						learning<span class="sn-marker" data-sn="sn-saes">31</span> has begun decomposing
+						residual stream representations into interpretable features.
 					</p>
 				</div>
 
@@ -2346,10 +2234,11 @@ const sections = [
 					</div>
 
 					<p class="circ-closing-text">
-						We started with a black box. Now you know how tokens become vectors, how attention
-						lets tokens communicate, how feed-forward layers store knowledge, how residual
-						connections carry information through dozens of layers, and how all of it composes
-						into circuits that implement real algorithms. <strong>The box is open.</strong>
+						The transformer’s forward pass is fully characterized: tokenization, embedding,
+						positional encoding, self-attention, FFN, residual connections, layer normalization,
+						unembedding, and softmax. The circuits framework connects these low-level operations
+						to high-level algorithmic behaviors, opening a path toward mechanistic understanding
+						of learned computation.
 					</p>
 
 					{/* Follow-up post callout */}
@@ -2370,6 +2259,46 @@ const sections = [
 
 		{/* Right sidenote gutter — desktop only, content added by future features */}
 		<aside class="sidenote-gutter" aria-label="Sidenotes">
+			{/* Section 01: Preamble sidenotes */}
+			<div class="sidenote" id="sn-vaswani"><span class="sn-number">1</span><span class="sn-content">Vaswani, A. et al. “Attention Is All You Need.” <em>NeurIPS</em> 2017. The paper that introduced the transformer, demonstrating state-of-the-art translation with no recurrence or convolution. <a href="https://arxiv.org/abs/1706.03762" class="sn-link">arXiv</a></span></div>
+			<div class="sidenote" id="sn-bahdanau"><span class="sn-number">2</span><span class="sn-content">Bahdanau, D. et al. “Neural Machine Translation by Jointly Learning to Align and Translate.” <em>ICLR</em> 2015. Introduced additive attention for seq2seq models, allowing the decoder to selectively focus on source positions. <a href="https://arxiv.org/abs/1409.0473" class="sn-link">arXiv</a></span></div>
+			<div class="sidenote" id="sn-quadratic"><span class="sn-number">3</span><span class="sn-content">The <code>O(n²)</code> cost of self-attention has motivated substantial work on efficient variants: Linformer, Performer, and Flash Attention (Dao et al. 2022) reduce the practical cost while preserving most of the representational capacity. FlashAttention in particular achieves exact attention in sub-quadratic I/O complexity. <a href="https://arxiv.org/abs/2205.14135" class="sn-link">arXiv</a></span></div>
+			{/* Section 02: Architecture Overview sidenotes */}
+			<div class="sidenote" id="sn-decoder-only"><span class="sn-number">4</span><span class="sn-content">The original transformer (Vaswani et al.) used an encoder-decoder architecture for translation. Most modern LLMs (GPT, Llama, Claude) use a decoder-only variant, which processes a single sequence autoregressively. The encoder-decoder design persists in some translation and speech models (T5, Whisper).</span></div>
+			<div class="sidenote" id="sn-prenorm"><span class="sn-number">5</span><span class="sn-content">Modern transformers use Pre-Norm ordering: layer norm is applied <em>before</em> each sublayer, not after (as in the original paper). This stabilizes training at depth. See Xiong et al. “On Layer Normalization in the Transformer Architecture,” <em>ICML</em> 2020. <a href="https://arxiv.org/abs/2002.04745" class="sn-link">arXiv</a></span></div>
+			{/* Section 03: Embeddings sidenotes */}
+			<div class="sidenote" id="sn-bpe"><span class="sn-number">6</span><span class="sn-content">Sennrich, R. et al. “Neural Machine Translation of Rare Words with Subword Units.” <em>ACL</em> 2016. BPE was adapted from data compression to NLP tokenization, enabling open-vocabulary models. <a href="https://arxiv.org/abs/1508.07909" class="sn-link">arXiv</a></span></div>
+			<div class="sidenote" id="sn-distributional"><span class="sn-number">7</span><span class="sn-content">The distributional hypothesis: “You shall know a word by the company it keeps” (Firth, 1957). Embedding geometry is a direct consequence of this principle — tokens co-occurring in similar contexts receive similar gradient updates.</span></div>
+			<div class="sidenote" id="sn-rope"><span class="sn-number">8</span><span class="sn-content">Modern models rarely use sinusoidal PE. Rotary Position Embeddings (RoPE; Su et al. 2021) encode relative position by rotating Q and K vectors, enabling length generalization. ALiBi (Press et al. 2022) adds a linear bias to attention scores instead. <a href="https://arxiv.org/abs/2104.09864" class="sn-link">RoPE</a> &middot; <a href="https://arxiv.org/abs/2108.12409" class="sn-link">ALiBi</a></span></div>
+			<div class="sidenote" id="sn-shared-space"><span class="sn-number">9</span><span class="sn-content">Adding content and position embeddings in the same vector space is a design choice, not a necessity. It means position information can interfere with semantic content. RoPE avoids this by applying rotations only to Q/K, leaving V (and thus content) unmodified.</span></div>
+			{/* Section 04: Attention sidenotes */}
+			<div class="sidenote" id="sn-associative"><span class="sn-number">10</span><span class="sn-content">This Q/K/V structure can be viewed as a differentiable associative memory: keys are memory addresses, values are stored content, and the query performs a soft lookup. See Ramsauer et al. “Hopfield Networks is All You Need,” <em>ICLR</em> 2021. <a href="https://arxiv.org/abs/2008.02217" class="sn-link">arXiv</a></span></div>
+			<div class="sidenote" id="sn-scaling"><span class="sn-number">11</span><span class="sn-content">If <code>q</code> and <code>k</code> are independent with zero mean and unit variance, their dot product has mean 0 and variance <code>d<sub>k</sub></code>. Dividing by <code>√d<sub>k</sub></code> normalizes the variance back to 1, keeping softmax gradients well-behaved.</span></div>
+			<div class="sidenote" id="sn-temperature"><span class="sn-number">12</span><span class="sn-content">In standard attention, there is no explicit temperature parameter — the <code>1/√d<sub>k</sub></code> scaling serves a similar role. Temperature is introduced during generation (applied to output logits, not attention scores). We show it here for pedagogical clarity.</span></div>
+			<div class="sidenote" id="sn-causal"><span class="sn-number">13</span><span class="sn-content">The causal mask sets <code>score(i,j) = -∞</code> for <code>j > i</code>, making <code>softmax(…) = 0</code> for future positions. This enforces the autoregressive property: token <code>i</code>’s representation depends only on tokens <code>≤ i</code>. Bidirectional models (BERT) omit this mask.</span></div>
+			<div class="sidenote" id="sn-kvcache"><span class="sn-number">14</span><span class="sn-content">During autoregressive generation, previously computed K and V vectors can be cached and reused (the KV cache), reducing per-token cost from <code>O(n · d)</code> to <code>O(d)</code> for the projection step. The KV cache is a major engineering consideration for inference efficiency.</span></div>
+			{/* Section 05: Multi-Head Attention sidenotes */}
+			<div class="sidenote" id="sn-head-taxonomy"><span class="sn-number">15</span><span class="sn-content">Olsson et al. “In-context Learning and Induction Heads,” <em>Transformer Circuits Thread</em>, 2022. Provides a taxonomy of head types and evidence that induction heads drive in-context learning. <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html" class="sn-link">link</a></span></div>
+			<div class="sidenote" id="sn-head-pruning"><span class="sn-number">16</span><span class="sn-content">Michel et al. “Are Sixteen Heads Really Better than One?” <em>NeurIPS</em> 2019. Shows that many heads can be pruned at test time with minimal performance loss, suggesting substantial redundancy. <a href="https://arxiv.org/abs/1905.10650" class="sn-link">arXiv</a></span></div>
+			<div class="sidenote" id="sn-gqa"><span class="sn-number">17</span><span class="sn-content">Grouped Query Attention (Ainslie et al. 2023) reduces KV cache memory by sharing K/V projections across groups of query heads. Used in Llama 2 70B and later models. <a href="https://arxiv.org/abs/2305.13245" class="sn-link">arXiv</a></span></div>
+			{/* Section 06: FFN sidenotes */}
+			<div class="sidenote" id="sn-gelu"><span class="sn-number">18</span><span class="sn-content">GELU (Hendrycks & Gimpel, 2016) approximates <code>x · Φ(x)</code> where Φ is the Gaussian CDF. It provides smoother gradients than ReLU, particularly around zero. <a href="https://arxiv.org/abs/1606.08415" class="sn-link">arXiv</a></span></div>
+			<div class="sidenote" id="sn-swiglu"><span class="sn-number">19</span><span class="sn-content">SwiGLU (Shazeer, 2020) gates the FFN with an additional linear projection: <code>SwiGLU(x) = (xW<sub>1</sub>) ⊗ SiLU(xW<sub>gate</sub>)</code>. Used in PaLM, Llama, and most recent LLMs. Requires 3 weight matrices per FFN instead of 2. <a href="https://arxiv.org/abs/2002.05202" class="sn-link">arXiv</a></span></div>
+			<div class="sidenote" id="sn-ffn-memory"><span class="sn-number">20</span><span class="sn-content">Geva et al. “Transformer Feed-Forward Layers Are Key-Value Memories.” <em>EMNLP</em> 2021. Demonstrates that FFN neurons activate on interpretable input patterns and store corresponding output values. <a href="https://arxiv.org/abs/2012.14913" class="sn-link">arXiv</a></span></div>
+			{/* Section 07: Residual Stream sidenotes */}
+			<div class="sidenote" id="sn-elhage"><span class="sn-number">21</span><span class="sn-content">Elhage et al. “A Mathematical Framework for Transformer Circuits.” <em>Transformer Circuits Thread</em>, 2021. Formalizes the residual stream as a shared linear workspace and analyzes head composition. <a href="https://transformer-circuits.pub/2021/framework/index.html" class="sn-link">link</a></span></div>
+			<div class="sidenote" id="sn-resnet"><span class="sn-number">22</span><span class="sn-content">He et al. “Deep Residual Learning for Image Recognition.” <em>CVPR</em> 2016. Introduced residual connections for training very deep networks. The gradient through a residual block has an identity component that prevents vanishing. <a href="https://arxiv.org/abs/1512.03385" class="sn-link">arXiv</a></span></div>
+			<div class="sidenote" id="sn-layernorm"><span class="sn-number">23</span><span class="sn-content">Ba, Kiros & Hinton. “Layer Normalization.” 2016. Unlike batch normalization, LayerNorm normalizes across the feature dimension of a single example, making it suitable for variable-length sequences. <a href="https://arxiv.org/abs/1607.06450" class="sn-link">arXiv</a></span></div>
+			<div class="sidenote" id="sn-rmsnorm"><span class="sn-number">24</span><span class="sn-content">RMSNorm (Zhang & Sennrich, 2019) normalizes by the root mean square only: <code>RMSNorm(x) = x / RMS(x) · γ</code>, omitting the mean-centering step. Used in Llama and other recent architectures for efficiency. <a href="https://arxiv.org/abs/1910.07467" class="sn-link">arXiv</a></span></div>
+			{/* Section 08: Output sidenotes */}
+			<div class="sidenote" id="sn-weight-tying"><span class="sn-number">25</span><span class="sn-content">Press & Wolf. “Using the Output Embedding to Improve Language Models.” <em>EACL</em> 2017. Weight tying reduces parameters and can improve performance by forcing the embedding and unembedding to share the same vector space. <a href="https://arxiv.org/abs/1608.05859" class="sn-link">arXiv</a></span></div>
+			<div class="sidenote" id="sn-nucleus"><span class="sn-number">26</span><span class="sn-content">Holtzman et al. “The Curious Case of Neural Text Degeneration.” <em>ICLR</em> 2020. Introduced nucleus (top-p) sampling, which truncates the distribution to the smallest set of tokens whose cumulative probability exceeds <code>p</code>. <a href="https://arxiv.org/abs/1904.09751" class="sn-link">arXiv</a></span></div>
+			<div class="sidenote" id="sn-kvcache-gen"><span class="sn-number">27</span><span class="sn-content">The KV cache stores all previously computed K and V vectors. Memory grows as <code>O(n · d · N · h)</code> per sequence, which becomes the primary memory bottleneck for long-context inference. Grouped Query Attention (sidenote 17) directly addresses this.</span></div>
+			{/* Section 09: Circuits sidenotes */}
+			<div class="sidenote" id="sn-circuits-olah"><span class="sn-number">28</span><span class="sn-content">Olah et al. “Zoom In: An Introduction to Circuits.” <em>Distill</em>, 2020. Proposes the circuits framework for understanding neural networks as compositions of interpretable features and weights. <a href="https://distill.pub/2020/circuits/zoom-in/" class="sn-link">link</a></span></div>
+			<div class="sidenote" id="sn-induction"><span class="sn-number">29</span><span class="sn-content">The induction head circuit was also independently characterized in Elhage et al. (2021). It appears reliably in 2+ layer transformers and accounts for a substantial fraction of in-context learning performance.</span></div>
+			<div class="sidenote" id="sn-mi-olah"><span class="sn-number">30</span><span class="sn-content">Wang et al. “Interpretability in the Wild: a Circuit for Indirect Object Identification in GPT-2 Small.” <em>ICLR</em> 2023. A detailed circuit analysis identifying 26 heads involved in the IOI task. <a href="https://arxiv.org/abs/2211.00593" class="sn-link">arXiv</a></span></div>
+			<div class="sidenote" id="sn-saes"><span class="sn-number">31</span><span class="sn-content">Sparse autoencoders decompose residual stream activations into interpretable features. Bricken et al. “Towards Monosemanticity,” Anthropic, 2023. Recent scaling work (Templeton et al., 2024) extracted millions of interpretable features from Claude. <a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" class="sn-link">link</a></span></div>
 		</aside>
 	</div>
 
@@ -2452,6 +2381,7 @@ const sections = [
 		grid-column: 1;
 		padding: 0 0 2rem;
 		min-width: 0;
+		max-width: 52rem;
 	}
 
 	@media (min-width: 1280px) {
@@ -2591,6 +2521,89 @@ const sections = [
 			display: block;
 			grid-column: 3;
 			grid-row: 1;
+			position: relative;
+		}
+	}
+
+	/* ===== Sidenote markers (inline superscript numbers) ===== */
+	.sn-marker {
+		display: inline;
+		font-size: 0.7em;
+		font-weight: 600;
+		vertical-align: super;
+		line-height: 0;
+		color: hsl(var(--theme-accent) / 0.8);
+		cursor: pointer;
+		padding: 0 1px;
+		transition: color 0.15s ease;
+	}
+
+	.sn-marker:hover,
+	.sn-marker.sn-active {
+		color: hsl(var(--theme-accent) / 1);
+	}
+
+	/* ===== Sidenote elements (gutter-positioned on desktop) ===== */
+	.sidenote {
+		position: absolute;
+		left: 0;
+		right: 0;
+		font-size: 0.78rem;
+		line-height: 1.45;
+		color: hsl(var(--theme-text) / 0.55);
+		transition: color 0.15s ease, opacity 0.15s ease;
+	}
+
+	.sidenote.sn-highlight {
+		color: hsl(var(--theme-text) / 0.85);
+	}
+
+	.sn-number {
+		font-size: 0.7em;
+		font-weight: 600;
+		vertical-align: super;
+		line-height: 0;
+		color: hsl(var(--theme-accent) / 0.6);
+		margin-right: 3px;
+	}
+
+	.sn-content {
+		/* Wraps citation text */
+	}
+
+	.sn-link {
+		color: hsl(var(--theme-accent) / 0.7);
+		text-decoration: underline;
+		text-decoration-color: hsl(var(--theme-accent) / 0.25);
+		text-underline-offset: 2px;
+		transition: color 0.15s ease, text-decoration-color 0.15s ease;
+	}
+
+	.sn-link:hover {
+		color: hsl(var(--theme-accent) / 1);
+		text-decoration-color: hsl(var(--theme-accent) / 0.6);
+	}
+
+	/* ===== Mobile sidenote fallback (inline expandable) ===== */
+	.sn-inline {
+		display: none;
+		margin: 0.35rem 0 0.5rem;
+		padding: 0.5rem 0.75rem;
+		font-size: 0.78rem;
+		line-height: 1.45;
+		color: hsl(var(--theme-text) / 0.55);
+		border-left: 2px solid hsl(var(--theme-accent) / 0.2);
+		background: hsl(var(--theme-accent) / 0.03);
+		border-radius: 0 4px 4px 0;
+	}
+
+	.sn-inline.sn-inline-open {
+		display: block;
+	}
+
+	@media (min-width: 1280px) {
+		.sn-inline {
+			display: none !important;
 		}
 	}
 
@@ -2755,7 +2768,7 @@ const sections = [
 
 	/* ===== Preamble prose ===== */
 	.preamble-prose {
-		max-width: 42rem;
+		max-width: 52rem;
 	}
 
 	.preamble-prose p {
@@ -2867,7 +2880,7 @@ const sections = [
 		line-height: 1.75;
 		color: hsl(var(--theme-text) / 0.78);
 		margin-bottom: 1.25rem;
-		max-width: 42rem;
+		max-width: 52rem;
 	}
 
 	.vocab-grid {
@@ -2963,7 +2976,7 @@ const sections = [
 		font-size: 1.05rem;
 		line-height: 1.75;
 		color: hsl(var(--theme-text) / 0.78);
-		max-width: 42rem;
+		max-width: 52rem;
 		text-align: center;
 	}
 
@@ -2982,7 +2995,7 @@ const sections = [
 
 	/* ===== Architecture diagram ===== */
 	.arch-prose {
-		max-width: 42rem;
+		max-width: 52rem;
 		margin-bottom: 2rem;
 	}
 
@@ -3002,7 +3015,7 @@ const sections = [
 		font-size: 1.05rem;
 		line-height: 1.75;
 		color: hsl(var(--theme-text) / 0.78);
-		max-width: 42rem;
+		max-width: 52rem;
 		margin-top: 2rem;
 	}
 
@@ -3255,7 +3268,7 @@ const sections = [
 
 	/* ===== Shared section prose ===== */
 	.section-prose {
-		max-width: 42rem;
+		max-width: 52rem;
 	}
 
 	.section-prose p {
@@ -3288,7 +3301,7 @@ const sections = [
 		margin-bottom: 1.5rem;
 		font-size: 0.88rem;
 		line-height: 1.55;
-		max-width: 42rem;
+		max-width: 52rem;
 	}
 
 	.linkage-callout strong {
@@ -3314,7 +3327,7 @@ const sections = [
 	/* ===== Tokenizer widget ===== */
 	.tokenizer-widget {
 		margin: 2rem 0;
-		max-width: 42rem;
+		max-width: 52rem;
 	}
 
 	.tokenizer-label {
@@ -3442,7 +3455,7 @@ const sections = [
 	/* ===== Embedding transition (token → vector) ===== */
 	.embed-transition {
 		margin: 2.5rem 0 2rem;
-		max-width: 42rem;
+		max-width: 52rem;
 	}
 
 	.embed-transition-label {
@@ -3500,7 +3513,7 @@ const sections = [
 	/* ===== Embedding scatter plot ===== */
 	.embed-scatter-wrap {
 		margin: 2rem 0;
-		max-width: 42rem;
+		max-width: 52rem;
 	}
 
 	.embed-scatter-header {
@@ -3624,7 +3637,7 @@ const sections = [
 
 	/* ===== Positional encoding formula ===== */
 	.posenc-formula {
-		max-width: 42rem;
+		max-width: 52rem;
 		margin: 1rem 0 1.5rem;
 		padding: 14px 20px;
 		border-radius: 8px;
@@ -3657,7 +3670,7 @@ const sections = [
 
 	/* ===== Positional encoding interactive ===== */
 	.posenc-interactive {
-		max-width: 42rem;
+		max-width: 52rem;
 		margin: 1.5rem 0;
 	}
 
@@ -3750,7 +3763,7 @@ const sections = [
 
 	/* ===== Heatmap ===== */
 	.posenc-heatmap-wrap {
-		max-width: 42rem;
+		max-width: 52rem;
 		margin: 2rem 0;
 	}
 
@@ -3813,7 +3826,7 @@ const sections = [
 
 	/* ===== Handoff diagram ===== */
 	.posenc-handoff {
-		max-width: 42rem;
+		max-width: 52rem;
 		margin: 2.5rem 0 1rem;
 		padding: 20px;
 		border-radius: 10px;
@@ -3920,7 +3933,7 @@ const sections = [
 		display: flex;
 		gap: 16px;
 		margin: 1.5rem 0 2rem;
-		max-width: 42rem;
+		max-width: 52rem;
 	}
 
 	.qkv-card {
@@ -3973,7 +3986,6 @@ const sections = [
 
 	.qkv-viz-container {
 		margin: 2rem 0;
-		max-width: 46rem;
 		overflow: hidden;
 	}
 
@@ -4051,7 +4063,7 @@ const sections = [
 		border-radius: 8px;
 		background: hsl(35 90% 55% / 0.06);
 		border: 1px solid hsl(35 90% 55% / 0.15);
-		max-width: 42rem;
+		max-width: 52rem;
 		font-size: 1.05rem;
 		font-family: Georgia, 'Times New Roman', serif;
 		color: hsl(var(--theme-text) / 0.85);
@@ -4065,7 +4077,7 @@ const sections = [
 
 	.attn-dotprod-container {
 		margin: 2rem 0;
-		max-width: 42rem;
+		max-width: 52rem;
 	}
 
 	.attn-dotprod-grid {
@@ -7157,29 +7169,14 @@ const sections = [
 		}
 	}
 
-	/* ── Feature #20: Scroll-triggered reveal animations ── */
+	/* ── Feature #20: Scroll-triggered reveal — disabled, elements always visible ── */
 	.reveal {
-		opacity: 0;
-		transform: translateY(24px);
-		transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+		opacity: 1;
+		transform: none;
 	}
 	.reveal.revealed {
 		opacity: 1;
-		transform: translateY(0);
-	}
-
-	/* Stagger children within a section */
-	.reveal.reveal-d1 { transition-delay: 0.08s; }
-	.reveal.reveal-d2 { transition-delay: 0.16s; }
-	.reveal.reveal-d3 { transition-delay: 0.24s; }
-
-	/* Reduced motion: instant reveal, no animation */
-	@media (prefers-reduced-motion: reduce) {
-		.reveal {
-			opacity: 1;
-			transform: none;
-			transition: none;
-		}
+		transform: none;
 	}
 
 	/* ── Feature #21: Mobile responsive refinements ── */
@@ -9201,6 +9198,146 @@ const sections = [
 					io.unobserve(el);
 				}
 			});
+		});
+	})();
+</script>
+
+<script is:inline>
+	// Sidenote positioning and interactivity
+	(function() {
+		var DESKTOP_BP = 1280;
+		var GAP = 8;
+
+		function isDesktop() {
+			return window.innerWidth >= DESKTOP_BP;
+		}
+
+		function positionSidenotes() {
+			var gutter = document.querySelector('.sidenote-gutter');
+			var sidenotes = document.querySelectorAll('.sidenote');
+			if (!gutter || !sidenotes.length) return;
+
+			if (!isDesktop()) {
+				sidenotes.forEach(function(sn) { sn.style.top = ''; });
+				return;
+			}
+
+			var gutterRect = gutter.getBoundingClientRect();
+			var gutterTop = gutterRect.top + window.scrollY;
+			var lastBottom = 0;
+
+			// Sort sidenotes by their marker's position in the document
+			var sorted = Array.from(sidenotes).map(function(sn) {
+				var id = sn.id;
+				var marker = document.querySelector('.sn-marker[data-sn="' + id + '"]');
+				var markerTop = marker ? (marker.getBoundingClientRect().top + window.scrollY) : 0;
+				return { el: sn, markerTop: markerTop };
+			}).sort(function(a, b) { return a.markerTop - b.markerTop; });
+
+			sorted.forEach(function(item) {
+				var desiredTop = item.markerTop - gutterTop;
+				var top = Math.max(desiredTop, lastBottom);
+				item.el.style.top = top + 'px';
+				lastBottom = top + item.el.offsetHeight + GAP;
+			});
+		}
+
+		function setupMobileInlines() {
+			// Remove any previously created inline sidenotes
+			document.querySelectorAll('.sn-inline').forEach(function(el) { el.remove(); });
+
+			if (isDesktop()) return;
+
+			// Find the Astro scoping attribute from an existing element so dynamic elements get scoped styles
+			var astroAttr = null;
+			var sampleEl = document.querySelector('.sn-marker');
+			if (sampleEl) {
+				Array.from(sampleEl.attributes).forEach(function(attr) {
+					if (attr.name.indexOf('data-astro-cid-') === 0) astroAttr = attr.name;
+				});
+			}
+
+			document.querySelectorAll('.sn-marker').forEach(function(marker) {
+				var snId = marker.getAttribute('data-sn');
+				var sidenote = document.getElementById(snId);
+				if (!sidenote) return;
+
+				var inline = document.createElement('span');
+				inline.className = 'sn-inline';
+				inline.setAttribute('data-sn-inline', snId);
+				if (astroAttr) inline.setAttribute(astroAttr, '');
+				inline.innerHTML = sidenote.querySelector('.sn-content').innerHTML;
+
+				// Insert after the marker's parent paragraph or after the marker itself
+				var parent = marker.closest('p') || marker.parentElement;
+				if (parent && parent.nextSibling) {
+					parent.parentNode.insertBefore(inline, parent.nextSibling);
+				} else if (parent) {
+					parent.parentNode.appendChild(inline);
+				}
+			});
+		}
+
+		function setupHoverHighlighting() {
+			document.querySelectorAll('.sn-marker').forEach(function(marker) {
+				var snId = marker.getAttribute('data-sn');
+				var sidenote = document.getElementById(snId);
+				if (!sidenote) return;
+
+				marker.addEventListener('mouseenter', function() {
+					sidenote.classList.add('sn-highlight');
+					marker.classList.add('sn-active');
+				});
+				marker.addEventListener('mouseleave', function() {
+					sidenote.classList.remove('sn-highlight');
+					marker.classList.remove('sn-active');
+				});
+				sidenote.addEventListener('mouseenter', function() {
+					marker.classList.add('sn-active');
+					sidenote.classList.add('sn-highlight');
+				});
+				sidenote.addEventListener('mouseleave', function() {
+					marker.classList.remove('sn-active');
+					sidenote.classList.remove('sn-highlight');
+				});
+			});
+		}
+
+		function setupMobileToggle() {
+			document.addEventListener('click', function(e) {
+				var marker = e.target.closest('.sn-marker');
+				if (!marker || isDesktop()) return;
+
+				var snId = marker.getAttribute('data-sn');
+				var inline = document.querySelector('.sn-inline[data-sn-inline="' + snId + '"]');
+				if (inline) {
+					inline.classList.toggle('sn-inline-open');
+				}
+			});
+		}
+
+		function init() {
+			setupMobileInlines();
+			setupHoverHighlighting();
+			setupMobileToggle();
+			requestAnimationFrame(function() {
+				positionSidenotes();
+			});
+		}
+
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', init);
+		} else {
+			init();
+		}
+
+		window.addEventListener('resize', function() {
+			setupMobileInlines();
+			positionSidenotes();
+		});
+
+		window.addEventListener('load', function() {
+			positionSidenotes();
 		});
 	})();
 </script>
