@@ -271,7 +271,7 @@
   {
     "id": 21,
     "name": "Mobile responsive layout for all sections and visualizations",
-    "passes": false,
+    "passes": true,
     "steps": [
       "View the page at 375px width (iPhone SE) and 768px width (iPad)",
       "Verify the TOC collapses to a hamburger or top bar on mobile",

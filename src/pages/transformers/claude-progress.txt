@@ -542,3 +542,33 @@ Date: 2026-02-17
 
 ### Commit: 5ce80c8
 ### Next: Feature #21 — Mobile responsive layout for all sections and visualizations
+
+## Session — Feature #21: Mobile responsive layout for all sections and visualizations
+Date: 2026-02-17
+
+### What was done
+- Audited all elements at 375px and 768px viewports for overflow and layout issues
+- Found 2 overflow culprits:
+  1. #qkv-svg with min-width: 640px (20px overflow at 375px)
+  2. .attn-pipeline-labels span with min-width: 3rem pushing past viewport edge
+- Fixed overflow:
+  - Added `overflow: hidden` on `.qkv-viz-container` (contains scrollable QKV SVG)
+  - Added `overflow: hidden` on `.attn-pipeline-recap` (contains pipeline labels)
+  - Reduced `.qkv-svg` min-width progressively: 500px@768px, 420px@480px, 375px@390px
+  - Reduced `.attn-pipeline-labels span` min-width to 2rem@480px, hidden@390px
+- Added comprehensive mobile CSS at three breakpoints:
+  - 768px: QKV SVG, mechinterp cards to single column
+  - 480px: Tighter padding on QKV controls, buttons, formula, circuits, followup card
+  - 390px: Reduced font sizes on prose/linkage, tighter padding throughout, hidden pipeline labels, smaller mechinterp elements
+- Updated scatter plot subtitle: "hover over" → "hover or tap" for touch accessibility
+- Verified existing touch support: scatter plot has click handlers (line 7533), architecture blocks have click handlers (line 7713)
+- Mobile TOC hamburger toggle and drawer already functional
+
+### Verification
+- 375px: Zero horizontal overflow (was 20px), text readable, cards stack vertically, TOC hamburger visible
+- 768px: Zero horizontal overflow, layout adapts well
+- 1280px desktop: No regression in dark or light themes
+- Build passes with 0 errors
+
+### Commit: d47449d
+### Next: Feature #22 — Performance audit (lazy loading, animation efficiency, bundle size)
