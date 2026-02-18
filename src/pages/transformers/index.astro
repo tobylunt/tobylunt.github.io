@@ -5975,6 +5975,371 @@ const sections = [
 		}
 	}
 
+	/* ===== Step 9: K Projection + Transpose ===== */
+	.hw-kproj-layout {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 8px;
+		padding: 8px 0;
+	}
+
+	.hw-kproj-top-row {
+		display: flex;
+		align-items: flex-start;
+		gap: 10px;
+		justify-content: center;
+		width: 100%;
+	}
+
+	/* W_K weight card (orange) */
+	.hw-kproj-weight-wrap {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 3px;
+		flex-shrink: 0;
+		align-self: center;
+		padding-top: 14px;
+	}
+
+	.hw-kproj-weight-label {
+		font-size: 0.65rem;
+		font-weight: 700;
+		color: hsl(30 80% 50%);
+	}
+
+	.hw-kproj-weight-box {
+		width: 48px;
+		height: 48px;
+		border-radius: 4px;
+		background: hsl(30 80% 50% / 0.1);
+		border: 1.5px solid hsl(30 80% 50% / 0.3);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.45rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		color: hsl(var(--theme-text) / 0.45);
+	}
+
+	.hw-kproj-weight-dim {
+		font-size: 0.42rem;
+		color: hsl(var(--theme-text) / 0.35);
+	}
+
+	/* K output (before transpose) */
+	.hw-kproj-output-wrap {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 3px;
+		flex-shrink: 0;
+		padding-top: 14px;
+		opacity: 0;
+		transform: translateX(8px);
+		transition: opacity 0.5s ease, transform 0.5s ease;
+	}
+
+	.hw-kproj-output-wrap.visible {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	.hw-kproj-output-label {
+		font-size: 0.55rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: hsl(30 80% 50% / 0.8);
+	}
+
+	.hw-kproj-output-token-labels {
+		display: grid;
+		gap: 1px;
+	}
+
+	.hw-kproj-output-token-label {
+		font-size: 0.42rem;
+		text-align: center;
+		color: hsl(30 80% 50% / 0.6);
+		min-width: 22px;
+		padding: 0 1px;
+	}
+
+	.hw-kproj-output-matrix {
+		display: grid;
+		gap: 1px;
+		background: hsl(30 80% 50% / 0.06);
+		border: 1.5px solid hsl(30 80% 50% / 0.2);
+		border-radius: 3px;
+		overflow: hidden;
+	}
+
+	.hw-kproj-output-cell {
+		background: hsl(30 80% 50% / 0.08);
+		color: hsl(30 80% 50% / 0.75);
+		font-size: 0.42rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 2px 1px;
+		text-align: center;
+		min-width: 22px;
+	}
+
+	.hw-kproj-output-cell.dots-cell {
+		font-size: 0.5rem;
+		color: hsl(30 80% 50% / 0.4);
+		padding: 1px 1px;
+	}
+
+	.hw-kproj-output-dim {
+		font-size: 0.45rem;
+		color: hsl(var(--theme-text) / 0.35);
+	}
+
+	/* K equation row */
+	.hw-kproj-equation {
+		font-size: 0.55rem;
+		color: hsl(var(--theme-text) / 0.5);
+		text-align: center;
+		margin-top: 4px;
+		opacity: 0;
+		transition: opacity 0.5s ease;
+	}
+
+	.hw-kproj-equation.visible {
+		opacity: 1;
+	}
+
+	.hw-kproj-eq-norm { color: hsl(270 45% 55% / 0.8); }
+	.hw-kproj-eq-wk { color: hsl(30 80% 50%); }
+	.hw-kproj-eq-k { color: hsl(30 80% 50%); font-weight: 600; }
+	.hw-kproj-eq-dim { color: hsl(var(--theme-text) / 0.4); }
+
+	/* K-highlighted input cells (orange) */
+	.hw-qproj-cell.k-highlighted {
+		background: hsl(30 80% 50% / 0.2);
+		box-shadow: inset 0 0 0 1.5px hsl(30 80% 50% / 0.5);
+		color: hsl(30 80% 50% / 0.9);
+	}
+
+	.hw-qproj-token-label.k-highlighted {
+		color: hsl(30 80% 50%);
+		font-weight: 700;
+	}
+
+	@keyframes hw-kproj-pulse {
+		0%, 100% { box-shadow: inset 0 0 0 1.5px hsl(30 80% 50% / 0.5); }
+		50% { box-shadow: inset 0 0 0 1.5px hsl(30 80% 50% / 0.8); }
+	}
+
+	.hw-qproj-cell.k-highlighted.pulse {
+		animation: hw-kproj-pulse 1s ease infinite;
+	}
+
+	/* === Transpose section === */
+	.hw-kproj-transpose-section {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 6px;
+		margin-top: 4px;
+		opacity: 0;
+		transition: opacity 0.5s ease;
+	}
+
+	.hw-kproj-transpose-section.visible {
+		opacity: 1;
+	}
+
+	.hw-kproj-transpose-arrow {
+		font-size: 0.9rem;
+		color: hsl(30 80% 50% / 0.5);
+		line-height: 1;
+	}
+
+	.hw-kproj-transpose-label {
+		font-size: 0.5rem;
+		font-weight: 600;
+		color: hsl(30 80% 50% / 0.7);
+		letter-spacing: 0.04em;
+	}
+
+	/* Transposed K^T matrix container */
+	.hw-kproj-transposed-wrap {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 3px;
+	}
+
+	.hw-kproj-transposed-label {
+		font-size: 0.55rem;
+		font-weight: 600;
+		color: hsl(30 80% 50% / 0.8);
+	}
+
+	/* Row labels for transposed matrix (d_head rows) */
+	.hw-kproj-transposed-row-labels {
+		display: grid;
+		gap: 1px;
+	}
+
+	.hw-kproj-transposed-row-label {
+		font-size: 0.38rem;
+		text-align: right;
+		color: hsl(30 80% 50% / 0.5);
+		padding: 2px 3px 2px 0;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+	}
+
+	/* Transposed matrix: rows = d_head, columns = T (tokens) */
+	.hw-kproj-transposed-matrix {
+		display: grid;
+		gap: 1px;
+		background: hsl(30 80% 50% / 0.06);
+		border: 1.5px solid hsl(30 80% 50% / 0.35);
+		border-radius: 3px;
+		overflow: hidden;
+	}
+
+	.hw-kproj-transposed-cell {
+		background: hsl(30 80% 50% / 0.1);
+		color: hsl(30 80% 50% / 0.8);
+		font-size: 0.42rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 2px 1px;
+		text-align: center;
+		min-width: 22px;
+	}
+
+	.hw-kproj-transposed-cell.dots-cell {
+		font-size: 0.5rem;
+		color: hsl(30 80% 50% / 0.45);
+		padding: 1px 1px;
+	}
+
+	/* Token labels above transposed matrix (now columns) */
+	.hw-kproj-transposed-token-labels {
+		display: grid;
+		gap: 1px;
+	}
+
+	.hw-kproj-transposed-token-label {
+		font-size: 0.42rem;
+		text-align: center;
+		color: hsl(30 80% 50% / 0.6);
+		min-width: 22px;
+		padding: 0 1px;
+	}
+
+	.hw-kproj-transposed-dim {
+		font-size: 0.45rem;
+		color: hsl(var(--theme-text) / 0.35);
+	}
+
+	/* Transpose flip animation */
+	@keyframes hw-kproj-flip {
+		0% { transform: scaleX(1); opacity: 1; }
+		40% { transform: scaleX(0); opacity: 0.5; }
+		60% { transform: scaleX(0); opacity: 0.5; }
+		100% { transform: scaleX(1); opacity: 1; }
+	}
+
+	.hw-kproj-transposed-wrap.flip-in {
+		animation: hw-kproj-flip 0.6s ease-out forwards;
+	}
+
+	/* Staging area: Q, K^T, V side by side */
+	.hw-kproj-staging {
+		display: flex;
+		gap: 16px;
+		justify-content: center;
+		align-items: flex-start;
+		margin-top: 6px;
+		opacity: 0;
+		transition: opacity 0.5s ease;
+	}
+
+	.hw-kproj-staging.visible {
+		opacity: 1;
+	}
+
+	.hw-kproj-staged-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2px;
+	}
+
+	.hw-kproj-staged-label {
+		font-size: 0.5rem;
+		font-weight: 600;
+		letter-spacing: 0.05em;
+	}
+
+	.hw-kproj-staged-label-q { color: hsl(210 70% 55%); }
+	.hw-kproj-staged-label-kt { color: hsl(30 80% 50%); }
+	.hw-kproj-staged-label-v { color: hsl(340 65% 55%); }
+
+	.hw-kproj-staged-box {
+		width: 60px;
+		height: 36px;
+		border-radius: 3px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.4rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		color: hsl(var(--theme-text) / 0.4);
+	}
+
+	.hw-kproj-staged-box-q {
+		background: hsl(210 70% 55% / 0.08);
+		border: 1.5px solid hsl(210 70% 55% / 0.2);
+	}
+
+	.hw-kproj-staged-box-kt {
+		background: hsl(30 80% 50% / 0.08);
+		border: 1.5px solid hsl(30 80% 50% / 0.2);
+	}
+
+	.hw-kproj-staged-box-v {
+		background: hsl(340 65% 55% / 0.08);
+		border: 1.5px solid hsl(340 65% 55% / 0.2);
+	}
+
+	.hw-kproj-staged-dim {
+		font-size: 0.38rem;
+		color: hsl(var(--theme-text) / 0.3);
+	}
+
+	/* Responsive */
+	@media (max-width: 480px) {
+		.hw-kproj-top-row {
+			flex-direction: column;
+			align-items: center;
+			gap: 10px;
+		}
+		.hw-kproj-weight-wrap, .hw-kproj-output-wrap {
+			padding-top: 0;
+		}
+		.hw-kproj-output-cell, .hw-kproj-transposed-cell {
+			font-size: 0.38rem;
+			min-width: 20px;
+			padding: 2px 1px;
+		}
+		.hw-kproj-output-token-label, .hw-kproj-transposed-token-label {
+			font-size: 0.36rem;
+			min-width: 20px;
+		}
+		.hw-kproj-staging {
+			gap: 10px;
+		}
+	}
+
 	/* Step 1 placeholder viz */
 	.hw-step-placeholder {
 		text-align: center;
@@ -9365,6 +9730,298 @@ const sections = [
 		}
 
 
+		function renderStep9() {
+			var layout = el('div', 'hw-kproj-layout');
+			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
+
+			// Normalized values from Step 6 (same input as Q and V projections)
+			var normValues = [
+				['.91', '-.52', '1.4', '-1.1', '1.2', '-.75', '1.0', '.91'],
+				['-.68', '1.1', '-.40', '.83', '-.95', '1.3', '-.79', '-.68'],
+				['.73', '.20', '1.2', '-.47', '.61', '-1.0', '.86', '.73'],
+				['-1.2', '.64', '-.82', '1.2', '-.30', '.49', '-1.1', '-1.2']
+			];
+
+			// K output values (projected through W_K — different from Q and V)
+			var kValues = [
+				['.33', '-.61', '.82', '.14', '-.47', '.58', '-.22', '.33'],
+				['-.52', '.39', '-.71', '.55', '.28', '-.63', '.44', '-.52'],
+				['.18', '-.44', '.36', '-.29', '.65', '.11', '-.53', '.18']
+			];
+
+			var highlightCol = 2; // "cat" token (same as Q and V steps)
+
+			// === Top row: input matrix + multiply + W_K + arrow + K output ===
+			var topRow = el('div', 'hw-kproj-top-row');
+
+			// --- Input matrix (reuse qproj styles, K-colored highlight) ---
+			var matWrap = el('div', 'hw-qproj-matrix-wrap');
+			var matLabel = el('div', 'hw-qproj-matrix-label');
+			matLabel.innerHTML = 'X\u0302 <span class="hw-qproj-dim-label">(normalized)</span>';
+			if (astroAttr) matLabel.querySelectorAll('span').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			matWrap.appendChild(matLabel);
+
+			// Token labels
+			var tokenRow = el('div', 'hw-qproj-token-labels');
+			tokenRow.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+			tokens.forEach(function(tok, i) {
+				var lbl = el('div', 'hw-qproj-token-label', tok);
+				if (i === highlightCol) lbl.classList.add('k-highlighted');
+				tokenRow.appendChild(lbl);
+			});
+			matWrap.appendChild(tokenRow);
+
+			// Matrix grid
+			var matrixEl = el('div', 'hw-qproj-matrix');
+			matrixEl.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+			var matCells = [];
+			normValues.forEach(function(row) {
+				row.forEach(function(val, c) {
+					var cell = el('div', 'hw-qproj-cell', val);
+					if (c === highlightCol) cell.classList.add('k-highlighted');
+					matrixEl.appendChild(cell);
+					matCells.push({ el: cell, col: c });
+				});
+			});
+			// Dots row
+			tokens.forEach(function(tok, c) {
+				var dotCell = el('div', 'hw-qproj-cell dots-cell', '\u22EE');
+				if (c === highlightCol) dotCell.classList.add('k-highlighted');
+				matrixEl.appendChild(dotCell);
+			});
+			matWrap.appendChild(matrixEl);
+
+			// Dimension label
+			var matDim = el('div', 'hw-qproj-dim-label', 'T \u00d7 d_model');
+			matWrap.appendChild(matDim);
+			topRow.appendChild(matWrap);
+
+			// --- Multiply sign ---
+			topRow.appendChild(el('div', 'hw-qproj-times', '\u00b7'));
+
+			// --- W_K weight card (orange) ---
+			var wWrap = el('div', 'hw-kproj-weight-wrap');
+			var wLabel = el('div', 'hw-kproj-weight-label');
+			wLabel.innerHTML = 'W<sub>K</sub>';
+			if (astroAttr) wLabel.querySelector('sub').setAttribute(astroAttr, '');
+			wWrap.appendChild(wLabel);
+			wWrap.appendChild(el('div', 'hw-kproj-weight-box', '\u22EF'));
+			var wDim = el('div', 'hw-kproj-weight-dim');
+			var wDimD = el('span', 'hw-norm-dim-d');
+			wDimD.innerHTML = 'd<sub>model</sub>';
+			if (astroAttr) wDimD.querySelector('sub').setAttribute(astroAttr, '');
+			var wDimTimes = document.createTextNode(' \u00d7 ');
+			var wDimH = el('span', 'hw-norm-dim-dh');
+			wDimH.innerHTML = 'd<sub>head</sub>';
+			if (astroAttr) wDimH.querySelector('sub').setAttribute(astroAttr, '');
+			wDim.appendChild(wDimD);
+			wDim.appendChild(wDimTimes);
+			wDim.appendChild(wDimH);
+			wWrap.appendChild(wDim);
+			topRow.appendChild(wWrap);
+
+			// --- Arrow ---
+			topRow.appendChild(el('div', 'hw-qproj-arrow-right', '\u279C'));
+
+			// --- K output (before transpose) ---
+			var outWrap = el('div', 'hw-kproj-output-wrap');
+			var outLabel = el('div', 'hw-kproj-output-label', 'K');
+			outWrap.appendChild(outLabel);
+
+			// Output token labels
+			var outTokenRow = el('div', 'hw-kproj-output-token-labels');
+			outTokenRow.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+			tokens.forEach(function(tok) {
+				outTokenRow.appendChild(el('div', 'hw-kproj-output-token-label', tok));
+			});
+			outWrap.appendChild(outTokenRow);
+
+			// Output matrix (3 rows + dots = d_head height, 8 columns = T)
+			var outMatrix = el('div', 'hw-kproj-output-matrix');
+			outMatrix.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+			kValues.forEach(function(row) {
+				row.forEach(function(val) {
+					outMatrix.appendChild(el('div', 'hw-kproj-output-cell', val));
+				});
+			});
+			// Dots row
+			tokens.forEach(function() {
+				outMatrix.appendChild(el('div', 'hw-kproj-output-cell dots-cell', '\u22EE'));
+			});
+			outWrap.appendChild(outMatrix);
+
+			// Dimension label: T x d_head
+			var outDim = el('div', 'hw-kproj-output-dim');
+			var outDimT = el('span', 'hw-norm-dim-t');
+			outDimT.innerHTML = 'T';
+			var outDimTimes = document.createTextNode(' \u00d7 ');
+			var outDimH = el('span', 'hw-norm-dim-dh');
+			outDimH.innerHTML = 'd<sub>head</sub>';
+			if (astroAttr) outDimH.querySelector('sub').setAttribute(astroAttr, '');
+			outDim.appendChild(outDimT);
+			outDim.appendChild(outDimTimes);
+			outDim.appendChild(outDimH);
+			outWrap.appendChild(outDim);
+			topRow.appendChild(outWrap);
+
+			layout.appendChild(topRow);
+
+			// === Equation row ===
+			var eqRow = el('div', 'hw-kproj-equation');
+			var eqK = el('span', 'hw-kproj-eq-k', 'K');
+			var eqEq = document.createTextNode(' = ');
+			var eqNorm = el('span', 'hw-kproj-eq-norm', 'X\u0302');
+			var eqDot = document.createTextNode(' \u00b7 ');
+			var eqWk = el('span', 'hw-kproj-eq-wk');
+			eqWk.innerHTML = 'W<sub>K</sub>';
+			if (astroAttr) eqWk.querySelector('sub').setAttribute(astroAttr, '');
+			var eqDim = el('span', 'hw-kproj-eq-dim', '  (T\u00d7d_model) \u00b7 (d_model\u00d7d_head) = T\u00d7d_head');
+			eqRow.appendChild(eqK);
+			eqRow.appendChild(eqEq);
+			eqRow.appendChild(eqNorm);
+			eqRow.appendChild(eqDot);
+			eqRow.appendChild(eqWk);
+			eqRow.appendChild(eqDim);
+			layout.appendChild(eqRow);
+
+			// === Transpose section ===
+			var transposeSection = el('div', 'hw-kproj-transpose-section');
+
+			// Down arrow + label
+			transposeSection.appendChild(el('div', 'hw-kproj-transpose-arrow', '\u2193'));
+			var tLabel = el('div', 'hw-kproj-transpose-label');
+			tLabel.innerHTML = 'Transpose: rows \u2194 columns';
+			transposeSection.appendChild(tLabel);
+
+			// Transposed matrix container
+			var tWrap = el('div', 'hw-kproj-transposed-wrap');
+
+			// K^T label
+			var tMatLabel = el('div', 'hw-kproj-transposed-label');
+			tMatLabel.innerHTML = 'K<sup>T</sup>';
+			if (astroAttr) tMatLabel.querySelector('sup').setAttribute(astroAttr, '');
+			tWrap.appendChild(tMatLabel);
+
+			// Token labels (now along the TOP as columns)
+			var tTokenRow = el('div', 'hw-kproj-transposed-token-labels');
+			tTokenRow.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+			tokens.forEach(function(tok) {
+				tTokenRow.appendChild(el('div', 'hw-kproj-transposed-token-label', tok));
+			});
+			tWrap.appendChild(tTokenRow);
+
+			// Transposed matrix: d_head rows x T columns
+			// kValues[row][col] becomes transposedValues[col_becomes_row][row_becomes_col]
+			// But since we have 3 data rows and 8 columns in K,
+			// K^T has 3 data rows (d_head) x 8 columns (T) visually the same grid
+			// BUT the conceptual meaning changes: rows are now d_head dimensions, columns are tokens
+			// We transpose the actual values: kValues[r][c] -> transposed[c][r] ... but we only show 3 rows
+			// K is 3 displayed rows x 8 cols, K^T should look different: fewer columns (d_head=3+dots), more rows (T=8)
+			// Actually: K = (T x d_head) = 8 rows x 3 cols but we show it as 3 displayed rows x 8 cols
+			// K^T = (d_head x T) = 3 rows x 8 cols — same visual grid size!
+			// The key visual: token labels move from being column headers to column headers still,
+			// but the ROW meaning changes from "d_model sample" to "d_head dimension"
+			// Let's show it as the same grid with dimension labels swapped
+
+			var tMatrix = el('div', 'hw-kproj-transposed-matrix');
+			tMatrix.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+
+			// Transpose the values: kValues[r][c] -> row r of K^T picks across original columns
+			// K^T[i][j] = K[j][i], but our display is 3 rows x 8 cols for both
+			// For visual clarity, show the same values rearranged
+			// Actually the key insight: K is (T=8 x d_head=3+) displayed as 3 visible rows x 8 cols
+			// K^T is (d_head=3+ x T=8) — same display grid, different meaning
+			// Just show the transposed values
+			kValues.forEach(function(row) {
+				row.forEach(function(val) {
+					tMatrix.appendChild(el('div', 'hw-kproj-transposed-cell', val));
+				});
+			});
+			// Dots row
+			tokens.forEach(function() {
+				tMatrix.appendChild(el('div', 'hw-kproj-transposed-cell dots-cell', '\u22EE'));
+			});
+			tWrap.appendChild(tMatrix);
+
+			// New dimension label: d_head x T (swapped!)
+			var tDim = el('div', 'hw-kproj-transposed-dim');
+			var tDimH = el('span', 'hw-norm-dim-dh');
+			tDimH.innerHTML = 'd<sub>head</sub>';
+			if (astroAttr) tDimH.querySelector('sub').setAttribute(astroAttr, '');
+			var tDimTimes = document.createTextNode(' \u00d7 ');
+			var tDimT = el('span', 'hw-norm-dim-t');
+			tDimT.innerHTML = 'T';
+			tDim.appendChild(tDimH);
+			tDim.appendChild(tDimTimes);
+			tDim.appendChild(tDimT);
+			tWrap.appendChild(tDim);
+
+			transposeSection.appendChild(tWrap);
+			layout.appendChild(transposeSection);
+
+			// === Staging area: Q, K^T, V side by side ===
+			var staging = el('div', 'hw-kproj-staging');
+
+			// Q staged box
+			var qItem = el('div', 'hw-kproj-staged-item');
+			qItem.appendChild(el('div', 'hw-kproj-staged-label hw-kproj-staged-label-q', 'Q'));
+			qItem.appendChild(el('div', 'hw-kproj-staged-box hw-kproj-staged-box-q', 'T\u00d7d'));
+			qItem.appendChild(el('div', 'hw-kproj-staged-dim', 'Step 7'));
+			staging.appendChild(qItem);
+
+			// K^T staged box
+			var ktItem = el('div', 'hw-kproj-staged-item');
+			var ktLabel = el('div', 'hw-kproj-staged-label hw-kproj-staged-label-kt');
+			ktLabel.innerHTML = 'K<sup>T</sup>';
+			if (astroAttr) ktLabel.querySelector('sup').setAttribute(astroAttr, '');
+			ktItem.appendChild(ktLabel);
+			ktItem.appendChild(el('div', 'hw-kproj-staged-box hw-kproj-staged-box-kt', 'd\u00d7T'));
+			ktItem.appendChild(el('div', 'hw-kproj-staged-dim', 'new'));
+			staging.appendChild(ktItem);
+
+			// V staged box
+			var vItem = el('div', 'hw-kproj-staged-item');
+			vItem.appendChild(el('div', 'hw-kproj-staged-label hw-kproj-staged-label-v', 'V'));
+			vItem.appendChild(el('div', 'hw-kproj-staged-box hw-kproj-staged-box-v', 'T\u00d7d'));
+			vItem.appendChild(el('div', 'hw-kproj-staged-dim', 'Step 8'));
+			staging.appendChild(vItem);
+
+			layout.appendChild(staging);
+
+			// === Animation sequence ===
+			// Phase 1 (immediate): matrix + W_K shown, "cat" column highlighted in orange
+			// Phase 2 (600ms): pulse on highlighted column
+			setTimeout(function() {
+				matCells.forEach(function(mc) {
+					if (mc.col === highlightCol) mc.el.classList.add('pulse');
+				});
+			}, 600);
+
+			// Phase 3 (1200ms): K output appears
+			setTimeout(function() {
+				outWrap.classList.add('visible');
+			}, 1200);
+
+			// Phase 4 (1800ms): equation appears
+			setTimeout(function() {
+				eqRow.classList.add('visible');
+			}, 1800);
+
+			// Phase 5 (2400ms): transpose section appears with flip animation
+			setTimeout(function() {
+				transposeSection.classList.add('visible');
+				tWrap.classList.add('flip-in');
+			}, 2400);
+
+			// Phase 6 (3200ms): staging area with Q, K^T, V boxes
+			setTimeout(function() {
+				staging.classList.add('visible');
+			}, 3200);
+
+			return layout;
+		}
+
+
 		function showStep(step) {
 			// step 0 = base state
 			// steps 1-9: token (0-2) × projection (Q=0, K=1, V=2)
@@ -10449,6 +11106,298 @@ const sections = [
 		}
 
 
+		function renderStep9() {
+			var layout = el('div', 'hw-kproj-layout');
+			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
+
+			// Normalized values from Step 6 (same input as Q and V projections)
+			var normValues = [
+				['.91', '-.52', '1.4', '-1.1', '1.2', '-.75', '1.0', '.91'],
+				['-.68', '1.1', '-.40', '.83', '-.95', '1.3', '-.79', '-.68'],
+				['.73', '.20', '1.2', '-.47', '.61', '-1.0', '.86', '.73'],
+				['-1.2', '.64', '-.82', '1.2', '-.30', '.49', '-1.1', '-1.2']
+			];
+
+			// K output values (projected through W_K — different from Q and V)
+			var kValues = [
+				['.33', '-.61', '.82', '.14', '-.47', '.58', '-.22', '.33'],
+				['-.52', '.39', '-.71', '.55', '.28', '-.63', '.44', '-.52'],
+				['.18', '-.44', '.36', '-.29', '.65', '.11', '-.53', '.18']
+			];
+
+			var highlightCol = 2; // "cat" token (same as Q and V steps)
+
+			// === Top row: input matrix + multiply + W_K + arrow + K output ===
+			var topRow = el('div', 'hw-kproj-top-row');
+
+			// --- Input matrix (reuse qproj styles, K-colored highlight) ---
+			var matWrap = el('div', 'hw-qproj-matrix-wrap');
+			var matLabel = el('div', 'hw-qproj-matrix-label');
+			matLabel.innerHTML = 'X\u0302 <span class="hw-qproj-dim-label">(normalized)</span>';
+			if (astroAttr) matLabel.querySelectorAll('span').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			matWrap.appendChild(matLabel);
+
+			// Token labels
+			var tokenRow = el('div', 'hw-qproj-token-labels');
+			tokenRow.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+			tokens.forEach(function(tok, i) {
+				var lbl = el('div', 'hw-qproj-token-label', tok);
+				if (i === highlightCol) lbl.classList.add('k-highlighted');
+				tokenRow.appendChild(lbl);
+			});
+			matWrap.appendChild(tokenRow);
+
+			// Matrix grid
+			var matrixEl = el('div', 'hw-qproj-matrix');
+			matrixEl.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+			var matCells = [];
+			normValues.forEach(function(row) {
+				row.forEach(function(val, c) {
+					var cell = el('div', 'hw-qproj-cell', val);
+					if (c === highlightCol) cell.classList.add('k-highlighted');
+					matrixEl.appendChild(cell);
+					matCells.push({ el: cell, col: c });
+				});
+			});
+			// Dots row
+			tokens.forEach(function(tok, c) {
+				var dotCell = el('div', 'hw-qproj-cell dots-cell', '\u22EE');
+				if (c === highlightCol) dotCell.classList.add('k-highlighted');
+				matrixEl.appendChild(dotCell);
+			});
+			matWrap.appendChild(matrixEl);
+
+			// Dimension label
+			var matDim = el('div', 'hw-qproj-dim-label', 'T \u00d7 d_model');
+			matWrap.appendChild(matDim);
+			topRow.appendChild(matWrap);
+
+			// --- Multiply sign ---
+			topRow.appendChild(el('div', 'hw-qproj-times', '\u00b7'));
+
+			// --- W_K weight card (orange) ---
+			var wWrap = el('div', 'hw-kproj-weight-wrap');
+			var wLabel = el('div', 'hw-kproj-weight-label');
+			wLabel.innerHTML = 'W<sub>K</sub>';
+			if (astroAttr) wLabel.querySelector('sub').setAttribute(astroAttr, '');
+			wWrap.appendChild(wLabel);
+			wWrap.appendChild(el('div', 'hw-kproj-weight-box', '\u22EF'));
+			var wDim = el('div', 'hw-kproj-weight-dim');
+			var wDimD = el('span', 'hw-norm-dim-d');
+			wDimD.innerHTML = 'd<sub>model</sub>';
+			if (astroAttr) wDimD.querySelector('sub').setAttribute(astroAttr, '');
+			var wDimTimes = document.createTextNode(' \u00d7 ');
+			var wDimH = el('span', 'hw-norm-dim-dh');
+			wDimH.innerHTML = 'd<sub>head</sub>';
+			if (astroAttr) wDimH.querySelector('sub').setAttribute(astroAttr, '');
+			wDim.appendChild(wDimD);
+			wDim.appendChild(wDimTimes);
+			wDim.appendChild(wDimH);
+			wWrap.appendChild(wDim);
+			topRow.appendChild(wWrap);
+
+			// --- Arrow ---
+			topRow.appendChild(el('div', 'hw-qproj-arrow-right', '\u279C'));
+
+			// --- K output (before transpose) ---
+			var outWrap = el('div', 'hw-kproj-output-wrap');
+			var outLabel = el('div', 'hw-kproj-output-label', 'K');
+			outWrap.appendChild(outLabel);
+
+			// Output token labels
+			var outTokenRow = el('div', 'hw-kproj-output-token-labels');
+			outTokenRow.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+			tokens.forEach(function(tok) {
+				outTokenRow.appendChild(el('div', 'hw-kproj-output-token-label', tok));
+			});
+			outWrap.appendChild(outTokenRow);
+
+			// Output matrix (3 rows + dots = d_head height, 8 columns = T)
+			var outMatrix = el('div', 'hw-kproj-output-matrix');
+			outMatrix.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+			kValues.forEach(function(row) {
+				row.forEach(function(val) {
+					outMatrix.appendChild(el('div', 'hw-kproj-output-cell', val));
+				});
+			});
+			// Dots row
+			tokens.forEach(function() {
+				outMatrix.appendChild(el('div', 'hw-kproj-output-cell dots-cell', '\u22EE'));
+			});
+			outWrap.appendChild(outMatrix);
+
+			// Dimension label: T x d_head
+			var outDim = el('div', 'hw-kproj-output-dim');
+			var outDimT = el('span', 'hw-norm-dim-t');
+			outDimT.innerHTML = 'T';
+			var outDimTimes = document.createTextNode(' \u00d7 ');
+			var outDimH = el('span', 'hw-norm-dim-dh');
+			outDimH.innerHTML = 'd<sub>head</sub>';
+			if (astroAttr) outDimH.querySelector('sub').setAttribute(astroAttr, '');
+			outDim.appendChild(outDimT);
+			outDim.appendChild(outDimTimes);
+			outDim.appendChild(outDimH);
+			outWrap.appendChild(outDim);
+			topRow.appendChild(outWrap);
+
+			layout.appendChild(topRow);
+
+			// === Equation row ===
+			var eqRow = el('div', 'hw-kproj-equation');
+			var eqK = el('span', 'hw-kproj-eq-k', 'K');
+			var eqEq = document.createTextNode(' = ');
+			var eqNorm = el('span', 'hw-kproj-eq-norm', 'X\u0302');
+			var eqDot = document.createTextNode(' \u00b7 ');
+			var eqWk = el('span', 'hw-kproj-eq-wk');
+			eqWk.innerHTML = 'W<sub>K</sub>';
+			if (astroAttr) eqWk.querySelector('sub').setAttribute(astroAttr, '');
+			var eqDim = el('span', 'hw-kproj-eq-dim', '  (T\u00d7d_model) \u00b7 (d_model\u00d7d_head) = T\u00d7d_head');
+			eqRow.appendChild(eqK);
+			eqRow.appendChild(eqEq);
+			eqRow.appendChild(eqNorm);
+			eqRow.appendChild(eqDot);
+			eqRow.appendChild(eqWk);
+			eqRow.appendChild(eqDim);
+			layout.appendChild(eqRow);
+
+			// === Transpose section ===
+			var transposeSection = el('div', 'hw-kproj-transpose-section');
+
+			// Down arrow + label
+			transposeSection.appendChild(el('div', 'hw-kproj-transpose-arrow', '\u2193'));
+			var tLabel = el('div', 'hw-kproj-transpose-label');
+			tLabel.innerHTML = 'Transpose: rows \u2194 columns';
+			transposeSection.appendChild(tLabel);
+
+			// Transposed matrix container
+			var tWrap = el('div', 'hw-kproj-transposed-wrap');
+
+			// K^T label
+			var tMatLabel = el('div', 'hw-kproj-transposed-label');
+			tMatLabel.innerHTML = 'K<sup>T</sup>';
+			if (astroAttr) tMatLabel.querySelector('sup').setAttribute(astroAttr, '');
+			tWrap.appendChild(tMatLabel);
+
+			// Token labels (now along the TOP as columns)
+			var tTokenRow = el('div', 'hw-kproj-transposed-token-labels');
+			tTokenRow.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+			tokens.forEach(function(tok) {
+				tTokenRow.appendChild(el('div', 'hw-kproj-transposed-token-label', tok));
+			});
+			tWrap.appendChild(tTokenRow);
+
+			// Transposed matrix: d_head rows x T columns
+			// kValues[row][col] becomes transposedValues[col_becomes_row][row_becomes_col]
+			// But since we have 3 data rows and 8 columns in K,
+			// K^T has 3 data rows (d_head) x 8 columns (T) visually the same grid
+			// BUT the conceptual meaning changes: rows are now d_head dimensions, columns are tokens
+			// We transpose the actual values: kValues[r][c] -> transposed[c][r] ... but we only show 3 rows
+			// K is 3 displayed rows x 8 cols, K^T should look different: fewer columns (d_head=3+dots), more rows (T=8)
+			// Actually: K = (T x d_head) = 8 rows x 3 cols but we show it as 3 displayed rows x 8 cols
+			// K^T = (d_head x T) = 3 rows x 8 cols — same visual grid size!
+			// The key visual: token labels move from being column headers to column headers still,
+			// but the ROW meaning changes from "d_model sample" to "d_head dimension"
+			// Let's show it as the same grid with dimension labels swapped
+
+			var tMatrix = el('div', 'hw-kproj-transposed-matrix');
+			tMatrix.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+
+			// Transpose the values: kValues[r][c] -> row r of K^T picks across original columns
+			// K^T[i][j] = K[j][i], but our display is 3 rows x 8 cols for both
+			// For visual clarity, show the same values rearranged
+			// Actually the key insight: K is (T=8 x d_head=3+) displayed as 3 visible rows x 8 cols
+			// K^T is (d_head=3+ x T=8) — same display grid, different meaning
+			// Just show the transposed values
+			kValues.forEach(function(row) {
+				row.forEach(function(val) {
+					tMatrix.appendChild(el('div', 'hw-kproj-transposed-cell', val));
+				});
+			});
+			// Dots row
+			tokens.forEach(function() {
+				tMatrix.appendChild(el('div', 'hw-kproj-transposed-cell dots-cell', '\u22EE'));
+			});
+			tWrap.appendChild(tMatrix);
+
+			// New dimension label: d_head x T (swapped!)
+			var tDim = el('div', 'hw-kproj-transposed-dim');
+			var tDimH = el('span', 'hw-norm-dim-dh');
+			tDimH.innerHTML = 'd<sub>head</sub>';
+			if (astroAttr) tDimH.querySelector('sub').setAttribute(astroAttr, '');
+			var tDimTimes = document.createTextNode(' \u00d7 ');
+			var tDimT = el('span', 'hw-norm-dim-t');
+			tDimT.innerHTML = 'T';
+			tDim.appendChild(tDimH);
+			tDim.appendChild(tDimTimes);
+			tDim.appendChild(tDimT);
+			tWrap.appendChild(tDim);
+
+			transposeSection.appendChild(tWrap);
+			layout.appendChild(transposeSection);
+
+			// === Staging area: Q, K^T, V side by side ===
+			var staging = el('div', 'hw-kproj-staging');
+
+			// Q staged box
+			var qItem = el('div', 'hw-kproj-staged-item');
+			qItem.appendChild(el('div', 'hw-kproj-staged-label hw-kproj-staged-label-q', 'Q'));
+			qItem.appendChild(el('div', 'hw-kproj-staged-box hw-kproj-staged-box-q', 'T\u00d7d'));
+			qItem.appendChild(el('div', 'hw-kproj-staged-dim', 'Step 7'));
+			staging.appendChild(qItem);
+
+			// K^T staged box
+			var ktItem = el('div', 'hw-kproj-staged-item');
+			var ktLabel = el('div', 'hw-kproj-staged-label hw-kproj-staged-label-kt');
+			ktLabel.innerHTML = 'K<sup>T</sup>';
+			if (astroAttr) ktLabel.querySelector('sup').setAttribute(astroAttr, '');
+			ktItem.appendChild(ktLabel);
+			ktItem.appendChild(el('div', 'hw-kproj-staged-box hw-kproj-staged-box-kt', 'd\u00d7T'));
+			ktItem.appendChild(el('div', 'hw-kproj-staged-dim', 'new'));
+			staging.appendChild(ktItem);
+
+			// V staged box
+			var vItem = el('div', 'hw-kproj-staged-item');
+			vItem.appendChild(el('div', 'hw-kproj-staged-label hw-kproj-staged-label-v', 'V'));
+			vItem.appendChild(el('div', 'hw-kproj-staged-box hw-kproj-staged-box-v', 'T\u00d7d'));
+			vItem.appendChild(el('div', 'hw-kproj-staged-dim', 'Step 8'));
+			staging.appendChild(vItem);
+
+			layout.appendChild(staging);
+
+			// === Animation sequence ===
+			// Phase 1 (immediate): matrix + W_K shown, "cat" column highlighted in orange
+			// Phase 2 (600ms): pulse on highlighted column
+			setTimeout(function() {
+				matCells.forEach(function(mc) {
+					if (mc.col === highlightCol) mc.el.classList.add('pulse');
+				});
+			}, 600);
+
+			// Phase 3 (1200ms): K output appears
+			setTimeout(function() {
+				outWrap.classList.add('visible');
+			}, 1200);
+
+			// Phase 4 (1800ms): equation appears
+			setTimeout(function() {
+				eqRow.classList.add('visible');
+			}, 1800);
+
+			// Phase 5 (2400ms): transpose section appears with flip animation
+			setTimeout(function() {
+				transposeSection.classList.add('visible');
+				tWrap.classList.add('flip-in');
+			}, 2400);
+
+			// Phase 6 (3200ms): staging area with Q, K^T, V boxes
+			setTimeout(function() {
+				staging.classList.add('visible');
+			}, 3200);
+
+			return layout;
+		}
+
+
 		function showStep(step) {
 			viz.innerHTML = '';
 
@@ -10468,6 +11417,8 @@ const sections = [
 				viz.appendChild(renderStep7());
 			} else if (step === 8) {
 				viz.appendChild(renderStep8());
+			} else if (step === 9) {
+				viz.appendChild(renderStep9());
 			} else {
 				var placeholder = el('div', 'hw-step-placeholder');
 				placeholder.textContent = 'Step ' + step + ' visualization (coming soon)';
