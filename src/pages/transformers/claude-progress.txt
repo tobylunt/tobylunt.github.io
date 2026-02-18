@@ -122,3 +122,22 @@
 - Verified: forward/back/reset navigation works, build passes, both dark and light themes clean
 - Commit: ca7b431
 - Next: Feature #10 — Step 9 K projection with transpose: careful visualization of dimension flip
+
+=== Feature #10 Complete — 2026-02-18 ===
+- Implemented Step 9 "Key Projection + Transpose" visualization in the 04e head walkthrough
+- Layout: two-part design — projection flow on top, transpose visualization below
+- Top row: horizontal flow — normalized input matrix (X̂) → dot product (·) → W_K weight card → arrow (➜) → K output matrix
+- Input matrix: 8 columns × 4 data rows + dots row, purple-tinted (normalized), "cat" column (index 2) highlighted in orange
+- W_K weight card: orange-themed (hsl 30 80% 50%), 48×48px box with d_model × d_head dimension label
+- K output matrix: 8 columns × 3 data rows + dots row, orange-tinted, T × d_head dimensions
+- Transpose section: down arrow → "Transpose: rows ↔ columns" label → K^T matrix with flip-in CSS animation
+- K^T transposed matrix: same values displayed with d_head × T dimension label (swapped from T × d_head)
+- Token labels appear above the transposed matrix as column headers, emphasizing the conceptual axis swap
+- Staging area: three side-by-side boxes — Q (blue, T×d, Step 7), K^T (orange, d×T, new), V (pink, T×d, Step 8)
+- Animation sequence: (1) matrix + W_K with highlighted column, (2) 600ms pulse, (3) 1200ms K output, (4) 1800ms equation, (5) 2400ms transpose section with flip animation, (6) 3200ms staging area
+- Equation: color-coded "K = X̂ · W_K  (T×d_model) · (d_model×d_head) = T×d_head"
+- CSS: hw-kproj-* classes for layout, K-specific orange colors; reused hw-qproj-* classes for shared input matrix with k-highlighted variant
+- Astro scoping: all dynamic elements use el() helper with astroAttr
+- Verified: forward/back/reset navigation works, build passes, both dark and light themes clean
+- Commit: 2b6c7b1
+- Next: Feature #11 — Step 10 QK^T matrix multiplication: T×T attention matrix

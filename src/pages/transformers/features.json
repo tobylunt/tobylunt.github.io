@@ -107,7 +107,7 @@
   {
     "id": 10,
     "name": "Step 9 \u2014 K projection with transpose: careful visualization of dimension flip",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Same projection animation for K weights, producing key vectors",
       "Critically: animate the transpose of K \u2014 visually flip from (T \u00d7 d_head) to (d_head \u00d7 T)",
