@@ -6942,7 +6942,307 @@ const sections = [
 		}
 	}
 
-		/* Step 1 placeholder viz */
+		/* ===== Step 12: Residual Stream ===== */
+	.hw-residual-layout {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 12px;
+		padding: 8px 0;
+	}
+
+	/* Phase label */
+	.hw-residual-phase {
+		font-size: 0.55rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: hsl(var(--theme-text) / 0.4);
+		text-align: center;
+	}
+
+	/* Additive flow: Input + Attn Output = Enriched */
+	.hw-residual-flow {
+		display: flex;
+		align-items: flex-start;
+		gap: 8px;
+		justify-content: center;
+		width: 100%;
+	}
+
+	/* Shared box wrapper for Input, Attn Output, Enriched */
+	.hw-residual-box {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2px;
+		flex-shrink: 0;
+	}
+
+	.hw-residual-box-label {
+		font-size: 0.5rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+	}
+
+	/* Input matrix (purple — the original normalized input X̂) */
+	.hw-residual-input-label { color: hsl(270 50% 58%); }
+
+	.hw-residual-input-grid {
+		display: grid;
+		gap: 1px;
+		background: hsl(270 50% 58% / 0.06);
+		border: 1.5px solid hsl(270 50% 58% / 0.25);
+		border-radius: 3px;
+		overflow: hidden;
+	}
+
+	.hw-residual-input-cell {
+		background: hsl(270 50% 58% / 0.06);
+		color: hsl(270 50% 58% / 0.7);
+		font-size: 0.38rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 1px 1px;
+		text-align: center;
+		min-width: 18px;
+		min-height: 14px;
+	}
+
+	.hw-residual-input-cell.dots-cell {
+		font-size: 0.45rem;
+		color: hsl(270 50% 58% / 0.4);
+		padding: 0px 1px;
+	}
+
+	.hw-residual-input-dim {
+		font-size: 0.42rem;
+		color: hsl(var(--theme-text) / 0.35);
+	}
+
+	/* Attention output matrix (green — from Step 11) */
+	.hw-residual-attn-label { color: hsl(145 55% 42%); }
+
+	.hw-residual-attn-grid {
+		display: grid;
+		gap: 1px;
+		background: hsl(145 55% 42% / 0.06);
+		border: 1.5px solid hsl(145 55% 42% / 0.25);
+		border-radius: 3px;
+		overflow: hidden;
+	}
+
+	.hw-residual-attn-cell {
+		background: hsl(145 55% 42% / 0.08);
+		color: hsl(145 55% 42% / 0.75);
+		font-size: 0.38rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 1px 1px;
+		text-align: center;
+		min-width: 18px;
+		min-height: 14px;
+	}
+
+	.hw-residual-attn-cell.dots-cell {
+		font-size: 0.45rem;
+		color: hsl(145 55% 42% / 0.4);
+		padding: 0px 1px;
+	}
+
+	.hw-residual-attn-dim {
+		font-size: 0.42rem;
+		color: hsl(var(--theme-text) / 0.35);
+	}
+
+	/* Plus / equals operators */
+	.hw-residual-plus {
+		font-size: 0.9rem;
+		font-weight: 700;
+		color: hsl(var(--theme-text) / 0.35);
+		align-self: center;
+		padding: 0 2px;
+		padding-top: 14px;
+		transition: color 0.4s ease, transform 0.4s ease;
+	}
+
+	.hw-residual-plus.pulse {
+		color: hsl(35 90% 55%);
+		transform: scale(1.3);
+	}
+
+	.hw-residual-equals {
+		font-size: 0.9rem;
+		font-weight: 700;
+		color: hsl(var(--theme-text) / 0.35);
+		align-self: center;
+		padding: 0 2px;
+		padding-top: 14px;
+	}
+
+	/* Enriched output matrix (warm purple/gold blend — hsl 35 for "enriched") */
+	.hw-residual-result-wrap {
+		opacity: 0;
+		transform: translateX(8px);
+		transition: opacity 0.5s ease, transform 0.5s ease;
+	}
+
+	.hw-residual-result-wrap.visible {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	.hw-residual-result-label { color: hsl(35 90% 55%); }
+
+	.hw-residual-result-grid {
+		display: grid;
+		gap: 1px;
+		background: hsl(35 90% 55% / 0.06);
+		border: 2px solid hsl(35 90% 55% / 0.3);
+		border-radius: 3px;
+		overflow: hidden;
+	}
+
+	.hw-residual-result-cell {
+		background: hsl(35 90% 55% / 0.08);
+		color: hsl(35 90% 55% / 0.8);
+		font-size: 0.38rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 1px 1px;
+		text-align: center;
+		min-width: 18px;
+		min-height: 14px;
+	}
+
+	.hw-residual-result-cell.dots-cell {
+		font-size: 0.45rem;
+		color: hsl(35 90% 55% / 0.4);
+		padding: 0px 1px;
+	}
+
+	.hw-residual-result-dim {
+		font-size: 0.42rem;
+		color: hsl(var(--theme-text) / 0.35);
+		margin-top: 2px;
+	}
+
+	/* Token column labels for result */
+	.hw-residual-result-col-labels {
+		display: grid;
+		gap: 1px;
+	}
+
+	.hw-residual-result-col-label {
+		font-size: 0.36rem;
+		text-align: center;
+		color: hsl(35 90% 55% / 0.6);
+		min-width: 18px;
+		padding: 0 1px;
+	}
+
+	/* Equation row */
+	.hw-residual-equation {
+		font-size: 0.55rem;
+		color: hsl(var(--theme-text) / 0.5);
+		text-align: center;
+		margin-top: 2px;
+		opacity: 0;
+		transition: opacity 0.5s ease;
+	}
+
+	.hw-residual-equation.visible {
+		opacity: 1;
+	}
+
+	.hw-residual-eq-input { color: hsl(270 50% 58%); font-weight: 600; }
+	.hw-residual-eq-attn { color: hsl(145 55% 42%); font-weight: 600; }
+	.hw-residual-eq-result { color: hsl(35 90% 55%); font-weight: 600; }
+
+	/* Feed-forward arrow and next layer preview */
+	.hw-residual-forward {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 6px;
+		opacity: 0;
+		transform: translateY(8px);
+		transition: opacity 0.6s ease, transform 0.6s ease;
+	}
+
+	.hw-residual-forward.visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.hw-residual-forward-arrow {
+		font-size: 1.1rem;
+		color: hsl(var(--theme-text) / 0.25);
+	}
+
+	.hw-residual-next-layer {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 6px 14px;
+		background: hsl(var(--theme-text) / 0.03);
+		border: 1.5px dashed hsl(var(--theme-text) / 0.12);
+		border-radius: 6px;
+	}
+
+	.hw-residual-next-label {
+		font-size: 0.5rem;
+		color: hsl(var(--theme-text) / 0.35);
+		font-weight: 500;
+	}
+
+	.hw-residual-next-blocks {
+		display: flex;
+		gap: 4px;
+	}
+
+	.hw-residual-next-block {
+		padding: 3px 8px;
+		border-radius: 3px;
+		font-size: 0.4rem;
+		font-weight: 600;
+		letter-spacing: 0.03em;
+	}
+
+	.hw-residual-next-ffn {
+		background: hsl(150 55% 45% / 0.1);
+		color: hsl(150 55% 45% / 0.6);
+		border: 1px solid hsl(150 55% 45% / 0.2);
+	}
+
+	.hw-residual-next-more {
+		background: hsl(var(--theme-text) / 0.04);
+		color: hsl(var(--theme-text) / 0.3);
+		border: 1px solid hsl(var(--theme-text) / 0.1);
+	}
+
+	/* Responsive */
+	@media (max-width: 480px) {
+		.hw-residual-flow {
+			flex-direction: column;
+			align-items: center;
+			gap: 8px;
+		}
+		.hw-residual-plus, .hw-residual-equals {
+			transform: rotate(90deg);
+			padding-top: 0;
+		}
+		.hw-residual-plus.pulse {
+			transform: rotate(90deg) scale(1.3);
+		}
+		.hw-residual-input-cell, .hw-residual-attn-cell, .hw-residual-result-cell {
+			font-size: 0.34rem;
+			min-width: 16px;
+		}
+		.hw-residual-result-col-label {
+			font-size: 0.32rem;
+			min-width: 16px;
+		}
+	}
+
+	/* Step 1 placeholder viz */
 	.hw-step-placeholder {
 		text-align: center;
 		color: hsl(var(--theme-text) / 0.4);
@@ -10848,6 +11148,202 @@ const sections = [
 		}
 
 
+		function renderStep12() {
+			var layout = el('div', 'hw-residual-layout');
+			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
+			var T = tokens.length; // 8
+
+			// Phase label
+			var phase = el('div', 'hw-residual-phase', 'Residual Connection');
+			layout.appendChild(phase);
+
+			// === Flow row: Input + Attn Output = Enriched ===
+			var flowRow = el('div', 'hw-residual-flow');
+
+			// --- Original input matrix (purple — X̂, the normalized input from Step 6) ---
+			var inputWrap = el('div', 'hw-residual-box');
+			inputWrap.appendChild(el('div', 'hw-residual-box-label hw-residual-input-label', 'Input (x)'));
+
+			// Input values — normalized values (same as Step 6, purple tint)
+			var inputValues = [
+				['-.41', '.22', '.67', '-.15', '.53', '-.38', '.19', '-.41'],
+				['.18', '-.63', '.09', '.44', '-.27', '.71', '-.52', '.18'],
+				['.55', '.31', '-.48', '.62', '-.11', '.23', '.68', '.55'],
+				['-.29', '.47', '.34', '-.56', '.82', '-.14', '.41', '-.29']
+			];
+
+			var inputGrid = el('div', 'hw-residual-input-grid');
+			inputGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
+			inputValues.forEach(function(row) {
+				row.forEach(function(val) {
+					inputGrid.appendChild(el('div', 'hw-residual-input-cell', val));
+				});
+			});
+			// Dots row
+			for (var i = 0; i < T; i++) {
+				inputGrid.appendChild(el('div', 'hw-residual-input-cell dots-cell', '\u22EE'));
+			}
+			inputWrap.appendChild(inputGrid);
+
+			// Input dimension label
+			var inputDim = el('div', 'hw-residual-input-dim');
+			var inputDimT = el('span', '', 'T');
+			inputDimT.style.color = 'hsl(270 50% 58%)';
+			var inputDimX = document.createTextNode(' \u00d7 ');
+			var inputDimD = el('span', '');
+			inputDimD.innerHTML = 'd<sub>model</sub>';
+			if (astroAttr) inputDimD.querySelector('sub').setAttribute(astroAttr, '');
+			inputDim.appendChild(inputDimT);
+			inputDim.appendChild(inputDimX);
+			inputDim.appendChild(inputDimD);
+			inputWrap.appendChild(inputDim);
+			flowRow.appendChild(inputWrap);
+
+			// --- Plus sign ---
+			var plus = el('div', 'hw-residual-plus', '+');
+			flowRow.appendChild(plus);
+
+			// --- Attention output matrix (green — from Step 11) ---
+			var attnWrap = el('div', 'hw-residual-box');
+			attnWrap.appendChild(el('div', 'hw-residual-box-label hw-residual-attn-label', 'Attn(x)'));
+
+			var attnValues = [
+				['.52', '-.18', '.74', '.09', '-.31', '.38', '-.11', '.52'],
+				['-.09', '.64', '-.32', '.55', '.29', '-.42', '.71', '-.09'],
+				['.28', '.08', '-.53', '-.29', '.61', '.22', '-.06', '.28']
+			];
+
+			var attnGrid = el('div', 'hw-residual-attn-grid');
+			attnGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
+			attnValues.forEach(function(row) {
+				row.forEach(function(val) {
+					attnGrid.appendChild(el('div', 'hw-residual-attn-cell', val));
+				});
+			});
+			// Dots row
+			for (var i = 0; i < T; i++) {
+				attnGrid.appendChild(el('div', 'hw-residual-attn-cell dots-cell', '\u22EE'));
+			}
+			attnWrap.appendChild(attnGrid);
+
+			// Attn dimension label
+			var attnDim = el('div', 'hw-residual-attn-dim');
+			var attnDimT = el('span', '', 'T');
+			attnDimT.style.color = 'hsl(145 55% 42%)';
+			var attnDimX = document.createTextNode(' \u00d7 ');
+			var attnDimD = el('span', '');
+			attnDimD.innerHTML = 'd<sub>head</sub>';
+			if (astroAttr) attnDimD.querySelector('sub').setAttribute(astroAttr, '');
+			attnDim.appendChild(attnDimT);
+			attnDim.appendChild(attnDimX);
+			attnDim.appendChild(attnDimD);
+			attnWrap.appendChild(attnDim);
+			flowRow.appendChild(attnWrap);
+
+			// --- Equals sign ---
+			flowRow.appendChild(el('div', 'hw-residual-equals', '='));
+
+			// --- Enriched result matrix (warm gold — x + Attn(x)) ---
+			var resultWrap = el('div', 'hw-residual-box hw-residual-result-wrap');
+			resultWrap.appendChild(el('div', 'hw-residual-box-label hw-residual-result-label', 'Enriched'));
+
+			// Column labels (token names)
+			var colLabels = el('div', 'hw-residual-result-col-labels');
+			colLabels.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
+			tokens.forEach(function(tok) {
+				colLabels.appendChild(el('div', 'hw-residual-result-col-label', tok));
+			});
+			resultWrap.appendChild(colLabels);
+
+			// Enriched values (element-wise sum of input + attn output)
+			var resultValues = [
+				['.11', '.04', '1.41', '-.06', '.22', '.00', '.08', '.11'],
+				['.09', '.01', '-.23', '.99', '.02', '.29', '.19', '.09'],
+				['.83', '.39', '-.01', '.33', '.50', '.45', '.62', '.83'],
+				['-.20', '.55', '.08', '-.27', '1.11', '-.06', '.47', '-.20']
+			];
+
+			var resultGrid = el('div', 'hw-residual-result-grid');
+			resultGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
+			resultValues.forEach(function(row) {
+				row.forEach(function(val) {
+					resultGrid.appendChild(el('div', 'hw-residual-result-cell', val));
+				});
+			});
+			// Dots row
+			for (var i = 0; i < T; i++) {
+				resultGrid.appendChild(el('div', 'hw-residual-result-cell dots-cell', '\u22EE'));
+			}
+			resultWrap.appendChild(resultGrid);
+
+			// Result dimension label
+			var resultDim = el('div', 'hw-residual-result-dim');
+			var resultDimT = el('span', '', 'T');
+			resultDimT.style.color = 'hsl(35 90% 55%)';
+			var resultDimX = document.createTextNode(' \u00d7 ');
+			var resultDimD = el('span', '');
+			resultDimD.innerHTML = 'd<sub>model</sub>';
+			if (astroAttr) resultDimD.querySelector('sub').setAttribute(astroAttr, '');
+			resultDim.appendChild(resultDimT);
+			resultDim.appendChild(resultDimX);
+			resultDim.appendChild(resultDimD);
+			resultWrap.appendChild(resultDim);
+			flowRow.appendChild(resultWrap);
+
+			layout.appendChild(flowRow);
+
+			// === Equation row ===
+			var eqRow = el('div', 'hw-residual-equation');
+			var eqInput = el('span', 'hw-residual-eq-input', 'x');
+			var eqPlus = document.createTextNode(' + ');
+			var eqAttn = el('span', 'hw-residual-eq-attn', 'Attention(x)');
+			var eqEq = document.createTextNode(' = ');
+			var eqResult = el('span', 'hw-residual-eq-result', 'enriched output');
+			eqRow.appendChild(eqInput);
+			eqRow.appendChild(eqPlus);
+			eqRow.appendChild(eqAttn);
+			eqRow.appendChild(eqEq);
+			eqRow.appendChild(eqResult);
+			layout.appendChild(eqRow);
+
+			// === Feed-forward preview ===
+			var forward = el('div', 'hw-residual-forward');
+			forward.appendChild(el('div', 'hw-residual-forward-arrow', '\u2193'));
+			var nextLayer = el('div', 'hw-residual-next-layer');
+			nextLayer.appendChild(el('div', 'hw-residual-next-label', 'Next \u2192'));
+			var blocks = el('div', 'hw-residual-next-blocks');
+			blocks.appendChild(el('div', 'hw-residual-next-block hw-residual-next-ffn', 'Feed-Forward Network'));
+			blocks.appendChild(el('div', 'hw-residual-next-block hw-residual-next-more', '+ residual'));
+			blocks.appendChild(el('div', 'hw-residual-next-block hw-residual-next-more', 'Next Layer \u2026'));
+			nextLayer.appendChild(blocks);
+			forward.appendChild(nextLayer);
+			layout.appendChild(forward);
+
+			// === Animation sequence ===
+			// Phase 1 (immediate): Input and Attn matrices visible
+			// Phase 2 (600ms): Plus sign pulses
+			setTimeout(function() {
+				plus.classList.add('pulse');
+			}, 600);
+
+			// Phase 3 (1200ms): Enriched result appears
+			setTimeout(function() {
+				resultWrap.classList.add('visible');
+			}, 1200);
+
+			// Phase 4 (1800ms): Equation appears
+			setTimeout(function() {
+				eqRow.classList.add('visible');
+			}, 1800);
+
+			// Phase 5 (2400ms): Feed-forward preview appears
+			setTimeout(function() {
+				forward.classList.add('visible');
+			}, 2400);
+
+			return layout;
+		}
+
 		function showStep(step) {
 			// step 0 = base state
 			// steps 1-9: token (0-2) × projection (Q=0, K=1, V=2)
@@ -12626,6 +13122,202 @@ const sections = [
 		}
 
 
+		function renderStep12() {
+			var layout = el('div', 'hw-residual-layout');
+			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
+			var T = tokens.length; // 8
+
+			// Phase label
+			var phase = el('div', 'hw-residual-phase', 'Residual Connection');
+			layout.appendChild(phase);
+
+			// === Flow row: Input + Attn Output = Enriched ===
+			var flowRow = el('div', 'hw-residual-flow');
+
+			// --- Original input matrix (purple — X̂, the normalized input from Step 6) ---
+			var inputWrap = el('div', 'hw-residual-box');
+			inputWrap.appendChild(el('div', 'hw-residual-box-label hw-residual-input-label', 'Input (x)'));
+
+			// Input values — normalized values (same as Step 6, purple tint)
+			var inputValues = [
+				['-.41', '.22', '.67', '-.15', '.53', '-.38', '.19', '-.41'],
+				['.18', '-.63', '.09', '.44', '-.27', '.71', '-.52', '.18'],
+				['.55', '.31', '-.48', '.62', '-.11', '.23', '.68', '.55'],
+				['-.29', '.47', '.34', '-.56', '.82', '-.14', '.41', '-.29']
+			];
+
+			var inputGrid = el('div', 'hw-residual-input-grid');
+			inputGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
+			inputValues.forEach(function(row) {
+				row.forEach(function(val) {
+					inputGrid.appendChild(el('div', 'hw-residual-input-cell', val));
+				});
+			});
+			// Dots row
+			for (var i = 0; i < T; i++) {
+				inputGrid.appendChild(el('div', 'hw-residual-input-cell dots-cell', '\u22EE'));
+			}
+			inputWrap.appendChild(inputGrid);
+
+			// Input dimension label
+			var inputDim = el('div', 'hw-residual-input-dim');
+			var inputDimT = el('span', '', 'T');
+			inputDimT.style.color = 'hsl(270 50% 58%)';
+			var inputDimX = document.createTextNode(' \u00d7 ');
+			var inputDimD = el('span', '');
+			inputDimD.innerHTML = 'd<sub>model</sub>';
+			if (astroAttr) inputDimD.querySelector('sub').setAttribute(astroAttr, '');
+			inputDim.appendChild(inputDimT);
+			inputDim.appendChild(inputDimX);
+			inputDim.appendChild(inputDimD);
+			inputWrap.appendChild(inputDim);
+			flowRow.appendChild(inputWrap);
+
+			// --- Plus sign ---
+			var plus = el('div', 'hw-residual-plus', '+');
+			flowRow.appendChild(plus);
+
+			// --- Attention output matrix (green — from Step 11) ---
+			var attnWrap = el('div', 'hw-residual-box');
+			attnWrap.appendChild(el('div', 'hw-residual-box-label hw-residual-attn-label', 'Attn(x)'));
+
+			var attnValues = [
+				['.52', '-.18', '.74', '.09', '-.31', '.38', '-.11', '.52'],
+				['-.09', '.64', '-.32', '.55', '.29', '-.42', '.71', '-.09'],
+				['.28', '.08', '-.53', '-.29', '.61', '.22', '-.06', '.28']
+			];
+
+			var attnGrid = el('div', 'hw-residual-attn-grid');
+			attnGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
+			attnValues.forEach(function(row) {
+				row.forEach(function(val) {
+					attnGrid.appendChild(el('div', 'hw-residual-attn-cell', val));
+				});
+			});
+			// Dots row
+			for (var i = 0; i < T; i++) {
+				attnGrid.appendChild(el('div', 'hw-residual-attn-cell dots-cell', '\u22EE'));
+			}
+			attnWrap.appendChild(attnGrid);
+
+			// Attn dimension label
+			var attnDim = el('div', 'hw-residual-attn-dim');
+			var attnDimT = el('span', '', 'T');
+			attnDimT.style.color = 'hsl(145 55% 42%)';
+			var attnDimX = document.createTextNode(' \u00d7 ');
+			var attnDimD = el('span', '');
+			attnDimD.innerHTML = 'd<sub>head</sub>';
+			if (astroAttr) attnDimD.querySelector('sub').setAttribute(astroAttr, '');
+			attnDim.appendChild(attnDimT);
+			attnDim.appendChild(attnDimX);
+			attnDim.appendChild(attnDimD);
+			attnWrap.appendChild(attnDim);
+			flowRow.appendChild(attnWrap);
+
+			// --- Equals sign ---
+			flowRow.appendChild(el('div', 'hw-residual-equals', '='));
+
+			// --- Enriched result matrix (warm gold — x + Attn(x)) ---
+			var resultWrap = el('div', 'hw-residual-box hw-residual-result-wrap');
+			resultWrap.appendChild(el('div', 'hw-residual-box-label hw-residual-result-label', 'Enriched'));
+
+			// Column labels (token names)
+			var colLabels = el('div', 'hw-residual-result-col-labels');
+			colLabels.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
+			tokens.forEach(function(tok) {
+				colLabels.appendChild(el('div', 'hw-residual-result-col-label', tok));
+			});
+			resultWrap.appendChild(colLabels);
+
+			// Enriched values (element-wise sum of input + attn output)
+			var resultValues = [
+				['.11', '.04', '1.41', '-.06', '.22', '.00', '.08', '.11'],
+				['.09', '.01', '-.23', '.99', '.02', '.29', '.19', '.09'],
+				['.83', '.39', '-.01', '.33', '.50', '.45', '.62', '.83'],
+				['-.20', '.55', '.08', '-.27', '1.11', '-.06', '.47', '-.20']
+			];
+
+			var resultGrid = el('div', 'hw-residual-result-grid');
+			resultGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
+			resultValues.forEach(function(row) {
+				row.forEach(function(val) {
+					resultGrid.appendChild(el('div', 'hw-residual-result-cell', val));
+				});
+			});
+			// Dots row
+			for (var i = 0; i < T; i++) {
+				resultGrid.appendChild(el('div', 'hw-residual-result-cell dots-cell', '\u22EE'));
+			}
+			resultWrap.appendChild(resultGrid);
+
+			// Result dimension label
+			var resultDim = el('div', 'hw-residual-result-dim');
+			var resultDimT = el('span', '', 'T');
+			resultDimT.style.color = 'hsl(35 90% 55%)';
+			var resultDimX = document.createTextNode(' \u00d7 ');
+			var resultDimD = el('span', '');
+			resultDimD.innerHTML = 'd<sub>model</sub>';
+			if (astroAttr) resultDimD.querySelector('sub').setAttribute(astroAttr, '');
+			resultDim.appendChild(resultDimT);
+			resultDim.appendChild(resultDimX);
+			resultDim.appendChild(resultDimD);
+			resultWrap.appendChild(resultDim);
+			flowRow.appendChild(resultWrap);
+
+			layout.appendChild(flowRow);
+
+			// === Equation row ===
+			var eqRow = el('div', 'hw-residual-equation');
+			var eqInput = el('span', 'hw-residual-eq-input', 'x');
+			var eqPlus = document.createTextNode(' + ');
+			var eqAttn = el('span', 'hw-residual-eq-attn', 'Attention(x)');
+			var eqEq = document.createTextNode(' = ');
+			var eqResult = el('span', 'hw-residual-eq-result', 'enriched output');
+			eqRow.appendChild(eqInput);
+			eqRow.appendChild(eqPlus);
+			eqRow.appendChild(eqAttn);
+			eqRow.appendChild(eqEq);
+			eqRow.appendChild(eqResult);
+			layout.appendChild(eqRow);
+
+			// === Feed-forward preview ===
+			var forward = el('div', 'hw-residual-forward');
+			forward.appendChild(el('div', 'hw-residual-forward-arrow', '\u2193'));
+			var nextLayer = el('div', 'hw-residual-next-layer');
+			nextLayer.appendChild(el('div', 'hw-residual-next-label', 'Next \u2192'));
+			var blocks = el('div', 'hw-residual-next-blocks');
+			blocks.appendChild(el('div', 'hw-residual-next-block hw-residual-next-ffn', 'Feed-Forward Network'));
+			blocks.appendChild(el('div', 'hw-residual-next-block hw-residual-next-more', '+ residual'));
+			blocks.appendChild(el('div', 'hw-residual-next-block hw-residual-next-more', 'Next Layer \u2026'));
+			nextLayer.appendChild(blocks);
+			forward.appendChild(nextLayer);
+			layout.appendChild(forward);
+
+			// === Animation sequence ===
+			// Phase 1 (immediate): Input and Attn matrices visible
+			// Phase 2 (600ms): Plus sign pulses
+			setTimeout(function() {
+				plus.classList.add('pulse');
+			}, 600);
+
+			// Phase 3 (1200ms): Enriched result appears
+			setTimeout(function() {
+				resultWrap.classList.add('visible');
+			}, 1200);
+
+			// Phase 4 (1800ms): Equation appears
+			setTimeout(function() {
+				eqRow.classList.add('visible');
+			}, 1800);
+
+			// Phase 5 (2400ms): Feed-forward preview appears
+			setTimeout(function() {
+				forward.classList.add('visible');
+			}, 2400);
+
+			return layout;
+		}
+
 		function showStep(step) {
 			viz.innerHTML = '';
 
@@ -12651,10 +13343,8 @@ const sections = [
 				viz.appendChild(renderStep10());
 			} else if (step === 11) {
 				viz.appendChild(renderStep11());
-			} else {
-				var placeholder = el('div', 'hw-step-placeholder');
-				placeholder.textContent = 'Step ' + step + ' visualization (coming soon)';
-				viz.appendChild(placeholder);
+			} else if (step === 12) {
+				viz.appendChild(renderStep12());
 			}
 
 			updateAnnotation(step);
