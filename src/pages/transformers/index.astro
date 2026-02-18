@@ -456,7 +456,7 @@ const sections = [
 				<div class="embed-scatter-wrap">
 					<div class="embed-scatter-header">
 						<span class="embed-scatter-title">Word embeddings projected to 2D</span>
-						<span class="embed-scatter-subtitle">hover over any point to see the word</span>
+						<span class="embed-scatter-subtitle">hover or tap any point to see the word</span>
 					</div>
 					<svg id="embed-scatter" class="embed-scatter" viewBox="0 0 600 420" preserveAspectRatio="xMidYMid meet">
 						{/* Grid lines */}
@@ -3974,6 +3974,7 @@ const sections = [
 	.qkv-viz-container {
 		margin: 2rem 0;
 		max-width: 46rem;
+		overflow: hidden;
 	}
 
 	.qkv-controls {
@@ -4561,6 +4562,7 @@ const sections = [
 		background: hsl(var(--theme-text) / 0.03);
 		border: 1px solid hsl(var(--theme-text) / 0.08);
 		border-radius: 12px;
+		overflow: hidden;
 	}
 
 	.attn-pipeline-title {
@@ -7177,6 +7179,111 @@ const sections = [
 			opacity: 1;
 			transform: none;
 			transition: none;
+		}
+	}
+
+	/* ── Feature #21: Mobile responsive refinements ── */
+
+	/* 768px (iPad) — tighten spacing */
+	@media (max-width: 768px) {
+		.qkv-svg {
+			min-width: 500px;
+		}
+		.mi-teaser-cards {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	/* 480px (large phone) — further adjustments */
+	@media (max-width: 480px) {
+		.qkv-svg {
+			min-width: 420px;
+		}
+		.qkv-viz-container {
+			margin: 1rem 0;
+		}
+		.qkv-controls {
+			gap: 6px;
+		}
+		.qkv-btn {
+			padding: 5px 10px;
+			font-size: 0.75rem;
+		}
+		.attn-formula {
+			padding: 12px;
+			font-size: 0.85rem;
+		}
+		.attn-pipeline-labels span {
+			min-width: 2rem;
+			font-size: 0.55rem;
+		}
+		.attn-pipeline-labels span:empty {
+			min-width: 0.5rem;
+		}
+		.circ-induction-wrap {
+			padding: 14px;
+		}
+		.mi-followup {
+			padding: 16px;
+		}
+	}
+
+	/* 390px (iPhone SE / small phones) — tightest layout */
+	@media (max-width: 390px) {
+		.qkv-svg {
+			min-width: 375px;
+		}
+		.section-prose {
+			font-size: 0.92rem;
+		}
+		.linkage-callout {
+			padding: 12px 14px;
+			font-size: 0.82rem;
+		}
+		.embed-tokenizer {
+			padding: 14px;
+		}
+		.embed-scatter-subtitle {
+			font-size: 0.7rem;
+		}
+		.attn-formula {
+			padding: 10px;
+			font-size: 0.8rem;
+			overflow-x: auto;
+		}
+		.attn-pipeline-recap {
+			padding: 1rem;
+		}
+		.attn-pipeline-labels {
+			display: none;
+		}
+		.wt-controls {
+			gap: 6px;
+			padding: 10px 12px;
+		}
+		.wt-ctrl-btn {
+			padding: 5px 10px;
+			font-size: 0.72rem;
+		}
+		.mi-teaser-card {
+			padding: 14px 12px;
+		}
+		.mi-card-desc {
+			font-size: 0.72rem;
+		}
+		.mi-openbox {
+			padding: 10px 12px;
+			gap: 4px;
+		}
+		.mi-openbox-wrap {
+			gap: 0.6rem;
+		}
+		.mi-openbox-label-in,
+		.mi-openbox-label-out {
+			font-size: 0.65rem;
+		}
+		.circ-closing-text {
+			font-size: 0.82rem;
 		}
 	}
 
