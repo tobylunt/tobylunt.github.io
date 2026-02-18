@@ -141,3 +141,20 @@
 - Verified: forward/back/reset navigation works, build passes, both dark and light themes clean
 - Commit: 2b6c7b1
 - Next: Feature #11 — Step 10 QK^T matrix multiplication: T×T attention matrix
+
+=== Feature #11 Complete — 2026-02-18 ===
+- Implemented Step 10 "QK^T — Attention Scores" visualization in the 04e head walkthrough
+- Layout: horizontal flow — Q matrix (blue, T×d_head) · K^T matrix (orange, d_head×T) = T×T attention scores matrix (purple)
+- Q matrix: 8 columns × 3 data rows + dots row, blue-tinted, compact cell sizing (18px min-width, 0.38rem font)
+- K^T matrix: 8 columns × 3 data rows + dots row, orange-tinted, matching compact sizing
+- Result matrix: 8×8 T×T grid (purple), with diagonal cells highlighted (self-attention scores brighter)
+- Token labels: row labels (blue, "queries" axis label) on left, column labels (orange, "keys →" label) on top
+- d_head dimension cancel: animated strikethrough (line-through with red decoration) appears at 800ms on both Q and K^T dimension labels
+- Shape equation: color-coded "Q · K^T  (T×d) · (d×T) = T×T" with strikethrough on inner d dimensions
+- O(n²) callout: warning-styled box with "This is O(n²) in sequence length — every token attends to every other token"
+- Animation sequence: (1) Q + K^T shown immediately, (2) 800ms d_head strikethrough, (3) 1400ms result matrix fades in, (4) 2000ms equation, (5) 2600ms callout
+- CSS: hw-qkt-* classes for layout, matrices, result grid, equation, callout, cancel animation; responsive at 480px breakpoint
+- Astro scoping: all dynamic elements use el() helper with astroAttr; innerHTML sub/sup elements also get attribute
+- Verified: forward/back/reset navigation works, build passes, both dark and light themes clean
+- Commit: f0769da
+- Next: Feature #12 — Step 11 Attention × V: restore dimensions to T × d_head

@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Scaffold 04e replacement \u2014 stepped figure container with back/forward/reset controls",
+    "name": "Scaffold 04e replacement — stepped figure container with back/forward/reset controls",
     "passes": true,
     "steps": [
       "Replace the current 04e section HTML with a new container for the attention head figure",
@@ -14,7 +14,7 @@
   },
   {
     "id": 2,
-    "name": "Step 1 \u2014 Loading state: input text, black box, predicted output",
+    "name": "Step 1 — Loading state: input text, black box, predicted output",
     "passes": true,
     "steps": [
       "Show input text sequence 'The fat cat sat quietly on the' on the left",
@@ -26,7 +26,7 @@
   },
   {
     "id": 3,
-    "name": "Step 2 \u2014 Tokenize: animate separation of words into tokens",
+    "name": "Step 2 — Tokenize: animate separation of words into tokens",
     "passes": true,
     "steps": [
       "Animate the input text splitting into individual token chips",
@@ -38,7 +38,7 @@
   },
   {
     "id": 4,
-    "name": "Step 3 \u2014 Vector embeddings: animate token expansion into embedding vectors",
+    "name": "Step 3 — Vector embeddings: animate token expansion into embedding vectors",
     "passes": true,
     "steps": [
       "Animate token cells moving upward, then embedding vectors expanding downward beneath each token",
@@ -50,7 +50,7 @@
   },
   {
     "id": 5,
-    "name": "Step 4 \u2014 Positional embeddings: add second column per token",
+    "name": "Step 4 — Positional embeddings: add second column per token",
     "passes": true,
     "steps": [
       "Shrink the blue embedding vectors (remove internal numbers) to make room",
@@ -61,7 +61,7 @@
   },
   {
     "id": 6,
-    "name": "Step 5 \u2014 Combine embeddings: additive merge animation",
+    "name": "Step 5 — Combine embeddings: additive merge animation",
     "passes": true,
     "steps": [
       "Animate the additive merger of blue (token) and yellow (positional) columns into a single green column per token",
@@ -72,18 +72,18 @@
   },
   {
     "id": 7,
-    "name": "Step 6 \u2014 Layer norm and QKV weight matrix prep",
+    "name": "Step 6 — Layer norm and QKV weight matrix prep",
     "passes": true,
     "steps": [
       "Animate consolidation of the per-token green columns into a cohesive matrix table (width = sequence length, height = d_model with '...' truncation)",
       "Animate normalization: swap in new normalized values into the matrix cells",
-      "Show QKV weight matrices appearing with correct dimensions (d_model \u00d7 d_head)",
+      "Show QKV weight matrices appearing with correct dimensions (d_model × d_head)",
       "Text panel explains layer normalization and the purpose of learned projection weights"
     ]
   },
   {
     "id": 8,
-    "name": "Step 7 \u2014 Q projection: highlight column, animate through weights, stage output",
+    "name": "Step 7 — Q projection: highlight column, animate through weights, stage output",
     "passes": true,
     "steps": [
       "Highlight a column in the input matrix (corresponding to one token)",
@@ -95,7 +95,7 @@
   },
   {
     "id": 9,
-    "name": "Step 8 \u2014 V projection: same animation pattern for values",
+    "name": "Step 8 — V projection: same animation pattern for values",
     "passes": true,
     "steps": [
       "Same column-highlight and projection animation as step 7, but for V weights",
@@ -106,11 +106,11 @@
   },
   {
     "id": 10,
-    "name": "Step 9 \u2014 K projection with transpose: careful visualization of dimension flip",
+    "name": "Step 9 — K projection with transpose: careful visualization of dimension flip",
     "passes": true,
     "steps": [
       "Same projection animation for K weights, producing key vectors",
-      "Critically: animate the transpose of K \u2014 visually flip from (T \u00d7 d_head) to (d_head \u00d7 T)",
+      "Critically: animate the transpose of K — visually flip from (T × d_head) to (d_head × T)",
       "Show dimension labels changing during transpose, token labels moving from left edge to top edge",
       "Text panel explains: K^T means rows become columns; inner dimensions (d_head) will match and cancel when multiplied with Q",
       "Verify the transpose animation clearly communicates the axis swap"
@@ -118,31 +118,31 @@
   },
   {
     "id": 11,
-    "name": "Step 10 \u2014 QK^T matrix multiplication: T\u00d7T attention matrix",
-    "passes": false,
+    "name": "Step 10 — QK^T matrix multiplication: T×T attention matrix",
+    "passes": true,
     "steps": [
-      "Animate Q (T \u00d7 d_head) multiplied by K^T (d_head \u00d7 T) producing a T \u00d7 T attention score matrix",
-      "Show the d_head inner dimensions canceling \u2014 use visual strikethrough or fade",
-      "The resulting T \u00d7 T matrix represents all pairwise token similarities",
-      "Add prominent callout: this is O(n\u00b2) in sequence length",
-      "Show shape equation with color-coded dimensions: (T\u00d7d) \u00b7 (d\u00d7T) = T\u00d7T",
-      "Text panel explains: each element (i,j) is the dot product of token i's query with token j's key \u2014 all T\u00b2 similarities computed at once"
+      "Animate Q (T × d_head) multiplied by K^T (d_head × T) producing a T × T attention score matrix",
+      "Show the d_head inner dimensions canceling — use visual strikethrough or fade",
+      "The resulting T × T matrix represents all pairwise token similarities",
+      "Add prominent callout: this is O(n²) in sequence length",
+      "Show shape equation with color-coded dimensions: (T×d) · (d×T) = T×T",
+      "Text panel explains: each element (i,j) is the dot product of token i's query with token j's key — all T² similarities computed at once"
     ]
   },
   {
     "id": 12,
-    "name": "Step 11 \u2014 Attention \u00d7 V: restore dimensions to T \u00d7 d_model",
+    "name": "Step 11 — Attention × V: restore dimensions to T × d_model",
     "passes": false,
     "steps": [
-      "Animate the attention weights (T \u00d7 T) multiplied by V (T \u00d7 d_head) producing output (T \u00d7 d_head)",
+      "Animate the attention weights (T × T) multiplied by V (T × d_head) producing output (T × d_head)",
       "Show the T inner dimension canceling, d_head dimension restored",
-      "Shape equation: (T\u00d7T) \u00b7 (T\u00d7d) = T\u00d7d \u2014 one column per token, one row per d_model",
+      "Shape equation: (T×T) · (T×d) = T×d — one column per token, one row per d_model",
       "Text panel explains: each output row is a weighted blend of value vectors, dimensionality is restored"
     ]
   },
   {
     "id": 13,
-    "name": "Step 12 \u2014 Residual stream: outputs fed forward",
+    "name": "Step 12 — Residual stream: outputs fed forward",
     "passes": false,
     "steps": [
       "Show the attention output being added back to the residual stream (additive connection)",
