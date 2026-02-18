@@ -4431,6 +4431,133 @@ const sections = [
 		font-weight: 600;
 	}
 
+	/* Step 1: Black box visualization */
+	.hw-blackbox-layout {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1.2rem;
+		width: 100%;
+		padding: 1.5rem 0.5rem;
+	}
+
+	.hw-bb-input {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		max-width: 140px;
+		flex-shrink: 0;
+	}
+
+	.hw-bb-input-label {
+		font-size: 0.68rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: hsl(var(--theme-text) / 0.45);
+		font-weight: 600;
+		margin-bottom: 0.15rem;
+	}
+
+	.hw-bb-token {
+		padding: 0.25rem 0.55rem;
+		background: hsl(210 60% 50% / 0.12);
+		border: 1px solid hsl(210 60% 50% / 0.25);
+		border-radius: 4px;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.78rem;
+		color: hsl(var(--theme-text) / 0.8);
+		line-height: 1.4;
+		white-space: nowrap;
+	}
+
+	.hw-bb-arrow {
+		font-size: 1.6rem;
+		color: hsl(var(--theme-text) / 0.3);
+		flex-shrink: 0;
+		line-height: 1;
+	}
+
+	.hw-bb-box {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: 160px;
+		height: 120px;
+		background: hsl(220 15% 12%);
+		border-radius: 10px;
+		box-shadow: 0 4px 20px hsl(0 0% 0% / 0.35);
+		flex-shrink: 0;
+		position: relative;
+	}
+
+	.hw-bb-box-label {
+		font-size: 0.82rem;
+		font-weight: 700;
+		color: hsl(0 0% 100% / 0.9);
+		letter-spacing: 0.03em;
+	}
+
+	.hw-bb-box-q {
+		font-size: 1.4rem;
+		color: hsl(0 0% 100% / 0.5);
+		margin-top: 0.2rem;
+	}
+
+	.hw-bb-output {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.3rem;
+		flex-shrink: 0;
+	}
+
+	.hw-bb-output-label {
+		font-size: 0.68rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: hsl(var(--theme-text) / 0.45);
+		font-weight: 600;
+	}
+
+	.hw-bb-prediction {
+		padding: 0.35rem 0.7rem;
+		background: hsl(145 50% 42% / 0.15);
+		border: 1px solid hsl(145 50% 42% / 0.35);
+		border-radius: 4px;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.88rem;
+		font-weight: 600;
+		color: hsl(145 50% 42%);
+	}
+
+	@media (max-width: 480px) {
+		.hw-blackbox-layout {
+			gap: 0.6rem;
+			padding: 1rem 0.2rem;
+		}
+		.hw-bb-box {
+			width: 110px;
+			height: 85px;
+		}
+		.hw-bb-box-label {
+			font-size: 0.72rem;
+		}
+		.hw-bb-box-q {
+			font-size: 1.1rem;
+		}
+		.hw-bb-token {
+			font-size: 0.68rem;
+			padding: 0.2rem 0.4rem;
+		}
+		.hw-bb-arrow {
+			font-size: 1.2rem;
+		}
+		.hw-bb-prediction {
+			font-size: 0.78rem;
+		}
+	}
+
 	/* Step 1 placeholder viz */
 	.hw-step-placeholder {
 		text-align: center;
@@ -7975,11 +8102,49 @@ const sections = [
 			stepBtn.disabled = (currentStep >= TOTAL_STEPS);
 		}
 
+		function renderStep1() {
+			var layout = el('div', 'hw-blackbox-layout');
+
+			// Input column
+			var inputCol = el('div', 'hw-bb-input');
+			inputCol.appendChild(el('div', 'hw-bb-input-label', 'Input'));
+			var words = ['The', 'fat', 'cat', 'sat', 'quietly', 'on', 'the'];
+			words.forEach(function(w) {
+				inputCol.appendChild(el('div', 'hw-bb-token', w));
+			});
+			layout.appendChild(inputCol);
+
+			// Arrow in
+			layout.appendChild(el('div', 'hw-bb-arrow', '\u279C'));
+
+			// Black box
+			var box = el('div', 'hw-bb-box');
+			box.appendChild(el('div', 'hw-bb-box-label', 'Transformer'));
+			box.appendChild(el('div', 'hw-bb-box-q', '?'));
+			layout.appendChild(box);
+
+			// Arrow out
+			layout.appendChild(el('div', 'hw-bb-arrow', '\u279C'));
+
+			// Output column
+			var outputCol = el('div', 'hw-bb-output');
+			outputCol.appendChild(el('div', 'hw-bb-output-label', 'Prediction'));
+			outputCol.appendChild(el('div', 'hw-bb-prediction', 'mat'));
+			layout.appendChild(outputCol);
+
+			return layout;
+		}
+
 		function showStep(step) {
 			viz.innerHTML = '';
-			var placeholder = el('div', 'hw-step-placeholder');
-			placeholder.textContent = 'Step ' + step + ' visualization (coming soon)';
-			viz.appendChild(placeholder);
+
+			if (step === 1) {
+				viz.appendChild(renderStep1());
+			} else {
+				var placeholder = el('div', 'hw-step-placeholder');
+				placeholder.textContent = 'Step ' + step + ' visualization (coming soon)';
+				viz.appendChild(placeholder);
+			}
 
 			updateAnnotation(step);
 			updateButtons();
