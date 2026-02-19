@@ -342,3 +342,25 @@
 - Build passes (pnpm build)
 - Commit: f095db3
 - Next: Feature #9 — New Step 7: layer norm + QKV weights (split from old step 6)
+
+=== Round 2 Feature #9 Complete — 2026-02-19 ===
+- Redesigned Step 7 "Layer Norm + QKV Weights" with column pill matrix structure matching Step 6
+- Input matrix: uses hw-norm7-* classes with column pill layout (8 columns, 5 cells each: 2 top + dots + 2 bottom)
+- Initial state: green-tinted cells with same values as Step 6's consolidated matrix (visual continuity)
+- Normalization animation: at 600ms, values swap to normalized (purple tint) with flash animation, phase label updates
+- QKV weight matrices redesigned from small 56px boxes to full column pill matrices:
+  - W_Q (blue, hsl 210): 3 columns (d_head) × 5 rows with sample weight values
+  - W_K (orange, hsl 30): 3 columns × 5 rows with sample weight values
+  - W_V (pink, hsl 340): 3 columns × 5 rows with sample weight values
+  - Each uses same cell sizing, font, and ellipsis placement as the input matrix
+  - d_model × d_head dimension labels below each weight matrix
+- Visual match between input matrix and weight matrices makes multiplication compatibility intuitive
+- d_model y-axis label preserved from Step 6 (reuses hw-embed-yaxis class)
+- Animation sequence: (1) green matrix appears immediately, (2) 600ms normalization flash, (3) 1400ms QKV weight matrices fade in
+- CSS: new hw-norm7-* classes for input matrix, hw-wmat-* classes for weight matrices; removed old hw-norm-matrix/weight-box classes
+- Astro scoping: all dynamic elements use el() helper with astroAttr; innerHTML sub elements also get attribute
+- Forward/back/reset navigation works cleanly between Steps 6, 7, and 8
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: 0e7234a
+- Next: Feature #10 — Step 8 redesign: Q projection with per-token animation

@@ -5,7 +5,7 @@
     "passes": true,
     "steps": [
       "Move the step annotation text (title, description, shape) from the right panel inside the figure card to the sidenotes gutter/column alongside the figure",
-      "The full card width is now available for the visualization — remove the internal two-column grid split",
+      "The full card width is now available for the visualization \u2014 remove the internal two-column grid split",
       "Annotation text should update on each step change, same as before, just rendered in the sidenote margin",
       "Verify annotations are readable and properly positioned in both dark and light themes",
       "On mobile (where sidenotes collapse inline), annotations should appear below the viz area",
@@ -18,9 +18,9 @@
     "name": "Renumber steps from 12 to 14 and update infrastructure",
     "passes": true,
     "steps": [
-      "Old step 6 splits into new steps 6 (embeddings matrix) and 7 (layer norm + QKV) — add placeholder for new step 6",
-      "New step 12 is an attention heatmap inserted after QK^T — add placeholder",
-      "New step mapping: 1 Black Box, 2 Tokenize, 3 Embeddings, 4 Positional, 5 Combine, 6 Embeddings Matrix, 7 Layer Norm + QKV, 8 Q Projection, 9 V Projection, 10 K + Transpose, 11 QK^T Scores, 12 Attention Heatmap, 13 Attn × V, 14 Residual/Output",
+      "Old step 6 splits into new steps 6 (embeddings matrix) and 7 (layer norm + QKV) \u2014 add placeholder for new step 6",
+      "New step 12 is an attention heatmap inserted after QK^T \u2014 add placeholder",
+      "New step mapping: 1 Black Box, 2 Tokenize, 3 Embeddings, 4 Positional, 5 Combine, 6 Embeddings Matrix, 7 Layer Norm + QKV, 8 Q Projection, 9 V Projection, 10 K + Transpose, 11 QK^T Scores, 12 Attention Heatmap, 13 Attn \u00d7 V, 14 Residual/Output",
       "Update STEP_DATA array with 14 entries (new entries 6 and 12 can have placeholder text for now)",
       "Update step counter to show 'Step N / 14'",
       "Update forward/back button disable logic for 14 steps",
@@ -34,11 +34,11 @@
     "name": "Step 1 redesign: horizontal sentence with black box",
     "passes": true,
     "steps": [
-      "Present the input as a natural horizontal sentence: 'The fat cat sat quietly on the ___' — NOT as separate word chips in boxes",
+      "Present the input as a natural horizontal sentence: 'The fat cat sat quietly on the ___' \u2014 NOT as separate word chips in boxes",
       "Make it visually clear this is an incomplete sentence and the model must predict the next word (use a blank/underscore or trailing cursor)",
-      "Keep the black box ('Transformer ?') and 'mat' prediction, but flow is now: horizontal sentence → arrow → black box → arrow → 'mat'",
-      "Remove 'Input → [Transformer] → Output' from the annotation shape text",
-      "The sentence text must persist into Step 2 for visual continuity — do NOT destroy it on step change",
+      "Keep the black box ('Transformer ?') and 'mat' prediction, but flow is now: horizontal sentence \u2192 arrow \u2192 black box \u2192 arrow \u2192 'mat'",
+      "Remove 'Input \u2192 [Transformer] \u2192 Output' from the annotation shape text",
+      "The sentence text must persist into Step 2 for visual continuity \u2014 do NOT destroy it on step change",
       "Verify clean rendering at desktop and mobile widths in both themes"
     ]
   },
@@ -47,12 +47,12 @@
     "name": "Step 2 redesign: animate text into tokens with visual continuity",
     "passes": true,
     "steps": [
-      "On transition from Step 1 → Step 2: wipe the black box and prediction elements, but KEEP the horizontal sentence text from Step 1",
-      "Animate the sentence text separating into individual token chips in place — words spread apart and colored token borders/backgrounds appear around them",
+      "On transition from Step 1 \u2192 Step 2: wipe the black box and prediction elements, but KEEP the horizontal sentence text from Step 1",
+      "Animate the sentence text separating into individual token chips in place \u2014 words spread apart and colored token borders/backgrounds appear around them",
       "'quietly' splits into 'quiet' + 'ly' with subword color coding (amber), other tokens get whole-word color (blue), matching section 03",
       "Show token count below",
-      "The token chips must persist into Step 3 — visual continuity means the same DOM elements carry forward",
-      "Verify the forward AND backward transitions are smooth (Step 2 → Step 1 should reverse the animation or re-render Step 1 cleanly)"
+      "The token chips must persist into Step 3 \u2014 visual continuity means the same DOM elements carry forward",
+      "Verify the forward AND backward transitions are smooth (Step 2 \u2192 Step 1 should reverse the animation or re-render Step 1 cleanly)"
     ]
   },
   {
@@ -60,13 +60,13 @@
     "name": "Step 3 redesign: column pills with visual continuity",
     "passes": true,
     "steps": [
-      "On transition from Step 2 → Step 3: keep the token chips, animate them upward to make room below",
+      "On transition from Step 2 \u2192 Step 3: keep the token chips, animate them upward to make room below",
       "Add horizontal spacing between tokens to accommodate embedding columns",
       "Animate embedding vectors expanding downward beneath each token as unified column pills (one rounded rectangle per token, NOT separate cells)",
-      "Each column pill has internal row separators showing sample numeric values, with a horizontal ellipsis (⋯) in the MIDDLE row (pandas-style truncation, not at the bottom)",
+      "Each column pill has internal row separators showing sample numeric values, with a horizontal ellipsis (\u22ef) in the MIDDLE row (pandas-style truncation, not at the bottom)",
       "Columns are colored blue (token embedding color)",
-      "Add d_model as a y-axis label on the left side of the columns — remove any '8 tokens × d_model' bottom label",
-      "The embedding annotation card at the bottom (vocab lookup explanation) should be permanent for this step — remove the × close button",
+      "Add d_model as a y-axis label on the left side of the columns \u2014 remove any '8 tokens \u00d7 d_model' bottom label",
+      "The embedding annotation card at the bottom (vocab lookup explanation) should be permanent for this step \u2014 remove the \u00d7 close button",
       "Verify column pills are visually cohesive and emphasize one-vector-per-token"
     ]
   },
@@ -75,11 +75,11 @@
     "name": "Step 4 redesign: positional embeddings with visual continuity",
     "passes": true,
     "steps": [
-      "On transition from Step 3 → Step 4: keep token chips and blue column pills in place — do NOT remove and redraw",
+      "On transition from Step 3 \u2192 Step 4: keep token chips and blue column pills in place \u2014 do NOT remove and redraw",
       "Animate blue columns shrinking in width to make room; fade out or visually de-emphasize internal numbers (numbers don't aid comprehension here)",
       "Animate yellow positional embedding column pills expanding beside each blue column",
       "Fix horizontal alignment: token chips, down arrows, and column pairs must be centered on the same vertical axis per token",
-      "Remove '8 tokens × 2 embeddings × d_model' label text",
+      "Remove '8 tokens \u00d7 2 embeddings \u00d7 d_model' label text",
       "Verify alignment is correct and columns don't clip at right edge on standard viewport widths"
     ]
   },
@@ -88,11 +88,11 @@
     "name": "Step 5 redesign: per-token merge animation with alignment",
     "passes": true,
     "steps": [
-      "On transition from Step 4 → Step 5: each blue+yellow column pair merges into a single green column",
-      "Critical: each pair collapses inward UNDER ITS OWN TOKEN — not toward the center of the card",
+      "On transition from Step 4 \u2192 Step 5: each blue+yellow column pair merges into a single green column",
+      "Critical: each pair collapses inward UNDER ITS OWN TOKEN \u2014 not toward the center of the card",
       "The green merged column should be centered directly under its token chip and down arrow",
       "Fix any horizontal misalignment between tokens, arrows, and columns",
-      "Remove '8 tokens × d_model' label text",
+      "Remove '8 tokens \u00d7 d_model' label text",
       "The sidenote about combination methods should remain",
       "Green columns must persist into Step 6 for visual continuity"
     ]
@@ -102,23 +102,23 @@
     "name": "New Step 6: embeddings matrix formation (split from old step 6)",
     "passes": true,
     "steps": [
-      "On transition from Step 5 → Step 6: the separate green column pills consolidate into a single cohesive matrix visualization",
-      "This should be visually continuous — the green columns slide together and a matrix border/grid appears around them",
-      "Matrix has token labels as column headers, d_model as row axis with horizontal ellipsis (⋯) in the middle row",
+      "On transition from Step 5 \u2192 Step 6: the separate green column pills consolidate into a single cohesive matrix visualization",
+      "This should be visually continuous \u2014 the green columns slide together and a matrix border/grid appears around them",
+      "Matrix has token labels as column headers, d_model as row axis with horizontal ellipsis (\u22ef) in the middle row",
       "Sample numeric values appear in cells (green-tinted, representing combined embeddings)",
-      "This step is purely about forming the matrix object — no normalization or QKV yet",
+      "This step is purely about forming the matrix object \u2014 no normalization or QKV yet",
       "Annotation text should explain: we now have a matrix where each column is one token's combined embedding vector"
     ]
   },
   {
     "id": 9,
     "name": "New Step 7: layer norm + QKV weights (split from old step 6)",
-    "passes": false,
+    "passes": true,
     "steps": [
-      "On transition from Step 6 → Step 7: animate normalization — swap cell values and shift tint from green to purple",
+      "On transition from Step 6 \u2192 Step 7: animate normalization \u2014 swap cell values and shift tint from green to purple",
       "After normalization animation, QKV weight matrices appear below",
-      "Critical: QKV weight cards must have the SAME visual style as the feature matrix — same column pill structure, same ellipsis placement, same cell sizing",
-      "W_Q (blue), W_K (orange), W_V (pink) — each shows d_model × d_head with correct dimensions",
+      "Critical: QKV weight cards must have the SAME visual style as the feature matrix \u2014 same column pill structure, same ellipsis placement, same cell sizing",
+      "W_Q (blue), W_K (orange), W_V (pink) \u2014 each shows d_model \u00d7 d_head with correct dimensions",
       "The visual match between input matrix and weight matrices should make it intuitively clear they are compatible for multiplication",
       "Annotation explains layer normalization and introduces the three learned projection weights"
     ]
@@ -129,10 +129,10 @@
     "passes": false,
     "steps": [
       "Animate W_Q moving up from its position to a multiplication area beside the input matrix",
-      "Draw an empty Q output matrix (correct size: T × d_head) with token labels but no values yet",
+      "Draw an empty Q output matrix (correct size: T \u00d7 d_head) with token labels but no values yet",
       "For each token column in the input matrix: (1) draw a highlight box around the column, (2) animate a 'copy' of that column to W_Q, (3) signal multiplication, (4) animate the result into the corresponding column of the Q output matrix",
-      "The per-token animation can be fast (don't need to watch all 8 slowly) — maybe animate 1-2 tokens fully, then fill remaining columns quickly",
-      "Annotation text: query vectors represent 'what am I looking for?' — each token's embedding is projected into query space",
+      "The per-token animation can be fast (don't need to watch all 8 slowly) \u2014 maybe animate 1-2 tokens fully, then fill remaining columns quickly",
+      "Annotation text: query vectors represent 'what am I looking for?' \u2014 each token's embedding is projected into query space",
       "Q matrix and input matrix must persist for the next step"
     ]
   },
@@ -142,7 +142,7 @@
     "passes": false,
     "steps": [
       "On transition: move W_Q back to its starting position, move W_V to the multiplication area",
-      "Move the completed Q matrix backward in the visual stack — shrink slightly and dim it (opacity ~0.5)",
+      "Move the completed Q matrix backward in the visual stack \u2014 shrink slightly and dim it (opacity ~0.5)",
       "Draw the V output matrix in the same position where Q was (front of the stack), creating a 'stacked card' effect",
       "Run the same per-token copy/multiply/drag animation as Step 8 but with W_V and pink coloring",
       "Both Q (dimmed, behind) and V (active, front) should be visible, showing accumulation of projections",
@@ -155,11 +155,11 @@
     "passes": false,
     "steps": [
       "Clear the Q/V card stack to make room",
-      "Run the same per-token projection animation for W_K (orange), producing K matrix (T × d_head)",
-      "Critical transpose animation: each column of K visually rotates to become a row of K^T — the dimension flip from (T × d_head) to (d_head × T) must be unmistakable",
+      "Run the same per-token projection animation for W_K (orange), producing K matrix (T \u00d7 d_head)",
+      "Critical transpose animation: each column of K visually rotates to become a row of K^T \u2014 the dimension flip from (T \u00d7 d_head) to (d_head \u00d7 T) must be unmistakable",
       "Token labels should move from column headers to row labels during the transpose",
       "Show dimension labels changing during the rotation",
-      "Annotation text: explain that K^T flips rows ↔ columns so the inner dimensions (d_head) will align for multiplication with Q",
+      "Annotation text: explain that K^T flips rows \u2194 columns so the inner dimensions (d_head) will align for multiplication with Q",
       "Also explain WHY K comes last: the transpose is essential for understanding how parallelized attention works"
     ]
   },
@@ -168,13 +168,13 @@
     "name": "Step 11 redesign: QK^T with correct matrix sizes",
     "passes": false,
     "steps": [
-      "Show Q (T × d_head) and K^T (d_head × T) at their actual proportional sizes — Q is tall, K^T is wide",
+      "Show Q (T \u00d7 d_head) and K^T (d_head \u00d7 T) at their actual proportional sizes \u2014 Q is tall, K^T is wide",
       "Animate d_head inner dimension cancellation with strikethrough",
-      "Animate the dot product producing the T × T attention scores matrix — if feasible, animate row-by-row (row i of Q against all columns of K^T)",
-      "Result is a T × T matrix with token labels on both axes (queries on rows, keys on columns)",
-      "Keep the O(n²) callout",
-      "Enrich annotation: explain that element (i,j) is the dot product of token i's query with token j's key — all T² pairwise similarities computed at once",
-      "The T × T matrix must persist for the next step (attention heatmap)"
+      "Animate the dot product producing the T \u00d7 T attention scores matrix \u2014 if feasible, animate row-by-row (row i of Q against all columns of K^T)",
+      "Result is a T \u00d7 T matrix with token labels on both axes (queries on rows, keys on columns)",
+      "Keep the O(n\u00b2) callout",
+      "Enrich annotation: explain that element (i,j) is the dot product of token i's query with token j's key \u2014 all T\u00b2 pairwise similarities computed at once",
+      "The T \u00d7 T matrix must persist for the next step (attention heatmap)"
     ]
   },
   {
@@ -182,24 +182,24 @@
     "name": "New Step 12: interactive attention heatmap (from section 04c)",
     "passes": false,
     "steps": [
-      "Zoom into the T × T attention scores matrix from Step 11, expanding it to fill the viz area",
-      "Render it as the interactive attention heatmap currently in section 04c — with click/hover to highlight rows and columns, tooltip showing score values",
+      "Zoom into the T \u00d7 T attention scores matrix from Step 11, expanding it to fill the viz area",
+      "Render it as the interactive attention heatmap currently in section 04c \u2014 with click/hover to highlight rows and columns, tooltip showing score values",
       "Preserve the same interactivity and visual polish from 04c (color scale, token labels on both axes)",
       "Add softmax explanation: note that raw scores are passed through softmax to produce normalized attention weights (rows sum to 1)",
       "After this feature is verified, REMOVE the heatmap from section 04c (it now lives here in the walkthrough)",
-      "Annotation text: this is the attention pattern — each row shows how much one token attends to every other token"
+      "Annotation text: this is the attention pattern \u2014 each row shows how much one token attends to every other token"
     ]
   },
   {
     "id": 15,
-    "name": "Step 13 redesign: Attention × V with clearer dimensions",
+    "name": "Step 13 redesign: Attention \u00d7 V with clearer dimensions",
     "passes": false,
     "steps": [
-      "Show attention weights matrix (T × T) multiplied by V (T × d_head) producing output (T × d_head)",
-      "Matrices must be drawn at proportional sizes that make the dimensions visually intuitive — T × T is square, V is tall-and-narrow, output is tall-and-narrow",
+      "Show attention weights matrix (T \u00d7 T) multiplied by V (T \u00d7 d_head) producing output (T \u00d7 d_head)",
+      "Matrices must be drawn at proportional sizes that make the dimensions visually intuitive \u2014 T \u00d7 T is square, V is tall-and-narrow, output is tall-and-narrow",
       "Animate T inner dimension cancellation with strikethrough",
       "Add softmax context: note that the attention weights used here are the softmax-normalized values from the previous step",
-      "Annotation text: each output row is a weighted blend of value vectors, dimensionality is restored from T × T back to T × d_head",
+      "Annotation text: each output row is a weighted blend of value vectors, dimensionality is restored from T \u00d7 T back to T \u00d7 d_head",
       "Verify dimension labels and matrix sizing make the operation visually self-explanatory"
     ]
   },
@@ -209,11 +209,11 @@
     "passes": false,
     "steps": [
       "Reframe this step to clearly signal 'this is the output of one attention head'",
-      "Show the residual connection (input + attention output) but label it more accessibly — avoid jargon like 'enriched' that is opaque to non-experts",
+      "Show the residual connection (input + attention output) but label it more accessibly \u2014 avoid jargon like 'enriched' that is opaque to non-experts",
       "Use language like 'Head Output' or 'Attention Result' rather than 'Residual Connection' as the primary framing",
       "Keep the feed-forward network preview but make it clearly non-interactive (dim or dashed styling so it doesn't look clickable)",
-      "Annotation text: this is what one attention head produces — the output is added back to the input (residual connection) and feeds forward to the next layer",
-      "The figure should end with a sense of completion — this attention head's job is done"
+      "Annotation text: this is what one attention head produces \u2014 the output is added back to the input (residual connection) and feeds forward to the next layer",
+      "The figure should end with a sense of completion \u2014 this attention head's job is done"
     ]
   }
 ]
