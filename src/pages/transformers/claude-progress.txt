@@ -432,5 +432,5 @@
 - Forward/back/reset navigation works cleanly between Steps 10, 11, and 12
 - Both dark and light themes verified clean via Playwright
 - Build passes (pnpm build)
-- Commit: pending
+- Commit: 4c93562
 - Next: Feature #14 — New Step 12: interactive attention heatmap (from section 04c)
