@@ -399,3 +399,22 @@
 - Build passes (pnpm build)
 - Commit: 1bf665c
 - Next: Feature #12 — Step 10 redesign: K projection with animated transpose
+
+=== Round 2 Feature #12 Complete — 2026-02-19 ===
+- Redesigned Step 10 "Key Projection + Transpose" with column pill layout and K^T transpose visualization
+- Layout: horizontal flow — X̂ (normalized, purple columns) · W_K (orange columns) → K output (orange columns)
+- W_K weight matrix: 3 orange column pills with weight values from Step 7, slides up at 400ms
+- K output matrix: 8 orange column pills with per-token fill animation (first 3 detailed with flying column copy + W_K flash, remaining 5 rapid cascade), starts at 1100ms
+- Equation row: K = X̂ · W_K with dimension annotation
+- Transpose section: down arrow + "Transpose: rows ↔ columns" label + K^T visualization
+- K^T shows 3 d_head column pills with 4 visible token rows (2 top + dots + 2 bottom), token labels as row labels on left
+- K^T appears with flip-in animation (rotateY 90° → 0°) for visual emphasis on the transpose operation
+- Dimension labels change: K output shows "T × d_head", K^T shows "d_head × T"
+- Replaced old hw-kproj-* CSS (grid-based layout, small weight box, staging area) with new hw-k10-* CSS (column pills, transpose section)
+- Reuses hw-q8-* classes for shared patterns (mat-wrap, cols, col, cell, dots, op, dim-label, fly-col)
+- CSS includes responsive layout (stacks vertically on mobile) and dark mode adjustments
+- Forward/back/reset navigation works cleanly between Steps 9, 10, and 11
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: pending
+- Next: Feature #13 — Step 11 redesign: QK^T with correct matrix sizes

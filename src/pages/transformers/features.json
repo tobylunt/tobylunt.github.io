@@ -152,7 +152,7 @@
   {
     "id": 12,
     "name": "Step 10 redesign: K projection with animated transpose",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Clear the Q/V card stack to make room",
       "Run the same per-token projection animation for W_K (orange), producing K matrix (T \u00d7 d_head)",
