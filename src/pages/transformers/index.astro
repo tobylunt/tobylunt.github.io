@@ -5068,6 +5068,154 @@ const sections = [
 		}
 	}
 
+	/* Step 4 redesign: positional embeddings with column pills */
+	.hw-pos4-layout {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.3rem;
+		width: 100%;
+		padding: 0.5rem 0.25rem;
+	}
+	.hw-pos4-body {
+		display: flex;
+		align-items: center;
+		gap: 0.35rem;
+	}
+	.hw-pos4-columns {
+		display: flex;
+		gap: 6px;
+		justify-content: center;
+	}
+	.hw-pos4-col {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2px;
+	}
+	.hw-pos4-chip {
+		font-size: 0.72rem;
+		padding: 2px 7px;
+	}
+	.hw-pos4-arrow {
+		text-align: center;
+		font-size: 0.85rem;
+		color: hsl(210 60% 55% / 0.5);
+		line-height: 1;
+	}
+	.hw-pos4-pair {
+		display: flex;
+		gap: 0px;
+		align-items: stretch;
+		transition: gap 0.5s ease 0.3s;
+	}
+	.hw-pos4-morphed .hw-pos4-pair {
+		gap: 3px;
+	}
+	/* Blue pill: starts at Step 3 size, shrinks on morph */
+	.hw-pos4-blue {
+		display: flex;
+		flex-direction: column;
+		width: 48px;
+		border-radius: 6px;
+		border: 1.5px solid hsl(210 60% 55% / 0.25);
+		background: hsl(210 60% 55% / 0.06);
+		overflow: hidden;
+		transition: width 0.5s ease calc(0.3s + var(--i, 0) * 0.06s);
+	}
+	.hw-pos4-morphed .hw-pos4-blue {
+		width: 24px;
+	}
+	/* De-emphasize numbers in blue pill on morph */
+	.hw-pos4-blue .hw-embed-pill-val {
+		transition: opacity 0.4s ease calc(0.2s + var(--i, 0) * 0.06s);
+	}
+	.hw-pos4-blue .hw-embed-pill-dots {
+		transition: opacity 0.4s ease calc(0.2s + var(--i, 0) * 0.06s);
+	}
+	.hw-pos4-morphed .hw-pos4-blue .hw-embed-pill-val {
+		opacity: 0.15;
+	}
+	.hw-pos4-morphed .hw-pos4-blue .hw-embed-pill-dots {
+		opacity: 0.2;
+	}
+	/* Yellow pill: starts hidden, expands on morph */
+	.hw-pos4-yellow {
+		display: flex;
+		flex-direction: column;
+		width: 0;
+		border-radius: 6px;
+		border: 1.5px solid transparent;
+		background: transparent;
+		overflow: hidden;
+		opacity: 0;
+		transition: width 0.5s ease calc(0.5s + var(--i, 0) * 0.06s),
+		            opacity 0.4s ease calc(0.6s + var(--i, 0) * 0.06s),
+		            border-color 0.4s ease calc(0.5s + var(--i, 0) * 0.06s),
+		            background-color 0.4s ease calc(0.5s + var(--i, 0) * 0.06s);
+	}
+	.hw-pos4-morphed .hw-pos4-yellow {
+		width: 24px;
+		opacity: 1;
+		border-color: hsl(42 90% 55% / 0.25);
+		background: hsl(42 90% 55% / 0.06);
+	}
+	.hw-pos4-yval {
+		padding: 3px 2px;
+		text-align: center;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.6rem;
+		line-height: 1.3;
+		color: hsl(42 90% 55% / 0.45);
+		border-top: 1px solid hsl(42 90% 55% / 0.12);
+		opacity: 0.25;
+	}
+	.hw-pos4-yval:first-child {
+		border-top: none;
+	}
+	.hw-pos4-ydots {
+		padding: 2px 2px;
+		text-align: center;
+		font-size: 0.75rem;
+		line-height: 1;
+		color: hsl(42 90% 55% / 0.3);
+		border-top: 1px dashed hsl(42 90% 55% / 0.15);
+		border-bottom: 1px dashed hsl(42 90% 55% / 0.15);
+		background: hsl(42 90% 55% / 0.03);
+	}
+	.hw-pos4-legend {
+		display: flex;
+		justify-content: center;
+		gap: 1.2rem;
+		margin-top: 0.5rem;
+		font-size: 0.65rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		color: hsl(var(--theme-text) / 0.45);
+		opacity: 0;
+		animation: hw-fade-in 0.3s ease 1.2s both;
+	}
+	@media (max-width: 480px) {
+		.hw-pos4-blue {
+			width: 38px;
+		}
+		.hw-pos4-morphed .hw-pos4-blue {
+			width: 18px;
+		}
+		.hw-pos4-morphed .hw-pos4-yellow {
+			width: 18px;
+		}
+		.hw-pos4-chip {
+			font-size: 0.62rem;
+			padding: 2px 5px;
+		}
+		.hw-pos4-columns {
+			gap: 4px;
+		}
+		.hw-pos4-legend {
+			font-size: 0.58rem;
+		}
+	}
+
 	/* Step 5: Combine Embeddings layout */
 	.hw-combine-layout {
 		display: flex;
@@ -11834,73 +11982,83 @@ const sections = [
 		}
 
 		function renderStep4() {
-			var layout = el('div', 'hw-pos-layout');
-
-			// Token chips row at the top
-			var chipsRow = el('div', 'hw-pos-chips');
+			var layout = el('div', 'hw-pos4-layout');
 			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
 			var tokenTypes = ['whole', 'whole', 'whole', 'whole', 'sub', 'sub', 'whole', 'whole'];
 
+			var sampleVecs = [
+				[0.12, -0.84, 0.31, 0.67],
+				[-0.45, 0.22, 0.91, -0.33],
+				[0.78, -0.15, -0.62, 0.44],
+				[-0.29, 0.56, 0.08, -0.71],
+				[0.63, -0.38, 0.47, 0.19],
+				[-0.11, 0.73, -0.55, 0.82],
+				[0.34, -0.67, 0.25, -0.48],
+				[0.52, 0.14, -0.39, 0.66]
+			];
+
+			var posVecs = [
+				[0.00, 0.84, 0.54, 0.91],
+				[0.01, 0.54, 0.99, 0.42],
+				[0.01, 0.14, 0.65, -0.76],
+				[0.00, -0.42, -0.42, -0.91],
+				[0.00, -0.84, -0.99, -0.14],
+				[0.00, -1.00, -0.65, 0.66],
+				[0.01, -0.76, 0.28, 0.99],
+				[0.01, -0.28, 0.96, 0.54]
+			];
+
+			var body = el('div', 'hw-pos4-body');
+			var yaxis = el('div', 'hw-embed-yaxis');
+			yaxis.innerHTML = 'd<sub>model</sub>';
+			if (astroAttr) {
+				yaxis.querySelectorAll('sub').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			}
+			body.appendChild(yaxis);
+
+			var columns = el('div', 'hw-pos4-columns');
 			tokens.forEach(function(tok, i) {
-				var chip = el('span', 'hw-tok-chip hw-tok-' + tokenTypes[i] + ' hw-pos-chip', tok);
-				chipsRow.appendChild(chip);
+				var col = el('div', 'hw-pos4-col');
+				col.style.setProperty('--i', i);
+				col.appendChild(el('span', 'hw-tok-chip hw-tok-' + tokenTypes[i] + ' hw-pos4-chip', tok));
+				col.appendChild(el('div', 'hw-pos4-arrow', '↓'));
+				var pair = el('div', 'hw-pos4-pair');
+				var blue = el('div', 'hw-pos4-blue');
+				blue.appendChild(el('div', 'hw-embed-pill-val', sampleVecs[i][0].toFixed(2)));
+				blue.appendChild(el('div', 'hw-embed-pill-val', sampleVecs[i][1].toFixed(2)));
+				blue.appendChild(el('div', 'hw-embed-pill-dots', '⋯'));
+				blue.appendChild(el('div', 'hw-embed-pill-val', sampleVecs[i][2].toFixed(2)));
+				blue.appendChild(el('div', 'hw-embed-pill-val', sampleVecs[i][3].toFixed(2)));
+				pair.appendChild(blue);
+				var yellow = el('div', 'hw-pos4-yellow');
+				yellow.appendChild(el('div', 'hw-pos4-yval', posVecs[i][0].toFixed(2)));
+				yellow.appendChild(el('div', 'hw-pos4-yval', posVecs[i][1].toFixed(2)));
+				yellow.appendChild(el('div', 'hw-pos4-ydots', '⋯'));
+				yellow.appendChild(el('div', 'hw-pos4-yval', posVecs[i][2].toFixed(2)));
+				yellow.appendChild(el('div', 'hw-pos4-yval', posVecs[i][3].toFixed(2)));
+				pair.appendChild(yellow);
+				col.appendChild(pair);
+				columns.appendChild(col);
 			});
-			layout.appendChild(chipsRow);
+			body.appendChild(columns);
+			layout.appendChild(body);
 
-			// Down arrows row
-			var arrowRow = el('div', 'hw-pos-arrow-row');
-			tokens.forEach(function() {
-				arrowRow.appendChild(el('span', 'hw-pos-arrow-cell', '\u2193'));
-			});
-			layout.appendChild(arrowRow);
-
-			// Paired columns: blue (token embedding) + yellow (positional embedding)
-			var colsRow = el('div', 'hw-pos-cols-row');
-
-			tokens.forEach(function(tok, i) {
-				var pair = el('div', 'hw-pos-token-pair');
-
-				// Blue token embedding bar (shrunk, no numbers)
-				var tokBar = el('div', 'hw-pos-bar hw-pos-bar-tok');
-				tokBar.style.animationDelay = (200 + i * 50) + 'ms';
-				var tokLabel = el('span', 'hw-pos-bar-label', 'emb');
-				tokBar.appendChild(tokLabel);
-				tokBar.appendChild(el('span', 'hw-pos-bar-dots', '\u22EE'));
-				pair.appendChild(tokBar);
-
-				// Yellow positional embedding bar (animates in after blue)
-				var posBar = el('div', 'hw-pos-bar hw-pos-bar-pos');
-				posBar.style.animationDelay = (500 + i * 60) + 'ms';
-				var posLabel = el('span', 'hw-pos-bar-label', 'pos');
-				posBar.appendChild(posLabel);
-				posBar.appendChild(el('span', 'hw-pos-bar-dots', '\u22EE'));
-				pair.appendChild(posBar);
-
-				colsRow.appendChild(pair);
-			});
-
-			layout.appendChild(colsRow);
-
-			// Legend
-			var legend = el('div', 'hw-pos-legend');
-			var tokLegend = el('span', '');
-			var tokSwatch = el('span', 'hw-pos-legend-swatch hw-pos-legend-swatch-tok');
-			tokLegend.appendChild(tokSwatch);
-			tokLegend.appendChild(document.createTextNode(' Token embedding'));
-			legend.appendChild(tokLegend);
-
-			var posLegend = el('span', '');
-			var posSwatch = el('span', 'hw-pos-legend-swatch hw-pos-legend-swatch-pos');
-			posLegend.appendChild(posSwatch);
-			posLegend.appendChild(document.createTextNode(' Positional embedding'));
-			legend.appendChild(posLegend);
-
+			var legend = el('div', 'hw-pos4-legend');
+			var tL = el('span', '');
+			tL.appendChild(el('span', 'hw-pos-legend-swatch hw-pos-legend-swatch-tok'));
+			tL.appendChild(document.createTextNode(' Token embedding'));
+			legend.appendChild(tL);
+			var pL = el('span', '');
+			pL.appendChild(el('span', 'hw-pos-legend-swatch hw-pos-legend-swatch-pos'));
+			pL.appendChild(document.createTextNode(' Positional embedding'));
+			legend.appendChild(pL);
 			layout.appendChild(legend);
 
-			// Dimension label
-			var dimLabel = el('div', 'hw-pos-dim-label');
-			dimLabel.textContent = '8 tokens \u00d7 2 embeddings \u00d7 d_model dimensions each';
-			layout.appendChild(dimLabel);
+			requestAnimationFrame(function() {
+				requestAnimationFrame(function() {
+					layout.classList.add('hw-pos4-morphed');
+				});
+			});
 
 			return layout;
 		}
