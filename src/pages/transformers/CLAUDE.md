@@ -1,6 +1,7 @@
 # Transformers Project — Agent Harness Protocol
 
 ## Session Startup (do this EVERY session)
+
 1. Run `pwd` to confirm you are in the website repo root
 2. Read `src/pages/transformers/claude-progress.txt` for context on recent work
 3. Check `git log --oneline -10` for recent commits
@@ -9,6 +10,7 @@
 6. Open `http://localhost:4321/transformers/` in Playwright and smoke-test that existing features still work before starting new work
 
 ## Rules
+
 - Work on exactly **ONE feature** per session
 - Never remove or edit feature descriptions in `features.json` — only change `passes` from `false` to `true`
 - After implementing a feature, verify it visually using Playwright MCP (navigate to the page, check that it renders correctly, interact with it)
@@ -21,64 +23,12 @@
 - If a feature breaks existing functionality, `git revert HEAD` and try a different approach
 
 ## Architecture
+
 - The transformers page is a single Astro page at `src/pages/transformers/index.astro`
 - Interactive visualizations use `<script>` tags with custom elements or vanilla JS/TS
 - Follow existing patterns from `BoatModel.astro` and `WaterSlice.astro` for canvas/SVG work
 - Use Tailwind for styling; respect the site's dark/light theme system
 - Use `Base.astro` layout for the page wrapper
-
-## CRITICAL: Tabs vs Spaces in index.astro
-
-**The file uses literal TAB characters (`\t`) for indentation, but the Read tool displays them as spaces.** This is the #1 source of failed Edit tool calls.
-
-### Why Edit fails
-
-The Edit tool requires an exact string match for `old_string`. When you read the file, you see:
-
-```
-    const x = 1;    // displayed with 4 spaces
-```
-
-But the actual file contains:
-
-```
-\tconst x = 1;     // one literal tab
-```
-
-If you type the `old_string` with spaces, it won't match. The Edit tool works fine for **short, unique strings** (a single line or a few lines) because you can copy-paste from the Read output. But for **multi-line replacements** (10+ lines), accumulated whitespace differences cause failures.
-
-### The fix: use Python for large edits
-
-For any replacement longer than ~5 lines, write a Python script with explicit `\t` characters:
-
-```python
-python3 << 'PYEOF'
-filepath = '/Users/tobiaslunt/code/tobylunt.github.io/src/pages/transformers/index.astro'
-with open(filepath, 'r') as f:
-    content = f.read()
-
-old = "\t\tconst x = 1;\n\t\tconst y = 2;"
-new = "\t\tconst x = 10;\n\t\tconst y = 20;"
-
-if old in content:
-    content = content.replace(old, new)
-    with open(filepath, 'w') as f:
-        f.write(content)
-    print('Replaced successfully')
-else:
-    print('ERROR: old string not found')
-PYEOF
-```
-
-**Always print an error if the old string isn't found** — silent failures waste time.
-
-### Quick reference
-- 4 tabs = inside a section's HTML content
-- 5 tabs = inside a nested div within a section
-- 1 tab = top-level CSS properties inside a rule
-- 2 tabs = CSS properties inside a nested rule or media query
-- Use `sed -n 'Np' file | cat -et` to see the exact whitespace on a specific line (`^I` = tab)
-
 
 ## CRITICAL: Astro Scoped CSS on Dynamic Elements
 
@@ -91,12 +41,13 @@ Your CSS rule says `display: flex; justify-content: center` but `getComputedStyl
 ### Diagnosis
 
 Check computed styles in Playwright:
+
 ```js
 () => {
-    const el = document.querySelector('.your-class');
-    const cs = getComputedStyle(el);
-    return { display: cs.display, color: cs.color };
-}
+  const el = document.querySelector(".your-class");
+  const cs = getComputedStyle(el);
+  return { display: cs.display, color: cs.color };
+};
 ```
 
 If `display` is `block` when it should be `flex` (or similar), the scoped attribute is missing.
@@ -108,44 +59,47 @@ At the top of any `<script is:inline>` block that creates DOM elements, detect t
 ```js
 // 1. Find the attribute from a static parent element
 var astroAttr = null;
-Array.from(parentEl.attributes).forEach(function(attr) {
-    if (attr.name.indexOf('data-astro-cid-') === 0) astroAttr = attr.name;
+Array.from(parentEl.attributes).forEach(function (attr) {
+  if (attr.name.indexOf("data-astro-cid-") === 0) astroAttr = attr.name;
 });
 
 // 2. Helper that creates elements with the attribute
 function el(tag, cls, text) {
-    var e = document.createElement(tag);
-    if (cls) e.className = cls;
-    if (text !== undefined) e.textContent = text;
-    if (astroAttr) e.setAttribute(astroAttr, '');
-    return e;
+  var e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  if (astroAttr) e.setAttribute(astroAttr, "");
+  return e;
 }
 
 // 3. Use el() instead of document.createElement()
-var chip = el('span', 'token-chip');
+var chip = el("span", "token-chip");
 ```
 
 **Also apply the attribute to elements created via `innerHTML`:**
+
 ```js
 container.innerHTML = '<span class="my-class">text</span>';
 if (astroAttr) {
-    container.querySelectorAll('span').forEach(function(s) {
-        s.setAttribute(astroAttr, '');
-    });
+  container.querySelectorAll("span").forEach(function (s) {
+    s.setAttribute(astroAttr, "");
+  });
 }
 ```
 
 ### Where this has already been fixed
+
 - **Sidenotes** (`setupMobileInlines` function) — mobile inline sidenote clones
 - **Tokenizer** (Feature #5) — `.token-chip` spans
 - **Dot product pipeline** (Feature #9) — all grid cells, bars, labels
 - **Attention heatmap** (Feature #10) — all grid cells, row/column labels
 
 ### Where to watch for it
+
 Any new `<script is:inline>` block that creates visible DOM elements needs this pattern. If you're adding a new visualization, apply the attribute from the start — don't wait for styling to break.
 
-
 ## Editing Tips for index.astro
+
 - The em-dash character `–` (U+2013) appears in comments like `Sections 04–09`. It is multi-byte UTF-8 and may render oddly in `cat -et`. Match it exactly.
 - When extracting a section from the placeholder loop, update the `.filter()` excludes array (e.g., add `'attention'` to the list) and adjust the comment range (e.g., `04–09` → `05–09`).
 - CSS and JS are in `<style>` and `<script>` blocks at the bottom of the same file. Scoped styles use the Astro scoping model.
@@ -156,6 +110,7 @@ Any new `<script is:inline>` block that creates visible DOM elements needs this 
 **Always commit working changes before running `git checkout --` or `git revert`.** In a previous session, the entire steps 1-3 persistent layer implementation was lost because it was only in the working tree when `git checkout -- index.astro` was run to fix a bad edit. Uncommitted work cannot be recovered after a checkout.
 
 ### Safe workflow for risky edits
+
 1. Commit current working state (even as a WIP commit)
 2. Make the risky edit
 3. If it breaks: `git revert HEAD` or `git reset HEAD~1` to get back to the WIP commit
@@ -164,23 +119,22 @@ Any new `<script is:inline>` block that creates visible DOM elements needs this 
 ## CRITICAL: Script Block Structure in index.astro
 
 The file has a **single** `<script is:inline>` block (starting ~line 11279) that contains BOTH:
+
 - The QKV projection interactive (first ~700 lines)
 - The head walkthrough interactive (remaining ~3000 lines)
 
 **These share the same scope.** When using Python to find/replace between function boundaries, be extremely careful not to accidentally span across the QKV/walkthrough boundary.
 
 ### Key landmarks (approximate line numbers, may shift)
-- `el()` helper: ~line 12019 (indent=2 tabs)
-- `currentStep`: ~line 12028
-- `STEP_DATA`: ~line 12030
-- `renderStep1()` through `renderStep5()`: ~lines 12135-12505 (indent=2)
-- `renderStep6()`: ~line 12505 (**indent=4 tabs** — anomalous, inside a nested scope)
-- `renderStep7()` through `renderStep14()`: indent=4
-- `showStep()`: ~line 14473 (indent=2)
-- End of script block: ~line 14668
 
-### The renderStep6 indent anomaly
-`renderStep6()` and all subsequent render functions (7-14) are at 4-tab indent, not 2-tab like renderStep1-5. This means search patterns must account for the indent difference.
+- `el()` helper: near `function el(tag, cls, text)`
+- `currentStep`, `STEP_DATA`: near the top of the walkthrough section
+- `renderStep1()` through `renderStep5()`: early in the walkthrough
+- `renderStep6()` through `renderStep14()`: deeper in the walkthrough (higher indent level due to nested scope)
+- `showStep()`: near the end of the walkthrough
+- End of script block: last `</script>` tag
+
+Note: The file uses 2-space indentation throughout (Prettier-enforced). renderStep6-14 are at a deeper indent level than renderStep1-5 because they live inside a nested scope.
 
 ## Persistent Layer Pattern (steps 3-5)
 
@@ -195,7 +149,9 @@ Feature #17 introduced a persistent DOM layer for steps 3-5. Key architecture:
 - **FLIP animation**: Captures chip positions before layout change, animates transform delta
 
 ### Extending the pattern to other step ranges
+
 When adding persistent layers for other step ranges (e.g., steps 6-8), follow the same structure:
+
 1. Create persistent elements once (outside any render function)
 2. Use parent class (`hw-sXY-at-N`) to control CSS transitions
 3. Rebuild volatile extras each step
@@ -206,6 +162,7 @@ When adding persistent layers for other step ranges (e.g., steps 6-8), follow th
 Round 1 implemented 13 features building the 12-step attention head walkthrough from scratch. Round 2 is a polish/redesign pass with 16 new features.
 
 ### Key design principles for round 2
+
 - **Visual continuity**: The #1 priority. When advancing steps, NEVER wipe and redraw elements that persist across steps. Animate transitions — move, resize, recolor existing DOM elements. Only destroy elements that truly disappear.
 - **Annotations in sidenotes gutter**: The annotation panel moves out of the card into the sidenotes column, freeing the full card width for the visualization.
 - **Column pills**: Matrix columns should be unified rounded rectangles (one per token), not grids of separate cells. Emphasizes "one vector per token."
@@ -214,9 +171,11 @@ Round 1 implemented 13 features building the 12-step attention head walkthrough 
 - **Softmax**: Must be explained between the QK^T scores (step 11) and the attention heatmap (step 12). Round 1 had a pedagogical gap here.
 
 ### Step numbering change (12 → 14)
+
 Old step 6 splits into new steps 6 (embeddings matrix formation) and 7 (layer norm + QKV). A new step 12 (interactive attention heatmap, moved from section 04c) is inserted after QK^T. All subsequent steps shift by +2.
 
 ### Reference documents
+
 - `attention-head-figure.md` — original design spec
 - `attention-head-figure-edits.md` — user's edit notes for round 2
 - `src/pages/transformers/claude-progress.txt` — session-by-session log
@@ -226,17 +185,20 @@ Old step 6 splits into new steps 6 (embeddings matrix formation) and 7 (layer no
 Round 3 focuses on **object continuity** — making DOM elements persist across step transitions instead of being destroyed and recreated. Features #17-23 were added to features.json.
 
 ### Current persistent layer status
+
 - **Steps 1-2**: Full rebuild (no persistent layer yet)
 - **Steps 3-5**: Persistent layer implemented (Feature #17) — `hw-s35-*` classes
 - **Steps 6-14**: Full rebuild (to be migrated in future features)
 
 ### showStep() dispatch logic
+
 ```
 if (step >= 3 && step <= 5) → persistent s35 layer
 else → full rebuild (renderStepN)
 ```
 
 ## Testing
+
 - Use Playwright MCP to navigate to `http://localhost:4321/transformers/`
 - Verify visual rendering, interactions, animations
 - Check both dark and light theme modes

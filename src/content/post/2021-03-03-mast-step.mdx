@@ -4,22 +4,23 @@ description: "In which Ariadne gets a new mast step made from giant hunks of whi
 publishDate: "03 March 2021"
 tags: ["ariadne"]
 ---
-import { Image } from 'astro:assets';
-import CaptionedImage from '@/components/CaptionedImage.astro';
 
-import stepInstalled from '@/assets/img/step-installed-cropped.jpg';
-import mastStepOffset from '@/assets/img/mast_step_offset.jpg';
-import mastStepGlueUp from '@/assets/img/mast-step-glue-up.jpeg';
-import stepComparison from '@/assets/img/step-comparison.jpg';
-import stepSlotMeasure from '@/assets/img/step-slot-measure.jpg';
-import stepSlotCut from '@/assets/img/step-slot-cut.jpg';
-import stepChisel from '@/assets/img/step-chisel.jpg';
-import stepTestFit from '@/assets/img/step-test-fit.gif';
-import stepInstalled2 from '@/assets/img/step-installed.jpg';
-import stepDrill from '@/assets/img/step-drill.gif';
-import boltHead from '@/assets/img/bolt-head.jpg';
-import boltDrive from '@/assets/img/bolt-drive.gif';
-import stepBolt from '@/assets/img/step-bolt.jpg';
+import { Image } from "astro:assets";
+import CaptionedImage from "@/components/CaptionedImage.astro";
+
+import stepInstalled from "@/assets/img/step-installed-cropped.jpg";
+import mastStepOffset from "@/assets/img/mast_step_offset.jpg";
+import mastStepGlueUp from "@/assets/img/mast-step-glue-up.jpeg";
+import stepComparison from "@/assets/img/step-comparison.jpg";
+import stepSlotMeasure from "@/assets/img/step-slot-measure.jpg";
+import stepSlotCut from "@/assets/img/step-slot-cut.jpg";
+import stepChisel from "@/assets/img/step-chisel.jpg";
+import stepTestFit from "@/assets/img/step-test-fit.gif";
+import stepInstalled2 from "@/assets/img/step-installed.jpg";
+import stepDrill from "@/assets/img/step-drill.gif";
+import boltHead from "@/assets/img/bolt-head.jpg";
+import boltDrive from "@/assets/img/bolt-drive.gif";
+import stepBolt from "@/assets/img/step-bolt.jpg";
 
 <CaptionedImage src={stepInstalled} alt="New mast step" caption="" />
 
@@ -27,15 +28,19 @@ This post covers building a new, much larger mast step to adequately
 transfer the loads from the mast butt across the floor timbers and aft
 towards the ballast keel.
 
-One the biggest issues with these square meter boats (other than being a hundred years old) is that there is a significant offset between where the mast is attached to the boat and the lead ballast that keeps the boat upright. 
+One the biggest issues with these square meter boats (other than being a hundred years old) is that there is a significant offset between where the mast is attached to the boat and the lead ballast that keeps the boat upright.
 
-This is an issue for two major reasons. First, unless the naval architect deals with it in the sailplan somehow, there will by default be a misalignment between the center of effort (CE) and the center of lateral resistance (CLR). CE is located at the center of all of the forces that keep the boat from slipping sideways, which is usually somewhere in the middle of the underwater keel surface. CLR is the point where the vectors of all forces on the sails are centered. If CE and CLR are not vertically aligned, the boat will want to round up or bear off - constantly. To sail straight, you'll need to counteract this tendency by applying the rudder, which is slow and frankly demoralizing. 
+This is an issue for two major reasons. First, unless the naval architect deals with it in the sailplan somehow, there will by default be a misalignment between the center of effort (CE) and the center of lateral resistance (CLR). CE is located at the center of all of the forces that keep the boat from slipping sideways, which is usually somewhere in the middle of the underwater keel surface. CLR is the point where the vectors of all forces on the sails are centered. If CE and CLR are not vertically aligned, the boat will want to round up or bear off - constantly. To sail straight, you'll need to counteract this tendency by applying the rudder, which is slow and frankly demoralizing.
 
 The second issue is actually the more pertinent and consequential one in our case. If you think of the surface of the ocean as a Cartesian plane, CE and CLR only deal with forces in the X and Y axes. But the offset between the mast butt and the lead ballast also imparts a significant torsional force that can work to literally twist the boat apart. Think of it this way: the wind on the sails causes a heeling moment that rolls the boat downwards, while the lead ballast imparts a righting moment that wants to roll the boat back up to vertical. If these moments are misaligned, the section of the boat in between those two moments will be twisted like a wet rag.
 
-<CaptionedImage src={mastStepOffset} alt="Ariadne" caption="Mast in blue, mast step in red, lead ballast in green. The small green circle represents the approximate center of righting moment induced by the hunk of lead. Notice the fore-and-aft offset between the mast and the green circle."/>
+<CaptionedImage
+  src={mastStepOffset}
+  alt="Ariadne"
+  caption="Mast in blue, mast step in red, lead ballast in green. The small green circle represents the approximate center of righting moment induced by the hunk of lead. Notice the fore-and-aft offset between the mast and the green circle."
+/>
 
-Our strategy to deal with this problem is multi-partite, but all of the tactics are focused on transferring and equalizing loads across the structure of the hull. The new mast step is no different - it will tie to together floor timbers and frames between the twisting moments, bolster the backbone of the boat itself. 
+Our strategy to deal with this problem is multi-partite, but all of the tactics are focused on transferring and equalizing loads across the structure of the hull. The new mast step is no different - it will tie to together floor timbers and frames between the twisting moments, bolster the backbone of the boat itself.
 
 The new mast step was glued up following the same method as the new
 forefoot - three sections of 8/4 flat sawn white oak in 8" widths
@@ -51,7 +56,7 @@ Lots of work happened between these two pictures. Shaping the mast step was a li
   caption="On the right is the shaped mast step blank, which tapers both in width (siding) and thickness (moulding) dimensions to reduce point stresses on the hull where the step appears. To the left is the old mast step. This one was made of softwood 2x4s, and most assuredly was not original."
 />
 
-Executing this piece was much simpler than other jobs. Measure, mark, remove waste, test fit, install. 
+Executing this piece was much simpler than other jobs. Measure, mark, remove waste, test fit, install.
 
 <CaptionedImage
   src={stepSlotMeasure}
@@ -65,12 +70,7 @@ Executing this piece was much simpler than other jobs. Measure, mark, remove was
   caption="Chopping out the waste (with the wrong size chisel) after cuts with a circular saw."
 />
 
-<CaptionedImage
-  src={stepChisel}
-  alt="Mast step chisel"
-  caption="Fine tuning the slots."
-/>
-
+<CaptionedImage src={stepChisel} alt="Mast step chisel" caption="Fine tuning the slots." />
 
 <CaptionedImage
   src={stepTestFit}
@@ -86,11 +86,7 @@ Executing this piece was much simpler than other jobs. Measure, mark, remove was
 
 Now to drill the bolt holes to connect the keel timber, floor timbers, frames, and mast step into one big sandwich. We were forced to follow the existing holes, drilling from the bottom up, because the original holes in the keel timber (the mating surface above the new forefoot piece) were still there. We didn't want to try to fill those old holes, or further swiss-cheese our structural backbone. So, we followed the existing holes and were at the mercy of their vertical alignment. Turns out they weren't even close to plumb, which made for a wiggly line of bolts in our mast step. This has no ill effects other than emotional damage to the boat owners.
 
-<CaptionedImage
-  src={stepDrill}
-  alt="Mast step drilling"
-  caption="Don't mess it up."
-/>
+<CaptionedImage src={stepDrill} alt="Mast step drilling" caption="Don't mess it up." />
 
 <CaptionedImage
   src={boltHead}
@@ -98,11 +94,7 @@ Now to drill the bolt holes to connect the keel timber, floor timbers, frames, a
   caption="We custom made T-shaped heads for the bolts, coated them in poison, and wrapped them in a long strand of caulking cotton to keep the bolt holes watertight."
 />
 
-<CaptionedImage
-  src={boltDrive}
-  alt="Mast step bolt driving"
-  caption="Don't miss."
-/>
+<CaptionedImage src={boltDrive} alt="Mast step bolt driving" caption="Don't miss." />
 
 <CaptionedImage
   src={stepBolt}

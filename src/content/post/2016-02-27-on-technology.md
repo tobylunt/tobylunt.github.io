@@ -6,13 +6,14 @@ publishDate: "27 Feb 2016"
 ---
 
 <i>"The sleight of hand that focuses attention on technical solutions while covering up violations of the rights of real people is the moral tragedy of development today." </i>  
-William Easterly – Tyranny of Experts (p15)  
+William Easterly – Tyranny of Experts (p15)
 
-Is new technology a panacea for solving global hunger, pollution, and poverty? Or is it shortsighted, wishful thinking to believe that humankind will develop technological solutions to free ourselves of our most intractable problems?  
+Is new technology a panacea for solving global hunger, pollution, and poverty? Or is it shortsighted, wishful thinking to believe that humankind will develop technological solutions to free ourselves of our most intractable problems?
 
-Many conversations that I have about the future, and the role of future tech, wind their way towards one of these two extremes. This dichotomy turns out to be counterproductive, coloring over important nuances that will shape our future.  
+Many conversations that I have about the future, and the role of future tech, wind their way towards one of these two extremes. This dichotomy turns out to be counterproductive, coloring over important nuances that will shape our future.
 
 <!--more-->
+
 Technological innovations themselves often do not cause problems simply through their mere existence - unless they bring inherent existential or moral dilemmas, like the development of the hydrogen bomb, or robot soldiers. The challenges sometimes presented by new technologies, such as the disenfranchisement of vulnerable populations and environmental and social externalities, can be products of underlying <strong>power structures</strong>, not the technology itself. Consequently, when we ask whether a new gadget will cause greater good then harm, we must consider: <i>who gets to choose which technologies are developed, and how they are applied in the real world?</i>
 
 When assessing the role of future technology from a perspective of power structures, our relationship to these issues shifts in subtle but meaningful ways. Demonizing individual technologies is no longer fruitful. Instead, we ask ourselves: what are the structural determinants of how solutions to global problems are developed? What are the institutionalized patterns and parameters (formal or informal) that are leading to improper or unjust application of particular technologies? How can we as a global society push our processes of technological development to maximize equity and productivity? How can we expand the principles of open-source, in the name of fair access to technology and crowdsourced development?

@@ -3,15 +3,15 @@ import { siteConfig } from "@/site-config";
 const dateFormat = new Intl.DateTimeFormat(siteConfig.date.locale, siteConfig.date.options);
 
 export function getFormattedDate(
-	date: Date | number | string,
-	options?: Intl.DateTimeFormatOptions,
+  date: Date | number | string,
+  options?: Intl.DateTimeFormatOptions,
 ) {
-	if (typeof options !== "undefined") {
-		return new Date(date).toLocaleDateString(siteConfig.date.locale, {
-			...(siteConfig.date.options),
-			...options,
-		});
-	}
+  if (typeof options !== "undefined") {
+    return new Date(date).toLocaleDateString(siteConfig.date.locale, {
+      ...siteConfig.date.options,
+      ...options,
+    });
+  }
 
-	return dateFormat.format(new Date(date));
+  return dateFormat.format(new Date(date));
 }
