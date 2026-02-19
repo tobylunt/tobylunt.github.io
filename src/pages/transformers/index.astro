@@ -680,57 +680,7 @@ const sections = [
 					</p>
 				</div>
 
-				{/* ===== Feature #10: Attention pattern heatmap ===== */}
-				<div class="subsection-divider reveal"></div>
-				<h3 class="subsection-title"><span class="subsection-label">04c</span> Attention Pattern Heatmap</h3>
-
-				<div class="linkage-callout reveal linkage-attention">
-					<span class="linkage-icon">&#8599;</span>
-					<span>Computing attention weights for all query positions yields the full <code>n × n</code> attention matrix.</span>
-				</div>
-
-				<div class="section-prose reveal">
-					<p>
-						Row <code>i</code> of the attention matrix is the softmax distribution for query token
-						<code>i</code>; column <code>j</code> shows the total attention received by key token
-						<code>j</code>. In causal (autoregressive) models, the upper triangle is masked to
-						<code>-∞</code> before softmax, preventing tokens from attending to future
-						positions.<span class="sn-marker" data-sn="sn-causal">13</span>
-					</p>
-				</div>
-
-				<div class="attn-heatmap-container" id="attn-heatmap">
-					<div class="attn-heatmap-title">Attention weights for “The big cat sat quietly”</div>
-					<div class="attn-heatmap-subtitle">Each row is one token’s attention distribution across all keys</div>
-
-					<div class="attn-heatmap-wrap">
-						<div class="attn-heatmap-axis-query">query</div>
-						<div class="attn-heatmap-inner">
-							<div class="attn-heatmap-axis-key">key</div>
-							<div class="attn-heatmap-grid" id="heatmap-grid"></div>
-						</div>
-					</div>
-
-					{/* Tooltip */}
-					<div class="attn-heatmap-tooltip" id="heatmap-tooltip"></div>
-
-					{/* Color scale legend */}
-					<div class="attn-heatmap-legend">
-						<span class="attn-heatmap-legend-label">0</span>
-						<div class="attn-heatmap-legend-bar"></div>
-						<span class="attn-heatmap-legend-label">1</span>
-					</div>
-					<div class="attn-heatmap-legend-caption">Attention weight (darker = stronger)</div>
-				</div>
-
-				<div class="section-prose reveal">
-					<p>
-						The diagonal captures self-attention (identity-preserving); off-diagonal entries
-						capture inter-token dependencies — e.g., subject-verb agreement or coreference.
-						This matrix is computed independently per attention head; multiple heads operating
-						in parallel learn to capture different relational patterns (§05).
-					</p>
-				</div>
+				{/* ===== Feature #10: Attention heatmap moved to walkthrough Step 12 ===== */}
 
 				{/* ===== Feature #11: Value-weighted output animation ===== */}
 				<div class="subsection-divider reveal"></div>
@@ -7342,7 +7292,234 @@ const sections = [
 		}
 	}
 
-	/* ===== Step 11: Attention × V ===== */
+	/* ===== Step 12: Interactive Attention Heatmap ===== */
+	.hw-hm12-layout {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 8px;
+		padding: 4px 0;
+	}
+
+	/* Softmax explanation banner */
+	.hw-hm12-softmax {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		background: hsl(280 55% 55% / 0.06);
+		border: 1px solid hsl(280 55% 55% / 0.15);
+		border-radius: 6px;
+		padding: 5px 12px;
+		opacity: 0;
+		transition: opacity 0.5s ease;
+	}
+	.hw-hm12-softmax.visible { opacity: 1; }
+
+	.hw-hm12-softmax-icon {
+		font-size: 0.55rem;
+		color: hsl(280 55% 55% / 0.7);
+	}
+
+	.hw-hm12-softmax-text {
+		font-size: 0.45rem;
+		color: hsl(280 55% 55% / 0.75);
+		font-weight: 500;
+	}
+
+	.hw-hm12-softmax-text code {
+		background: hsl(280 55% 55% / 0.1);
+		padding: 1px 3px;
+		border-radius: 2px;
+		font-size: 0.42rem;
+	}
+
+	/* Heatmap container */
+	.hw-hm12-wrap {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		opacity: 0;
+		transform: scale(0.95);
+		transition: opacity 0.6s ease, transform 0.6s ease;
+	}
+	.hw-hm12-wrap.visible {
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	/* Axis labels */
+	.hw-hm12-axis-query {
+		font-size: 0.42rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: hsl(210 70% 55% / 0.45);
+		writing-mode: vertical-lr;
+		transform: rotate(180deg);
+	}
+
+	.hw-hm12-inner {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.hw-hm12-axis-key {
+		font-size: 0.42rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: hsl(30 80% 50% / 0.45);
+		margin-bottom: 2px;
+	}
+
+	/* Grid */
+	.hw-hm12-grid {
+		display: grid;
+		grid-template-columns: 40px repeat(8, 1fr);
+		grid-template-rows: auto repeat(8, 1fr);
+		gap: 1px;
+		align-items: center;
+	}
+
+	.hw-hm12-corner {
+		width: 1px;
+		height: 1px;
+	}
+
+	/* Column labels (key tokens, orange) */
+	.hw-hm12-col-label {
+		text-align: center;
+		font-size: 0.40rem;
+		font-weight: 500;
+		padding: 2px 0;
+		color: hsl(30 80% 50% / 0.55);
+		transition: color 0.15s, opacity 0.15s;
+		min-width: 32px;
+	}
+	.hw-hm12-col-label.highlight {
+		color: hsl(35 90% 55%);
+		font-weight: 700;
+	}
+	.hw-hm12-col-label.dimmed { opacity: 0.3; }
+
+	/* Row labels (query tokens, blue) */
+	.hw-hm12-row-label {
+		font-size: 0.42rem;
+		font-weight: 600;
+		color: hsl(210 70% 55% / 0.65);
+		text-align: right;
+		padding: 0 6px 0 2px;
+		min-width: 40px;
+		transition: color 0.15s, opacity 0.15s;
+	}
+	.hw-hm12-row-label.highlight {
+		color: hsl(210 70% 60%);
+		font-weight: 700;
+	}
+	.hw-hm12-row-label.dimmed { opacity: 0.3; }
+
+	/* Heatmap cells */
+	.hw-hm12-cell {
+		min-width: 32px;
+		min-height: 26px;
+		border-radius: 2px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.40rem;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		cursor: pointer;
+		transition: transform 0.12s, box-shadow 0.12s, opacity 0.12s;
+		position: relative;
+	}
+	.hw-hm12-cell:hover {
+		transform: scale(1.08);
+		box-shadow: 0 0 0 1.5px hsl(35 90% 55% / 0.6);
+		z-index: 2;
+	}
+	.hw-hm12-cell.dimmed { opacity: 0.2; }
+	.hw-hm12-cell.row-active { transform: scale(1.02); }
+
+	/* Tooltip */
+	.hw-hm12-tooltip {
+		position: relative;
+		background: hsl(var(--theme-text) / 0.85);
+		color: hsl(var(--theme-bg));
+		padding: 4px 10px;
+		border-radius: 4px;
+		font-size: 0.44rem;
+		pointer-events: none;
+		opacity: 0;
+		transition: opacity 0.15s;
+		white-space: nowrap;
+		text-align: center;
+		min-height: 20px;
+	}
+	.hw-hm12-tooltip.visible { opacity: 1; }
+
+	/* Legend */
+	.hw-hm12-legend {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		margin-top: 4px;
+		opacity: 0;
+		transition: opacity 0.5s ease;
+	}
+	.hw-hm12-legend.visible { opacity: 1; }
+
+	.hw-hm12-legend-label {
+		font-size: 0.40rem;
+		color: hsl(var(--theme-text) / 0.45);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.hw-hm12-legend-bar {
+		width: 120px;
+		height: 10px;
+		border-radius: 3px;
+		background: linear-gradient(to right,
+			hsl(35 90% 55% / 0.05),
+			hsl(35 90% 55% / 0.25),
+			hsl(35 90% 55% / 0.5),
+			hsl(35 90% 55% / 0.75),
+			hsl(35 90% 55%)
+		);
+	}
+
+	.hw-hm12-legend-caption {
+		text-align: center;
+		font-size: 0.38rem;
+		color: hsl(var(--theme-text) / 0.35);
+		margin-top: 2px;
+	}
+
+	/* Responsive */
+	@media (max-width: 480px) {
+		.hw-hm12-cell {
+			min-width: 24px;
+			min-height: 20px;
+			font-size: 0.34rem;
+		}
+		.hw-hm12-col-label, .hw-hm12-row-label {
+			font-size: 0.34rem;
+		}
+		.hw-hm12-row-label {
+			min-width: 30px;
+			padding: 0 3px 0 1px;
+		}
+		.hw-hm12-grid {
+			grid-template-columns: 30px repeat(8, 1fr);
+		}
+		.hw-hm12-axis-query { display: none; }
+	}
+
+		/* ===== Step 11: Attention × V ===== */
 	.hw-attnv-layout {
 		display: flex;
 		flex-direction: column;
@@ -11298,14 +11475,14 @@ const sections = [
 
 			// Attention score matrix (T x T) — synthetic but plausible dot-product values
 			var scoreValues = [
-				['.92', '.11', '.38', '.06', '-.21', '.15', '.34', '.92'],
-				['.14', '.87', '.22', '.41', '.09', '-.18', '.27', '.14'],
-				['.31', '.19', '.95', '.28', '.12', '.35', '-.09', '.31'],
-				['.08', '.43', '.33', '.88', '.16', '.07', '.21', '.08'],
-				['-.15', '.12', '.17', '.21', '.84', '.62', '.11', '-.15'],
-				['.18', '-.11', '.29', '.09', '.58', '.91', '.22', '.18'],
-				['.27', '.22', '-.06', '.18', '.14', '.19', '.86', '.27'],
-				['.92', '.11', '.38', '.06', '-.21', '.15', '.34', '.93']
+				['2.1', '.30', '.80', '.10', '-.20', '.10', '.20', '1.8'],
+				['.20', '1.6', '1.3', '.20', '.00', '-.10', '.10', '.20'],
+				['.40', '.90', '2.0', '.60', '.10', '.10', '-.10', '.30'],
+				['.10', '.20', '1.1', '1.8', '.50', '.20', '.10', '.10'],
+				['-.10', '.00', '.10', '1.2', '1.9', '1.5', '.00', '-.10'],
+				['.00', '-.10', '.10', '.80', '1.4', '1.7', '.00', '.00'],
+				['.30', '.00', '-.10', '.10', '.00', '.00', '2.0', '.50'],
+				['1.6', '.10', '.30', '.00', '-.10', '.00', '.60', '2.2']
 			];
 
 			// === Top row: Q · K^T = Scores ===
@@ -13379,14 +13556,14 @@ const sections = [
 
 			// Attention score matrix (T \u00d7 T)
 			var scoreValues = [
-				['.92', '.11', '.38', '.06', '-.21', '.15', '.34', '.92'],
-				['.14', '.87', '.22', '.41', '.09', '-.18', '.27', '.14'],
-				['.31', '.19', '.95', '.28', '.12', '.35', '-.09', '.31'],
-				['.08', '.43', '.33', '.88', '.16', '.07', '.21', '.08'],
-				['-.15', '.12', '.17', '.21', '.84', '.62', '.11', '-.15'],
-				['.18', '-.11', '.29', '.09', '.58', '.91', '.22', '.18'],
-				['.27', '.22', '-.06', '.18', '.14', '.19', '.86', '.27'],
-				['.92', '.11', '.38', '.06', '-.21', '.15', '.34', '.93']
+				['2.1', '.30', '.80', '.10', '-.20', '.10', '.20', '1.8'],
+				['.20', '1.6', '1.3', '.20', '.00', '-.10', '.10', '.20'],
+				['.40', '.90', '2.0', '.60', '.10', '.10', '-.10', '.30'],
+				['.10', '.20', '1.1', '1.8', '.50', '.20', '.10', '.10'],
+				['-.10', '.00', '.10', '1.2', '1.9', '1.5', '.00', '-.10'],
+				['.00', '-.10', '.10', '.80', '1.4', '1.7', '.00', '.00'],
+				['.30', '.00', '-.10', '.10', '.00', '.00', '2.0', '.50'],
+				['1.6', '.10', '.30', '.00', '-.10', '.00', '.60', '2.2']
 			];
 
 			// === Top area: Q (tall) \u00b7 K^T (wide) ===
@@ -13671,20 +13848,164 @@ const sections = [
 		}
 
 
-function renderStep12() {
-			// Placeholder: Interactive attention heatmap (to be implemented in feature #14)
-			var layout = el('div', 'hw-placeholder-layout');
-			layout.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;gap:12px;';
-			var title = el('div', '', 'Attention Heatmap');
-			title.style.cssText = 'font-weight:600;font-size:1.1rem;opacity:0.7;';
-			layout.appendChild(title);
-			var desc = el('div', '', 'Interactive heatmap with softmax-normalized attention weights.');
-			desc.style.cssText = 'opacity:0.5;font-size:0.85rem;max-width:300px;text-align:center;';
-			layout.appendChild(desc);
+		function renderStep12() {
+			var layout = el('div', 'hw-hm12-layout');
+			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
+			var T = tokens.length;
+
+			// Softmax-normalized attention weights (from Step 11 scores, each row sums to 1)
+			var attnWeights = [
+				[0.26, 0.09, 0.12, 0.08, 0.07, 0.08, 0.09, 0.22],
+				[0.10, 0.23, 0.19, 0.10, 0.09, 0.09, 0.10, 0.10],
+				[0.11, 0.14, 0.27, 0.12, 0.09, 0.09, 0.08, 0.10],
+				[0.09, 0.10, 0.16, 0.25, 0.12, 0.10, 0.09, 0.09],
+				[0.08, 0.08, 0.09, 0.16, 0.24, 0.19, 0.08, 0.08],
+				[0.09, 0.08, 0.09, 0.14, 0.20, 0.23, 0.09, 0.09],
+				[0.11, 0.09, 0.09, 0.10, 0.09, 0.09, 0.30, 0.12],
+				[0.20, 0.08, 0.09, 0.08, 0.07, 0.08, 0.11, 0.28]
+			];
+
+			// === Softmax explanation banner ===
+			var softmaxBanner = el('div', 'hw-hm12-softmax');
+			softmaxBanner.appendChild(el('span', 'hw-hm12-softmax-icon', '\u03C3'));
+			var softmaxText = el('span', 'hw-hm12-softmax-text');
+			softmaxText.innerHTML = 'Raw scores passed through <code>softmax</code> \u2014 each row now sums to 1, giving normalized attention weights';
+			if (astroAttr) softmaxText.querySelectorAll('code').forEach(function(c) { c.setAttribute(astroAttr, ''); });
+			softmaxBanner.appendChild(softmaxText);
+			layout.appendChild(softmaxBanner);
+
+			// === Heatmap container ===
+			var heatWrap = el('div', 'hw-hm12-wrap');
+
+			// Query axis label (vertical, left)
+			heatWrap.appendChild(el('div', 'hw-hm12-axis-query', 'query'));
+
+			var inner = el('div', 'hw-hm12-inner');
+
+			// Key axis label (horizontal, top)
+			inner.appendChild(el('div', 'hw-hm12-axis-key', 'key'));
+
+			// Grid: corner + col labels + (row label + cells) per row
+			var grid = el('div', 'hw-hm12-grid');
+
+			var allCells = [];
+			var allRowLabels = [];
+			var allColLabels = [];
+
+			// Row 0: corner + column labels (key tokens, orange)
+			grid.appendChild(el('div', 'hw-hm12-corner'));
+			tokens.forEach(function(tok) {
+				var colLabel = el('div', 'hw-hm12-col-label', tok);
+				grid.appendChild(colLabel);
+				allColLabels.push(colLabel);
+			});
+
+			// Data rows
+			for (var ri = 0; ri < T; ri++) {
+				// Row label (query token, blue)
+				var rowLabel = el('div', 'hw-hm12-row-label', tokens[ri]);
+				rowLabel.dataset.row = String(ri);
+				grid.appendChild(rowLabel);
+				allRowLabels.push(rowLabel);
+
+				for (var ci = 0; ci < T; ci++) {
+					var weight = attnWeights[ri][ci];
+					var cell = el('div', 'hw-hm12-cell', weight.toFixed(2));
+					cell.dataset.row = String(ri);
+					cell.dataset.col = String(ci);
+
+					// Amber color with opacity proportional to weight
+					var alpha = 0.06 + weight * 2.5;
+					if (alpha > 1) alpha = 1;
+					cell.style.background = 'hsl(35 90% 55% / ' + alpha.toFixed(2) + ')';
+
+					// Text color: dark on strong, light on weak
+					if (weight > 0.20) {
+						cell.style.color = 'hsl(35 20% 15%)';
+					} else {
+						cell.style.color = 'hsl(var(--theme-text) / 0.65)';
+					}
+
+					// Row hover: highlight full row
+					(function(row) {
+						cell.addEventListener('mouseenter', function() { highlightRow(row); });
+					})(ri);
+					cell.addEventListener('mouseleave', clearHighlight);
+
+					grid.appendChild(cell);
+					allCells.push(cell);
+				}
+			}
+
+			inner.appendChild(grid);
+			heatWrap.appendChild(inner);
+			layout.appendChild(heatWrap);
+
+			// === Tooltip ===
+			var tooltipEl = el('div', 'hw-hm12-tooltip');
+			tokens.forEach(function() {}); // placeholder
+			layout.appendChild(tooltipEl);
+
+			// === Legend ===
+			var legend = el('div', 'hw-hm12-legend');
+			legend.appendChild(el('span', 'hw-hm12-legend-label', '0'));
+			legend.appendChild(el('div', 'hw-hm12-legend-bar'));
+			legend.appendChild(el('span', 'hw-hm12-legend-label', '1'));
+			layout.appendChild(legend);
+			layout.appendChild(el('div', 'hw-hm12-legend-caption', 'Attention weight (darker = stronger)'));
+
+			// === Interaction handlers ===
+			function highlightRow(row) {
+				allRowLabels.forEach(function(label, i) {
+					if (i === row) { label.classList.add('highlight'); label.classList.remove('dimmed'); }
+					else { label.classList.remove('highlight'); label.classList.add('dimmed'); }
+				});
+				allColLabels.forEach(function(label) {
+					label.classList.remove('highlight', 'dimmed');
+				});
+				allCells.forEach(function(c) {
+					var cr = parseInt(c.dataset.row);
+					if (cr === row) { c.classList.add('row-active'); c.classList.remove('dimmed'); }
+					else { c.classList.remove('row-active'); c.classList.add('dimmed'); }
+				});
+
+				// Show row summary in tooltip
+				var maxW = 0, maxIdx = 0;
+				attnWeights[row].forEach(function(w, i) {
+					if (w > maxW) { maxW = w; maxIdx = i; }
+				});
+				tooltipEl.textContent = '\u201c' + tokens[row] + '\u201d attends most to \u201c' + tokens[maxIdx] + '\u201d (' + maxW.toFixed(2) + ')';
+				tooltipEl.classList.add('visible');
+			}
+
+			function clearHighlight() {
+				allRowLabels.forEach(function(label) { label.classList.remove('highlight', 'dimmed'); });
+				allColLabels.forEach(function(label) { label.classList.remove('highlight', 'dimmed'); });
+				allCells.forEach(function(c) { c.classList.remove('dimmed', 'row-active'); });
+				tooltipEl.classList.remove('visible');
+			}
+
+			// === Animation sequence ===
+			// Phase 1 (400ms): softmax banner appears
+			setTimeout(function() {
+				softmaxBanner.classList.add('visible');
+			}, 400);
+
+			// Phase 2 (900ms): heatmap zooms in
+			setTimeout(function() {
+				heatWrap.classList.add('visible');
+			}, 900);
+
+			// Phase 3 (1400ms): legend appears
+			setTimeout(function() {
+				legend.classList.add('visible');
+			}, 1400);
+
 			return layout;
 		}
 
-		function renderStep13() {
+
+function renderStep13() {
 			var layout = el('div', 'hw-attnv-layout');
 			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
 			var T = tokens.length; // 8
@@ -14267,126 +14588,7 @@ function renderStep12() {
 	});
 </script>
 
-<script is:inline>
-	document.addEventListener('DOMContentLoaded', () => {
-		// ===== Feature #10: Attention pattern heatmap =====
-		const tokens = ['The', 'big', 'cat', 'sat', 'quietly'];
-		// Realistic attention weights (each row sums to 1.0)
-		// Row = query token, Col = key token
-		// Patterns: adj→noun ("big"→"cat"), adv→verb ("quietly"→"sat"), verb→subject ("sat"→"cat")
-		const attnWeights = [
-			[0.38, 0.08, 0.32, 0.14, 0.08],  // "The": self + determiner→noun
-			[0.07, 0.18, 0.53, 0.14, 0.08],  // "big": adjective→noun (cat)
-			[0.12, 0.24, 0.30, 0.24, 0.10],  // "cat": balanced, self + neighbors
-			[0.06, 0.10, 0.44, 0.25, 0.15],  // "sat": verb→subject (cat)
-			[0.04, 0.06, 0.13, 0.55, 0.22],  // "quietly": adverb→verb (sat)
-		];
-
-		const gridEl = document.getElementById('heatmap-grid');
-		const tooltipEl = document.getElementById('heatmap-tooltip');
-		if (!gridEl || !tooltipEl) return;
-
-		// Detect Astro scoping attribute for dynamic elements
-		var hmAstroAttr = null;
-		Array.from(gridEl.attributes).forEach(function(attr) {
-			if (attr.name.indexOf('data-astro-cid-') === 0) hmAstroAttr = attr.name;
-		});
-		function hmEl(tag, cls) {
-			var e = document.createElement(tag);
-			if (cls) e.className = cls;
-			if (hmAstroAttr) e.setAttribute(hmAstroAttr, '');
-			return e;
-		}
-
-		const allCells = [];
-		const allRowLabels = [];
-		const allColLabels = [];
-
-		// Row 0: blank corner + column labels
-		const corner = hmEl('div', 'attn-heatmap-corner');
-		gridEl.appendChild(corner);
-
-		tokens.forEach((tok) => {
-			const label = hmEl('div', 'attn-heatmap-col-label');
-			label.textContent = tok;
-			gridEl.appendChild(label);
-			allColLabels.push(label);
-		});
-
-		// Data rows
-		for (let ri = 0; ri < tokens.length; ri++) {
-			const rowLabel = hmEl('div', 'attn-heatmap-row-label');
-			rowLabel.dataset.row = ri;
-			rowLabel.textContent = tokens[ri];
-			if (ri % 2 === 1) rowLabel.classList.add('attn-heatmap-row-alt');
-			gridEl.appendChild(rowLabel);
-			allRowLabels.push(rowLabel);
-
-			for (let ci = 0; ci < tokens.length; ci++) {
-				const weight = attnWeights[ri][ci];
-				const cell = hmEl('div', 'attn-heatmap-cell');
-				if (ri % 2 === 1) cell.classList.add('attn-heatmap-row-alt');
-				cell.textContent = weight.toFixed(2);
-				cell.dataset.row = ri;
-				cell.dataset.col = ci;
-
-				// Amber color with opacity proportional to weight
-				const alpha = 0.08 + weight * 0.85;
-				cell.style.background = 'hsl(35 90% 55% / ' + alpha.toFixed(2) + ')';
-
-				// Text color: dark on strong, light on weak
-				if (weight > 0.35) {
-					cell.style.color = 'hsl(35 20% 15%)';
-				} else {
-					cell.style.color = 'hsl(var(--theme-text) / 0.7)';
-				}
-
-				// Row hover: highlight full row on enter, clear on leave
-				cell.addEventListener('mouseenter', () => highlightRow(ri));
-				cell.addEventListener('mouseleave', clearHighlight);
-
-				gridEl.appendChild(cell);
-				allCells.push(cell);
-			}
-		}
-
-		function highlightRow(row) {
-			allRowLabels.forEach((label, i) => {
-				label.classList.toggle('highlight', i === row);
-				label.classList.toggle('dimmed', i !== row);
-			});
-			allColLabels.forEach((label) => {
-				label.classList.remove('highlight', 'dimmed');
-			});
-
-			allCells.forEach((c) => {
-				const cr = parseInt(c.dataset.row);
-				c.classList.toggle('dimmed', cr !== row);
-				c.classList.toggle('row-active', cr === row);
-			});
-
-			// Show row summary in tooltip
-			const maxIdx = attnWeights[row].indexOf(Math.max(...attnWeights[row]));
-			tooltipEl.textContent = '\u201c' + tokens[row] + '\u201d attends most to \u201c' + tokens[maxIdx] + '\u201d (' + attnWeights[row][maxIdx].toFixed(2) + ')';
-			tooltipEl.classList.add('visible');
-		}
-
-		function clearHighlight() {
-			allRowLabels.forEach((label) => {
-				label.classList.remove('highlight', 'dimmed');
-			});
-			allColLabels.forEach((label) => {
-				label.classList.remove('highlight', 'dimmed');
-			});
-			allCells.forEach((c) => {
-				c.classList.remove('dimmed', 'row-active');
-			});
-			tooltipEl.classList.remove('visible');
-		}
-
-		document.addEventListener('click', clearHighlight);
-	});
-</script>
+<!-- Heatmap script moved to walkthrough Step 12 -->
 
 <script is:inline>
 	// Multi-head heatmaps (lazy-init: Feature #22)

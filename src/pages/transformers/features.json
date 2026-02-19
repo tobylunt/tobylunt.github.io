@@ -180,7 +180,7 @@
   {
     "id": 14,
     "name": "New Step 12: interactive attention heatmap (from section 04c)",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Zoom into the T \u00d7 T attention scores matrix from Step 11, expanding it to fill the viz area",
       "Render it as the interactive attention heatmap currently in section 04c \u2014 with click/hover to highlight rows and columns, tooltip showing score values",

@@ -434,3 +434,22 @@
 - Build passes (pnpm build)
 - Commit: 4c93562
 - Next: Feature #14 — New Step 12: interactive attention heatmap (from section 04c)
+
+=== Round 2 Feature #14 Complete — 2026-02-19 ===
+- Implemented Step 12 "Attention Heatmap" — interactive heatmap replacing the placeholder
+- Softmax explanation banner: σ icon + "Raw scores passed through softmax — each row now sums to 1"
+- 8×8 interactive heatmap with amber color scale (opacity proportional to weight)
+- Hover interaction: row highlight (other rows dimmed), tooltip showing "X attends most to Y (weight)"
+- Attention weights computed via softmax from updated Step 11 score values
+- Updated Step 11 score values to produce more pedagogically interesting patterns:
+  - Strong diagonal (self-attention dominant: 0.23-0.30)
+  - Meaningful cross-attention: fat→cat (adj→noun), quiet↔ly, The↔the (same word)
+- Legend with amber gradient bar (0 to 1)
+- Zoom-in animation: softmax banner at 400ms, heatmap scales in at 900ms, legend at 1400ms
+- Removed old section 04c heatmap (HTML + JS) — now lives in walkthrough Step 12
+- Left orphaned attn-heatmap-* CSS in place (harmless, would be complex to remove cleanly)
+- Both dark and light themes verified clean via Playwright
+- Forward/back/reset navigation works between Steps 11, 12, and 13
+- Build passes (pnpm build)
+- Commit: pending
+- Next: Feature #15 — Step 13 redesign: Attention × V with clearer dimensions
