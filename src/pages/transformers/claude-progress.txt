@@ -453,3 +453,24 @@
 - Build passes (pnpm build)
 - Commit: ca7e2cd
 - Next: Feature #15 — Step 13 redesign: Attention × V with clearer dimensions
+
+=== Round 2 Feature #15 Complete — 2026-02-19 ===
+- Redesigned Step 13 "Attention × V" with proportionally-sized column pill matrices
+- Layout: horizontal flow — Attention (amber, T×T square) · V (pink, T×d_head tall-narrow) = Output (green, T×d_head tall-narrow)
+- Attention matrix: 8 column pills (one per key token) with 5 visible rows (0,1,⋯,6,7), cell tinting proportional to weight values, token row/column labels
+- V matrix: 3 column pills (one per d_head dimension) with 5 visible rows — proportionally much narrower than Attention
+- Output matrix: 3 column pills matching V shape, slides in at 1600ms with translateX animation
+- Softmax context banner: σ icon + "Using softmax-normalized weights from Step 12 (rows sum to 1)" at top, fades in at 400ms
+- T dimension strikethrough animation at 1000ms on both Attention's second T and V's first T
+- Shape equation: Attn · V  (T×T̶) · (T̶×d) = T×d with color-coded labels
+- Changed Attention matrix color from purple (hsl 280) to amber (hsl 40) to match the heatmap from Step 12
+- Used actual softmax-normalized attention weights from Step 12 for consistency
+- V data transposed from column-major (Step 9 format) to row-major for T×d_head display
+- Output values are approximate weighted blends of V vectors
+- CSS: new hw-av13-* classes replacing old hw-attnv-* classes
+- Updated STEP_DATA annotation to mention softmax-normalized weights and inner T dimension cancellation
+- Forward/back/reset navigation works cleanly between Steps 12, 13, and 14
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: de978a2
+- Next: Feature #16 — Step 14 redesign: attention head output (clearer ending)
