@@ -7793,306 +7793,285 @@ const sections = [
 		}
 	}
 
-		/* ===== Step 12: Residual Stream ===== */
-	.hw-residual-layout {
+		/* ===== Step 14: Head Output (redesigned) ===== */
+	.hw-ho14-layout {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 12px;
+		gap: 14px;
 		padding: 8px 0;
 	}
 
-	/* Phase label */
-	.hw-residual-phase {
-		font-size: 0.55rem;
+	/* Title banner */
+	.hw-ho14-title {
+		font-size: 0.6rem;
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
-		color: hsl(var(--theme-text) / 0.4);
+		color: hsl(35 90% 55%);
 		text-align: center;
 	}
 
-	/* Additive flow: Input + Attn Output = Enriched */
-	.hw-residual-flow {
+	/* Addition flow: Input + Attn(x) = Head Output */
+	.hw-ho14-flow {
 		display: flex;
 		align-items: flex-start;
-		gap: 8px;
+		gap: 10px;
 		justify-content: center;
 		width: 100%;
 	}
 
-	/* Shared box wrapper for Input, Attn Output, Enriched */
-	.hw-residual-box {
+	/* Shared matrix wrap */
+	.hw-ho14-mat-wrap {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 2px;
+		gap: 3px;
 		flex-shrink: 0;
 	}
 
-	.hw-residual-box-label {
-		font-size: 0.5rem;
+	/* Matrix labels */
+	.hw-ho14-mat-label {
+		font-size: 0.6rem;
 		font-weight: 600;
 		letter-spacing: 0.04em;
 	}
+	.hw-ho14-label-input { color: hsl(270 50% 58%); }
+	.hw-ho14-label-attn { color: hsl(145 55% 42%); }
+	.hw-ho14-label-output { color: hsl(35 90% 55%); }
 
-	/* Input matrix (purple — the original normalized input X̂) */
-	.hw-residual-input-label { color: hsl(270 50% 58%); }
-
-	.hw-residual-input-grid {
-		display: grid;
+	/* Input column pills (purple) */
+	.hw-ho14-input-body { display: flex; gap: 1px; }
+	.hw-ho14-input-col {
+		display: flex;
+		flex-direction: column;
 		gap: 1px;
 		background: hsl(270 50% 58% / 0.06);
-		border: 1.5px solid hsl(270 50% 58% / 0.25);
-		border-radius: 3px;
+		border: 1.5px solid hsl(270 50% 58% / 0.2);
+		border-radius: 4px;
 		overflow: hidden;
 	}
-
-	.hw-residual-input-cell {
+	.hw-ho14-input-cell {
 		background: hsl(270 50% 58% / 0.06);
 		color: hsl(270 50% 58% / 0.7);
-		font-size: 0.38rem;
-		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		padding: 1px 1px;
-		text-align: center;
-		min-width: 18px;
-		min-height: 14px;
-	}
-
-	.hw-residual-input-cell.dots-cell {
-		font-size: 0.45rem;
-		color: hsl(270 50% 58% / 0.4);
-		padding: 0px 1px;
-	}
-
-	.hw-residual-input-dim {
 		font-size: 0.42rem;
-		color: hsl(var(--theme-text) / 0.35);
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 2px 3px;
+		text-align: center;
+		min-width: 28px;
+		min-height: 16px;
+	}
+	.hw-ho14-input-cell.dots-cell {
+		font-size: 0.5rem;
+		color: hsl(270 50% 58% / 0.35);
+		padding: 0 3px;
+		min-height: 12px;
 	}
 
-	/* Attention output matrix (green — from Step 11) */
-	.hw-residual-attn-label { color: hsl(145 55% 42%); }
-
-	.hw-residual-attn-grid {
-		display: grid;
+	/* Attention output column pills (green) */
+	.hw-ho14-attn-body { display: flex; gap: 1px; }
+	.hw-ho14-attn-col {
+		display: flex;
+		flex-direction: column;
 		gap: 1px;
 		background: hsl(145 55% 42% / 0.06);
-		border: 1.5px solid hsl(145 55% 42% / 0.25);
-		border-radius: 3px;
+		border: 1.5px solid hsl(145 55% 42% / 0.2);
+		border-radius: 4px;
 		overflow: hidden;
 	}
-
-	.hw-residual-attn-cell {
+	.hw-ho14-attn-cell {
 		background: hsl(145 55% 42% / 0.08);
 		color: hsl(145 55% 42% / 0.75);
-		font-size: 0.38rem;
-		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		padding: 1px 1px;
-		text-align: center;
-		min-width: 18px;
-		min-height: 14px;
-	}
-
-	.hw-residual-attn-cell.dots-cell {
-		font-size: 0.45rem;
-		color: hsl(145 55% 42% / 0.4);
-		padding: 0px 1px;
-	}
-
-	.hw-residual-attn-dim {
 		font-size: 0.42rem;
-		color: hsl(var(--theme-text) / 0.35);
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 2px 3px;
+		text-align: center;
+		min-width: 28px;
+		min-height: 16px;
+	}
+	.hw-ho14-attn-cell.dots-cell {
+		font-size: 0.5rem;
+		color: hsl(145 55% 42% / 0.35);
+		padding: 0 3px;
+		min-height: 12px;
 	}
 
-	/* Plus / equals operators */
-	.hw-residual-plus {
-		font-size: 0.9rem;
-		font-weight: 700;
-		color: hsl(var(--theme-text) / 0.35);
-		align-self: center;
-		padding: 0 2px;
-		padding-top: 14px;
-		transition: color 0.4s ease, transform 0.4s ease;
-	}
-
-	.hw-residual-plus.pulse {
-		color: hsl(35 90% 55%);
-		transform: scale(1.3);
-	}
-
-	.hw-residual-equals {
-		font-size: 0.9rem;
-		font-weight: 700;
-		color: hsl(var(--theme-text) / 0.35);
-		align-self: center;
-		padding: 0 2px;
-		padding-top: 14px;
-	}
-
-	/* Enriched output matrix (warm purple/gold blend — hsl 35 for "enriched") */
-	.hw-residual-result-wrap {
+	/* Head output column pills (gold) */
+	.hw-ho14-out-wrap {
 		opacity: 0;
 		transform: translateX(8px);
 		transition: opacity 0.5s ease, transform 0.5s ease;
 	}
-
-	.hw-residual-result-wrap.visible {
+	.hw-ho14-out-wrap.visible {
 		opacity: 1;
 		transform: translateX(0);
 	}
-
-	.hw-residual-result-label { color: hsl(35 90% 55%); }
-
-	.hw-residual-result-grid {
-		display: grid;
+	.hw-ho14-out-body { display: flex; gap: 1px; }
+	.hw-ho14-out-col {
+		display: flex;
+		flex-direction: column;
 		gap: 1px;
 		background: hsl(35 90% 55% / 0.06);
 		border: 2px solid hsl(35 90% 55% / 0.3);
-		border-radius: 3px;
+		border-radius: 4px;
 		overflow: hidden;
 	}
-
-	.hw-residual-result-cell {
+	.hw-ho14-out-cell {
 		background: hsl(35 90% 55% / 0.08);
 		color: hsl(35 90% 55% / 0.8);
-		font-size: 0.38rem;
-		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		padding: 1px 1px;
-		text-align: center;
-		min-width: 18px;
-		min-height: 14px;
-	}
-
-	.hw-residual-result-cell.dots-cell {
-		font-size: 0.45rem;
-		color: hsl(35 90% 55% / 0.4);
-		padding: 0px 1px;
-	}
-
-	.hw-residual-result-dim {
 		font-size: 0.42rem;
-		color: hsl(var(--theme-text) / 0.35);
-		margin-top: 2px;
-	}
-
-	/* Token column labels for result */
-	.hw-residual-result-col-labels {
-		display: grid;
-		gap: 1px;
-	}
-
-	.hw-residual-result-col-label {
-		font-size: 0.36rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 2px 3px;
 		text-align: center;
-		color: hsl(35 90% 55% / 0.6);
-		min-width: 18px;
+		min-width: 28px;
+		min-height: 16px;
+	}
+	.hw-ho14-out-cell.dots-cell {
+		font-size: 0.5rem;
+		color: hsl(35 90% 55% / 0.35);
+		padding: 0 3px;
+		min-height: 12px;
+	}
+
+	/* Token labels */
+	.hw-ho14-token-labels { display: flex; gap: 1px; }
+	.hw-ho14-token-label {
+		font-size: 0.42rem;
+		text-align: center;
+		color: hsl(var(--theme-text) / 0.4);
+		width: 28px;
 		padding: 0 1px;
 	}
 
+	/* Operators */
+	.hw-ho14-op {
+		font-size: 0.9rem;
+		font-weight: 700;
+		color: hsl(var(--theme-text) / 0.35);
+		align-self: center;
+		padding: 0 4px;
+		padding-top: 20px;
+		transition: color 0.4s ease, transform 0.4s ease;
+	}
+	.hw-ho14-op.pulse {
+		color: hsl(35 90% 55%);
+		transform: scale(1.3);
+	}
+
+	/* Dimension labels */
+	.hw-ho14-dim-label {
+		font-size: 0.48rem;
+		color: hsl(var(--theme-text) / 0.35);
+		margin-top: 3px;
+	}
+
 	/* Equation row */
-	.hw-residual-equation {
-		font-size: 0.55rem;
+	.hw-ho14-equation {
+		font-size: 0.6rem;
 		color: hsl(var(--theme-text) / 0.5);
 		text-align: center;
-		margin-top: 2px;
 		opacity: 0;
 		transition: opacity 0.5s ease;
 	}
+	.hw-ho14-equation.visible { opacity: 1; }
+	.hw-ho14-eq-input { color: hsl(270 50% 58%); font-weight: 600; }
+	.hw-ho14-eq-attn { color: hsl(145 55% 42%); font-weight: 600; }
+	.hw-ho14-eq-result { color: hsl(35 90% 55%); font-weight: 600; }
 
-	.hw-residual-equation.visible {
-		opacity: 1;
-	}
-
-	.hw-residual-eq-input { color: hsl(270 50% 58%); font-weight: 600; }
-	.hw-residual-eq-attn { color: hsl(145 55% 42%); font-weight: 600; }
-	.hw-residual-eq-result { color: hsl(35 90% 55%); font-weight: 600; }
-
-	/* Feed-forward arrow and next layer preview */
-	.hw-residual-forward {
+	/* Completion badge */
+	.hw-ho14-complete {
 		display: flex;
-		flex-direction: column;
 		align-items: center;
 		gap: 6px;
+		padding: 5px 14px;
+		background: hsl(145 55% 42% / 0.08);
+		border: 1.5px solid hsl(145 55% 42% / 0.25);
+		border-radius: 20px;
 		opacity: 0;
-		transform: translateY(8px);
-		transition: opacity 0.6s ease, transform 0.6s ease;
+		transform: scale(0.9);
+		transition: opacity 0.5s ease, transform 0.5s ease;
 	}
-
-	.hw-residual-forward.visible {
+	.hw-ho14-complete.visible {
 		opacity: 1;
-		transform: translateY(0);
+		transform: scale(1);
 	}
-
-	.hw-residual-forward-arrow {
-		font-size: 1.1rem;
-		color: hsl(var(--theme-text) / 0.25);
+	.hw-ho14-complete-check {
+		font-size: 0.7rem;
+		color: hsl(145 55% 42%);
 	}
-
-	.hw-residual-next-layer {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		padding: 6px 14px;
-		background: hsl(var(--theme-text) / 0.03);
-		border: 1.5px dashed hsl(var(--theme-text) / 0.12);
-		border-radius: 6px;
-	}
-
-	.hw-residual-next-label {
-		font-size: 0.5rem;
-		color: hsl(var(--theme-text) / 0.35);
+	.hw-ho14-complete-text {
+		font-size: 0.52rem;
+		color: hsl(145 55% 42% / 0.8);
 		font-weight: 500;
 	}
 
-	.hw-residual-next-blocks {
+	/* Feed-forward preview (non-interactive) */
+	.hw-ho14-next {
 		display: flex;
+		flex-direction: column;
+		align-items: center;
 		gap: 4px;
+		opacity: 0;
+		transform: translateY(6px);
+		transition: opacity 0.5s ease, transform 0.5s ease;
 	}
-
-	.hw-residual-next-block {
-		padding: 3px 8px;
+	.hw-ho14-next.visible {
+		opacity: 0.45;
+		transform: translateY(0);
+	}
+	.hw-ho14-next-arrow {
+		font-size: 0.9rem;
+		color: hsl(var(--theme-text) / 0.2);
+	}
+	.hw-ho14-next-box {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		padding: 4px 12px;
+		border: 1.5px dashed hsl(var(--theme-text) / 0.15);
+		border-radius: 6px;
+		pointer-events: none;
+		user-select: none;
+	}
+	.hw-ho14-next-block {
+		padding: 2px 6px;
 		border-radius: 3px;
 		font-size: 0.4rem;
 		font-weight: 600;
 		letter-spacing: 0.03em;
-	}
-
-	.hw-residual-next-ffn {
-		background: hsl(150 55% 45% / 0.1);
-		color: hsl(150 55% 45% / 0.6);
-		border: 1px solid hsl(150 55% 45% / 0.2);
-	}
-
-	.hw-residual-next-more {
-		background: hsl(var(--theme-text) / 0.04);
+		border: 1px dashed hsl(var(--theme-text) / 0.12);
 		color: hsl(var(--theme-text) / 0.3);
-		border: 1px solid hsl(var(--theme-text) / 0.1);
+		background: hsl(var(--theme-text) / 0.02);
+	}
+	.hw-ho14-next-sep {
+		font-size: 0.4rem;
+		color: hsl(var(--theme-text) / 0.2);
 	}
 
 	/* Responsive */
 	@media (max-width: 480px) {
-		.hw-residual-flow {
+		.hw-ho14-flow {
 			flex-direction: column;
 			align-items: center;
 			gap: 8px;
 		}
-		.hw-residual-plus, .hw-residual-equals {
+		.hw-ho14-op {
 			transform: rotate(90deg);
 			padding-top: 0;
 		}
-		.hw-residual-plus.pulse {
+		.hw-ho14-op.pulse {
 			transform: rotate(90deg) scale(1.3);
 		}
-		.hw-residual-input-cell, .hw-residual-attn-cell, .hw-residual-result-cell {
-			font-size: 0.34rem;
-			min-width: 16px;
+		.hw-ho14-input-cell, .hw-ho14-attn-cell, .hw-ho14-out-cell {
+			font-size: 0.38rem;
+			min-width: 24px;
+			padding: 1px 2px;
 		}
-		.hw-residual-result-col-label {
-			font-size: 0.32rem;
-			min-width: 16px;
+		.hw-ho14-token-label {
+			width: 24px;
+			font-size: 0.38rem;
 		}
 	}
-
 	/* Step 1 placeholder viz */
 	.hw-step-placeholder {
 		text-align: center;
@@ -12117,9 +12096,9 @@ const sections = [
 				shape: '(T\u00d7T) \u00b7 (T\u00d7d) = T\u00d7d'
 			},
 			{
-				title: 'Step 14: Attention Head Output',
-				text: 'The attention output is added back to the original input (residual connection). This allows information to flow unchanged while attention adds its contribution, then feeds forward to the next layer.',
-				shape: 'Output = Input + Attention(Input)'
+				title: 'Step 14: Head Output',
+				text: 'This is what one attention head produces. The output is added back to the input (residual connection), allowing information to flow unchanged while attention adds its contribution. This then feeds forward to the next layer.',
+				shape: 'Output = Input + Attention(x)'
 			}
 		];
 
@@ -14272,201 +14251,225 @@ function renderStep13() {
 
 
 		function renderStep14() {
-			var layout = el('div', 'hw-residual-layout');
+			var layout = el('div', 'hw-ho14-layout');
 			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
-			var T = tokens.length; // 8
+			var d_head = 3;
 
-			// Phase label
-			var phase = el('div', 'hw-residual-phase', 'Residual Connection');
-			layout.appendChild(phase);
+			// Visible rows: 0, 1 (top), dots, 6, 7 (bottom)
+			var visibleRows = [0, 1, -1, 6, 7];
 
-			// === Flow row: Input + Attn Output = Enriched ===
-			var flowRow = el('div', 'hw-residual-flow');
-
-			// --- Original input matrix (purple — X̂, the normalized input from Step 6) ---
-			var inputWrap = el('div', 'hw-residual-box');
-			inputWrap.appendChild(el('div', 'hw-residual-box-label hw-residual-input-label', 'Input (x)'));
-
-			// Input values — normalized values (same as Step 6, purple tint)
-			var inputValues = [
-				['-.41', '.22', '.67', '-.15', '.53', '-.38', '.19', '-.41'],
-				['.18', '-.63', '.09', '.44', '-.27', '.71', '-.52', '.18'],
-				['.55', '.31', '-.48', '.62', '-.11', '.23', '.68', '.55'],
-				['-.29', '.47', '.34', '-.56', '.82', '-.14', '.41', '-.29']
+			// Input X\u0302 values (normalized, purple \u2014 from Step 7)
+			var inputData = [
+				['-.41', ' .22', ' .67', '-.15', ' .53', '-.38', ' .19', '-.41'],
+				[' .18', '-.63', ' .09', ' .44', '-.27', ' .71', '-.52', ' .18'],
+				[' .55', ' .31', '-.48', ' .62', '-.11', ' .23', ' .68', ' .55'],
+				['-.29', ' .47', ' .34', '-.56', ' .82', '-.14', ' .41', '-.29'],
+				[' .33', '-.18', ' .51', ' .27', '-.44', ' .56', '-.32', ' .33'],
+				[' .12', ' .39', '-.23', ' .48', ' .65', '-.31', ' .17', ' .12'],
+				['-.57', ' .14', ' .38', '-.33', ' .21', ' .47', '-.19', '-.57'],
+				[' .44', '-.52', ' .16', ' .35', '-.68', ' .09', ' .53', ' .44']
 			];
 
-			var inputGrid = el('div', 'hw-residual-input-grid');
-			inputGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
-			inputValues.forEach(function(row) {
-				row.forEach(function(val) {
-					inputGrid.appendChild(el('div', 'hw-residual-input-cell', val));
-				});
-			});
-			// Dots row
-			for (var i = 0; i < T; i++) {
-				inputGrid.appendChild(el('div', 'hw-residual-input-cell dots-cell', '\u22EE'));
-			}
-			inputWrap.appendChild(inputGrid);
+			// Attention output (green \u2014 from Step 13)
+			var attnData = [
+				[' .37', '-.04', ' .12'],
+				[' .22', ' .03', '-.14'],
+				[' .41', '-.10', '-.22'],
+				[' .18', ' .19', '-.18'],
+				['-.08', ' .30', ' .24'],
+				[' .04', ' .16', ' .18'],
+				['-.06', ' .52', '-.01'],
+				[' .35', '-.06', ' .15']
+			];
 
-			// Input dimension label
-			var inputDim = el('div', 'hw-residual-input-dim');
-			var inputDimT = el('span', '', 'T');
-			inputDimT.style.color = 'hsl(270 50% 58%)';
-			var inputDimX = document.createTextNode(' \u00d7 ');
-			var inputDimD = el('span', '');
-			inputDimD.innerHTML = 'd<sub>model</sub>';
-			if (astroAttr) inputDimD.querySelector('sub').setAttribute(astroAttr, '');
-			inputDim.appendChild(inputDimT);
-			inputDim.appendChild(inputDimX);
-			inputDim.appendChild(inputDimD);
+			// Head output = Input + Attn (element-wise, gold)
+			var outData = [
+				['-.04', ' .18', ' .79'],
+				[' .40', '-.60', '-.05'],
+				[' .96', ' .21', '-.70'],
+				['-.11', ' .66', ' .16'],
+				[' .45', ' .03', ' .97'],
+				['-.34', ' .87', ' .36'],
+				['-.63', ' .66', ' .37'],
+				[' .79', '-.58', ' .68']
+			];
+
+			// === Title banner ===
+			layout.appendChild(el('div', 'hw-ho14-title', 'Head Output'));
+
+			// === Flow row: Input + Attn(x) = Head Output ===
+			var flowRow = el('div', 'hw-ho14-flow');
+
+			// --- Input matrix (purple, column pills) ---
+			var inputWrap = el('div', 'hw-ho14-mat-wrap');
+			inputWrap.appendChild(el('div', 'hw-ho14-mat-label hw-ho14-label-input', 'Input (x)'));
+
+			// Token labels
+			var inputTokens = el('div', 'hw-ho14-token-labels');
+			tokens.forEach(function(t) { inputTokens.appendChild(el('div', 'hw-ho14-token-label', t)); });
+			inputWrap.appendChild(inputTokens);
+
+			// Column pills (8 columns, d_model rows truncated)
+			var inputBody = el('div', 'hw-ho14-input-body');
+			for (var ci = 0; ci < tokens.length; ci++) {
+				var col = el('div', 'hw-ho14-input-col');
+				visibleRows.forEach(function(ri) {
+					if (ri === -1) {
+						col.appendChild(el('div', 'hw-ho14-input-cell dots-cell', '\u22EF'));
+					} else {
+						col.appendChild(el('div', 'hw-ho14-input-cell', inputData[ri][ci]));
+					}
+				});
+				inputBody.appendChild(col);
+			}
+			inputWrap.appendChild(inputBody);
+
+			// Dimension label
+			var inputDim = el('div', 'hw-ho14-dim-label');
+			var inputDimSpan = el('span', '');
+			inputDimSpan.innerHTML = 'T \u00d7 d<sub>model</sub>';
+			if (astroAttr) inputDimSpan.querySelector('sub').setAttribute(astroAttr, '');
+			inputDimSpan.style.color = 'hsl(270 50% 58%)';
+			inputDim.appendChild(inputDimSpan);
 			inputWrap.appendChild(inputDim);
 			flowRow.appendChild(inputWrap);
 
 			// --- Plus sign ---
-			var plus = el('div', 'hw-residual-plus', '+');
+			var plus = el('div', 'hw-ho14-op', '+');
 			flowRow.appendChild(plus);
 
-			// --- Attention output matrix (green — from Step 11) ---
-			var attnWrap = el('div', 'hw-residual-box');
-			attnWrap.appendChild(el('div', 'hw-residual-box-label hw-residual-attn-label', 'Attn(x)'));
+			// --- Attention output (green, column pills, d_head wide) ---
+			var attnWrap = el('div', 'hw-ho14-mat-wrap');
+			attnWrap.appendChild(el('div', 'hw-ho14-mat-label hw-ho14-label-attn', 'Attn(x)'));
 
-			var attnValues = [
-				['.52', '-.18', '.74', '.09', '-.31', '.38', '-.11', '.52'],
-				['-.09', '.64', '-.32', '.55', '.29', '-.42', '.71', '-.09'],
-				['.28', '.08', '-.53', '-.29', '.61', '.22', '-.06', '.28']
-			];
-
-			var attnGrid = el('div', 'hw-residual-attn-grid');
-			attnGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
-			attnValues.forEach(function(row) {
-				row.forEach(function(val) {
-					attnGrid.appendChild(el('div', 'hw-residual-attn-cell', val));
-				});
-			});
-			// Dots row
-			for (var i = 0; i < T; i++) {
-				attnGrid.appendChild(el('div', 'hw-residual-attn-cell dots-cell', '\u22EE'));
+			// Spacer for alignment
+			var attnTokens = el('div', 'hw-ho14-token-labels');
+			for (var ci = 0; ci < d_head; ci++) {
+				var lbl = el('div', 'hw-ho14-token-label', '');
+				attnTokens.appendChild(lbl);
 			}
-			attnWrap.appendChild(attnGrid);
+			attnWrap.appendChild(attnTokens);
 
-			// Attn dimension label
-			var attnDim = el('div', 'hw-residual-attn-dim');
-			var attnDimT = el('span', '', 'T');
-			attnDimT.style.color = 'hsl(145 55% 42%)';
-			var attnDimX = document.createTextNode(' \u00d7 ');
-			var attnDimD = el('span', '');
-			attnDimD.innerHTML = 'd<sub>head</sub>';
-			if (astroAttr) attnDimD.querySelector('sub').setAttribute(astroAttr, '');
-			attnDim.appendChild(attnDimT);
-			attnDim.appendChild(attnDimX);
-			attnDim.appendChild(attnDimD);
+			// 3 column pills (d_head)
+			var attnBody = el('div', 'hw-ho14-attn-body');
+			for (var ci = 0; ci < d_head; ci++) {
+				var col = el('div', 'hw-ho14-attn-col');
+				visibleRows.forEach(function(ri) {
+					if (ri === -1) {
+						col.appendChild(el('div', 'hw-ho14-attn-cell dots-cell', '\u22EF'));
+					} else {
+						col.appendChild(el('div', 'hw-ho14-attn-cell', attnData[ri][ci]));
+					}
+				});
+				attnBody.appendChild(col);
+			}
+			attnWrap.appendChild(attnBody);
+
+			var attnDim = el('div', 'hw-ho14-dim-label');
+			var attnDimSpan = el('span', '');
+			attnDimSpan.innerHTML = 'T \u00d7 d<sub>head</sub>';
+			if (astroAttr) attnDimSpan.querySelector('sub').setAttribute(astroAttr, '');
+			attnDimSpan.style.color = 'hsl(145 55% 42%)';
+			attnDim.appendChild(attnDimSpan);
 			attnWrap.appendChild(attnDim);
 			flowRow.appendChild(attnWrap);
 
 			// --- Equals sign ---
-			flowRow.appendChild(el('div', 'hw-residual-equals', '='));
+			flowRow.appendChild(el('div', 'hw-ho14-op', '='));
 
-			// --- Enriched result matrix (warm gold — x + Attn(x)) ---
-			var resultWrap = el('div', 'hw-residual-box hw-residual-result-wrap');
-			resultWrap.appendChild(el('div', 'hw-residual-box-label hw-residual-result-label', 'Enriched'));
+			// --- Head Output matrix (gold, column pills) ---
+			var outWrap = el('div', 'hw-ho14-mat-wrap hw-ho14-out-wrap');
+			outWrap.appendChild(el('div', 'hw-ho14-mat-label hw-ho14-label-output', 'Head Output'));
 
-			// Column labels (token names)
-			var colLabels = el('div', 'hw-residual-result-col-labels');
-			colLabels.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
-			tokens.forEach(function(tok) {
-				colLabels.appendChild(el('div', 'hw-residual-result-col-label', tok));
+			// Token labels for output
+			var outTokens = el('div', 'hw-ho14-token-labels');
+			tokens.forEach(function(t) {
+				var lbl = el('div', 'hw-ho14-token-label', t);
+				lbl.style.color = 'hsl(35 90% 55% / 0.5)';
+				outTokens.appendChild(lbl);
 			});
-			resultWrap.appendChild(colLabels);
+			outWrap.appendChild(outTokens);
 
-			// Enriched values (element-wise sum of input + attn output)
-			var resultValues = [
-				['.11', '.04', '1.41', '-.06', '.22', '.00', '.08', '.11'],
-				['.09', '.01', '-.23', '.99', '.02', '.29', '.19', '.09'],
-				['.83', '.39', '-.01', '.33', '.50', '.45', '.62', '.83'],
-				['-.20', '.55', '.08', '-.27', '1.11', '-.06', '.47', '-.20']
-			];
-
-			var resultGrid = el('div', 'hw-residual-result-grid');
-			resultGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
-			resultValues.forEach(function(row) {
-				row.forEach(function(val) {
-					resultGrid.appendChild(el('div', 'hw-residual-result-cell', val));
+			// 8 column pills (one per token, d_model rows truncated)
+			var outBody = el('div', 'hw-ho14-out-body');
+			for (var ci = 0; ci < tokens.length; ci++) {
+				var col = el('div', 'hw-ho14-out-col');
+				visibleRows.forEach(function(ri) {
+					if (ri === -1) {
+						col.appendChild(el('div', 'hw-ho14-out-cell dots-cell', '\u22EF'));
+					} else {
+						col.appendChild(el('div', 'hw-ho14-out-cell', outData[ri][ci]));
+					}
 				});
-			});
-			// Dots row
-			for (var i = 0; i < T; i++) {
-				resultGrid.appendChild(el('div', 'hw-residual-result-cell dots-cell', '\u22EE'));
+				outBody.appendChild(col);
 			}
-			resultWrap.appendChild(resultGrid);
+			outWrap.appendChild(outBody);
 
-			// Result dimension label
-			var resultDim = el('div', 'hw-residual-result-dim');
-			var resultDimT = el('span', '', 'T');
-			resultDimT.style.color = 'hsl(35 90% 55%)';
-			var resultDimX = document.createTextNode(' \u00d7 ');
-			var resultDimD = el('span', '');
-			resultDimD.innerHTML = 'd<sub>model</sub>';
-			if (astroAttr) resultDimD.querySelector('sub').setAttribute(astroAttr, '');
-			resultDim.appendChild(resultDimT);
-			resultDim.appendChild(resultDimX);
-			resultDim.appendChild(resultDimD);
-			resultWrap.appendChild(resultDim);
-			flowRow.appendChild(resultWrap);
+			var outDim = el('div', 'hw-ho14-dim-label');
+			var outDimSpan = el('span', '');
+			outDimSpan.innerHTML = 'T \u00d7 d<sub>model</sub>';
+			if (astroAttr) outDimSpan.querySelector('sub').setAttribute(astroAttr, '');
+			outDimSpan.style.color = 'hsl(35 90% 55%)';
+			outDim.appendChild(outDimSpan);
+			outWrap.appendChild(outDim);
+			flowRow.appendChild(outWrap);
 
 			layout.appendChild(flowRow);
 
 			// === Equation row ===
-			var eqRow = el('div', 'hw-residual-equation');
-			var eqInput = el('span', 'hw-residual-eq-input', 'x');
-			var eqPlus = document.createTextNode(' + ');
-			var eqAttn = el('span', 'hw-residual-eq-attn', 'Attention(x)');
-			var eqEq = document.createTextNode(' = ');
-			var eqResult = el('span', 'hw-residual-eq-result', 'enriched output');
-			eqRow.appendChild(eqInput);
-			eqRow.appendChild(eqPlus);
-			eqRow.appendChild(eqAttn);
-			eqRow.appendChild(eqEq);
-			eqRow.appendChild(eqResult);
+			var eqRow = el('div', 'hw-ho14-equation');
+			var eqInner = el('span', '');
+			eqInner.innerHTML = '<span class="hw-ho14-eq-input">x</span> + <span class="hw-ho14-eq-attn">Attention(x)</span> = <span class="hw-ho14-eq-result">head output</span>';
+			if (astroAttr) eqInner.querySelectorAll('span').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			eqRow.appendChild(eqInner);
 			layout.appendChild(eqRow);
 
-			// === Feed-forward preview ===
-			var forward = el('div', 'hw-residual-forward');
-			forward.appendChild(el('div', 'hw-residual-forward-arrow', '\u2193'));
-			var nextLayer = el('div', 'hw-residual-next-layer');
-			nextLayer.appendChild(el('div', 'hw-residual-next-label', 'Next \u2192'));
-			var blocks = el('div', 'hw-residual-next-blocks');
-			blocks.appendChild(el('div', 'hw-residual-next-block hw-residual-next-ffn', 'Feed-Forward Network'));
-			blocks.appendChild(el('div', 'hw-residual-next-block hw-residual-next-more', '+ residual'));
-			blocks.appendChild(el('div', 'hw-residual-next-block hw-residual-next-more', 'Next Layer \u2026'));
-			nextLayer.appendChild(blocks);
-			forward.appendChild(nextLayer);
-			layout.appendChild(forward);
+			// === Completion badge ===
+			var complete = el('div', 'hw-ho14-complete');
+			complete.appendChild(el('span', 'hw-ho14-complete-check', '\u2713'));
+			complete.appendChild(el('span', 'hw-ho14-complete-text', 'One attention head complete'));
+			layout.appendChild(complete);
+
+			// === Feed-forward preview (non-interactive) ===
+			var nextPreview = el('div', 'hw-ho14-next');
+			nextPreview.appendChild(el('div', 'hw-ho14-next-arrow', '\u2193'));
+			var nextBox = el('div', 'hw-ho14-next-box');
+			nextBox.appendChild(el('div', 'hw-ho14-next-block', 'Feed-Forward Network'));
+			nextBox.appendChild(el('span', 'hw-ho14-next-sep', '\u2192'));
+			nextBox.appendChild(el('div', 'hw-ho14-next-block', '+ residual'));
+			nextBox.appendChild(el('span', 'hw-ho14-next-sep', '\u2192'));
+			nextBox.appendChild(el('div', 'hw-ho14-next-block', 'Next Layer \u2026'));
+			nextPreview.appendChild(nextBox);
+			layout.appendChild(nextPreview);
 
 			// === Animation sequence ===
-			// Phase 1 (immediate): Input and Attn matrices visible
-			// Phase 2 (600ms): Plus sign pulses
+			// Phase 1 (600ms): Plus sign pulses gold
 			setTimeout(function() {
 				plus.classList.add('pulse');
 			}, 600);
 
-			// Phase 3 (1200ms): Enriched result appears
+			// Phase 2 (1200ms): Head output slides in
 			setTimeout(function() {
-				resultWrap.classList.add('visible');
+				outWrap.classList.add('visible');
 			}, 1200);
 
-			// Phase 4 (1800ms): Equation appears
+			// Phase 3 (1800ms): Equation appears
 			setTimeout(function() {
 				eqRow.classList.add('visible');
 			}, 1800);
 
-			// Phase 5 (2400ms): Feed-forward preview appears
+			// Phase 4 (2200ms): Completion badge
 			setTimeout(function() {
-				forward.classList.add('visible');
-			}, 2400);
+				complete.classList.add('visible');
+			}, 2200);
+
+			// Phase 5 (2800ms): Feed-forward preview (dim)
+			setTimeout(function() {
+				nextPreview.classList.add('visible');
+			}, 2800);
 
 			return layout;
 		}
-
 		function showStep(step) {
 			viz.innerHTML = '';
 

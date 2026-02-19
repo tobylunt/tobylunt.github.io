@@ -206,7 +206,7 @@
   {
     "id": 16,
     "name": "Step 14 redesign: attention head output (clearer ending)",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Reframe this step to clearly signal 'this is the output of one attention head'",
       "Show the residual connection (input + attention output) but label it more accessibly \u2014 avoid jargon like 'enriched' that is opaque to non-experts",
