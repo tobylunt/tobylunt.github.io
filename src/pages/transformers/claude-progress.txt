@@ -322,3 +322,23 @@
 - Build passes (pnpm build)
 - Commit: c9395c2
 - Next: Feature #8 — New Step 6: embeddings matrix formation (split from old step 6)
+
+=== Round 2 Feature #8 Complete — 2026-02-19 ===
+- Implemented Step 6 "Embeddings Matrix" visualization in the 04e head walkthrough
+- Layout: d_model y-axis label + wrapper (token labels row + matrix columns) + dimension label + matrix name
+- Initial state: 8 separate green column pills (matching Step 5's merged green pills) with 5px gaps, individual rounded borders
+- Consolidation animation: at 400ms, CSS transitions close gaps to 1px, outer matrix border appears, column pill corners square off
+- Each column contains 5 cells: 2 top values, horizontal dots (pandas-style middle truncation), 2 bottom values
+- Values match Step 7's initValues (combined embeddings) for visual continuity into Step 7
+- Token labels above columns in a separate flex row with matching gap transitions for perfect alignment
+- Labels and columns use matching transparent borders to maintain alignment during gap transitions
+- Matrix name label "This is X — the input matrix to the attention mechanism" fades in after consolidation
+- Dimension label: "8 tokens × d_model dimensions" (reuses hw-norm-dim-label/dim-t/dim-d classes from Step 7)
+- CSS: hw-mat6-* classes (layout, body, wrapper, token-row, token-label, cols, col, cell, dots, name), consolidated state classes
+- Responsive at 480px breakpoint (smaller cells and labels)
+- Astro scoping: all dynamic elements use el() helper with astroAttr; innerHTML sub/strong elements also get attribute
+- Forward/back/reset navigation works cleanly between Steps 5, 6, and 7
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: f095db3
+- Next: Feature #9 — New Step 7: layer norm + QKV weights (split from old step 6)
