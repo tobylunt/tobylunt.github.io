@@ -5458,6 +5458,128 @@ const sections = [
 		.hw-combine-sidenote { font-size: 0.65rem; }
 	}
 
+	/* ===== Step 6: Embeddings Matrix Formation ===== */
+	.hw-mat6-layout {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 8px;
+		padding: 8px 0;
+	}
+
+	.hw-mat6-body {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+
+	.hw-mat6-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.hw-mat6-token-row {
+		display: flex;
+		gap: 5px;
+		padding: 0 2px;
+		border: 1px solid transparent;
+		transition: gap 0.6s ease;
+	}
+
+	.hw-mat6-token-label {
+		font-size: 0.55rem;
+		text-align: center;
+		color: hsl(var(--theme-text) / 0.5);
+		min-width: 42px;
+		padding: 0 4px;
+		border: 1px solid transparent;
+	}
+
+	.hw-mat6-cols {
+		display: flex;
+		gap: 5px;
+		padding: 2px;
+		border: 1px solid transparent;
+		border-radius: 4px;
+		transition: gap 0.6s ease, border-color 0.6s ease, background 0.6s ease;
+	}
+
+	.hw-mat6-col {
+		display: flex;
+		flex-direction: column;
+		border-radius: 6px;
+		border: 1px solid hsl(152 50% 48% / 0.25);
+		background: hsl(152 50% 48% / 0.06);
+		overflow: hidden;
+		transition: border-radius 0.6s ease, border-color 0.6s ease;
+	}
+
+	.hw-mat6-cell {
+		font-size: 0.6rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 3px 4px;
+		text-align: center;
+		min-width: 42px;
+		color: hsl(var(--theme-text) / 0.7);
+		background: hsl(152 50% 48% / 0.08);
+		border-top: 1px solid hsl(152 50% 48% / 0.1);
+	}
+
+	.hw-mat6-cell:first-child {
+		border-top: none;
+	}
+
+	.hw-mat6-dots {
+		font-size: 0.7rem;
+		color: hsl(var(--theme-text) / 0.35);
+		padding: 1px 4px;
+		background: hsl(152 50% 48% / 0.04);
+		border-top-style: dashed;
+	}
+
+	.hw-mat6-name {
+		font-size: 0.7rem;
+		color: hsl(var(--theme-text) / 0.5);
+		text-align: center;
+		opacity: 0;
+		transform: translateY(5px);
+		transition: opacity 0.5s ease, transform 0.5s ease;
+	}
+
+	/* Consolidated state: columns merge into a single matrix */
+	.hw-mat6-layout.hw-mat6-consolidated .hw-mat6-token-row {
+		gap: 1px;
+	}
+
+	.hw-mat6-layout.hw-mat6-consolidated .hw-mat6-cols {
+		gap: 1px;
+		border-color: hsl(var(--theme-text) / 0.12);
+		background: hsl(var(--theme-text) / 0.06);
+	}
+
+	.hw-mat6-layout.hw-mat6-consolidated .hw-mat6-col {
+		border-radius: 0;
+		border-color: transparent;
+	}
+
+	.hw-mat6-layout.hw-mat6-consolidated .hw-mat6-name {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	@media (max-width: 480px) {
+		.hw-mat6-cell {
+			font-size: 0.5rem;
+			min-width: 34px;
+			padding: 2px 3px;
+		}
+		.hw-mat6-token-label {
+			font-size: 0.45rem;
+			min-width: 34px;
+		}
+	}
+
 	/* ===== Step 6: Layer Norm + QKV Weights ===== */
 	.hw-norm-layout {
 		display: flex;
@@ -12152,15 +12274,79 @@ const sections = [
 		}
 
 				function renderStep6() {
-			// Placeholder: Embeddings Matrix formation (to be implemented in feature #8)
-			var layout = el('div', 'hw-placeholder-layout');
-			layout.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;gap:12px;';
-			var title = el('div', '', 'Embeddings Matrix');
-			title.style.cssText = 'font-weight:600;font-size:1.1rem;opacity:0.7;';
-			layout.appendChild(title);
-			var desc = el('div', '', 'Green columns consolidate into a single matrix visualization.');
-			desc.style.cssText = 'opacity:0.5;font-size:0.85rem;max-width:300px;text-align:center;';
-			layout.appendChild(desc);
+			var layout = el('div', 'hw-mat6-layout');
+			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
+
+			// Same combined embedding values as Step 7's initValues (row-major)
+			var initValues = [
+				[' 0.64', '-0.29', ' 1.10', '-0.71', ' 0.97', '-0.49', ' 0.82', ' 0.64'],
+				['-0.33', ' 0.78', '-0.18', ' 0.56', '-0.62', ' 0.91', '-0.47', '-0.33'],
+				[' 0.47', ' 0.14', ' 0.85', '-0.23', ' 0.41', '-0.67', ' 0.59', ' 0.47'],
+				['-0.81', ' 0.43', '-0.55', ' 0.88', '-0.15', ' 0.33', '-0.72', '-0.81']
+			];
+
+			// Body with y-axis label
+			var body = el('div', 'hw-mat6-body');
+			var yaxis = el('div', 'hw-embed-yaxis');
+			yaxis.innerHTML = 'd<sub>model</sub>';
+			if (astroAttr) {
+				yaxis.querySelectorAll('sub').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			}
+			body.appendChild(yaxis);
+
+			// Wrapper holds token labels + matrix columns for alignment
+			var wrapper = el('div', 'hw-mat6-wrapper');
+
+			// Token labels row
+			var tokenRow = el('div', 'hw-mat6-token-row');
+			tokens.forEach(function(tok) {
+				tokenRow.appendChild(el('div', 'hw-mat6-token-label', tok));
+			});
+			wrapper.appendChild(tokenRow);
+
+			// Matrix columns — start as separate green pills, consolidate into grid
+			var cols = el('div', 'hw-mat6-cols');
+			tokens.forEach(function(tok, c) {
+				var col = el('div', 'hw-mat6-col');
+				// 2 top values, dots (pandas-style middle truncation), 2 bottom values
+				col.appendChild(el('div', 'hw-mat6-cell', initValues[0][c]));
+				col.appendChild(el('div', 'hw-mat6-cell', initValues[1][c]));
+				col.appendChild(el('div', 'hw-mat6-cell hw-mat6-dots', '\u22EF'));
+				col.appendChild(el('div', 'hw-mat6-cell', initValues[2][c]));
+				col.appendChild(el('div', 'hw-mat6-cell', initValues[3][c]));
+				cols.appendChild(col);
+			});
+			wrapper.appendChild(cols);
+			body.appendChild(wrapper);
+			layout.appendChild(body);
+
+			// Dimension label
+			var dimLabel = el('div', 'hw-norm-dim-label');
+			var dimSpanT = el('span', 'hw-norm-dim-t', '8');
+			dimLabel.appendChild(dimSpanT);
+			dimLabel.appendChild(document.createTextNode(' tokens \u00d7 '));
+			var dimSpanD = el('span', 'hw-norm-dim-d');
+			dimSpanD.innerHTML = 'd<sub>model</sub>';
+			if (astroAttr) dimSpanD.querySelector('sub').setAttribute(astroAttr, '');
+			dimLabel.appendChild(dimSpanD);
+			dimLabel.appendChild(document.createTextNode(' dimensions'));
+			layout.appendChild(dimLabel);
+
+			// Matrix name label (fades in after consolidation)
+			var matName = el('div', 'hw-mat6-name');
+			matName.innerHTML = 'This is <strong>X</strong> \u2014 the input matrix to the attention mechanism';
+			if (astroAttr) matName.querySelectorAll('strong').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			layout.appendChild(matName);
+
+			// Animation: consolidate columns into a single matrix
+			requestAnimationFrame(function() {
+				requestAnimationFrame(function() {
+					setTimeout(function() {
+						layout.classList.add('hw-mat6-consolidated');
+					}, 400);
+				});
+			});
+
 			return layout;
 		}
 
