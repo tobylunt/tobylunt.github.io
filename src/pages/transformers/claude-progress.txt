@@ -474,3 +474,22 @@
 - Build passes (pnpm build)
 - Commit: de978a2
 - Next: Feature #16 — Step 14 redesign: attention head output (clearer ending)
+
+=== Round 2 Feature #16 Complete — 2026-02-19 ===
+- Redesigned Step 14 "Head Output" — final step of the walkthrough with clearer framing
+- Reframed from "Residual Connection" to "Head Output" — accessible primary label
+- Title banner: "HEAD OUTPUT" in gold, replacing the old "RESIDUAL CONNECTION"
+- Layout: Input (x) (purple, 8 column pills, d_model rows) + Attn(x) (green, 3 column pills, d_head) = Head Output (gold, 8 column pills, d_model rows)
+- All three matrices use column pill pattern with 5 visible rows (0, 1, ⋯, 6, 7)
+- Equation: x + Attention(x) = head output (color-coded)
+- Completion badge: "✓ One attention head complete" — green pill with scale-in animation at 2200ms
+- Feed-forward preview: non-interactive (pointer-events:none, user-select:none), dashed borders, rendered at 45% opacity — clearly not clickable
+- Preview shows: Feed-Forward Network → + residual → Next Layer … (all dashed style)
+- Animation sequence: plus pulses gold (600ms), output slides in (1200ms), equation (1800ms), badge (2200ms), FFN preview (2800ms)
+- Updated STEP_DATA annotation: "Step 14: Head Output" with accessible explanation
+- CSS: new hw-ho14-* classes replacing old hw-residual-* classes
+- Forward/back/reset navigation works cleanly between Steps 13, 14, and Reset
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: 82e1e5f
+- This is the FINAL feature in round 2 features.json — all 16 features now pass!
