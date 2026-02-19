@@ -45,7 +45,7 @@
   {
     "id": 4,
     "name": "Step 2 redesign: animate text into tokens with visual continuity",
-    "passes": false,
+    "passes": true,
     "steps": [
       "On transition from Step 1 → Step 2: wipe the black box and prediction elements, but KEEP the horizontal sentence text from Step 1",
       "Animate the sentence text separating into individual token chips in place — words spread apart and colored token borders/backgrounds appear around them",

@@ -246,3 +246,21 @@
 - Build passes (pnpm build)
 - Commit: 6324077
 - Next: Feature #4 — Step 2 redesign: animate text into tokens with visual continuity
+
+=== Round 2 Feature #4 Complete — 2026-02-18 ===
+- Redesigned Step 2 "Tokenize" with word-to-chip morphing animation
+- Layout: single flex row of word spans that start as sentence text and transition into colored token chips
+- Words initially appear at 1.05rem monospace with no border/background (matching Step 1's sentence)
+- CSS transitions morph each word into a chip: font shrinks to 0.82rem, padding/border/background appear
+- Staggered delays (--morph-delay custom property, 80ms increments) create left-to-right cascade
+- "quietly" split: two adjacent spans ("quiet" + "ly") in an inline-flex wrapper with gap:0 → gap:2px
+- Split bracket label ("← quietly") fades in below the sub-token pair
+- Token count ("8 tokens") appears after morph completes (opacity transition with 0.9s delay)
+- Double requestAnimationFrame pattern triggers the morph class toggle after initial paint
+- Removed old Step 2 CSS: .hw-tok-sentence, .hw-tok-arrow-down, .hw-tok-chips-row, .hw-tok-split-group, .hw-tok-split-bracket
+- Kept shared CSS: .hw-tok-chip, .hw-tok-whole, .hw-tok-sub (used by Steps 3+), hw-chip-in, hw-fade-in keyframes
+- Forward/back navigation clean: Step 2→1 re-renders Step 1 cleanly, Step 2→3 renders Step 3 correctly
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: 8fdc589
+- Next: Feature #5 — Step 3 redesign: column pills with visual continuity
