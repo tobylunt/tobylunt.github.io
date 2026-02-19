@@ -232,3 +232,17 @@
 - Build passes (pnpm build), both dark and light themes verified clean
 - Commit: 83e134e
 - Next: Feature #3 — Step 1 redesign: horizontal sentence with black box
+
+=== Round 2 Feature #3 Complete — 2026-02-18 ===
+- Redesigned Step 1 "The Black Box" from vertical word chips to horizontal sentence layout
+- Sentence: "The fat cat sat quietly on the ___" with dashed underline blank indicating incomplete input
+- Down arrow connects sentence to pipeline row: Transformer black box -> arrow -> "mat" prediction chip
+- Removed "Input -> [Transformer] -> Output" from STEP_DATA shape (now empty string)
+- Removed old CSS: .hw-bb-input, .hw-bb-input-label, .hw-bb-token, .hw-bb-output-label
+- Added new CSS: .hw-bb-sentence (flex wrap, monospace), .hw-bb-blank (dashed border), .hw-bb-arrow-down, .hw-bb-pipe (horizontal flex row)
+- Visual continuity: sentence text in Step 1 matches the same sentence shown in Step 2, enabling smooth forward transition
+- Forward/back navigation works cleanly between Steps 1 and 2
+- Verified: light theme, dark theme, mobile (375px) all render correctly
+- Build passes (pnpm build)
+- Commit: 6324077
+- Next: Feature #4 — Step 2 redesign: animate text into tokens with visual continuity
