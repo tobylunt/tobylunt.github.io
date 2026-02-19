@@ -5598,50 +5598,26 @@ const sections = [
 		margin-bottom: 2px;
 	}
 
-	/* Matrix table */
-	.hw-norm-matrix {
-		display: grid;
+	/* Step 7: Input matrix — column pill structure matching Step 6 consolidated */
+	.hw-norm7-body {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+
+	.hw-norm7-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.hw-norm7-token-row {
+		display: flex;
 		gap: 1px;
-		background: hsl(var(--theme-text) / 0.06);
-		border: 1px solid hsl(var(--theme-text) / 0.12);
-		border-radius: 4px;
-		overflow: hidden;
+		padding: 0 2px;
 	}
 
-	.hw-norm-matrix-cell {
-		background: hsl(152 50% 48% / 0.08);
-		color: hsl(var(--theme-text) / 0.7);
-		font-size: 0.6rem;
-		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		padding: 3px 4px;
-		text-align: center;
-		min-width: 42px;
-		transition: background 0.4s ease, color 0.4s ease;
-	}
-
-	.hw-norm-matrix-cell.hw-norm-dots {
-		font-size: 0.7rem;
-		color: hsl(var(--theme-text) / 0.35);
-		padding: 1px 4px;
-	}
-
-	/* Normalized state: cells shift to purple tint */
-	.hw-norm-matrix-cell.normalized {
-		background: hsl(270 45% 55% / 0.1);
-		color: hsl(270 45% 55% / 0.85);
-	}
-
-	.hw-norm-matrix-cell.hw-norm-dots.normalized {
-		color: hsl(270 45% 55% / 0.4);
-	}
-
-	/* Token labels above matrix */
-	.hw-norm-token-labels {
-		display: grid;
-		gap: 1px;
-	}
-
-	.hw-norm-token-label {
+	.hw-norm7-token-label {
 		font-size: 0.55rem;
 		text-align: center;
 		color: hsl(var(--theme-text) / 0.5);
@@ -5649,7 +5625,74 @@ const sections = [
 		padding: 0 4px;
 	}
 
-	/* Dimension labels */
+	.hw-norm7-cols {
+		display: flex;
+		gap: 1px;
+		padding: 2px;
+		border: 1px solid hsl(var(--theme-text) / 0.12);
+		background: hsl(var(--theme-text) / 0.06);
+		border-radius: 4px;
+		transition: border-color 0.4s ease;
+	}
+
+	.hw-norm7-cols.hw-norm7-normalized {
+		border-color: hsl(270 45% 55% / 0.2);
+	}
+
+	.hw-norm7-col {
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+	}
+
+	.hw-norm7-cell {
+		font-size: 0.6rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 3px 4px;
+		text-align: center;
+		min-width: 42px;
+		color: hsl(var(--theme-text) / 0.7);
+		background: hsl(152 50% 48% / 0.08);
+		border-top: 1px solid hsl(152 50% 48% / 0.1);
+		transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+	}
+
+	.hw-norm7-col .hw-norm7-cell:first-child {
+		border-top: none;
+	}
+
+	.hw-norm7-dots {
+		font-size: 0.7rem;
+		color: hsl(var(--theme-text) / 0.35);
+		padding: 1px 4px;
+		background: hsl(152 50% 48% / 0.04);
+		border-top-style: dashed;
+	}
+
+	/* Normalized state: green → purple */
+	.hw-norm7-cell.hw-norm7-normalized {
+		background: hsl(270 45% 55% / 0.1);
+		color: hsl(270 45% 55% / 0.85);
+		border-color: hsl(270 45% 55% / 0.1);
+	}
+
+	.hw-norm7-dots.hw-norm7-normalized {
+		color: hsl(270 45% 55% / 0.4);
+		background: hsl(270 45% 55% / 0.06);
+		border-color: hsl(270 45% 55% / 0.08);
+	}
+
+	/* Normalization flash */
+	@keyframes hw-norm-flash {
+		0% { background: hsl(270 45% 55% / 0.3); }
+		100% { background: hsl(270 45% 55% / 0.1); }
+	}
+
+	.hw-norm7-cell.hw-norm7-flash {
+		animation: hw-norm-flash 0.4s ease;
+	}
+
+	/* Dimension labels (shared across steps) */
 	.hw-norm-dim-label {
 		font-size: 0.65rem;
 		color: hsl(var(--theme-text) / 0.45);
@@ -5684,85 +5727,126 @@ const sections = [
 		transform: translateY(0);
 	}
 
-	.hw-norm-weight-card {
+	/* QKV weight matrix column pill style */
+	.hw-wmat {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: 4px;
 	}
 
-	.hw-norm-weight-label {
+	.hw-wmat-label {
 		font-size: 0.65rem;
 		font-weight: 600;
 		letter-spacing: 0.04em;
 	}
 
-	.hw-norm-weight-label-q { color: hsl(210 70% 55%); }
-	.hw-norm-weight-label-k { color: hsl(30 80% 55%); }
-	.hw-norm-weight-label-v { color: hsl(340 65% 55%); }
+	.hw-wmat-label-q { color: hsl(210 70% 55%); }
+	.hw-wmat-label-k { color: hsl(30 80% 55%); }
+	.hw-wmat-label-v { color: hsl(340 65% 55%); }
 
-	.hw-norm-weight-box {
-		width: 56px;
-		height: 56px;
-		border-radius: 4px;
+	.hw-wmat-cols {
 		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 0.55rem;
-		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		color: hsl(var(--theme-text) / 0.5);
+		gap: 1px;
+		padding: 2px;
+		border-radius: 4px;
 	}
 
-	.hw-norm-weight-box-q {
-		background: hsl(210 70% 55% / 0.1);
+	.hw-wmat-cols-q {
 		border: 1px solid hsl(210 70% 55% / 0.25);
+		background: hsl(210 70% 55% / 0.04);
 	}
 
-	.hw-norm-weight-box-k {
-		background: hsl(30 80% 55% / 0.1);
+	.hw-wmat-cols-k {
 		border: 1px solid hsl(30 80% 55% / 0.25);
+		background: hsl(30 80% 55% / 0.04);
 	}
 
-	.hw-norm-weight-box-v {
-		background: hsl(340 65% 55% / 0.1);
+	.hw-wmat-cols-v {
 		border: 1px solid hsl(340 65% 55% / 0.25);
+		background: hsl(340 65% 55% / 0.04);
 	}
 
-	.hw-norm-weight-dim {
+	.hw-wmat-col {
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+	}
+
+	.hw-wmat-cell {
+		font-size: 0.6rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 3px 4px;
+		text-align: center;
+		min-width: 42px;
+		color: hsl(var(--theme-text) / 0.7);
+	}
+
+	.hw-wmat-cell-q {
+		background: hsl(210 70% 55% / 0.08);
+		border-top: 1px solid hsl(210 70% 55% / 0.1);
+	}
+
+	.hw-wmat-cell-k {
+		background: hsl(30 80% 55% / 0.08);
+		border-top: 1px solid hsl(30 80% 55% / 0.1);
+	}
+
+	.hw-wmat-cell-v {
+		background: hsl(340 65% 55% / 0.08);
+		border-top: 1px solid hsl(340 65% 55% / 0.1);
+	}
+
+	.hw-wmat-col .hw-wmat-cell:first-child {
+		border-top: none;
+	}
+
+	.hw-wmat-dots {
+		font-size: 0.7rem;
+		padding: 1px 4px;
+		border-top-style: dashed;
+	}
+
+	.hw-wmat-dots-q {
+		color: hsl(210 70% 55% / 0.4);
+		background: hsl(210 70% 55% / 0.04);
+	}
+
+	.hw-wmat-dots-k {
+		color: hsl(30 80% 55% / 0.4);
+		background: hsl(30 80% 55% / 0.04);
+	}
+
+	.hw-wmat-dots-v {
+		color: hsl(340 65% 55% / 0.4);
+		background: hsl(340 65% 55% / 0.04);
+	}
+
+	.hw-wmat-dim {
 		font-size: 0.5rem;
 		color: hsl(var(--theme-text) / 0.4);
 	}
 
-	/* Normalization flash */
-	@keyframes hw-norm-flash {
-		0% { background: hsl(270 45% 55% / 0.3); }
-		100% { background: hsl(270 45% 55% / 0.1); }
-	}
-
-	.hw-norm-matrix-cell.flash {
-		animation: hw-norm-flash 0.4s ease;
-	}
-
 	/* Responsive */
 	@media (max-width: 480px) {
-		.hw-norm-matrix-cell {
+		.hw-norm7-cell {
 			font-size: 0.5rem;
 			min-width: 34px;
 			padding: 2px 3px;
 		}
-		.hw-norm-token-label {
+		.hw-norm7-token-label {
 			font-size: 0.45rem;
 			min-width: 34px;
 		}
 		.hw-norm-qkv-row {
 			gap: 10px;
 		}
-		.hw-norm-weight-box {
-			width: 44px;
-			height: 44px;
-			font-size: 0.48rem;
+		.hw-wmat-cell {
+			font-size: 0.5rem;
+			min-width: 34px;
+			padding: 2px 3px;
 		}
-		.hw-norm-weight-label {
+		.hw-wmat-label {
 			font-size: 0.55rem;
 		}
 	}
@@ -12352,29 +12436,20 @@ const sections = [
 
 		function renderStep7() {
 			var layout = el('div', 'hw-norm-layout');
+			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
 
-			// Phase 1 label: consolidation
-			var phaseLabel = el('div', 'hw-norm-phase-label', 'Combined embeddings \u2192 Matrix');
+			// Phase label
+			var phaseLabel = el('div', 'hw-norm-phase-label', 'Combined embeddings');
 			layout.appendChild(phaseLabel);
 
-			// Token labels above the matrix
-			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
-			var tokenLabelRow = el('div', 'hw-norm-token-labels');
-			tokenLabelRow.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
-			tokens.forEach(function(tok) {
-				tokenLabelRow.appendChild(el('div', 'hw-norm-token-label', tok));
-			});
-			layout.appendChild(tokenLabelRow);
-
-			// Matrix: 5 visible rows (4 numeric + 1 dots row) x 8 columns
-			// Initial values (green / combined embeddings)
+			// Same values as Step 6 (green, combined embeddings - row major)
 			var initValues = [
 				[' 0.64', '-0.29', ' 1.10', '-0.71', ' 0.97', '-0.49', ' 0.82', ' 0.64'],
 				['-0.33', ' 0.78', '-0.18', ' 0.56', '-0.62', ' 0.91', '-0.47', '-0.33'],
 				[' 0.47', ' 0.14', ' 0.85', '-0.23', ' 0.41', '-0.67', ' 0.59', ' 0.47'],
 				['-0.81', ' 0.43', '-0.55', ' 0.88', '-0.15', ' 0.33', '-0.72', '-0.81']
 			];
-			// Normalized values (post layer-norm) - roughly zero-mean unit-variance
+			// Normalized values (post layer-norm)
 			var normValues = [
 				[' 0.91', '-0.52', ' 1.43', '-1.08', ' 1.21', '-0.75', ' 1.04', ' 0.91'],
 				['-0.68', ' 1.12', '-0.40', ' 0.83', '-0.95', ' 1.34', '-0.79', '-0.68'],
@@ -12382,98 +12457,139 @@ const sections = [
 				['-1.15', ' 0.64', '-0.82', ' 1.24', '-0.30', ' 0.49', '-1.05', '-1.15']
 			];
 
-			var matrixEl = el('div', 'hw-norm-matrix');
-			var numRows = initValues.length + 1; // +1 for dots row
-			matrixEl.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
+			// Body: y-axis label + wrapper (column pill structure matching Step 6)
+			var body = el('div', 'hw-norm7-body');
+			var yaxis = el('div', 'hw-embed-yaxis');
+			yaxis.innerHTML = 'd<sub>model</sub>';
+			if (astroAttr) yaxis.querySelectorAll('sub').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			body.appendChild(yaxis);
 
-			var cells = []; // track numeric cells for normalization animation
-			initValues.forEach(function(row) {
-				var rowCells = [];
-				row.forEach(function(val) {
-					var cell = el('div', 'hw-norm-matrix-cell', val);
-					matrixEl.appendChild(cell);
-					rowCells.push(cell);
-				});
-				cells.push(rowCells);
+			var wrapper = el('div', 'hw-norm7-wrapper');
+
+			// Token labels (consolidated gap = 1px)
+			var tokenRow = el('div', 'hw-norm7-token-row');
+			tokens.forEach(function(tok) {
+				tokenRow.appendChild(el('div', 'hw-norm7-token-label', tok));
 			});
-			// Dots row
-			tokens.forEach(function() {
-				var dotCell = el('div', 'hw-norm-matrix-cell hw-norm-dots', '\u22EE');
-				matrixEl.appendChild(dotCell);
+			wrapper.appendChild(tokenRow);
+
+			// Matrix columns (column pill structure, pre-consolidated like Step 6 end)
+			var cols = el('div', 'hw-norm7-cols');
+			var cellRefs = []; // [col][row] for normalization animation
+			tokens.forEach(function(tok, c) {
+				var col = el('div', 'hw-norm7-col');
+				var cc = [];
+				var c0 = el('div', 'hw-norm7-cell', initValues[0][c]); col.appendChild(c0); cc.push(c0);
+				var c1 = el('div', 'hw-norm7-cell', initValues[1][c]); col.appendChild(c1); cc.push(c1);
+				var dots = el('div', 'hw-norm7-cell hw-norm7-dots', '\u22EF'); col.appendChild(dots); cc.push(dots);
+				var c2 = el('div', 'hw-norm7-cell', initValues[2][c]); col.appendChild(c2); cc.push(c2);
+				var c3 = el('div', 'hw-norm7-cell', initValues[3][c]); col.appendChild(c3); cc.push(c3);
+				cols.appendChild(col);
+				cellRefs.push(cc);
 			});
-			layout.appendChild(matrixEl);
+			wrapper.appendChild(cols);
+			body.appendChild(wrapper);
+			layout.appendChild(body);
 
 			// Dimension label
 			var dimLabel = el('div', 'hw-norm-dim-label');
-			var dimSpanT = el('span', 'hw-norm-dim-t', '8');
-			var dimText1 = document.createTextNode(' tokens \u00d7 ');
-			var dimSpanD = el('span', 'hw-norm-dim-d');
-			dimSpanD.innerHTML = 'd<sub>model</sub>';
-			if (astroAttr) dimSpanD.querySelector('sub').setAttribute(astroAttr, '');
-			var dimText2 = document.createTextNode(' dimensions');
-			dimLabel.appendChild(dimSpanT);
-			dimLabel.appendChild(dimText1);
-			dimLabel.appendChild(dimSpanD);
-			dimLabel.appendChild(dimText2);
+			dimLabel.appendChild(el('span', 'hw-norm-dim-t', '8'));
+			dimLabel.appendChild(document.createTextNode(' tokens \u00d7 '));
+			var dimD = el('span', 'hw-norm-dim-d');
+			dimD.innerHTML = 'd<sub>model</sub>';
+			if (astroAttr) dimD.querySelector('sub').setAttribute(astroAttr, '');
+			dimLabel.appendChild(dimD);
+			dimLabel.appendChild(document.createTextNode(' dimensions'));
 			layout.appendChild(dimLabel);
 
 			// Arrow
-			var arrowDown = el('div', 'hw-norm-arrow', '\u2193');
-			layout.appendChild(arrowDown);
+			layout.appendChild(el('div', 'hw-norm-arrow', '\u2193'));
 
-			// QKV weight matrix row (hidden initially)
+			// QKV weight matrices (column pill style matching input matrix)
 			var qkvRow = el('div', 'hw-norm-qkv-row');
 
-			var weights = [
-				{ label: 'W_Q', cls: 'q', dim: 'd_model \u00d7 d_head' },
-				{ label: 'W_K', cls: 'k', dim: 'd_model \u00d7 d_head' },
-				{ label: 'W_V', cls: 'v', dim: 'd_model \u00d7 d_head' }
+			var qW = [
+				[' 0.21', ' 0.45', '-0.13'],
+				['-0.38', ' 0.17', ' 0.62'],
+				[' 0.55', '-0.29', ' 0.08'],
+				['-0.14', ' 0.71', '-0.46']
+			];
+			var kW = [
+				[' 0.33', '-0.58', ' 0.19'],
+				[' 0.67', ' 0.12', '-0.41'],
+				['-0.22', ' 0.48', ' 0.35'],
+				[' 0.44', '-0.16', ' 0.73']
+			];
+			var vW = [
+				['-0.27', ' 0.51', ' 0.38'],
+				[' 0.63', '-0.34', ' 0.15'],
+				[' 0.11', ' 0.42', '-0.56'],
+				['-0.48', ' 0.26', ' 0.69']
 			];
 
-			weights.forEach(function(w) {
-				var card = el('div', 'hw-norm-weight-card');
-				var wLabel = el('div', 'hw-norm-weight-label hw-norm-weight-label-' + w.cls);
-				wLabel.innerHTML = w.label.replace('_', '<sub>') + '</sub>';
-				if (astroAttr) wLabel.querySelector('sub').setAttribute(astroAttr, '');
-				card.appendChild(wLabel);
+			var weightDefs = [
+				{ label: 'W<sub>Q</sub>', cls: 'q', vals: qW },
+				{ label: 'W<sub>K</sub>', cls: 'k', vals: kW },
+				{ label: 'W<sub>V</sub>', cls: 'v', vals: vW }
+			];
 
-				var box = el('div', 'hw-norm-weight-box hw-norm-weight-box-' + w.cls, '\u22EF');
-				card.appendChild(box);
+			weightDefs.forEach(function(w) {
+				var wmat = el('div', 'hw-wmat');
 
-				var dimW = el('div', 'hw-norm-weight-dim');
-				var parts = w.dim.split(' \u00d7 ');
-				var dModel = el('span', 'hw-norm-dim-d');
-				dModel.innerHTML = 'd<sub>model</sub>';
-				if (astroAttr) dModel.querySelector('sub').setAttribute(astroAttr, '');
-				var times = document.createTextNode(' \u00d7 ');
-				var dHead = el('span', 'hw-norm-dim-dh');
-				dHead.innerHTML = 'd<sub>head</sub>';
-				if (astroAttr) dHead.querySelector('sub').setAttribute(astroAttr, '');
-				dimW.appendChild(dModel);
-				dimW.appendChild(times);
-				dimW.appendChild(dHead);
-				card.appendChild(dimW);
+				// Label above matrix
+				var wlbl = el('div', 'hw-wmat-label hw-wmat-label-' + w.cls);
+				wlbl.innerHTML = w.label;
+				if (astroAttr) wlbl.querySelectorAll('sub').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+				wmat.appendChild(wlbl);
 
-				qkvRow.appendChild(card);
+				// Column pill matrix (3 columns = d_head)
+				var wcols = el('div', 'hw-wmat-cols hw-wmat-cols-' + w.cls);
+				for (var ci = 0; ci < 3; ci++) {
+					var wcol = el('div', 'hw-wmat-col');
+					wcol.appendChild(el('div', 'hw-wmat-cell hw-wmat-cell-' + w.cls, w.vals[0][ci]));
+					wcol.appendChild(el('div', 'hw-wmat-cell hw-wmat-cell-' + w.cls, w.vals[1][ci]));
+					wcol.appendChild(el('div', 'hw-wmat-cell hw-wmat-dots hw-wmat-dots-' + w.cls, '\u22EF'));
+					wcol.appendChild(el('div', 'hw-wmat-cell hw-wmat-cell-' + w.cls, w.vals[2][ci]));
+					wcol.appendChild(el('div', 'hw-wmat-cell hw-wmat-cell-' + w.cls, w.vals[3][ci]));
+					wcols.appendChild(wcol);
+				}
+				wmat.appendChild(wcols);
+
+				// Dimension label below
+				var wdim = el('div', 'hw-wmat-dim');
+				var dM = el('span', 'hw-norm-dim-d');
+				dM.innerHTML = 'd<sub>model</sub>';
+				if (astroAttr) dM.querySelector('sub').setAttribute(astroAttr, '');
+				wdim.appendChild(dM);
+				wdim.appendChild(document.createTextNode(' \u00d7 '));
+				var dH = el('span', 'hw-norm-dim-dh');
+				dH.innerHTML = 'd<sub>head</sub>';
+				if (astroAttr) dH.querySelector('sub').setAttribute(astroAttr, '');
+				wdim.appendChild(dH);
+				wmat.appendChild(wdim);
+
+				qkvRow.appendChild(wmat);
 			});
 			layout.appendChild(qkvRow);
 
-			// Animation sequence:
-			// 1. At 600ms: normalize (swap values, flash purple)
+			// Animation: 1. At 600ms normalize (green → purple)
 			setTimeout(function() {
 				phaseLabel.textContent = 'Layer Norm';
-				cells.forEach(function(row, r) {
-					row.forEach(function(cell, c) {
-						cell.textContent = normValues[r][c];
-						cell.classList.add('normalized', 'flash');
+				cols.classList.add('hw-norm7-normalized');
+				cellRefs.forEach(function(colCells, c) {
+					colCells.forEach(function(cell, r) {
+						if (r === 2) { // dots row
+							cell.classList.add('hw-norm7-normalized');
+						} else {
+							var dataRow = r < 2 ? r : r - 1;
+							cell.textContent = normValues[dataRow][c];
+							cell.classList.add('hw-norm7-normalized', 'hw-norm7-flash');
+						}
 					});
 				});
-				// Also normalize the dots row
-				var dotCells = matrixEl.querySelectorAll('.hw-norm-dots');
-				dotCells.forEach(function(dc) { dc.classList.add('normalized'); });
 			}, 600);
 
-			// 2. At 1400ms: show QKV weight matrices, update phase label
+			// 2. At 1400ms: show QKV weight matrices
 			setTimeout(function() {
 				phaseLabel.textContent = 'Normalized \u2192 QKV Projections';
 				qkvRow.classList.add('visible');
