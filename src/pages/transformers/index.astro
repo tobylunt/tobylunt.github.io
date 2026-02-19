@@ -4745,12 +4745,12 @@ const sections = [
 		}
 	}
 
-	/* Step 3: Token Embeddings layout */
+	/* Step 3: Token Embeddings layout — column pills */
 	.hw-embed-layout {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 0.4rem;
+		gap: 0.35rem;
 		width: 100%;
 		padding: 0.5rem 0.25rem;
 	}
@@ -4759,7 +4759,7 @@ const sections = [
 		display: flex;
 		flex-wrap: nowrap;
 		justify-content: center;
-		gap: 4px;
+		gap: 6px;
 	}
 
 	.hw-embed-chip {
@@ -4773,11 +4773,11 @@ const sections = [
 	.hw-embed-arrow-row {
 		display: flex;
 		justify-content: center;
-		gap: 4px;
+		gap: 6px;
 	}
 
 	.hw-embed-arrow-cell {
-		width: 52px;
+		width: 48px;
 		text-align: center;
 		font-size: 0.85rem;
 		color: hsl(210 60% 55% / 0.5);
@@ -4785,111 +4785,83 @@ const sections = [
 		animation: hw-fade-in 0.25s ease forwards;
 	}
 
+	/* Body row: y-axis label + pill grid */
+	.hw-embed-body {
+		display: flex;
+		align-items: center;
+		gap: 0.35rem;
+	}
+
+	.hw-embed-yaxis {
+		writing-mode: vertical-lr;
+		transform: rotate(180deg);
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.62rem;
+		color: hsl(210 60% 55% / 0.6);
+		letter-spacing: 0.03em;
+		white-space: nowrap;
+		opacity: 0;
+		animation: hw-fade-in 0.3s ease 0.8s both;
+	}
+
 	.hw-embed-grid {
 		display: flex;
 		justify-content: center;
-		gap: 4px;
+		gap: 6px;
 	}
 
-	.hw-embed-col {
+	/* Column pill: unified rounded rectangle per token */
+	.hw-embed-pill {
 		display: flex;
 		flex-direction: column;
-		gap: 2px;
+		width: 48px;
+		border-radius: 6px;
+		border: 1.5px solid hsl(210 60% 55% / 0.25);
+		background: hsl(210 60% 55% / 0.06);
+		overflow: hidden;
 		opacity: 0;
-		transform: translateY(-6px);
-		animation: hw-col-expand 0.4s ease forwards;
+		transform: scaleY(0);
+		transform-origin: top center;
+		animation: hw-pill-expand 0.4s ease forwards;
 	}
 
-	.hw-embed-cell {
-		width: 52px;
-		padding: 3px 4px;
+	.hw-embed-pill-val {
+		padding: 3px 2px;
 		text-align: center;
 		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		font-size: 0.65rem;
+		font-size: 0.6rem;
 		line-height: 1.3;
-		background: hsl(210 60% 55% / 0.08);
 		color: hsl(210 60% 55%);
-		border: 1px solid hsl(210 60% 55% / 0.15);
-		border-radius: 3px;
+		border-top: 1px solid hsl(210 60% 55% / 0.12);
 	}
 
-	.hw-embed-dots {
-		background: transparent;
-		border: 1px dashed hsl(210 60% 55% / 0.2);
-		color: hsl(210 60% 55% / 0.5);
-		font-size: 0.85rem;
+	.hw-embed-pill-val:first-child {
+		border-top: none;
+	}
+
+	.hw-embed-pill-dots {
+		padding: 2px 2px;
+		text-align: center;
+		font-size: 0.75rem;
 		line-height: 1;
+		color: hsl(210 60% 55% / 0.4);
+		border-top: 1px dashed hsl(210 60% 55% / 0.15);
+		border-bottom: 1px dashed hsl(210 60% 55% / 0.15);
+		background: hsl(210 60% 55% / 0.03);
 	}
 
-	.hw-embed-dim-label {
-		margin-top: 0.4rem;
-		font-size: 0.7rem;
-		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		color: hsl(var(--theme-text) / 0.4);
-		animation: hw-fade-in 0.3s ease 1s both;
+	@keyframes hw-pill-expand {
+		from {
+			opacity: 0;
+			transform: scaleY(0);
+		}
+		to {
+			opacity: 1;
+			transform: scaleY(1);
+		}
 	}
 
-	.hw-embed-dim-t {
-		color: hsl(var(--theme-text) / 0.6);
-		font-weight: 500;
-	}
-
-	.hw-embed-dim-d {
-		color: hsl(210 60% 55% / 0.8);
-		font-weight: 500;
-	}
-
-	/* Transitory sidenote within figure */
-	.hw-embed-sidenote {
-		margin-top: 0.6rem;
-		padding: 0.5rem 0.75rem;
-		font-size: 0.72rem;
-		line-height: 1.5;
-		color: hsl(var(--theme-text) / 0.55);
-		border-left: 2px solid hsl(210 60% 55% / 0.25);
-		background: hsl(210 60% 55% / 0.04);
-		border-radius: 0 4px 4px 0;
-		max-width: 480px;
-		display: flex;
-		align-items: flex-start;
-		gap: 0.5rem;
-		opacity: 0;
-		animation: hw-fade-in 0.4s ease 1.2s both;
-		transition: opacity 0.3s ease, max-height 0.3s ease;
-	}
-
-	.hw-embed-sidenote.hw-hidden {
-		opacity: 0 !important;
-		max-height: 0;
-		padding: 0;
-		margin: 0;
-		overflow: hidden;
-		pointer-events: none;
-	}
-
-	.hw-embed-sn-text {
-		flex: 1;
-	}
-
-	.hw-embed-sn-text strong {
-		color: hsl(var(--theme-text) / 0.7);
-	}
-
-	.hw-embed-sn-close {
-		background: none;
-		border: none;
-		color: hsl(var(--theme-text) / 0.3);
-		font-size: 0.9rem;
-		cursor: pointer;
-		padding: 0 2px;
-		line-height: 1;
-		flex-shrink: 0;
-	}
-
-	.hw-embed-sn-close:hover {
-		color: hsl(var(--theme-text) / 0.6);
-	}
-
+	/* Shared keyframe used by Steps 4+ bar animations */
 	@keyframes hw-col-expand {
 		from {
 			opacity: 0;
@@ -4901,19 +4873,47 @@ const sections = [
 		}
 	}
 
+	/* Permanent sidenote (no close button) */
+	.hw-embed-sidenote {
+		margin-top: 0.5rem;
+		padding: 0.5rem 0.75rem;
+		font-size: 0.72rem;
+		line-height: 1.5;
+		color: hsl(var(--theme-text) / 0.55);
+		border-left: 2px solid hsl(210 60% 55% / 0.25);
+		background: hsl(210 60% 55% / 0.04);
+		border-radius: 0 4px 4px 0;
+		max-width: 480px;
+		opacity: 0;
+		animation: hw-fade-in 0.4s ease 1.2s both;
+	}
+
+	.hw-embed-sn-text {
+		flex: 1;
+	}
+
+	.hw-embed-sn-text strong {
+		color: hsl(var(--theme-text) / 0.7);
+	}
+
 	@media (max-width: 480px) {
-		.hw-embed-cell {
-			width: 40px;
-			font-size: 0.58rem;
-			padding: 2px 2px;
+		.hw-embed-pill {
+			width: 38px;
+		}
+		.hw-embed-pill-val {
+			font-size: 0.52rem;
+			padding: 2px 1px;
 		}
 		.hw-embed-arrow-cell {
-			width: 40px;
+			width: 38px;
 			font-size: 0.75rem;
 		}
 		.hw-embed-chip {
 			font-size: 0.62rem;
 			padding: 2px 5px;
+		}
+		.hw-embed-chips, .hw-embed-arrow-row, .hw-embed-grid {
+			gap: 4px;
 		}
 		.hw-embed-sidenote {
 			font-size: 0.65rem;
@@ -11752,7 +11752,7 @@ const sections = [
 		function renderStep3() {
 			var layout = el('div', 'hw-embed-layout');
 
-			// Token chips row at the top
+			// Token chips row at the top (wider spacing to match pills below)
 			var chipsRow = el('div', 'hw-embed-chips');
 			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
 			var tokenTypes = ['whole', 'whole', 'whole', 'whole', 'sub', 'sub', 'whole', 'whole'];
@@ -11773,10 +11773,21 @@ const sections = [
 			});
 			layout.appendChild(arrowRow);
 
-			// Embedding vectors grid — each token gets a column of numbers
-			var vecGrid = el('div', 'hw-embed-grid');
+			// Body: y-axis label + pill grid
+			var body = el('div', 'hw-embed-body');
 
-			// Sample embedding values (4 visible + ellipsis per token)
+			// d_model y-axis label
+			var yaxis = el('div', 'hw-embed-yaxis');
+			yaxis.innerHTML = 'd<sub>model</sub>';
+			if (astroAttr) {
+				yaxis.querySelectorAll('sub').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			}
+			body.appendChild(yaxis);
+
+			// Column pills grid
+			var pillGrid = el('div', 'hw-embed-grid');
+
+			// Sample embedding values: 2 top + ellipsis + 2 bottom (pandas-style truncation)
 			var sampleVecs = [
 				[0.12, -0.84, 0.31, 0.67],
 				[-0.45, 0.22, 0.91, -0.33],
@@ -11789,44 +11800,34 @@ const sections = [
 			];
 
 			tokens.forEach(function(tok, i) {
-				var col = el('div', 'hw-embed-col');
-				col.style.animationDelay = (350 + i * 60) + 'ms';
+				var pill = el('div', 'hw-embed-pill');
+				pill.style.animationDelay = (350 + i * 60) + 'ms';
 
-				sampleVecs[i].forEach(function(val) {
-					var cell = el('div', 'hw-embed-cell', val.toFixed(2));
-					col.appendChild(cell);
-				});
-				// Truncation indicator
-				var dots = el('div', 'hw-embed-cell hw-embed-dots', '\u22EE');
-				col.appendChild(dots);
+				// Top 2 values
+				pill.appendChild(el('div', 'hw-embed-pill-val', sampleVecs[i][0].toFixed(2)));
+				pill.appendChild(el('div', 'hw-embed-pill-val', sampleVecs[i][1].toFixed(2)));
 
-				vecGrid.appendChild(col);
+				// Middle ellipsis row (pandas-style truncation)
+				pill.appendChild(el('div', 'hw-embed-pill-dots', '\u22EF'));
+
+				// Bottom 2 values
+				pill.appendChild(el('div', 'hw-embed-pill-val', sampleVecs[i][2].toFixed(2)));
+				pill.appendChild(el('div', 'hw-embed-pill-val', sampleVecs[i][3].toFixed(2)));
+
+				pillGrid.appendChild(pill);
 			});
 
-			layout.appendChild(vecGrid);
+			body.appendChild(pillGrid);
+			layout.appendChild(body);
 
-			// Dimension label
-			var dimLabel = el('div', 'hw-embed-dim-label');
-			dimLabel.innerHTML = '<span class="hw-embed-dim-t">8 tokens</span> \u00d7 <span class="hw-embed-dim-d">d<sub>model</sub> dimensions</span>';
-			if (astroAttr) {
-				dimLabel.querySelectorAll('span, sub').forEach(function(s) { s.setAttribute(astroAttr, ''); });
-			}
-			layout.appendChild(dimLabel);
-
-			// Transitory sidenote (dismissable)
+			// Permanent sidenote (no close button)
 			var sn = el('div', 'hw-embed-sidenote');
 			var snText = el('span', 'hw-embed-sn-text');
 			snText.innerHTML = '<strong>Embedding lookup:</strong> The model learns a unique vector for every token in its vocabulary (often 30k\u2013100k+ entries). At inference time, this is a simple table lookup\u200a\u2014\u200ano computation, just retrieve the row.';
 			if (astroAttr) {
 				snText.querySelectorAll('strong').forEach(function(s) { s.setAttribute(astroAttr, ''); });
 			}
-			var snClose = el('button', 'hw-embed-sn-close', '\u00d7');
-			snClose.setAttribute('aria-label', 'Dismiss');
-			snClose.addEventListener('click', function() {
-				sn.classList.add('hw-hidden');
-			});
 			sn.appendChild(snText);
-			sn.appendChild(snClose);
 			layout.appendChild(sn);
 
 			return layout;
