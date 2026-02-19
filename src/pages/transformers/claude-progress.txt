@@ -217,3 +217,18 @@
 - Verified: dark and light themes both clean, mobile fallback works at 375px width
 - Build passes (pnpm build)
 - Next: Feature #2 — Renumber steps from 12 to 14 and update infrastructure
+
+=== Round 2 Feature #2 Complete — 2026-02-18 ===
+- Renumbered steps from 12 to 14 and updated all infrastructure
+- Step mapping: old step 6 splits into new 6 (Embeddings Matrix placeholder) + 7 (Layer Norm + QKV)
+- New step 12 (Attention Heatmap placeholder) inserted after QK^T scores (step 11)
+- Full new mapping: 1 Black Box, 2 Tokenize, 3 Embeddings, 4 Positional, 5 Combine, 6 Embeddings Matrix (NEW), 7 Layer Norm+QKV, 8 Q Proj, 9 V Proj, 10 K+Transpose, 11 QK^T, 12 Attention Heatmap (NEW), 13 Attn×V, 14 Output
+- Changes: TOTAL_STEPS 12→14, STEP_DATA 14 entries, HTML counter, showStep dispatch 14 branches
+- Renamed renderStep function definitions: 6→7, 7→8, 8→9, 9→10, 10→11, 11→13, 12→14
+- Added placeholder renderStep6() and renderStep12() with centered title+description text
+- All existing visualizations render correctly at their new step numbers
+- Forward/back/reset navigation works across all 14 steps, buttons disable correctly at boundaries
+- Gutter annotations update correctly for all 14 steps including new placeholder entries
+- Build passes (pnpm build), both dark and light themes verified clean
+- Commit: 83e134e
+- Next: Feature #3 — Step 1 redesign: horizontal sentence with black box

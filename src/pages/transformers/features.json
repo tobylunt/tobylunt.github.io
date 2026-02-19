@@ -16,7 +16,7 @@
   {
     "id": 2,
     "name": "Renumber steps from 12 to 14 and update infrastructure",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Old step 6 splits into new steps 6 (embeddings matrix) and 7 (layer norm + QKV) \u2014 add placeholder for new step 6",
       "New step 12 is an attention heatmap inserted after QK^T \u2014 add placeholder",
