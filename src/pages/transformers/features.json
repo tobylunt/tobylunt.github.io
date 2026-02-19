@@ -193,7 +193,7 @@
   {
     "id": 15,
     "name": "Step 13 redesign: Attention \u00d7 V with clearer dimensions",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Show attention weights matrix (T \u00d7 T) multiplied by V (T \u00d7 d_head) producing output (T \u00d7 d_head)",
       "Matrices must be drawn at proportional sizes that make the dimensions visually intuitive \u2014 T \u00d7 T is square, V is tall-and-narrow, output is tall-and-narrow",

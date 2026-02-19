@@ -7519,235 +7519,261 @@ const sections = [
 		.hw-hm12-axis-query { display: none; }
 	}
 
-		/* ===== Step 11: Attention × V ===== */
-	.hw-attnv-layout {
+		/* ===== Step 11: Attention × V (column pill redesign) ===== */
+	.hw-av13-layout {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 10px;
+		gap: 12px;
 		padding: 8px 0;
 	}
 
-	/* Top multiplication row: Attn · V = Output */
-	.hw-attnv-mult-row {
+	/* Softmax context banner */
+	.hw-av13-softmax-note {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		padding: 4px 10px;
+		background: hsl(40 80% 55% / 0.08);
+		border: 1px solid hsl(40 80% 55% / 0.2);
+		border-radius: 6px;
+		font-size: 0.52rem;
+		color: hsl(40 80% 45%);
+		opacity: 0;
+		transition: opacity 0.5s ease;
+	}
+	.hw-av13-softmax-note.visible { opacity: 1; }
+	.hw-av13-softmax-icon {
+		font-size: 0.7rem;
+		font-weight: 700;
+		color: hsl(40 80% 50%);
+	}
+
+	/* Multiplication row: Attn · V = Output */
+	.hw-av13-mult-row {
 		display: flex;
 		align-items: flex-start;
-		gap: 8px;
+		gap: 10px;
 		justify-content: center;
 		width: 100%;
 	}
 
-	/* Compact attention matrix (purple, T×T but shown truncated) */
-	.hw-attnv-attn-wrap {
+	/* Shared matrix wrap */
+	.hw-av13-mat-wrap {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 2px;
+		gap: 3px;
 		flex-shrink: 0;
 	}
 
-	.hw-attnv-attn-label {
-		font-size: 0.55rem;
+	/* Matrix labels */
+	.hw-av13-mat-label {
+		font-size: 0.6rem;
 		font-weight: 600;
-		color: hsl(280 55% 55%);
 		letter-spacing: 0.04em;
 	}
+	.hw-av13-mat-label.attn-color { color: hsl(40 80% 50%); }
+	.hw-av13-mat-label.v-color { color: hsl(340 65% 55%); }
+	.hw-av13-mat-label.out-color { color: hsl(145 55% 42%); }
 
-	.hw-attnv-attn-grid {
-		display: grid;
+	/* Token labels row */
+	.hw-av13-token-labels {
+		display: flex;
 		gap: 1px;
-		background: hsl(280 55% 55% / 0.06);
-		border: 1.5px solid hsl(280 55% 55% / 0.25);
-		border-radius: 3px;
+		justify-content: center;
+	}
+	.hw-av13-token-label {
+		font-size: 0.42rem;
+		text-align: center;
+		padding: 0 1px;
+		color: hsl(var(--theme-text) / 0.4);
+	}
+
+	/* Attention matrix body — SQUARE (8 cols, 8 visible rows) */
+	.hw-av13-attn-body {
+		display: flex;
+		gap: 1px;
+	}
+	.hw-av13-attn-col {
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
+		background: hsl(40 80% 50% / 0.06);
+		border: 1.5px solid hsl(40 80% 50% / 0.2);
+		border-radius: 4px;
 		overflow: hidden;
 	}
-
-	.hw-attnv-attn-cell {
-		background: hsl(280 55% 55% / 0.06);
-		color: hsl(280 55% 55% / 0.75);
-		font-size: 0.38rem;
-		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		padding: 1px 1px;
-		text-align: center;
-		min-width: 18px;
-		min-height: 14px;
-	}
-
-	.hw-attnv-attn-cell.dots-cell {
-		font-size: 0.45rem;
-		color: hsl(280 55% 55% / 0.4);
-		padding: 0px 1px;
-	}
-
-	.hw-attnv-attn-dim {
+	.hw-av13-attn-cell {
+		background: hsl(40 80% 50% / 0.06);
+		color: hsl(40 80% 50% / 0.7);
 		font-size: 0.42rem;
-		color: hsl(var(--theme-text) / 0.35);
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 2px 3px;
+		text-align: center;
+		min-width: 26px;
+		min-height: 16px;
+	}
+	.hw-av13-attn-cell.dots-cell {
+		font-size: 0.5rem;
+		color: hsl(40 80% 50% / 0.35);
+		padding: 0 3px;
+		min-height: 12px;
 	}
 
-	/* Compact V matrix (pink) */
-	.hw-attnv-v-wrap {
+	/* Row labels (for attention matrix — query tokens) */
+	.hw-av13-row-labels {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		gap: 2px;
-		flex-shrink: 0;
+		gap: 1px;
+		justify-content: flex-start;
+		padding-top: 0;
+		margin-right: 2px;
+	}
+	.hw-av13-row-label {
+		font-size: 0.38rem;
+		color: hsl(var(--theme-text) / 0.35);
+		text-align: right;
+		min-height: 16px;
+		line-height: 16px;
+		padding-top: 2px;
+	}
+	.hw-av13-row-label.dots-label {
+		min-height: 12px;
+		line-height: 12px;
+		padding-top: 0;
 	}
 
-	.hw-attnv-v-label {
-		font-size: 0.55rem;
-		font-weight: 600;
-		color: hsl(340 65% 55%);
-		letter-spacing: 0.04em;
+	/* Attention matrix container with row labels + cols */
+	.hw-av13-attn-with-labels {
+		display: flex;
+		align-items: flex-start;
 	}
 
-	.hw-attnv-v-grid {
-		display: grid;
+	/* V matrix body — TALL and NARROW (3 cols, 8 visible rows) */
+	.hw-av13-v-body {
+		display: flex;
+		gap: 1px;
+	}
+	.hw-av13-v-col {
+		display: flex;
+		flex-direction: column;
 		gap: 1px;
 		background: hsl(340 65% 55% / 0.06);
-		border: 1.5px solid hsl(340 65% 55% / 0.25);
-		border-radius: 3px;
+		border: 1.5px solid hsl(340 65% 55% / 0.2);
+		border-radius: 4px;
 		overflow: hidden;
 	}
-
-	.hw-attnv-v-cell {
+	.hw-av13-v-cell {
 		background: hsl(340 65% 55% / 0.08);
 		color: hsl(340 65% 55% / 0.7);
-		font-size: 0.38rem;
-		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		padding: 1px 1px;
-		text-align: center;
-		min-width: 18px;
-	}
-
-	.hw-attnv-v-cell.dots-cell {
-		font-size: 0.45rem;
-		color: hsl(340 65% 55% / 0.4);
-		padding: 0px 1px;
-	}
-
-	.hw-attnv-v-dim {
 		font-size: 0.42rem;
-		color: hsl(var(--theme-text) / 0.35);
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 2px 3px;
+		text-align: center;
+		min-width: 32px;
+		min-height: 16px;
+	}
+	.hw-av13-v-cell.dots-cell {
+		font-size: 0.5rem;
+		color: hsl(340 65% 55% / 0.35);
+		padding: 0 3px;
+		min-height: 12px;
 	}
 
-	/* Multiply / equals signs */
-	.hw-attnv-times {
-		font-size: 0.8rem;
-		color: hsl(var(--theme-text) / 0.4);
-		align-self: center;
-		padding: 0 2px;
-		padding-top: 14px;
-	}
-
-	.hw-attnv-equals {
-		font-size: 0.8rem;
-		color: hsl(var(--theme-text) / 0.4);
-		align-self: center;
-		padding: 0 2px;
-		padding-top: 14px;
-	}
-
-	/* Result output matrix (green — restored dimensionality) */
-	.hw-attnv-out-wrap {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 2px;
-		flex-shrink: 0;
+	/* Output matrix body — same shape as V (3 cols, 8 visible rows) */
+	.hw-av13-out-wrap {
 		opacity: 0;
 		transform: translateX(8px);
 		transition: opacity 0.5s ease, transform 0.5s ease;
 	}
-
-	.hw-attnv-out-wrap.visible {
+	.hw-av13-out-wrap.visible {
 		opacity: 1;
 		transform: translateX(0);
 	}
-
-	.hw-attnv-out-label {
-		font-size: 0.55rem;
-		font-weight: 600;
-		color: hsl(145 55% 42%);
-		letter-spacing: 0.04em;
+	.hw-av13-out-body {
+		display: flex;
+		gap: 1px;
 	}
-
-	.hw-attnv-out-grid {
-		display: grid;
+	.hw-av13-out-col {
+		display: flex;
+		flex-direction: column;
 		gap: 1px;
 		background: hsl(145 55% 42% / 0.06);
-		border: 1.5px solid hsl(145 55% 42% / 0.25);
-		border-radius: 3px;
+		border: 1.5px solid hsl(145 55% 42% / 0.2);
+		border-radius: 4px;
 		overflow: hidden;
 	}
-
-	.hw-attnv-out-cell {
+	.hw-av13-out-cell {
 		background: hsl(145 55% 42% / 0.08);
 		color: hsl(145 55% 42% / 0.75);
-		font-size: 0.38rem;
-		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		padding: 1px 1px;
-		text-align: center;
-		min-width: 18px;
-	}
-
-	.hw-attnv-out-cell.dots-cell {
-		font-size: 0.45rem;
-		color: hsl(145 55% 42% / 0.4);
-		padding: 0px 1px;
-	}
-
-	.hw-attnv-out-dim {
 		font-size: 0.42rem;
-		color: hsl(var(--theme-text) / 0.35);
-		margin-top: 2px;
-	}
-
-	/* Token labels for output matrix */
-	.hw-attnv-out-col-labels {
-		display: grid;
-		gap: 1px;
-	}
-
-	.hw-attnv-out-col-label {
-		font-size: 0.36rem;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		padding: 2px 3px;
 		text-align: center;
-		color: hsl(145 55% 42% / 0.6);
-		min-width: 18px;
-		padding: 0 1px;
+		min-width: 32px;
+		min-height: 16px;
+	}
+	.hw-av13-out-cell.dots-cell {
+		font-size: 0.5rem;
+		color: hsl(145 55% 42% / 0.35);
+		padding: 0 3px;
+		min-height: 12px;
+	}
+
+	/* Operators between matrices */
+	.hw-av13-op {
+		font-size: 0.9rem;
+		color: hsl(var(--theme-text) / 0.4);
+		align-self: center;
+		padding: 0 4px;
+		padding-top: 20px;
+	}
+
+	/* Dimension labels under each matrix */
+	.hw-av13-dim-label {
+		font-size: 0.48rem;
+		color: hsl(var(--theme-text) / 0.35);
+		margin-top: 3px;
+		text-align: center;
 	}
 
 	/* Cancel animation for T dimensions */
-	.hw-attnv-dim-cancel {
-		text-decoration: none;
-		transition: text-decoration-color 0.4s ease;
+	.hw-av13-dim-cancel {
+		transition: all 0.4s ease;
 	}
-
-	.hw-attnv-dim-cancel.active {
+	.hw-av13-dim-cancel.active {
 		text-decoration: line-through;
 		text-decoration-color: hsl(0 70% 50% / 0.6);
 		text-decoration-thickness: 1.5px;
 		opacity: 0.5;
 	}
 
+	/* Down arrow to result */
+	.hw-av13-down-arrow {
+		font-size: 1.2rem;
+		color: hsl(var(--theme-text) / 0.3);
+		text-align: center;
+		margin: 4px 0;
+		opacity: 0;
+		transition: opacity 0.4s ease;
+	}
+	.hw-av13-down-arrow.visible { opacity: 1; }
+
 	/* Shape equation */
-	.hw-attnv-equation {
-		font-size: 0.55rem;
+	.hw-av13-equation {
+		font-size: 0.6rem;
 		color: hsl(var(--theme-text) / 0.5);
 		text-align: center;
 		margin-top: 4px;
 		opacity: 0;
 		transition: opacity 0.5s ease;
 	}
-
-	.hw-attnv-equation.visible {
-		opacity: 1;
-	}
-
-	.hw-attnv-eq-attn { color: hsl(280 55% 55%); font-weight: 600; }
-	.hw-attnv-eq-v { color: hsl(340 65% 55%); font-weight: 600; }
-	.hw-attnv-eq-result { color: hsl(145 55% 42%); font-weight: 600; }
-	.hw-attnv-eq-dim { color: hsl(var(--theme-text) / 0.4); }
-	.hw-attnv-eq-cancel {
+	.hw-av13-equation.visible { opacity: 1; }
+	.hw-av13-eq-attn { color: hsl(40 80% 50%); font-weight: 600; }
+	.hw-av13-eq-v { color: hsl(340 65% 55%); font-weight: 600; }
+	.hw-av13-eq-result { color: hsl(145 55% 42%); font-weight: 600; }
+	.hw-av13-eq-cancel {
 		text-decoration: line-through;
 		text-decoration-color: hsl(0 70% 50% / 0.6);
 		text-decoration-thickness: 1.5px;
@@ -7755,22 +7781,15 @@ const sections = [
 
 	/* Responsive */
 	@media (max-width: 480px) {
-		.hw-attnv-mult-row {
+		.hw-av13-mult-row {
 			flex-direction: column;
 			align-items: center;
 			gap: 8px;
 		}
-		.hw-attnv-attn-cell, .hw-attnv-v-cell {
-			font-size: 0.34rem;
-			min-width: 16px;
-		}
-		.hw-attnv-out-cell {
-			font-size: 0.34rem;
-			min-width: 16px;
-		}
-		.hw-attnv-out-col-label {
-			font-size: 0.32rem;
-			min-width: 16px;
+		.hw-av13-attn-cell, .hw-av13-v-cell, .hw-av13-out-cell {
+			font-size: 0.38rem;
+			min-width: 22px;
+			padding: 1px 2px;
 		}
 	}
 
@@ -12094,7 +12113,7 @@ const sections = [
 			},
 			{
 				title: 'Step 13: Attention \u00d7 V',
-				text: 'The attention weights (T \u00d7 T) multiply V (T \u00d7 d_head), restoring the original dimensionality. Each output row is a weighted blend of value vectors.',
+				text: 'The softmax-normalized attention weights (T \u00d7 T) multiply V (T \u00d7 d_head). The inner T dimensions cancel, restoring dimensionality to T \u00d7 d_head. Each output row is a weighted blend of value vectors.',
 				shape: '(T\u00d7T) \u00b7 (T\u00d7d) = T\u00d7d'
 			},
 			{
@@ -14006,61 +14025,118 @@ const sections = [
 
 
 function renderStep13() {
-			var layout = el('div', 'hw-attnv-layout');
+			var layout = el('div', 'hw-av13-layout');
 			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
 			var T = tokens.length; // 8
+			var d_head = 3;
 
-			// Attention score matrix from Step 10 (T×T, purple)
-			// Show truncated: 4 data rows + dots row, 4 data cols + dots col + last col
-			var attnValues = [
-				['.92', '.11', '.38', '.06', '-.21', '.15', '.34', '.92'],
-				['.14', '.87', '.22', '.41', '.09', '-.18', '.27', '.14'],
-				['.31', '.19', '.95', '.28', '.12', '.35', '-.09', '.31'],
-				['.08', '.43', '.33', '.88', '.16', '.07', '.21', '.08']
+			// Attention weights from Step 12 (softmax-normalized, T×T)
+			// Using amber color to match the heatmap — these are WEIGHTS not raw scores
+			var attnWeights = [
+				[0.26, 0.09, 0.12, 0.08, 0.07, 0.08, 0.09, 0.22],
+				[0.10, 0.23, 0.19, 0.10, 0.09, 0.09, 0.10, 0.10],
+				[0.11, 0.14, 0.27, 0.12, 0.09, 0.09, 0.08, 0.10],
+				[0.09, 0.10, 0.16, 0.25, 0.12, 0.10, 0.09, 0.09],
+				[0.08, 0.08, 0.09, 0.16, 0.24, 0.19, 0.08, 0.08],
+				[0.09, 0.08, 0.09, 0.14, 0.20, 0.23, 0.09, 0.09],
+				[0.11, 0.09, 0.09, 0.10, 0.09, 0.09, 0.30, 0.12],
+				[0.20, 0.08, 0.09, 0.08, 0.07, 0.08, 0.11, 0.28]
 			];
 
-			// V values from Step 8 (T×d_head, pink)
-			var vValues = [
-				['.58', '-.34', '.91', '.17', '-.62', '.44', '-.28', '.58'],
-				['-.21', '.76', '-.45', '.63', '.38', '-.55', '.82', '-.21'],
-				['.35', '.12', '-.67', '-.41', '.73', '.29', '-.14', '.35']
+			// V values from Step 9 (T rows × d_head cols, pink)
+			// Transposed from the column-major format used in Step 9
+			var vData = [
+				[' .58', '-.21', ' .35'],
+				['-.34', ' .76', ' .12'],
+				[' .91', '-.45', '-.67'],
+				[' .17', ' .63', '-.41'],
+				['-.62', ' .38', ' .73'],
+				[' .44', '-.55', ' .29'],
+				['-.28', ' .82', '-.14'],
+				[' .58', '-.21', ' .35']
 			];
 
-			// Output values (T×d_head, green — synthetic weighted blends)
-			var outValues = [
-				['.52', '-.18', '.74', '.09', '-.31', '.38', '-.11', '.52'],
-				['-.09', '.64', '-.32', '.55', '.29', '-.42', '.71', '-.09'],
-				['.28', '.08', '-.53', '-.29', '.61', '.22', '-.06', '.28']
+			// Output = Attn × V (T rows × d_head cols, green)
+			// Approximate weighted blends
+			var outData = [
+				[' .37', '-.04', ' .12'],
+				[' .22', ' .03', '-.14'],
+				[' .41', '-.10', '-.22'],
+				[' .18', ' .19', '-.18'],
+				['-.08', ' .30', ' .24'],
+				[' .04', ' .16', ' .18'],
+				['-.06', ' .52', '-.01'],
+				[' .35', '-.06', ' .15']
 			];
 
-			// === Top row: Attn · V = Output ===
-			var multRow = el('div', 'hw-attnv-mult-row');
+			// Visible rows: 0, 1 (top 2), dots, 6, 7 (bottom 2)
+			var visibleRows = [0, 1, -1, 6, 7]; // -1 = dots
 
-			// --- Attention matrix (purple, T×T shown truncated) ---
-			var attnWrap = el('div', 'hw-attnv-attn-wrap');
-			var attnLabel = el('div', 'hw-attnv-attn-label', 'Attention');
-			attnWrap.appendChild(attnLabel);
+			// === Softmax context note ===
+			var softNote = el('div', 'hw-av13-softmax-note');
+			softNote.appendChild(el('span', 'hw-av13-softmax-icon', '\u03C3'));
+			var noteText = el('span', '');
+			noteText.textContent = 'Using softmax-normalized weights from Step 12 (rows sum to 1)';
+			softNote.appendChild(noteText);
+			layout.appendChild(softNote);
 
-			var attnGrid = el('div', 'hw-attnv-attn-grid');
-			attnGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
-			attnValues.forEach(function(row) {
-				row.forEach(function(val) {
-					attnGrid.appendChild(el('div', 'hw-attnv-attn-cell', val));
-				});
-			});
-			// Dots row
-			for (var i = 0; i < T; i++) {
-				attnGrid.appendChild(el('div', 'hw-attnv-attn-cell dots-cell', '\u22EE'));
+			// === Multiplication row: Attn \u00b7 V = Output ===
+			var multRow = el('div', 'hw-av13-mult-row');
+
+			// --- Attention matrix (amber, T\u00d7T \u2014 SQUARE) ---
+			var attnWrap = el('div', 'hw-av13-mat-wrap');
+			attnWrap.appendChild(el('div', 'hw-av13-mat-label attn-color', 'Attention'));
+
+			// Token column labels
+			var attnColLabels = el('div', 'hw-av13-token-labels');
+			for (var ci = 0; ci < T; ci++) {
+				var lbl = el('div', 'hw-av13-token-label', tokens[ci]);
+				lbl.style.width = '26px';
+				attnColLabels.appendChild(lbl);
 			}
-			attnWrap.appendChild(attnGrid);
+			attnWrap.appendChild(attnColLabels);
 
-			// Attn dimension label with cancelable T
-			var attnDim = el('div', 'hw-attnv-attn-dim');
+			// Row labels + column pills
+			var attnWithLabels = el('div', 'hw-av13-attn-with-labels');
+
+			// Row labels (query tokens)
+			var attnRowLabels = el('div', 'hw-av13-row-labels');
+			visibleRows.forEach(function(ri) {
+				if (ri === -1) {
+					attnRowLabels.appendChild(el('div', 'hw-av13-row-label dots-label', '\u22EF'));
+				} else {
+					attnRowLabels.appendChild(el('div', 'hw-av13-row-label', tokens[ri]));
+				}
+			});
+			attnWithLabels.appendChild(attnRowLabels);
+
+			// 8 column pills (one per key token)
+			var attnBody = el('div', 'hw-av13-attn-body');
+			for (var ci = 0; ci < T; ci++) {
+				var col = el('div', 'hw-av13-attn-col');
+				visibleRows.forEach(function(ri) {
+					if (ri === -1) {
+						col.appendChild(el('div', 'hw-av13-attn-cell dots-cell', '\u22EF'));
+					} else {
+						var cell = el('div', 'hw-av13-attn-cell', attnWeights[ri][ci].toFixed(2));
+						// Tint intensity by weight
+						var w = attnWeights[ri][ci];
+						cell.style.background = 'hsl(40 80% 50% / ' + (0.05 + w * 0.4).toFixed(2) + ')';
+						col.appendChild(cell);
+					}
+				});
+				attnBody.appendChild(col);
+			}
+			attnWithLabels.appendChild(attnBody);
+			attnWrap.appendChild(attnWithLabels);
+
+			// Dimension label: T \u00d7 T (second T cancelable)
+			var attnDim = el('div', 'hw-av13-dim-label');
 			var attnDimT1 = el('span', '', 'T');
-			attnDimT1.style.color = 'hsl(280 55% 55%)';
+			attnDimT1.style.color = 'hsl(40 80% 50%)';
 			var attnDimX = document.createTextNode(' \u00d7 ');
-			var attnDimT2 = el('span', 'hw-attnv-dim-cancel', 'T');
-			attnDimT2.style.color = 'hsl(280 55% 55%)';
+			var attnDimT2 = el('span', 'hw-av13-dim-cancel', 'T');
+			attnDimT2.style.color = 'hsl(40 80% 50%)';
 			attnDim.appendChild(attnDimT1);
 			attnDim.appendChild(attnDimX);
 			attnDim.appendChild(attnDimT2);
@@ -14068,33 +14144,45 @@ function renderStep13() {
 			multRow.appendChild(attnWrap);
 
 			// --- Multiply sign ---
-			multRow.appendChild(el('div', 'hw-attnv-times', '\u00b7'));
+			multRow.appendChild(el('div', 'hw-av13-op', '\u00b7'));
 
-			// --- V matrix (pink, T×d_head) ---
-			var vWrap = el('div', 'hw-attnv-v-wrap');
-			vWrap.appendChild(el('div', 'hw-attnv-v-label', 'V'));
+			// --- V matrix (pink, T\u00d7d_head \u2014 TALL AND NARROW) ---
+			var vWrap = el('div', 'hw-av13-mat-wrap');
+			vWrap.appendChild(el('div', 'hw-av13-mat-label v-color', 'V'));
 
-			var vGrid = el('div', 'hw-attnv-v-grid');
-			vGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
-			vValues.forEach(function(row) {
-				row.forEach(function(val) {
-					vGrid.appendChild(el('div', 'hw-attnv-v-cell', val));
-				});
-			});
-			// Dots row
-			for (var i = 0; i < T; i++) {
-				vGrid.appendChild(el('div', 'hw-attnv-v-cell dots-cell', '\u22EE'));
+			// Spacer for alignment with attn column labels
+			var vColLabels = el('div', 'hw-av13-token-labels');
+			for (var ci = 0; ci < d_head; ci++) {
+				var lbl = el('div', 'hw-av13-token-label', '');
+				lbl.style.width = '32px';
+				vColLabels.appendChild(lbl);
 			}
-			vWrap.appendChild(vGrid);
+			vWrap.appendChild(vColLabels);
 
-			// V dimension label with cancelable T
-			var vDim = el('div', 'hw-attnv-v-dim');
-			var vDimT = el('span', 'hw-attnv-dim-cancel', 'T');
+			// 3 column pills (one per d_head dimension)
+			var vBody = el('div', 'hw-av13-v-body');
+			for (var ci = 0; ci < d_head; ci++) {
+				var col = el('div', 'hw-av13-v-col');
+				visibleRows.forEach(function(ri) {
+					if (ri === -1) {
+						col.appendChild(el('div', 'hw-av13-v-cell dots-cell', '\u22EF'));
+					} else {
+						col.appendChild(el('div', 'hw-av13-v-cell', vData[ri][ci]));
+					}
+				});
+				vBody.appendChild(col);
+			}
+			vWrap.appendChild(vBody);
+
+			// Dimension label: T \u00d7 d_head (T cancelable)
+			var vDim = el('div', 'hw-av13-dim-label');
+			var vDimT = el('span', 'hw-av13-dim-cancel', 'T');
 			vDimT.style.color = 'hsl(340 65% 55%)';
 			var vDimX = document.createTextNode(' \u00d7 ');
 			var vDimD = el('span', '');
 			vDimD.innerHTML = 'd<sub>head</sub>';
 			if (astroAttr) vDimD.querySelector('sub').setAttribute(astroAttr, '');
+			vDimD.style.color = 'hsl(340 65% 55%)';
 			vDim.appendChild(vDimT);
 			vDim.appendChild(vDimX);
 			vDim.appendChild(vDimD);
@@ -14102,41 +14190,45 @@ function renderStep13() {
 			multRow.appendChild(vWrap);
 
 			// --- Equals sign ---
-			multRow.appendChild(el('div', 'hw-attnv-equals', '='));
+			multRow.appendChild(el('div', 'hw-av13-op', '='));
 
-			// --- Output matrix (green, T×d_head) ---
-			var outWrap = el('div', 'hw-attnv-out-wrap');
-			outWrap.appendChild(el('div', 'hw-attnv-out-label', 'Output'));
+			// --- Output matrix (green, T\u00d7d_head \u2014 same shape as V) ---
+			var outWrap = el('div', 'hw-av13-mat-wrap hw-av13-out-wrap');
+			outWrap.appendChild(el('div', 'hw-av13-mat-label out-color', 'Output'));
 
-			// Column labels (token names — green tint)
-			var colLabels = el('div', 'hw-attnv-out-col-labels');
-			colLabels.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
-			tokens.forEach(function(tok) {
-				colLabels.appendChild(el('div', 'hw-attnv-out-col-label', tok));
-			});
-			outWrap.appendChild(colLabels);
-
-			var outGrid = el('div', 'hw-attnv-out-grid');
-			outGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
-			outValues.forEach(function(row) {
-				row.forEach(function(val) {
-					outGrid.appendChild(el('div', 'hw-attnv-out-cell', val));
-				});
-			});
-			// Dots row
-			for (var i = 0; i < T; i++) {
-				outGrid.appendChild(el('div', 'hw-attnv-out-cell dots-cell', '\u22EE'));
+			// Spacer for alignment
+			var outColLabels = el('div', 'hw-av13-token-labels');
+			for (var ci = 0; ci < d_head; ci++) {
+				var lbl = el('div', 'hw-av13-token-label', '');
+				lbl.style.width = '32px';
+				outColLabels.appendChild(lbl);
 			}
-			outWrap.appendChild(outGrid);
+			outWrap.appendChild(outColLabels);
 
-			// Output dimension label
-			var outDim = el('div', 'hw-attnv-out-dim');
+			// 3 column pills
+			var outBody = el('div', 'hw-av13-out-body');
+			for (var ci = 0; ci < d_head; ci++) {
+				var col = el('div', 'hw-av13-out-col');
+				visibleRows.forEach(function(ri) {
+					if (ri === -1) {
+						col.appendChild(el('div', 'hw-av13-out-cell dots-cell', '\u22EF'));
+					} else {
+						col.appendChild(el('div', 'hw-av13-out-cell', outData[ri][ci]));
+					}
+				});
+				outBody.appendChild(col);
+			}
+			outWrap.appendChild(outBody);
+
+			// Dimension label: T \u00d7 d_head
+			var outDim = el('div', 'hw-av13-dim-label');
 			var outDimT = el('span', '', 'T');
 			outDimT.style.color = 'hsl(145 55% 42%)';
 			var outDimX = document.createTextNode(' \u00d7 ');
 			var outDimD = el('span', '');
 			outDimD.innerHTML = 'd<sub>head</sub>';
 			if (astroAttr) outDimD.querySelector('sub').setAttribute(astroAttr, '');
+			outDimD.style.color = 'hsl(145 55% 42%)';
 			outDim.appendChild(outDimT);
 			outDim.appendChild(outDimX);
 			outDim.appendChild(outDimD);
@@ -14145,39 +14237,35 @@ function renderStep13() {
 
 			layout.appendChild(multRow);
 
-			// === Shape equation with strikethroughs ===
-			var eqRow = el('div', 'hw-attnv-equation');
-			var eqAttn = el('span', 'hw-attnv-eq-attn', 'Attn');
-			var eqDot = document.createTextNode(' \u00b7 ');
-			var eqV = el('span', 'hw-attnv-eq-v', 'V');
-			var eqSpace = document.createTextNode('  ');
-			var eqDimParts = el('span', 'hw-attnv-eq-dim');
-			eqDimParts.innerHTML = '(T\u00d7<span class="hw-attnv-eq-cancel">T</span>) \u00b7 (<span class="hw-attnv-eq-cancel">T</span>\u00d7d) = <span class="hw-attnv-eq-result">T\u00d7d</span>';
-			if (astroAttr) eqDimParts.querySelectorAll('span').forEach(function(s) { s.setAttribute(astroAttr, ''); });
-			eqRow.appendChild(eqAttn);
-			eqRow.appendChild(eqDot);
-			eqRow.appendChild(eqV);
-			eqRow.appendChild(eqSpace);
-			eqRow.appendChild(eqDimParts);
+			// === Shape equation ===
+			var eqRow = el('div', 'hw-av13-equation');
+			var eqInner = el('span', '');
+			eqInner.innerHTML = '<span class="hw-av13-eq-attn">Attn</span> \u00b7 <span class="hw-av13-eq-v">V</span>\u2003(T\u00d7<span class="hw-av13-eq-cancel">T</span>) \u00b7 (<span class="hw-av13-eq-cancel">T</span>\u00d7d) = <span class="hw-av13-eq-result">T\u00d7d</span>';
+			if (astroAttr) eqInner.querySelectorAll('span').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			eqRow.appendChild(eqInner);
 			layout.appendChild(eqRow);
 
 			// === Animation sequence ===
-			// Phase 1 (immediate): Attention and V matrices visible
-			// Phase 2 (800ms): T dimensions get strikethrough (canceling)
+			// Phase 1 (400ms): softmax note fades in
+			setTimeout(function() {
+				softNote.classList.add('visible');
+			}, 400);
+
+			// Phase 2 (1000ms): T dimensions get strikethrough
 			setTimeout(function() {
 				attnDimT2.classList.add('active');
 				vDimT.classList.add('active');
-			}, 800);
+			}, 1000);
 
-			// Phase 3 (1400ms): output matrix appears
+			// Phase 3 (1600ms): output matrix slides in
 			setTimeout(function() {
 				outWrap.classList.add('visible');
-			}, 1400);
+			}, 1600);
 
-			// Phase 4 (2000ms): equation appears
+			// Phase 4 (2200ms): equation appears
 			setTimeout(function() {
 				eqRow.classList.add('visible');
-			}, 2000);
+			}, 2200);
 
 			return layout;
 		}
