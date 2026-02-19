@@ -139,7 +139,7 @@
   {
     "id": 11,
     "name": "Step 9 redesign: V projection with stacked card effect",
-    "passes": false,
+    "passes": true,
     "steps": [
       "On transition: move W_Q back to its starting position, move W_V to the multiplication area",
       "Move the completed Q matrix backward in the visual stack \u2014 shrink slightly and dim it (opacity ~0.5)",

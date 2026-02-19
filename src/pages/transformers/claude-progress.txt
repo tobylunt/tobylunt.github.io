@@ -380,3 +380,22 @@
 - Build passes (pnpm build)
 - Commit: 286e499 (code), tracking update in this session
 - Next: Feature #11 — Step 9 redesign: V projection with stacked card effect
+
+=== Round 2 Feature #11 Complete — 2026-02-19 ===
+- Redesigned Step 9 "Value Projection" with column pill layout and stacked card effect
+- Layout: horizontal flow — X̂ (normalized, purple columns) · W_V (pink columns) → [stacked: Q ghost + V output]
+- W_V weight matrix: 3 pink column pills with sample weight values from Step 7, slides up at 400ms
+- Q ghost card: dimmed Q output (opacity 0.4, scale 0.95, offset -4px) from Step 8 appears behind V at 800ms
+- V output matrix: 8 pink column pills with per-token fill animation (first 3 detailed with flying column copy + W_V flash, remaining 5 rapid cascade), starts at 1100ms
+- Stacked card effect: Q ghost at z-index 1 (position: absolute, behind), V output at z-index 2 (front)
+- Equation row: V = X̂ · W_V with dimension annotation
+- Gutter annotation: "Step 9: Value Projection" with "what information do I carry?" text
+- Replaced old hw-vproj-* CSS (grid-based layout, small weight box, staging area) with new hw-v9-* CSS (column pills, stacked card)
+- Reuses hw-q8-* classes for shared patterns (mat-wrap, cols, col, cell, dots, op, dim-label, fly-col)
+- Fixed scope bug: initial Python replacement placed renderStep9 in wrong <script> block (QKV pipeline instead of head walkthrough); moved to correct scope
+- Removed old duplicate renderStep9 from QKV pipeline script block
+- Forward/back/reset navigation works cleanly between Steps 8, 9, and 10
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: 1bf665c
+- Next: Feature #12 — Step 10 redesign: K projection with animated transpose
