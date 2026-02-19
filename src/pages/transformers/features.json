@@ -166,7 +166,7 @@
   {
     "id": 13,
     "name": "Step 11 redesign: QK^T with correct matrix sizes",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Show Q (T \u00d7 d_head) and K^T (d_head \u00d7 T) at their actual proportional sizes \u2014 Q is tall, K^T is wide",
       "Animate d_head inner dimension cancellation with strikethrough",

@@ -6950,25 +6950,25 @@ const sections = [
 		color: hsl(30 80% 60% / 0.85);
 	}
 
-	/* ===== Step 10: QK^T Attention Scores ===== */
+	/* ===== Step 11: QK^T Attention Scores (redesigned) ===== */
 	.hw-qkt-layout {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 10px;
+		gap: 12px;
 		padding: 8px 0;
 	}
 
-	/* Top multiplication row: Q · K^T = Scores */
+	/* Top multiplication area: Q (tall) · K^T (wide) */
 	.hw-qkt-mult-row {
 		display: flex;
-		align-items: flex-start;
-		gap: 8px;
+		align-items: center;
+		gap: 10px;
 		justify-content: center;
 		width: 100%;
 	}
 
-	/* Compact Q matrix (blue) */
+	/* Q matrix — tall column pills (T rows × d_head cols) */
 	.hw-qkt-q-wrap {
 		display: flex;
 		flex-direction: column;
@@ -6984,11 +6984,44 @@ const sections = [
 		letter-spacing: 0.04em;
 	}
 
-	.hw-qkt-q-grid {
-		display: grid;
+	.hw-qkt-q-body {
+		display: flex;
+		gap: 2px;
+		align-items: flex-start;
+	}
+
+	.hw-qkt-q-row-labels {
+		display: flex;
+		flex-direction: column;
 		gap: 1px;
-		background: hsl(210 70% 55% / 0.06);
-		border: 1.5px solid hsl(210 70% 55% / 0.25);
+	}
+
+	.hw-qkt-q-row-label {
+		font-size: 0.34rem;
+		color: hsl(210 70% 55% / 0.55);
+		text-align: right;
+		padding: 1px 2px 1px 0;
+		min-height: 14px;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+	}
+
+	.hw-qkt-q-row-label.dots-label {
+		color: hsl(210 70% 55% / 0.35);
+		font-size: 0.42rem;
+		min-height: 12px;
+	}
+
+	.hw-qkt-q-cols {
+		display: flex;
+		gap: 1px;
+	}
+
+	.hw-qkt-q-col {
+		display: flex;
+		flex-direction: column;
+		border: 1px solid hsl(210 70% 55% / 0.2);
 		border-radius: 3px;
 		overflow: hidden;
 	}
@@ -6998,39 +7031,47 @@ const sections = [
 		color: hsl(210 70% 55% / 0.7);
 		font-size: 0.38rem;
 		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		padding: 1px 1px;
+		padding: 1px 3px;
 		text-align: center;
-		min-width: 18px;
+		min-width: 26px;
+		min-height: 14px;
+		border-top: 1px solid hsl(210 70% 55% / 0.1);
+		transition: background 0.15s ease, color 0.15s ease;
 	}
 
-	.hw-qkt-q-cell.dots-cell {
-		font-size: 0.45rem;
-		color: hsl(210 70% 55% / 0.4);
-		padding: 0px 1px;
+	.hw-qkt-q-col .hw-qkt-q-cell:first-child { border-top: none; }
+
+	.hw-qkt-q-dots {
+		background: hsl(210 70% 55% / 0.04);
+		color: hsl(210 70% 55% / 0.35);
+		font-size: 0.42rem;
+		padding: 0px 3px;
+		text-align: center;
+		min-width: 26px;
+		min-height: 12px;
+		border-top: 1px dashed hsl(210 70% 55% / 0.1);
+	}
+
+	/* Q row highlight for dot-product animation */
+	.hw-qkt-q-cell.row-highlight {
+		background: hsl(210 70% 55% / 0.25);
+		color: hsl(210 70% 55% / 0.95);
 	}
 
 	.hw-qkt-q-dim {
 		font-size: 0.42rem;
 		color: hsl(var(--theme-text) / 0.35);
+		margin-top: 2px;
 	}
 
-	.hw-qkt-q-dim .hw-qkt-dim-cancel {
-		text-decoration: line-through;
-		text-decoration-color: hsl(0 70% 50% / 0.6);
-		text-decoration-thickness: 1.5px;
-		opacity: 0.5;
-	}
-
-	/* Multiply sign */
-	.hw-qkt-times {
+	/* Operators (times, equals) */
+	.hw-qkt-times, .hw-qkt-equals {
 		font-size: 0.8rem;
 		color: hsl(var(--theme-text) / 0.4);
-		align-self: center;
 		padding: 0 2px;
-		padding-top: 14px;
 	}
 
-	/* Compact K^T matrix (orange) */
+	/* K^T matrix — wide column pills (d_head rows × T cols) */
 	.hw-qkt-kt-wrap {
 		display: flex;
 		flex-direction: column;
@@ -7046,11 +7087,28 @@ const sections = [
 		letter-spacing: 0.04em;
 	}
 
-	.hw-qkt-kt-grid {
-		display: grid;
+	.hw-qkt-kt-token-labels {
+		display: flex;
 		gap: 1px;
-		background: hsl(30 80% 50% / 0.06);
-		border: 1.5px solid hsl(30 80% 50% / 0.25);
+	}
+
+	.hw-qkt-kt-token-label {
+		font-size: 0.34rem;
+		color: hsl(30 80% 50% / 0.55);
+		text-align: center;
+		min-width: 26px;
+		padding: 0 1px;
+	}
+
+	.hw-qkt-kt-cols {
+		display: flex;
+		gap: 1px;
+	}
+
+	.hw-qkt-kt-col {
+		display: flex;
+		flex-direction: column;
+		border: 1px solid hsl(30 80% 50% / 0.2);
 		border-radius: 3px;
 		overflow: hidden;
 	}
@@ -7060,53 +7118,57 @@ const sections = [
 		color: hsl(30 80% 50% / 0.7);
 		font-size: 0.38rem;
 		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		padding: 1px 1px;
+		padding: 1px 3px;
 		text-align: center;
-		min-width: 18px;
+		min-width: 26px;
+		min-height: 14px;
+		border-top: 1px solid hsl(30 80% 50% / 0.1);
 	}
 
-	.hw-qkt-kt-cell.dots-cell {
-		font-size: 0.45rem;
-		color: hsl(30 80% 50% / 0.4);
-		padding: 0px 1px;
-	}
+	.hw-qkt-kt-col .hw-qkt-kt-cell:first-child { border-top: none; }
 
 	.hw-qkt-kt-dim {
 		font-size: 0.42rem;
 		color: hsl(var(--theme-text) / 0.35);
+		margin-top: 2px;
 	}
 
-	.hw-qkt-kt-dim .hw-qkt-dim-cancel {
+	/* Cancel animation (strikethrough on d_head) */
+	.hw-qkt-dim-cancel {
+		text-decoration: none;
+		transition: text-decoration-color 0.4s ease;
+	}
+
+	.hw-qkt-dim-cancel.active {
 		text-decoration: line-through;
 		text-decoration-color: hsl(0 70% 50% / 0.6);
 		text-decoration-thickness: 1.5px;
 		opacity: 0.5;
 	}
 
-	/* Equals sign */
-	.hw-qkt-equals {
-		font-size: 0.8rem;
-		color: hsl(var(--theme-text) / 0.4);
-		align-self: center;
-		padding: 0 2px;
-		padding-top: 14px;
+	/* Down arrow between mult row and result */
+	.hw-qkt-down-arrow {
+		font-size: 0.6rem;
+		color: hsl(var(--theme-text) / 0.3);
+		opacity: 0;
+		transition: opacity 0.4s ease;
 	}
+	.hw-qkt-down-arrow.visible { opacity: 1; }
 
-	/* Result T×T attention matrix (green-purple) */
+	/* Result T×T attention matrix (purple) */
 	.hw-qkt-result-wrap {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: 2px;
-		flex-shrink: 0;
 		opacity: 0;
-		transform: translateX(8px);
+		transform: translateY(8px);
 		transition: opacity 0.5s ease, transform 0.5s ease;
 	}
 
 	.hw-qkt-result-wrap.visible {
 		opacity: 1;
-		transform: translateX(0);
+		transform: translateY(0);
 	}
 
 	.hw-qkt-result-title {
@@ -7116,7 +7178,6 @@ const sections = [
 		letter-spacing: 0.04em;
 	}
 
-	/* Token labels along left (query tokens) */
 	.hw-qkt-result-row-labels {
 		display: grid;
 		gap: 1px;
@@ -7133,7 +7194,6 @@ const sections = [
 		min-height: 16px;
 	}
 
-	/* Token labels along top (key tokens) */
 	.hw-qkt-result-col-labels {
 		display: grid;
 		gap: 1px;
@@ -7147,7 +7207,6 @@ const sections = [
 		padding: 0 1px;
 	}
 
-	/* Grid wrapper with row labels + matrix side by side */
 	.hw-qkt-result-grid-area {
 		display: flex;
 		gap: 2px;
@@ -7164,17 +7223,23 @@ const sections = [
 	}
 
 	.hw-qkt-result-cell {
-		background: hsl(280 55% 55% / 0.06);
-		color: hsl(280 55% 55% / 0.75);
+		background: hsl(280 55% 55% / 0.04);
+		color: hsl(280 55% 55% / 0.15);
 		font-size: 0.36rem;
 		font-family: 'IBM Plex Mono', ui-monospace, monospace;
 		padding: 1px 1px;
 		text-align: center;
 		min-width: 22px;
 		min-height: 16px;
+		transition: background 0.2s ease, color 0.2s ease;
 	}
 
-	.hw-qkt-result-cell.hw-qkt-diag {
+	.hw-qkt-result-cell.hw-qkt-filled {
+		color: hsl(280 55% 55% / 0.75);
+		background: hsl(280 55% 55% / 0.06);
+	}
+
+	.hw-qkt-result-cell.hw-qkt-diag.hw-qkt-filled {
 		background: hsl(280 55% 55% / 0.14);
 		color: hsl(280 55% 55% / 0.9);
 		font-weight: 600;
@@ -7186,7 +7251,6 @@ const sections = [
 		margin-top: 2px;
 	}
 
-	/* Q axis label and K axis label */
 	.hw-qkt-axis-label-q {
 		font-size: 0.38rem;
 		color: hsl(210 70% 55% / 0.55);
@@ -7214,10 +7278,7 @@ const sections = [
 		opacity: 0;
 		transition: opacity 0.5s ease;
 	}
-
-	.hw-qkt-equation.visible {
-		opacity: 1;
-	}
+	.hw-qkt-equation.visible { opacity: 1; }
 
 	.hw-qkt-eq-q { color: hsl(210 70% 55%); font-weight: 600; }
 	.hw-qkt-eq-kt { color: hsl(30 80% 50%); font-weight: 600; }
@@ -7242,10 +7303,7 @@ const sections = [
 		opacity: 0;
 		transition: opacity 0.5s ease;
 	}
-
-	.hw-qkt-callout.visible {
-		opacity: 1;
-	}
+	.hw-qkt-callout.visible { opacity: 1; }
 
 	.hw-qkt-callout-icon {
 		font-size: 0.65rem;
@@ -7259,19 +7317,6 @@ const sections = [
 		letter-spacing: 0.03em;
 	}
 
-	/* Cancel animation (strikethrough appearing) */
-	.hw-qkt-dim-cancel {
-		text-decoration: none;
-		transition: text-decoration-color 0.4s ease;
-	}
-
-	.hw-qkt-dim-cancel.active {
-		text-decoration: line-through;
-		text-decoration-color: hsl(0 70% 50% / 0.6);
-		text-decoration-thickness: 1.5px;
-		opacity: 0.5;
-	}
-
 	/* Responsive */
 	@media (max-width: 480px) {
 		.hw-qkt-mult-row {
@@ -7281,7 +7326,7 @@ const sections = [
 		}
 		.hw-qkt-q-cell, .hw-qkt-kt-cell {
 			font-size: 0.34rem;
-			min-width: 16px;
+			min-width: 20px;
 		}
 		.hw-qkt-result-cell {
 			font-size: 0.32rem;
@@ -13313,26 +13358,26 @@ const sections = [
 		}
 
 
-function renderStep11() {
+		function renderStep11() {
 			var layout = el('div', 'hw-qkt-layout');
 			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
 			var T = tokens.length; // 8
 
-			// Q values from Step 7 (T x d_head, shown as 3 data rows x 8 cols)
+			// Q values (d_head=3 dimensions, T=8 tokens)
 			var qValues = [
 				['.45', '-.72', '1.1', '.31', '-.56', '.89', '-.18', '.45'],
 				['-.33', '.61', '-.49', '.77', '.42', '-.68', '.55', '-.33'],
 				['.81', '-.15', '.63', '-.42', '.28', '.37', '-.71', '.81']
 			];
 
-			// K^T values from Step 9 (d_head x T, same grid as K transposed)
+			// K^T values (d_head=3 dimensions, T=8 tokens)
 			var ktValues = [
 				['.33', '-.61', '.82', '.14', '-.47', '.58', '-.22', '.33'],
 				['-.52', '.39', '-.71', '.55', '.28', '-.63', '.44', '-.52'],
 				['.18', '-.44', '.36', '-.29', '.65', '.11', '-.53', '.18']
 			];
 
-			// Attention score matrix (T x T) — synthetic but plausible dot-product values
+			// Attention score matrix (T \u00d7 T)
 			var scoreValues = [
 				['.92', '.11', '.38', '.06', '-.21', '.15', '.34', '.92'],
 				['.14', '.87', '.22', '.41', '.09', '-.18', '.27', '.14'],
@@ -13344,29 +13389,64 @@ function renderStep11() {
 				['.92', '.11', '.38', '.06', '-.21', '.15', '.34', '.93']
 			];
 
-			// === Top row: Q · K^T = Scores ===
+			// === Top area: Q (tall) \u00b7 K^T (wide) ===
 			var multRow = el('div', 'hw-qkt-mult-row');
 
-			// --- Q compact matrix (blue) ---
+			// --- Q matrix as tall column pills (T rows \u00d7 d_head cols) ---
 			var qWrap = el('div', 'hw-qkt-q-wrap');
 			qWrap.appendChild(el('div', 'hw-qkt-q-label', 'Q'));
 
-			var qGrid = el('div', 'hw-qkt-q-grid');
-			qGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
-			qValues.forEach(function(row) {
-				row.forEach(function(val) {
-					qGrid.appendChild(el('div', 'hw-qkt-q-cell', val));
-				});
-			});
-			// Dots row
-			for (var i = 0; i < T; i++) {
-				qGrid.appendChild(el('div', 'hw-qkt-q-cell dots-cell', '\u22EE'));
+			var qBody = el('div', 'hw-qkt-q-body');
+
+			// Token row labels on left (2 top + dots + 2 bottom)
+			var qRowLabels = el('div', 'hw-qkt-q-row-labels');
+			qRowLabels.appendChild(el('div', 'hw-qkt-q-row-label', tokens[0]));
+			qRowLabels.appendChild(el('div', 'hw-qkt-q-row-label', tokens[1]));
+			qRowLabels.appendChild(el('div', 'hw-qkt-q-row-label dots-label', '\u22EE'));
+			qRowLabels.appendChild(el('div', 'hw-qkt-q-row-label', tokens[T - 2]));
+			qRowLabels.appendChild(el('div', 'hw-qkt-q-row-label', tokens[T - 1]));
+			qBody.appendChild(qRowLabels);
+
+			// 3 d_head column pills, each showing 5 visible rows
+			var qCols = el('div', 'hw-qkt-q-cols');
+			var qCellsByRow = {};
+			for (var d = 0; d < 3; d++) {
+				var qCol = el('div', 'hw-qkt-q-col');
+				// Row 0: token "The"
+				var c0 = el('div', 'hw-qkt-q-cell', qValues[d][0]);
+				c0.dataset.row = '0';
+				qCol.appendChild(c0);
+				if (!qCellsByRow[0]) qCellsByRow[0] = [];
+				qCellsByRow[0].push(c0);
+				// Row 1: token "fat"
+				var c1 = el('div', 'hw-qkt-q-cell', qValues[d][1]);
+				c1.dataset.row = '1';
+				qCol.appendChild(c1);
+				if (!qCellsByRow[1]) qCellsByRow[1] = [];
+				qCellsByRow[1].push(c1);
+				// Dots row
+				qCol.appendChild(el('div', 'hw-qkt-q-dots', '\u22EF'));
+				// Row T-2: token "on"
+				var c6 = el('div', 'hw-qkt-q-cell', qValues[d][T - 2]);
+				c6.dataset.row = String(T - 2);
+				qCol.appendChild(c6);
+				if (!qCellsByRow[T - 2]) qCellsByRow[T - 2] = [];
+				qCellsByRow[T - 2].push(c6);
+				// Row T-1: token "the"
+				var c7 = el('div', 'hw-qkt-q-cell', qValues[d][T - 1]);
+				c7.dataset.row = String(T - 1);
+				qCol.appendChild(c7);
+				if (!qCellsByRow[T - 1]) qCellsByRow[T - 1] = [];
+				qCellsByRow[T - 1].push(c7);
+				qCols.appendChild(qCol);
 			}
-			qWrap.appendChild(qGrid);
+			qBody.appendChild(qCols);
+			qWrap.appendChild(qBody);
 
 			// Q dimension label with cancelable d_head
 			var qDim = el('div', 'hw-qkt-q-dim');
-			var qDimT = el('span', '', 'T');
+			var qDimT = el('span', '');
+			qDimT.textContent = 'T';
 			qDimT.style.color = 'hsl(210 70% 55%)';
 			var qDimX = document.createTextNode(' \u00d7 ');
 			var qDimD = el('span', 'hw-qkt-dim-cancel');
@@ -13381,25 +13461,30 @@ function renderStep11() {
 			// --- Multiply sign ---
 			multRow.appendChild(el('div', 'hw-qkt-times', '\u00b7'));
 
-			// --- K^T compact matrix (orange) ---
+			// --- K^T matrix as wide column pills (d_head rows \u00d7 T cols) ---
 			var ktWrap = el('div', 'hw-qkt-kt-wrap');
 			var ktLabel = el('div', 'hw-qkt-kt-label');
 			ktLabel.innerHTML = 'K<sup>T</sup>';
 			if (astroAttr) ktLabel.querySelector('sup').setAttribute(astroAttr, '');
 			ktWrap.appendChild(ktLabel);
 
-			var ktGrid = el('div', 'hw-qkt-kt-grid');
-			ktGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
-			ktValues.forEach(function(row) {
-				row.forEach(function(val) {
-					ktGrid.appendChild(el('div', 'hw-qkt-kt-cell', val));
-				});
+			// Token column labels on top
+			var ktTokenLabels = el('div', 'hw-qkt-kt-token-labels');
+			tokens.forEach(function(tok) {
+				ktTokenLabels.appendChild(el('div', 'hw-qkt-kt-token-label', tok));
 			});
-			// Dots row
-			for (var i = 0; i < T; i++) {
-				ktGrid.appendChild(el('div', 'hw-qkt-kt-cell dots-cell', '\u22EE'));
-			}
-			ktWrap.appendChild(ktGrid);
+			ktWrap.appendChild(ktTokenLabels);
+
+			// 8 token column pills, each with 3 d_head cells (all visible, no truncation)
+			var ktCols = el('div', 'hw-qkt-kt-cols');
+			tokens.forEach(function(tok, t) {
+				var ktCol = el('div', 'hw-qkt-kt-col');
+				for (var dd = 0; dd < 3; dd++) {
+					ktCol.appendChild(el('div', 'hw-qkt-kt-cell', ktValues[dd][t]));
+				}
+				ktCols.appendChild(ktCol);
+			});
+			ktWrap.appendChild(ktCols);
 
 			// K^T dimension label with cancelable d_head
 			var ktDim = el('div', 'hw-qkt-kt-dim');
@@ -13407,7 +13492,8 @@ function renderStep11() {
 			ktDimD.innerHTML = 'd<sub>head</sub>';
 			if (astroAttr) ktDimD.querySelector('sub').setAttribute(astroAttr, '');
 			var ktDimX = document.createTextNode(' \u00d7 ');
-			var ktDimT = el('span', '', 'T');
+			var ktDimT = el('span', '');
+			ktDimT.textContent = 'T';
 			ktDimT.style.color = 'hsl(30 80% 50%)';
 			ktDim.appendChild(ktDimD);
 			ktDim.appendChild(ktDimX);
@@ -13415,20 +13501,23 @@ function renderStep11() {
 			ktWrap.appendChild(ktDim);
 			multRow.appendChild(ktWrap);
 
-			// --- Equals sign ---
-			multRow.appendChild(el('div', 'hw-qkt-equals', '='));
+			layout.appendChild(multRow);
 
-			// --- Result T×T attention matrix ---
+			// === Down arrow ===
+			var downArrow = el('div', 'hw-qkt-down-arrow', '\u2193 =');
+			layout.appendChild(downArrow);
+
+			// === Result T\u00d7T attention matrix ===
 			var resultWrap = el('div', 'hw-qkt-result-wrap');
 			resultWrap.appendChild(el('div', 'hw-qkt-result-title', 'Attention Scores'));
 
 			// K axis label (top)
 			resultWrap.appendChild(el('div', 'hw-qkt-axis-label-k', 'keys \u2192'));
 
-			// Column labels (key tokens — orange tint)
+			// Column labels (key tokens \u2014 orange tint)
 			var colLabels = el('div', 'hw-qkt-result-col-labels');
 			colLabels.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
-			colLabels.style.marginLeft = '28px'; // offset for row labels
+			colLabels.style.marginLeft = '28px';
 			tokens.forEach(function(tok) {
 				colLabels.appendChild(el('div', 'hw-qkt-result-col-label', tok));
 			});
@@ -13443,11 +13532,9 @@ function renderStep11() {
 			leftSide.style.gap = '1px';
 			leftSide.style.alignItems = 'flex-start';
 
-			// Q axis label (vertical on left)
 			var qAxisLabel = el('div', 'hw-qkt-axis-label-q', 'queries');
 			leftSide.appendChild(qAxisLabel);
 
-			// Row labels (query tokens — blue tint)
 			var rowLabels = el('div', 'hw-qkt-result-row-labels');
 			rowLabels.style.gridTemplateRows = 'repeat(' + T + ', 1fr)';
 			tokens.forEach(function(tok) {
@@ -13456,33 +13543,38 @@ function renderStep11() {
 			leftSide.appendChild(rowLabels);
 			gridArea.appendChild(leftSide);
 
-			// The T x T matrix
+			// The T \u00d7 T matrix (values start transparent, fill row-by-row)
 			var resultGrid = el('div', 'hw-qkt-result-grid');
 			resultGrid.style.gridTemplateColumns = 'repeat(' + T + ', 1fr)';
+			var resultCells = [];
 			scoreValues.forEach(function(row, r) {
+				var rowCells = [];
 				row.forEach(function(val, c) {
 					var cell = el('div', 'hw-qkt-result-cell', val);
 					if (r === c) cell.classList.add('hw-qkt-diag');
 					resultGrid.appendChild(cell);
+					rowCells.push(cell);
 				});
+				resultCells.push(rowCells);
 			});
 			gridArea.appendChild(resultGrid);
 			resultWrap.appendChild(gridArea);
 
 			// Result dimension label
 			var resultDim = el('div', 'hw-qkt-result-dim');
-			var rDimT1 = el('span', '', 'T');
+			var rDimT1 = el('span', '');
+			rDimT1.textContent = 'T';
 			rDimT1.style.color = 'hsl(210 70% 55%)';
 			var rDimX = document.createTextNode(' \u00d7 ');
-			var rDimT2 = el('span', '', 'T');
+			var rDimT2 = el('span', '');
+			rDimT2.textContent = 'T';
 			rDimT2.style.color = 'hsl(30 80% 50%)';
 			resultDim.appendChild(rDimT1);
 			resultDim.appendChild(rDimX);
 			resultDim.appendChild(rDimT2);
 			resultWrap.appendChild(resultDim);
-			multRow.appendChild(resultWrap);
 
-			layout.appendChild(multRow);
+			layout.appendChild(resultWrap);
 
 			// === Shape equation with strikethroughs ===
 			var eqRow = el('div', 'hw-qkt-equation');
@@ -13502,7 +13594,7 @@ function renderStep11() {
 			eqRow.appendChild(eqDimParts);
 			layout.appendChild(eqRow);
 
-			// === O(n²) callout ===
+			// === O(n\u00b2) callout ===
 			var callout = el('div', 'hw-qkt-callout');
 			callout.appendChild(el('span', 'hw-qkt-callout-icon', '\u26A0'));
 			var calloutText = el('span', 'hw-qkt-callout-text');
@@ -13511,33 +13603,75 @@ function renderStep11() {
 			layout.appendChild(callout);
 
 			// === Animation sequence ===
-			// Phase 1 (immediate): Q and K^T matrices visible
-			// Phase 2 (800ms): d_head dimensions get strikethrough (canceling)
+			// Phase 1 (800ms): d_head dimensions get strikethrough
 			setTimeout(function() {
 				qDimD.classList.add('active');
 				ktDimD.classList.add('active');
 			}, 800);
 
-			// Phase 3 (1400ms): result matrix appears
+			// Phase 2 (1200ms): Down arrow + result frame appears
 			setTimeout(function() {
+				downArrow.classList.add('visible');
 				resultWrap.classList.add('visible');
-			}, 1400);
+			}, 1200);
 
-			// Phase 4 (2000ms): equation appears
+			// Phase 3 (1600ms+): Row-by-row fill animation
+			// Rows 0-1: detailed with Q highlight (visible top rows)
+			// Rows 2-5: cascade (hidden behind dots)
+			// Rows 6-7: detailed with Q highlight (visible bottom rows)
+			var rowBaseDelay = 1600;
+			var detailedGap = 350;
+			var cascadeGap = 60;
+
+			for (var r = 0; r < T; r++) {
+				(function(row) {
+					var delay;
+					var isDetailed = (row < 2 || row >= T - 2);
+					if (row < 2) {
+						delay = rowBaseDelay + row * detailedGap;
+					} else if (row < T - 2) {
+						delay = rowBaseDelay + 2 * detailedGap + (row - 2) * cascadeGap;
+					} else {
+						delay = rowBaseDelay + 2 * detailedGap + (T - 4) * cascadeGap + (row - (T - 2)) * detailedGap;
+					}
+
+					setTimeout(function() {
+						// Highlight Q row cells if visible
+						if (qCellsByRow[row] && isDetailed) {
+							qCellsByRow[row].forEach(function(c) { c.classList.add('row-highlight'); });
+						}
+
+						// Fill result row
+						setTimeout(function() {
+							resultCells[row].forEach(function(c) { c.classList.add('hw-qkt-filled'); });
+						}, isDetailed ? 150 : 20);
+
+						// Remove Q highlight
+						if (qCellsByRow[row] && isDetailed) {
+							setTimeout(function() {
+								qCellsByRow[row].forEach(function(c) { c.classList.remove('row-highlight'); });
+							}, 280);
+						}
+					}, delay);
+				})(r);
+			}
+
+			// Phase 4: Equation appears after all row animations
+			var eqDelay = rowBaseDelay + 2 * detailedGap + (T - 4) * cascadeGap + 2 * detailedGap + 300;
 			setTimeout(function() {
 				eqRow.classList.add('visible');
-			}, 2000);
+			}, eqDelay);
 
-			// Phase 5 (2600ms): O(n²) callout appears
+			// Phase 5: O(n\u00b2) callout
 			setTimeout(function() {
 				callout.classList.add('visible');
-			}, 2600);
+			}, eqDelay + 400);
 
 			return layout;
 		}
 
 
-		function renderStep12() {
+function renderStep12() {
 			// Placeholder: Interactive attention heatmap (to be implemented in feature #14)
 			var layout = el('div', 'hw-placeholder-layout');
 			layout.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;gap:12px;';

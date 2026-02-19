@@ -418,3 +418,19 @@
 - Build passes (pnpm build)
 - Commit: 1a23854
 - Next: Feature #13 — Step 11 redesign: QK^T with correct matrix sizes
+
+=== Round 2 Feature #13 Complete — 2026-02-19 ===
+- Redesigned Step 11 "QK^T Attention Scores" with proportionally-sized matrices
+- Q matrix now shown as TALL column pills (3 d_head columns × 5 visible token rows with ⋯ truncation) with token row labels on left — visually emphasizes T×d_head shape
+- K^T matrix shown as WIDE column pills (8 token columns × 3 d_head cells each, all visible, no truncation needed) — visually emphasizes d_head×T shape
+- Proportional contrast: Q is tall/narrow, K^T is short/wide — makes matrix multiplication shape intuitive
+- Row-by-row dot product animation: rows 0-1 detailed (Q row cells highlight blue, then result row fills), rows 2-5 rapid cascade (hidden behind Q dots), rows 6-7 detailed again (visible bottom Q rows)
+- T×T result matrix (8×8, purple) appears below with "↓ =" arrow, fills row-by-row with diagonal highlighting
+- d_head dimension cancellation: strikethrough animation on both Q and K^T dimension labels at 800ms
+- Kept O(n²) callout and shape equation with d strikethrough
+- All elements use column pill pattern with proper Astro scoping (el() helper)
+- Forward/back/reset navigation works cleanly between Steps 10, 11, and 12
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: pending
+- Next: Feature #14 — New Step 12: interactive attention heatmap (from section 04c)
