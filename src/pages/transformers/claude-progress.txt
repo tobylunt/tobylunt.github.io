@@ -416,5 +416,5 @@
 - Forward/back/reset navigation works cleanly between Steps 9, 10, and 11
 - Both dark and light themes verified clean via Playwright
 - Build passes (pnpm build)
-- Commit: pending
+- Commit: 1a23854
 - Next: Feature #13 — Step 11 redesign: QK^T with correct matrix sizes
