@@ -4451,43 +4451,51 @@ const sections = [
 		font-weight: 600;
 	}
 
-	/* Step 1: Black box visualization */
+	/* Step 1: Black box visualization — horizontal sentence layout */
 	.hw-blackbox-layout {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
-		justify-content: center;
-		gap: 1.2rem;
+		gap: 1rem;
 		width: 100%;
 		padding: 1.5rem 0.5rem;
 	}
 
-	.hw-bb-input {
-		display: flex;
-		flex-direction: column;
-		gap: 0.4rem;
-		max-width: 140px;
-		flex-shrink: 0;
-	}
-
-	.hw-bb-input-label {
-		font-size: 0.68rem;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		color: hsl(var(--theme-text) / 0.45);
-		font-weight: 600;
-		margin-bottom: 0.15rem;
-	}
-
-	.hw-bb-token {
-		padding: 0.25rem 0.55rem;
-		background: hsl(210 60% 50% / 0.12);
-		border: 1px solid hsl(210 60% 50% / 0.25);
-		border-radius: 4px;
+	.hw-bb-sentence {
 		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		font-size: 0.78rem;
-		color: hsl(var(--theme-text) / 0.8);
-		line-height: 1.4;
-		white-space: nowrap;
+		font-size: 1.05rem;
+		color: hsl(var(--theme-text) / 0.85);
+		line-height: 1.6;
+		text-align: center;
+		display: flex;
+		align-items: baseline;
+		gap: 0.4rem;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.hw-bb-sentence-text {
+		white-space: pre-wrap;
+	}
+
+	.hw-bb-blank {
+		color: hsl(var(--theme-text) / 0.3);
+		letter-spacing: 0.1em;
+		border-bottom: 2px dashed hsl(var(--theme-text) / 0.2);
+		padding-bottom: 0.1rem;
+	}
+
+	.hw-bb-arrow-down {
+		font-size: 1.4rem;
+		color: hsl(var(--theme-text) / 0.25);
+		line-height: 1;
+	}
+
+	.hw-bb-pipe {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1.2rem;
 	}
 
 	.hw-bb-arrow {
@@ -4503,7 +4511,7 @@ const sections = [
 		align-items: center;
 		justify-content: center;
 		width: 160px;
-		height: 120px;
+		height: 100px;
 		background: hsl(220 15% 12%);
 		border-radius: 10px;
 		box-shadow: 0 4px 20px hsl(0 0% 0% / 0.35);
@@ -4532,14 +4540,6 @@ const sections = [
 		flex-shrink: 0;
 	}
 
-	.hw-bb-output-label {
-		font-size: 0.68rem;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		color: hsl(var(--theme-text) / 0.45);
-		font-weight: 600;
-	}
-
 	.hw-bb-prediction {
 		padding: 0.35rem 0.7rem;
 		background: hsl(145 50% 42% / 0.15);
@@ -4553,22 +4553,21 @@ const sections = [
 
 	@media (max-width: 480px) {
 		.hw-blackbox-layout {
-			gap: 0.6rem;
+			gap: 0.7rem;
 			padding: 1rem 0.2rem;
 		}
+		.hw-bb-sentence {
+			font-size: 0.85rem;
+		}
 		.hw-bb-box {
-			width: 110px;
-			height: 85px;
+			width: 120px;
+			height: 80px;
 		}
 		.hw-bb-box-label {
 			font-size: 0.72rem;
 		}
 		.hw-bb-box-q {
 			font-size: 1.1rem;
-		}
-		.hw-bb-token {
-			font-size: 0.68rem;
-			padding: 0.2rem 0.4rem;
 		}
 		.hw-bb-arrow {
 			font-size: 1.2rem;
@@ -11515,7 +11514,7 @@ const sections = [
 			{
 				title: 'Step 1: The Black Box',
 				text: 'A transformer takes an input text sequence and predicts the next token. The internals are opaque\u200a\u2014\u200awe will open this black box step by step.',
-				shape: 'Input \u2192 [Transformer] \u2192 Output'
+				shape: ''
 			},
 			{
 				title: 'Step 2: Tokenize',
@@ -11617,32 +11616,35 @@ const sections = [
 		function renderStep1() {
 			var layout = el('div', 'hw-blackbox-layout');
 
-			// Input column
-			var inputCol = el('div', 'hw-bb-input');
-			inputCol.appendChild(el('div', 'hw-bb-input-label', 'Input'));
-			var words = ['The', 'fat', 'cat', 'sat', 'quietly', 'on', 'the'];
-			words.forEach(function(w) {
-				inputCol.appendChild(el('div', 'hw-bb-token', w));
-			});
-			layout.appendChild(inputCol);
+			// Horizontal sentence row: "The fat cat sat quietly on the ___"
+			var sentenceRow = el('div', 'hw-bb-sentence');
+			var sentenceText = el('span', 'hw-bb-sentence-text', 'The fat cat sat quietly on the');
+			sentenceRow.appendChild(sentenceText);
+			var blank = el('span', 'hw-bb-blank', '___');
+			sentenceRow.appendChild(blank);
+			layout.appendChild(sentenceRow);
 
-			// Arrow in
-			layout.appendChild(el('div', 'hw-bb-arrow', '\u279C'));
+			// Arrow down
+			layout.appendChild(el('div', 'hw-bb-arrow-down', '\u2193'));
+
+			// Pipeline row: black box → arrow → prediction
+			var pipeRow = el('div', 'hw-bb-pipe');
 
 			// Black box
 			var box = el('div', 'hw-bb-box');
 			box.appendChild(el('div', 'hw-bb-box-label', 'Transformer'));
 			box.appendChild(el('div', 'hw-bb-box-q', '?'));
-			layout.appendChild(box);
+			pipeRow.appendChild(box);
 
 			// Arrow out
-			layout.appendChild(el('div', 'hw-bb-arrow', '\u279C'));
+			pipeRow.appendChild(el('div', 'hw-bb-arrow', '\u279C'));
 
-			// Output column
-			var outputCol = el('div', 'hw-bb-output');
-			outputCol.appendChild(el('div', 'hw-bb-output-label', 'Prediction'));
-			outputCol.appendChild(el('div', 'hw-bb-prediction', 'mat'));
-			layout.appendChild(outputCol);
+			// Prediction chip
+			var predWrap = el('div', 'hw-bb-output');
+			predWrap.appendChild(el('div', 'hw-bb-prediction', 'mat'));
+			pipeRow.appendChild(predWrap);
+
+			layout.appendChild(pipeRow);
 
 			return layout;
 		}
