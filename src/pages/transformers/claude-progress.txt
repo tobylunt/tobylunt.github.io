@@ -364,3 +364,19 @@
 - Build passes (pnpm build)
 - Commit: 0e7234a
 - Next: Feature #10 — Step 8 redesign: Q projection with per-token animation
+
+=== Round 2 Feature #10 Tracking Update — 2026-02-19 ===
+- Feature #10 (Step 8 — Q Projection with per-token animation) was already implemented in commit 286e499
+- This session verified the implementation via Playwright smoke-test:
+  - Step 8 shows: X̂ (normalized) input matrix → · → W_Q weight matrix → → → Q output matrix
+  - Input matrix: 8 column pills (purple/normalized) with token labels, "cat" column gets persistent blue highlight
+  - W_Q: 3 column pills (blue, d_model × d_head) slides up into position at 400ms
+  - Q output: starts invisible, frame appears at 800ms, per-token column fill animation (first 3 detailed with flying column copy + W_Q flash, remaining 5 rapid cascade)
+  - Equation row: Q = X̂ · W_Q with dimension annotation
+  - Gutter annotation: "Step 8: Query Projection" with explanation of query vectors
+  - Forward/back navigation works cleanly between Steps 7, 8, and 9
+  - Both dark and light themes render cleanly with no issues
+- Updated features.json: set passes to true for feature #10
+- Build passes (pnpm build)
+- Commit: 286e499 (code), tracking update in this session
+- Next: Feature #11 — Step 9 redesign: V projection with stacked card effect

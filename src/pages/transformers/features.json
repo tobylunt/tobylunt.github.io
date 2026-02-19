@@ -126,7 +126,7 @@
   {
     "id": 10,
     "name": "Step 8 redesign: Q projection with per-token animation",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Animate W_Q moving up from its position to a multiplication area beside the input matrix",
       "Draw an empty Q output matrix (correct size: T \u00d7 d_head) with token labels but no values yet",
