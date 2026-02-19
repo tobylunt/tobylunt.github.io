@@ -451,5 +451,5 @@
 - Both dark and light themes verified clean via Playwright
 - Forward/back/reset navigation works between Steps 11, 12, and 13
 - Build passes (pnpm build)
-- Commit: pending
+- Commit: ca7e2cd
 - Next: Feature #15 — Step 13 redesign: Attention × V with clearer dimensions
