@@ -5216,8 +5216,8 @@ const sections = [
 		}
 	}
 
-	/* Step 5: Combine Embeddings layout */
-	.hw-combine-layout {
+	/* Step 5 redesign: per-token merge animation */
+	.hw-merge5-layout {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -5226,158 +5226,180 @@ const sections = [
 		padding: 0.5rem 0.25rem;
 	}
 
-	.hw-combine-chips {
+	/* Pair container: holds blue + plus + yellow + green */
+	.hw-merge5-pair {
 		display: flex;
-		flex-wrap: nowrap;
-		justify-content: center;
-		gap: 4px;
-	}
-
-	.hw-combine-chip {
-		font-size: 0.72rem;
-		padding: 2px 7px;
-	}
-
-	.hw-combine-arrow-row {
-		display: flex;
-		justify-content: center;
-		gap: 4px;
-	}
-
-	.hw-combine-arrow-cell {
-		width: 60px;
-		text-align: center;
-		font-size: 0.75rem;
-		color: hsl(var(--theme-text) / 0.3);
-	}
-
-	.hw-combine-cols-row {
-		display: flex;
-		justify-content: center;
-		gap: 4px;
-		position: relative;
-	}
-
-	.hw-combine-token-group {
-		display: flex;
-		gap: 2px;
+		gap: 3px;
 		align-items: stretch;
-		position: relative;
+		justify-content: center;
 	}
 
-	/* Initial state: show the blue + yellow pair, same as Step 4 */
-	.hw-combine-bar {
-		width: 28px;
-		min-height: 90px;
-		border-radius: 3px;
+	/* Blue pill: matches Step 4 morphed state */
+	.hw-merge5-blue {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: 4px;
-		padding: 10px 1px;
-		transition: opacity 0.4s ease, transform 0.4s ease, width 0.4s ease;
+		width: 24px;
+		border-radius: 6px;
+		border: 1.5px solid hsl(210 60% 55% / 0.25);
+		background: hsl(210 60% 55% / 0.06);
+		overflow: hidden;
+		transition: width 0.45s ease calc(0.1s + var(--i, 0) * 0.06s),
+		            opacity 0.35s ease calc(0.1s + var(--i, 0) * 0.06s),
+		            border-color 0.35s ease calc(0.1s + var(--i, 0) * 0.06s);
 	}
 
-	.hw-combine-bar-tok {
-		background: hsl(210 60% 55% / 0.12);
-		border: 1px solid hsl(210 60% 55% / 0.2);
-		color: hsl(210 60% 55% / 0.6);
-	}
-
-	.hw-combine-bar-pos {
-		background: hsl(42 90% 55% / 0.12);
-		border: 1px solid hsl(42 90% 55% / 0.25);
-		color: hsl(42 90% 55% / 0.7);
-	}
-
-	.hw-combine-bar-label {
-		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		font-size: 0.5rem;
-		letter-spacing: 0.02em;
-		text-align: center;
-		line-height: 1.2;
-	}
-
-	.hw-combine-bar-dots {
-		font-size: 0.85rem;
-		line-height: 1;
-		opacity: 0.5;
-		flex: 1;
+	/* Yellow pill: matches Step 4 morphed state */
+	.hw-merge5-yellow {
 		display: flex;
-		align-items: center;
+		flex-direction: column;
+		width: 24px;
+		border-radius: 6px;
+		border: 1.5px solid hsl(42 90% 55% / 0.25);
+		background: hsl(42 90% 55% / 0.06);
+		overflow: hidden;
+		transition: width 0.45s ease calc(0.15s + var(--i, 0) * 0.06s),
+		            opacity 0.35s ease calc(0.15s + var(--i, 0) * 0.06s),
+		            border-color 0.35s ease calc(0.15s + var(--i, 0) * 0.06s);
 	}
 
-	/* Plus sign between bars */
-	.hw-combine-plus {
+	/* Plus sign between pills */
+	.hw-merge5-plus {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 0.75rem;
+		font-size: 0.7rem;
 		font-weight: 600;
-		color: hsl(var(--theme-text) / 0.4);
-		width: 12px;
-		transition: opacity 0.3s ease;
+		color: hsl(var(--theme-text) / 0.35);
+		width: 14px;
+		overflow: hidden;
+		transition: opacity 0.3s ease calc(var(--i, 0) * 0.06s),
+		            width 0.3s ease calc(var(--i, 0) * 0.06s);
 	}
 
-	/* Merged green bar */
-	.hw-combine-bar-merged {
-		background: hsl(152 50% 48% / 0.15);
-		border: 1px solid hsl(152 50% 48% / 0.3);
-		color: hsl(152 50% 48% / 0.7);
-		width: 0;
-		min-height: 90px;
-		border-radius: 3px;
+	/* Green merged pill: hidden initially */
+	.hw-merge5-green {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: 4px;
-		padding: 10px 0;
-		opacity: 0;
+		width: 0;
+		border-radius: 6px;
+		border: 1.5px solid transparent;
+		background: transparent;
 		overflow: hidden;
-		transition: opacity 0.4s ease, width 0.4s ease, padding 0.4s ease;
-	}
-
-	.hw-combine-bar-merged .hw-combine-bar-label {
 		opacity: 0;
-		transition: opacity 0.3s ease 0.2s;
+		transition: width 0.45s ease calc(0.2s + var(--i, 0) * 0.06s),
+		            opacity 0.35s ease calc(0.25s + var(--i, 0) * 0.06s),
+		            border-color 0.35s ease calc(0.2s + var(--i, 0) * 0.06s),
+		            background-color 0.35s ease calc(0.2s + var(--i, 0) * 0.06s);
 	}
 
-	.hw-combine-bar-merged .hw-combine-bar-dots {
+	/* Blue pill internal values (faded, matching Step 4 morphed) */
+	.hw-merge5-bval {
+		padding: 3px 2px;
+		text-align: center;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.55rem;
+		line-height: 1.3;
+		color: hsl(210 60% 55% / 0.55);
+		border-top: 1px solid hsl(210 60% 55% / 0.08);
+		opacity: 0.15;
+	}
+
+	.hw-merge5-bval:first-child {
+		border-top: none;
+	}
+
+	.hw-merge5-bdots {
+		padding: 2px 2px;
+		text-align: center;
+		font-size: 0.65rem;
+		line-height: 1;
+		color: hsl(210 60% 55% / 0.3);
+		border-top: 1px dashed hsl(210 60% 55% / 0.08);
+		border-bottom: 1px dashed hsl(210 60% 55% / 0.08);
+		background: hsl(210 60% 55% / 0.02);
+		opacity: 0.2;
+	}
+
+	/* Yellow pill internal values (faded) */
+	.hw-merge5-yval {
+		padding: 3px 2px;
+		text-align: center;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.55rem;
+		line-height: 1.3;
+		color: hsl(42 90% 55% / 0.45);
+		border-top: 1px solid hsl(42 90% 55% / 0.08);
+		opacity: 0.25;
+	}
+
+	.hw-merge5-yval:first-child {
+		border-top: none;
+	}
+
+	.hw-merge5-ydots {
+		padding: 2px 2px;
+		text-align: center;
+		font-size: 0.65rem;
+		line-height: 1;
+		color: hsl(42 90% 55% / 0.3);
+		border-top: 1px dashed hsl(42 90% 55% / 0.08);
+		border-bottom: 1px dashed hsl(42 90% 55% / 0.08);
+		background: hsl(42 90% 55% / 0.02);
+		opacity: 0.2;
+	}
+
+	/* Green pill internal values (visible after merge) */
+	.hw-merge5-gval {
+		padding: 3px 3px;
+		text-align: center;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.55rem;
+		line-height: 1.3;
+		color: hsl(152 50% 48% / 0.7);
+		border-top: 1px solid hsl(152 50% 48% / 0.12);
+	}
+
+	.hw-merge5-gval:first-child {
+		border-top: none;
+	}
+
+	.hw-merge5-gdots {
+		padding: 2px 2px;
+		text-align: center;
+		font-size: 0.65rem;
+		line-height: 1;
+		color: hsl(152 50% 48% / 0.4);
+		border-top: 1px dashed hsl(152 50% 48% / 0.15);
+		border-bottom: 1px dashed hsl(152 50% 48% / 0.15);
+		background: hsl(152 50% 48% / 0.03);
+	}
+
+	/* === MERGED STATE === */
+	.hw-merge5-merged .hw-merge5-blue {
+		width: 0;
 		opacity: 0;
-		transition: opacity 0.3s ease 0.2s;
+		border-color: transparent;
 	}
 
-	/* Merged state: hide blue/yellow, show green */
-	.hw-combine-token-group.merged .hw-combine-bar-tok,
-	.hw-combine-token-group.merged .hw-combine-bar-pos {
+	.hw-merge5-merged .hw-merge5-yellow {
+		width: 0;
+		opacity: 0;
+		border-color: transparent;
+	}
+
+	.hw-merge5-merged .hw-merge5-plus {
 		opacity: 0;
 		width: 0;
-		min-height: 0;
-		padding: 0;
-		border-width: 0;
-		overflow: hidden;
 	}
 
-	.hw-combine-token-group.merged .hw-combine-plus {
-		opacity: 0;
-		width: 0;
-		overflow: hidden;
-	}
-
-	.hw-combine-token-group.merged .hw-combine-bar-merged {
-		opacity: 1;
+	.hw-merge5-merged .hw-merge5-green {
 		width: 36px;
-		padding: 10px 1px;
+		opacity: 1;
+		border-color: hsl(152 50% 48% / 0.3);
+		background: hsl(152 50% 48% / 0.08);
 	}
 
-	.hw-combine-token-group.merged .hw-combine-bar-merged .hw-combine-bar-label,
-	.hw-combine-token-group.merged .hw-combine-bar-merged .hw-combine-bar-dots {
-		opacity: 0.5;
-	}
-
-	/* Equation row: "emb + pos = combined" */
+	/* Equation row */
 	.hw-combine-equation {
 		display: flex;
 		align-items: center;
@@ -5404,15 +5426,6 @@ const sections = [
 		font-weight: 600;
 	}
 
-	.hw-combine-dim-label {
-		margin-top: 0.3rem;
-		font-size: 0.68rem;
-		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		color: hsl(var(--theme-text) / 0.35);
-		opacity: 0;
-		animation: hw-fade-in 0.3s ease 1.8s both;
-	}
-
 	/* Sidenote for Step 5 */
 	.hw-combine-sidenote {
 		margin-top: 0.7rem;
@@ -5426,11 +5439,7 @@ const sections = [
 		line-height: 1.45;
 		color: hsl(var(--theme-text) / 0.55);
 		opacity: 0;
-		animation: hw-fade-in 0.3s ease 2s both;
-	}
-
-	.hw-combine-sidenote.hw-hidden {
-		display: none;
+		animation: hw-fade-in 0.3s ease 1.5s both;
 	}
 
 	.hw-combine-sn-text {
@@ -5441,45 +5450,12 @@ const sections = [
 		color: hsl(var(--theme-text) / 0.7);
 	}
 
-	.hw-combine-sn-close {
-		position: absolute;
-		top: 2px;
-		right: 4px;
-		background: none;
-		border: none;
-		cursor: pointer;
-		font-size: 0.85rem;
-		line-height: 1;
-		color: hsl(var(--theme-text) / 0.3);
-		padding: 2px 4px;
-	}
-
-	.hw-combine-sn-close:hover {
-		color: hsl(var(--theme-text) / 0.6);
-	}
-
 	@media (max-width: 480px) {
-		.hw-combine-bar,
-		.hw-combine-bar-merged {
-			min-height: 70px;
-		}
-		.hw-combine-token-group.merged .hw-combine-bar-merged {
-			width: 28px;
-		}
-		.hw-combine-bar-label {
-			font-size: 0.48rem;
-		}
-		.hw-combine-chip {
-			font-size: 0.62rem;
-			padding: 2px 5px;
-		}
-		.hw-combine-plus {
-			font-size: 0.6rem;
-			width: 8px;
-		}
-		.hw-combine-sidenote {
-			font-size: 0.65rem;
-		}
+		.hw-merge5-blue { width: 18px; }
+		.hw-merge5-yellow { width: 18px; }
+		.hw-merge5-merged .hw-merge5-green { width: 28px; }
+		.hw-pos4-chip { font-size: 0.62rem; padding: 2px 5px; }
+		.hw-combine-sidenote { font-size: 0.65rem; }
 	}
 
 	/* ===== Step 6: Layer Norm + QKV Weights ===== */
@@ -12064,108 +12040,118 @@ const sections = [
 		}
 
 		function renderStep5() {
-			var layout = el('div', 'hw-combine-layout');
-
-			// Token chips row at the top
-			var chipsRow = el('div', 'hw-combine-chips');
+			var layout = el('div', 'hw-merge5-layout');
 			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
 			var tokenTypes = ['whole', 'whole', 'whole', 'whole', 'sub', 'sub', 'whole', 'whole'];
 
+			var sampleVecs = [
+				[0.12, -0.84, 0.31, 0.67],
+				[-0.45, 0.22, 0.91, -0.33],
+				[0.78, -0.15, -0.62, 0.44],
+				[-0.29, 0.56, 0.08, -0.71],
+				[0.63, -0.38, 0.47, 0.19],
+				[-0.11, 0.73, -0.55, 0.82],
+				[0.34, -0.67, 0.25, -0.48],
+				[0.52, 0.14, -0.39, 0.66]
+			];
+
+			var posVecs = [
+				[0.00, 0.84, 0.54, 0.91],
+				[0.01, 0.54, 0.99, 0.42],
+				[0.01, 0.14, 0.65, -0.76],
+				[0.00, -0.42, -0.42, -0.91],
+				[0.00, -0.84, -0.99, -0.14],
+				[0.00, -1.00, -0.65, 0.66],
+				[0.01, -0.76, 0.28, 0.99],
+				[0.01, -0.28, 0.96, 0.54]
+			];
+
+			var body = el('div', 'hw-pos4-body');
+			var yaxis = el('div', 'hw-embed-yaxis');
+			yaxis.innerHTML = 'd<sub>model</sub>';
+			if (astroAttr) {
+				yaxis.querySelectorAll('sub').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			}
+			body.appendChild(yaxis);
+
+			var columns = el('div', 'hw-pos4-columns');
 			tokens.forEach(function(tok, i) {
-				var chip = el('span', 'hw-tok-chip hw-tok-' + tokenTypes[i] + ' hw-combine-chip', tok);
-				chipsRow.appendChild(chip);
-			});
-			layout.appendChild(chipsRow);
+				var col = el('div', 'hw-pos4-col');
+				col.style.setProperty('--i', i);
+				col.appendChild(el('span', 'hw-tok-chip hw-tok-' + tokenTypes[i] + ' hw-pos4-chip', tok));
+				col.appendChild(el('div', 'hw-pos4-arrow', '\u2193'));
 
-			// Down arrows row
-			var arrowRow = el('div', 'hw-combine-arrow-row');
-			tokens.forEach(function() {
-				arrowRow.appendChild(el('span', 'hw-combine-arrow-cell', '\u2193'));
-			});
-			layout.appendChild(arrowRow);
+				var pair = el('div', 'hw-merge5-pair');
 
-			// Columns row: blue + yellow pairs that will merge into green
-			var colsRow = el('div', 'hw-combine-cols-row');
-			var groups = [];
-
-			tokens.forEach(function(tok, i) {
-				var group = el('div', 'hw-combine-token-group');
-
-				// Blue token embedding bar
-				var tokBar = el('div', 'hw-combine-bar hw-combine-bar-tok');
-				var tokLabel = el('span', 'hw-combine-bar-label', 'emb');
-				tokBar.appendChild(tokLabel);
-				tokBar.appendChild(el('span', 'hw-combine-bar-dots', '\u22EE'));
-				group.appendChild(tokBar);
+				// Blue pill (matches Step 4 morphed state: 24px wide, faded values)
+				var blue = el('div', 'hw-merge5-blue');
+				blue.appendChild(el('div', 'hw-merge5-bval', sampleVecs[i][0].toFixed(2)));
+				blue.appendChild(el('div', 'hw-merge5-bval', sampleVecs[i][1].toFixed(2)));
+				blue.appendChild(el('div', 'hw-merge5-bdots', '\u22EF'));
+				blue.appendChild(el('div', 'hw-merge5-bval', sampleVecs[i][2].toFixed(2)));
+				blue.appendChild(el('div', 'hw-merge5-bval', sampleVecs[i][3].toFixed(2)));
+				pair.appendChild(blue);
 
 				// Plus sign
-				var plus = el('span', 'hw-combine-plus', '+');
-				group.appendChild(plus);
+				pair.appendChild(el('span', 'hw-merge5-plus', '+'));
 
-				// Yellow positional embedding bar
-				var posBar = el('div', 'hw-combine-bar hw-combine-bar-pos');
-				var posLabel = el('span', 'hw-combine-bar-label', 'pos');
-				posBar.appendChild(posLabel);
-				posBar.appendChild(el('span', 'hw-combine-bar-dots', '\u22EE'));
-				group.appendChild(posBar);
+				// Yellow pill (matches Step 4 morphed state: 24px wide, faded values)
+				var yellow = el('div', 'hw-merge5-yellow');
+				yellow.appendChild(el('div', 'hw-merge5-yval', posVecs[i][0].toFixed(2)));
+				yellow.appendChild(el('div', 'hw-merge5-yval', posVecs[i][1].toFixed(2)));
+				yellow.appendChild(el('div', 'hw-merge5-ydots', '\u22EF'));
+				yellow.appendChild(el('div', 'hw-merge5-yval', posVecs[i][2].toFixed(2)));
+				yellow.appendChild(el('div', 'hw-merge5-yval', posVecs[i][3].toFixed(2)));
+				pair.appendChild(yellow);
 
-				// Green merged bar (hidden initially)
-				var mergedBar = el('div', 'hw-combine-bar-merged');
-				var mergedLabel = el('span', 'hw-combine-bar-label', 'x');
-				mergedBar.appendChild(mergedLabel);
-				mergedBar.appendChild(el('span', 'hw-combine-bar-dots', '\u22EE'));
-				group.appendChild(mergedBar);
+				// Green merged pill (hidden initially, expands on merge)
+				var green = el('div', 'hw-merge5-green');
+				var combinedVec = sampleVecs[i].map(function(v, j) { return v + posVecs[i][j]; });
+				green.appendChild(el('div', 'hw-merge5-gval', combinedVec[0].toFixed(2)));
+				green.appendChild(el('div', 'hw-merge5-gval', combinedVec[1].toFixed(2)));
+				green.appendChild(el('div', 'hw-merge5-gdots', '\u22EF'));
+				green.appendChild(el('div', 'hw-merge5-gval', combinedVec[2].toFixed(2)));
+				green.appendChild(el('div', 'hw-merge5-gval', combinedVec[3].toFixed(2)));
+				pair.appendChild(green);
 
-				colsRow.appendChild(group);
-				groups.push(group);
+				col.appendChild(pair);
+				columns.appendChild(col);
 			});
+			body.appendChild(columns);
+			layout.appendChild(body);
 
-			layout.appendChild(colsRow);
-
-			// Equation row: emb + pos = combined
+			// Equation row: token emb + pos emb = combined
 			var eqRow = el('div', 'hw-combine-equation');
-			var eqBlue = el('span', 'hw-combine-eq-blue', 'token emb');
-			var eqPlus = el('span', '', ' + ');
-			var eqYellow = el('span', 'hw-combine-eq-yellow', 'pos emb');
-			var eqEquals = el('span', '', ' = ');
-			var eqGreen = el('span', 'hw-combine-eq-green', 'combined');
-			eqRow.appendChild(eqBlue);
-			eqRow.appendChild(eqPlus);
-			eqRow.appendChild(eqYellow);
-			eqRow.appendChild(eqEquals);
-			eqRow.appendChild(eqGreen);
+			eqRow.appendChild(el('span', 'hw-combine-eq-blue', 'token emb'));
+			eqRow.appendChild(el('span', '', ' + '));
+			eqRow.appendChild(el('span', 'hw-combine-eq-yellow', 'pos emb'));
+			eqRow.appendChild(el('span', '', ' = '));
+			eqRow.appendChild(el('span', 'hw-combine-eq-green', 'combined'));
 			layout.appendChild(eqRow);
-
-			// Dimension label
-			var dimLabel = el('div', 'hw-combine-dim-label');
-			dimLabel.textContent = '8 tokens \u00d7 d_model dimensions';
-			layout.appendChild(dimLabel);
 
 			// Sidenote explaining combination methods
 			var sn = el('div', 'hw-combine-sidenote');
 			var snText = el('span', 'hw-combine-sn-text');
 			snText.innerHTML = '<strong>Combining embeddings:</strong> Addition is the standard approach\u200a\u2014\u200aconceptually, each dimension in the combined vector encodes both identity and position simultaneously. Alternative methods (concatenation, learned gating) exist, but simple addition provides maximal flexibility for the model to learn its own weighting through training.';
-			var snClose = el('button', 'hw-combine-sn-close', '\u00d7');
-			snClose.addEventListener('click', function() {
-				sn.classList.add('hw-hidden');
-			});
+			if (astroAttr) {
+				snText.querySelectorAll('strong').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			}
 			sn.appendChild(snText);
-			sn.appendChild(snClose);
 			layout.appendChild(sn);
 
-			// Animate the merge after a delay
-			setTimeout(function() {
-				groups.forEach(function(g, i) {
+			// Trigger merge animation: show blue+yellow briefly, then merge
+			requestAnimationFrame(function() {
+				requestAnimationFrame(function() {
 					setTimeout(function() {
-						g.classList.add('merged');
-					}, i * 80);
+						layout.classList.add('hw-merge5-merged');
+					}, 500);
 				});
-			}, 600);
+			});
 
 			return layout;
 		}
 
-		function renderStep6() {
+				function renderStep6() {
 			// Placeholder: Embeddings Matrix formation (to be implemented in feature #8)
 			var layout = el('div', 'hw-placeholder-layout');
 			layout.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;gap:12px;';
