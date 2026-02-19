@@ -837,7 +837,7 @@ const sections = [
 						<button id="head-walk-back-btn" class="qkv-btn" disabled>◀ Back</button>
 						<button id="head-walk-step-btn" class="qkv-btn qkv-btn-step">Next ▶</button>
 						<button id="head-walk-reset-btn" class="qkv-btn">Reset</button>
-						<span id="head-walk-step-label" class="qkv-step-label">Step 1 / 12</span>
+						<span id="head-walk-step-label" class="qkv-step-label">Step 1 / 14</span>
 					</div>
 					<div class="head-walk-body">
 						<div class="head-walk-viz-scroll">
@@ -11506,7 +11506,7 @@ const sections = [
 			return e;
 		}
 
-		var TOTAL_STEPS = 12;
+		var TOTAL_STEPS = 14;
 		var currentStep = 1;
 
 		// Step metadata: title, description text, shape info
@@ -11538,37 +11538,47 @@ const sections = [
 				shape: 'Combined: T \u00d7 d_model'
 			},
 			{
-				title: 'Step 6: Layer Norm + QKV Weights',
+				title: 'Step 6: Embeddings Matrix',
+				text: 'The separate per-token vectors consolidate into a single matrix\u200a\u2014\u200aeach column is one token\u2019s combined embedding. This matrix is the input to the attention mechanism.',
+				shape: 'X: T \u00d7 d_model matrix'
+			},
+			{
+				title: 'Step 7: Layer Norm + QKV Weights',
 				text: 'The combined embeddings are normalized, then three learned weight matrices (W_Q, W_K, W_V) prepare the input for attention.',
 				shape: 'X\u0302 (T \u00d7 d_model) \u2192 Q, K, V via learned projections'
 			},
 			{
-				title: 'Step 7: Query Projection',
+				title: 'Step 8: Query Projection',
 				text: 'Each token\u2019s normalized embedding is multiplied by W_Q to produce a query vector\u200a\u2014\u200a\u201cwhat am I looking for?\u201d',
 				shape: 'Q = X\u0302 \u00b7 W_Q \u2192 (T \u00d7 d_head)'
 			},
 			{
-				title: 'Step 8: Value Projection',
+				title: 'Step 9: Value Projection',
 				text: 'The same input is multiplied by W_V to produce value vectors\u200a\u2014\u200a\u201cwhat information do I carry?\u201d',
 				shape: 'V = X\u0302 \u00b7 W_V \u2192 (T \u00d7 d_head)'
 			},
 			{
-				title: 'Step 9: Key Projection + Transpose',
+				title: 'Step 10: Key Projection + Transpose',
 				text: 'Keys are produced by W_K, then transposed. K\u1d40 flips from (T \u00d7 d_head) to (d_head \u00d7 T)\u200a\u2014\u200athe inner dimensions will match and cancel during multiplication.',
 				shape: 'K\u1d40: (d_head \u00d7 T)'
 			},
 			{
-				title: 'Step 10: QK\u1d40 \u2014 Attention Scores',
+				title: 'Step 11: QK\u1d40 \u2014 Attention Scores',
 				text: 'Q \u00b7 K\u1d40 computes all pairwise token similarities at once. The d_head inner dimensions cancel, leaving a T \u00d7 T matrix. This is O(n\u00b2) in sequence length.',
 				shape: '(T\u00d7d) \u00b7 (d\u00d7T) = T\u00d7T'
 			},
 			{
-				title: 'Step 11: Attention \u00d7 V',
+				title: 'Step 12: Attention Heatmap',
+				text: 'The raw attention scores are passed through softmax (each row sums to 1), producing normalized attention weights. This heatmap shows how much each token attends to every other token.',
+				shape: 'Softmax(QK\u1d40 / \u221ad) \u2192 T \u00d7 T weights'
+			},
+			{
+				title: 'Step 13: Attention \u00d7 V',
 				text: 'The attention weights (T \u00d7 T) multiply V (T \u00d7 d_head), restoring the original dimensionality. Each output row is a weighted blend of value vectors.',
 				shape: '(T\u00d7T) \u00b7 (T\u00d7d) = T\u00d7d'
 			},
 			{
-				title: 'Step 12: Residual Stream',
+				title: 'Step 14: Attention Head Output',
 				text: 'The attention output is added back to the original input (residual connection). This allows information to flow unchanged while attention adds its contribution, then feeds forward to the next layer.',
 				shape: 'Output = Input + Attention(Input)'
 			}
@@ -11952,6 +11962,19 @@ const sections = [
 		}
 
 		function renderStep6() {
+			// Placeholder: Embeddings Matrix formation (to be implemented in feature #8)
+			var layout = el('div', 'hw-placeholder-layout');
+			layout.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;gap:12px;';
+			var title = el('div', '', 'Embeddings Matrix');
+			title.style.cssText = 'font-weight:600;font-size:1.1rem;opacity:0.7;';
+			layout.appendChild(title);
+			var desc = el('div', '', 'Green columns consolidate into a single matrix visualization.');
+			desc.style.cssText = 'opacity:0.5;font-size:0.85rem;max-width:300px;text-align:center;';
+			layout.appendChild(desc);
+			return layout;
+		}
+
+		function renderStep7() {
 			var layout = el('div', 'hw-norm-layout');
 
 			// Phase 1 label: consolidation
@@ -12083,7 +12106,7 @@ const sections = [
 			return layout;
 		}
 
-		function renderStep7() {
+		function renderStep8() {
 			var layout = el('div', 'hw-qproj-layout');
 			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
 
@@ -12260,7 +12283,7 @@ const sections = [
 		}
 
 
-		function renderStep8() {
+		function renderStep9() {
 			var layout = el('div', 'hw-vproj-layout');
 			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
 
@@ -12461,7 +12484,7 @@ const sections = [
 		}
 
 
-		function renderStep9() {
+		function renderStep10() {
 			var layout = el('div', 'hw-kproj-layout');
 			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
 
@@ -12753,7 +12776,7 @@ const sections = [
 		}
 
 
-		function renderStep10() {
+		function renderStep11() {
 			var layout = el('div', 'hw-qkt-layout');
 			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
 			var T = tokens.length; // 8
@@ -12977,7 +13000,20 @@ const sections = [
 		}
 
 
-		function renderStep11() {
+		function renderStep12() {
+			// Placeholder: Interactive attention heatmap (to be implemented in feature #14)
+			var layout = el('div', 'hw-placeholder-layout');
+			layout.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;gap:12px;';
+			var title = el('div', '', 'Attention Heatmap');
+			title.style.cssText = 'font-weight:600;font-size:1.1rem;opacity:0.7;';
+			layout.appendChild(title);
+			var desc = el('div', '', 'Interactive heatmap with softmax-normalized attention weights.');
+			desc.style.cssText = 'opacity:0.5;font-size:0.85rem;max-width:300px;text-align:center;';
+			layout.appendChild(desc);
+			return layout;
+		}
+
+		function renderStep13() {
 			var layout = el('div', 'hw-attnv-layout');
 			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
 			var T = tokens.length; // 8
@@ -13155,7 +13191,7 @@ const sections = [
 		}
 
 
-		function renderStep12() {
+		function renderStep14() {
 			var layout = el('div', 'hw-residual-layout');
 			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
 			var T = tokens.length; // 8
@@ -13378,6 +13414,10 @@ const sections = [
 				viz.appendChild(renderStep11());
 			} else if (step === 12) {
 				viz.appendChild(renderStep12());
+			} else if (step === 13) {
+				viz.appendChild(renderStep13());
+			} else if (step === 14) {
+				viz.appendChild(renderStep14());
 			}
 
 			updateAnnotation(step);
