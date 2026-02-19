@@ -4577,7 +4577,7 @@ const sections = [
 		}
 	}
 
-	/* Step 2: Tokenize — animation layout */
+	/* Step 2: Tokenize — word-to-chip morph animation */
 	.hw-tokenize-layout {
 		display: flex;
 		flex-direction: column;
@@ -4587,35 +4587,95 @@ const sections = [
 		padding: 1rem 0.5rem;
 	}
 
-	.hw-tok-sentence {
-		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		font-size: 0.92rem;
-		color: hsl(var(--theme-text) / 0.75);
-		letter-spacing: 0.01em;
-		line-height: 1.6;
-		text-align: center;
-		transition: opacity 0.4s ease;
-	}
-
-	.hw-tok-sentence.hw-hidden {
-		opacity: 0;
-		position: absolute;
-		pointer-events: none;
-	}
-
-	.hw-tok-arrow-down {
-		font-size: 1.4rem;
-		color: hsl(var(--theme-text) / 0.25);
-		line-height: 1;
-		animation: hw-fade-in 0.3s ease 0.3s both;
-	}
-
-	.hw-tok-chips-row {
+	.hw-tok-morph-row {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
-		gap: 6px;
+		align-items: baseline;
+		gap: 0.6ch;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
 		max-width: 480px;
+		transition: gap 0.5s ease;
+	}
+
+	.hw-tok-morphed .hw-tok-morph-row {
+		gap: 6px;
+	}
+
+	.hw-tok-morph-word {
+		display: inline-block;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 1.05rem;
+		color: hsl(var(--theme-text) / 0.85);
+		padding: 0 1px;
+		border: 1px solid transparent;
+		border-radius: 4px;
+		background: transparent;
+		white-space: nowrap;
+		line-height: 1.4;
+		font-weight: 500;
+		transition: font-size 0.4s ease, color 0.4s ease, padding 0.4s ease,
+			background 0.4s ease, border-color 0.4s ease;
+		transition-delay: var(--morph-delay, 0ms);
+	}
+
+	.hw-tok-morphed .hw-tok-morph-word.hw-tok-morph-whole {
+		font-size: 0.82rem;
+		padding: 4px 10px;
+		color: hsl(210 60% 55%);
+		background: hsl(210 60% 55% / 0.12);
+		border-color: hsl(210 60% 55% / 0.2);
+	}
+
+	.hw-tok-morphed .hw-tok-morph-word.hw-tok-morph-sub {
+		font-size: 0.82rem;
+		padding: 4px 10px;
+		color: hsl(35 80% 50%);
+		background: hsl(35 80% 50% / 0.12);
+		border-color: hsl(35 80% 50% / 0.2);
+	}
+
+	.hw-tok-morph-split {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 0;
+		position: relative;
+		transition: gap 0.4s ease;
+		transition-delay: 340ms;
+	}
+
+	.hw-tok-morphed .hw-tok-morph-split {
+		gap: 2px;
+	}
+
+	.hw-tok-morph-bracket {
+		position: absolute;
+		bottom: -16px;
+		left: 0;
+		right: 0;
+		text-align: center;
+		font-size: 0.62rem;
+		color: hsl(35 80% 50% / 0.65);
+		white-space: nowrap;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		transition-delay: 0.7s;
+	}
+
+	.hw-tok-morphed .hw-tok-morph-bracket {
+		opacity: 1;
+	}
+
+	/* Token count: hidden until morph completes */
+	.hw-tok-morph .hw-tok-count {
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		transition-delay: 0.9s;
+		animation: none;
+	}
+
+	.hw-tok-morphed .hw-tok-count {
+		opacity: 1;
 	}
 
 	.hw-tok-chip {
@@ -4646,24 +4706,6 @@ const sections = [
 		border: 1px solid hsl(35 80% 50% / 0.2);
 	}
 
-	.hw-tok-split-group {
-		display: inline-flex;
-		gap: 2px;
-		position: relative;
-	}
-
-	.hw-tok-split-bracket {
-		position: absolute;
-		bottom: -16px;
-		left: 0;
-		right: 0;
-		text-align: center;
-		font-size: 0.62rem;
-		color: hsl(35 80% 50% / 0.65);
-		white-space: nowrap;
-		animation: hw-fade-in 0.3s ease 0.5s both;
-	}
-
 	.hw-tok-count {
 		margin-top: 0.5rem;
 		font-size: 0.72rem;
@@ -4689,15 +4731,17 @@ const sections = [
 	}
 
 	@media (max-width: 480px) {
-		.hw-tok-chips-row {
-			gap: 4px;
+		.hw-tok-morph-word {
+			font-size: 0.85rem;
+		}
+		.hw-tok-morphed .hw-tok-morph-word.hw-tok-morph-whole,
+		.hw-tok-morphed .hw-tok-morph-word.hw-tok-morph-sub {
+			font-size: 0.72rem;
+			padding: 3px 7px;
 		}
 		.hw-tok-chip {
 			font-size: 0.72rem;
 			padding: 3px 7px;
-		}
-		.hw-tok-sentence {
-			font-size: 0.82rem;
 		}
 	}
 
@@ -11650,58 +11694,57 @@ const sections = [
 		}
 
 		function renderStep2() {
-			var layout = el('div', 'hw-tokenize-layout');
+			var layout = el('div', 'hw-tokenize-layout hw-tok-morph');
 
-			// Original sentence (fades away)
-			var sentence = el('div', 'hw-tok-sentence', 'The  fat  cat  sat  quietly  on  the');
-			layout.appendChild(sentence);
+			// Morph row: words start as sentence text, transition into token chips
+			var row = el('div', 'hw-tok-morph-row');
 
-			// Downward arrow
-			layout.appendChild(el('div', 'hw-tok-arrow-down', '\u2193'));
-
-			// Token chips row
-			var chipsRow = el('div', 'hw-tok-chips-row');
-
-			// Token data: [text, type ('whole' or 'sub'), stagger delay ms]
-			var tokens = [
+			// Word data: [text, type, stagger delay ms]
+			// 'quietly' splits into 'quiet' + 'ly' (adjacent spans with gap:0 -> gap:2px)
+			var words = [
 				['The', 'whole', 0],
-				['fat', 'whole', 60],
-				['cat', 'whole', 120],
-				['sat', 'whole', 180],
-				['quiet', 'sub', 260],
-				['ly', 'sub', 320],
-				['on', 'whole', 400],
-				['the', 'whole', 460]
+				['fat', 'whole', 80],
+				['cat', 'whole', 160],
+				['sat', 'whole', 240],
+				['quiet', 'sub', 340],
+				['ly', 'sub', 400],
+				['on', 'whole', 480],
+				['the', 'whole', 560]
 			];
 
-			var splitGroupStarted = false;
 			var splitGroup = null;
 
-			tokens.forEach(function(tok) {
-				var chip = el('span', 'hw-tok-chip hw-tok-' + tok[1], tok[0]);
-				chip.style.animationDelay = tok[2] + 'ms';
+			words.forEach(function(w) {
+				var word = el('span', 'hw-tok-morph-word hw-tok-morph-' + w[1], w[0]);
+				word.style.setProperty('--morph-delay', w[2] + 'ms');
 
-				// Group the two subword pieces together
-				if (tok[1] === 'sub' && !splitGroupStarted) {
-					splitGroupStarted = true;
-					splitGroup = el('span', 'hw-tok-split-group');
-					splitGroup.appendChild(chip);
-					chipsRow.appendChild(splitGroup);
-				} else if (tok[1] === 'sub' && splitGroupStarted) {
-					splitGroup.appendChild(chip);
-					// Add bracket label under the split group
-					var bracket = el('span', 'hw-tok-split-bracket', '\u2190 quietly');
-					splitGroup.appendChild(bracket);
-					splitGroupStarted = false;
+				if (w[1] === 'sub') {
+					if (!splitGroup) {
+						splitGroup = el('span', 'hw-tok-morph-split');
+						row.appendChild(splitGroup);
+					}
+					splitGroup.appendChild(word);
+					if (w[0] === 'ly') {
+						var bracket = el('span', 'hw-tok-morph-bracket', '\u2190 quietly');
+						splitGroup.appendChild(bracket);
+						splitGroup = null;
+					}
 				} else {
-					chipsRow.appendChild(chip);
+					row.appendChild(word);
 				}
 			});
 
-			layout.appendChild(chipsRow);
+			layout.appendChild(row);
 
-			// Token count label
+			// Token count (hidden until morph completes)
 			layout.appendChild(el('div', 'hw-tok-count', '8 tokens'));
+
+			// Trigger morph after paint (double rAF ensures initial styles are computed)
+			requestAnimationFrame(function() {
+				requestAnimationFrame(function() {
+					layout.classList.add('hw-tok-morphed');
+				});
+			});
 
 			return layout;
 		}
