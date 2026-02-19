@@ -73,7 +73,7 @@
   {
     "id": 6,
     "name": "Step 4 redesign: positional embeddings with visual continuity",
-    "passes": false,
+    "passes": true,
     "steps": [
       "On transition from Step 3 \u2192 Step 4: keep token chips and blue column pills in place \u2014 do NOT remove and redraw",
       "Animate blue columns shrinking in width to make room; fade out or visually de-emphasize internal numbers (numbers don't aid comprehension here)",

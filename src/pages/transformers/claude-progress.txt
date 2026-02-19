@@ -283,3 +283,21 @@
 - Build passes (pnpm build)
 - Commit: 0d7a369
 - Next: Feature #6 — Step 4 redesign: positional embeddings with visual continuity
+
+=== Round 2 Feature #6 Complete — 2026-02-19 ===
+- Redesigned Step 4 "Positional Embeddings" with column-based layout for visual continuity from Step 3
+- Layout: per-token columns (chip + arrow + pill pair) using CSS grid for perfect vertical alignment
+- Blue pills start at Step 3 full size (48px) with visible numbers, then morph: shrink to 24px with de-emphasized numbers
+- Yellow positional pills expand from width 0 to 24px beside each blue pill with staggered CSS transition delays
+- CSS custom property --i per column enables staggered transition-delay (calc(base + var(--i) * 0.06s))
+- Double requestAnimationFrame pattern triggers morph class toggle after initial paint
+- Reuses hw-embed-pill-val and hw-embed-pill-dots classes from Step 3 for blue pill internals
+- New CSS classes: hw-pos4-layout, hw-pos4-body, hw-pos4-columns, hw-pos4-col, hw-pos4-pair, hw-pos4-blue, hw-pos4-yellow, hw-pos4-yval, hw-pos4-ydots, hw-pos4-legend
+- Removed old dimension label ("8 tokens x 2 embeddings x d_model dimensions each")
+- d_model y-axis label preserved (reuses hw-embed-yaxis class from Step 3)
+- Legend preserved with hw-pos-legend-swatch classes
+- Forward/back/reset navigation works cleanly between Steps 3, 4, and 5
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: ffdb5ac
+- Next: Feature #7 — Step 5 redesign: per-token merge animation with alignment
