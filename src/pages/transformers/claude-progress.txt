@@ -264,3 +264,22 @@
 - Build passes (pnpm build)
 - Commit: 8fdc589
 - Next: Feature #5 — Step 3 redesign: column pills with visual continuity
+
+=== Round 2 Feature #5 Complete — 2026-02-18 ===
+- Redesigned Step 3 "Token Embeddings" from separate cells to unified column pills
+- Column pills: single rounded rectangle per token (border-radius: 6px, blue border/tint)
+- Internal layout: 2 top values → horizontal ⋯ ellipsis (pandas-style middle truncation) → 2 bottom values
+- Row separators via border-top on each value; middle dots row has dashed borders and lighter background
+- d_model y-axis label: rotated text on left side of columns (writing-mode: vertical-lr, rotated 180°)
+- Removed old "8 tokens × d_model dimensions" bottom label
+- Embedding sidenote now permanent (removed × close button and hw-hidden dismiss logic)
+- Wider chip/arrow/column spacing (6px gap) to accommodate pill widths
+- Animation: pills expand via scaleY(0→1) with staggered delays (hw-pill-expand keyframe)
+- Preserved @keyframes hw-col-expand which Step 4+ bars depend on (initially removed, caught in testing)
+- Removed old CSS: .hw-embed-col, .hw-embed-cell, .hw-embed-dots (separate cell classes), .hw-embed-dim-label/dim-t/dim-d, .hw-embed-sn-close
+- Added new CSS: .hw-embed-pill, .hw-embed-pill-val, .hw-embed-pill-dots, .hw-embed-body, .hw-embed-yaxis, @keyframes hw-pill-expand
+- Forward/back navigation works: Step 2→3, 3→4, 3→2, reset all clean
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: 0d7a369
+- Next: Feature #6 — Step 4 redesign: positional embeddings with visual continuity
