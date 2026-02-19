@@ -86,7 +86,7 @@
   {
     "id": 7,
     "name": "Step 5 redesign: per-token merge animation with alignment",
-    "passes": false,
+    "passes": true,
     "steps": [
       "On transition from Step 4 \u2192 Step 5: each blue+yellow column pair merges into a single green column",
       "Critical: each pair collapses inward UNDER ITS OWN TOKEN \u2014 not toward the center of the card",

@@ -301,3 +301,24 @@
 - Build passes (pnpm build)
 - Commit: ffdb5ac
 - Next: Feature #7 — Step 5 redesign: per-token merge animation with alignment
+
+=== Round 2 Feature #7 Complete — 2026-02-19 ===
+- Redesigned Step 5 "Combine Embeddings" with per-token merge animation and visual continuity from Step 4
+- Layout: reuses hw-pos4-col column structure (chip → arrow → pair) for perfect vertical alignment
+- Initial state: blue pills (24px) + "+" signs + yellow pills (24px) matching Step 4's morphed end state
+- Same vector data as Step 4 (sampleVecs, posVecs) ensures visual consistency of pill internals
+- Merge animation: 500ms delay, then CSS transitions with staggered per-token delays (--i * 0.06s)
+- Blue and yellow pills → width:0/opacity:0; green pill → width:36px/opacity:1, centered under each token
+- Green pill values show actual combined vectors (sampleVec[i] + posVec[i])
+- d_model y-axis label preserved from Step 4 (reuses hw-embed-yaxis class)
+- Equation row: "token emb + pos emb = combined" with color-coded spans
+- Sidenote: permanent (no close button), explains addition vs. concatenation/gating
+- Dimension label ("8 tokens × d_model") removed per feature spec
+- New CSS: hw-merge5-* classes (layout, pair, blue, yellow, green, bval, bdots, yval, ydots, gval, gdots, merged state)
+- Removed old CSS: hw-combine-layout/chips/arrow-row/cols-row/token-group/bar/bar-merged and merged state classes
+- Kept CSS: hw-combine-equation, hw-combine-eq-*, hw-combine-sidenote, hw-combine-sn-text (still used by JS)
+- Forward/back/reset navigation works cleanly between Steps 4, 5, and 6
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: c9395c2
+- Next: Feature #8 — New Step 6: embeddings matrix formation (split from old step 6)
