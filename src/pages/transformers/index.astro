@@ -6420,252 +6420,228 @@ const sections = [
 	}
 
 		/* ===== Step 8: V Projection ===== */
-	.hw-vproj-layout {
+	/* ===== Step 9: V Projection with Stacked Card Effect ===== */
+	.hw-v9-layout {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: 8px;
 		padding: 8px 0;
+		position: relative;
 	}
 
-	.hw-vproj-top-row {
+	.hw-v9-main {
 		display: flex;
 		align-items: flex-start;
-		gap: 10px;
+		gap: 8px;
 		justify-content: center;
 		width: 100%;
 	}
 
-	/* Reuse qproj matrix styles for the shared input matrix */
-	.hw-vproj-weight-wrap {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 3px;
-		flex-shrink: 0;
-		align-self: center;
-		padding-top: 14px;
-	}
+	/* Reuse hw-q8 mat-wrap, mat-label, token-labels, cols, col, cell, dots patterns */
+	.hw-v9-label-wv { color: hsl(340 65% 55%); }
+	.hw-v9-label-v { color: hsl(340 65% 55% / 0.8); text-transform: uppercase; letter-spacing: 0.06em; }
 
-	.hw-vproj-weight-label {
-		font-size: 0.65rem;
-		font-weight: 700;
-		color: hsl(340 65% 55%);
-	}
-
-	.hw-vproj-weight-box {
-		width: 48px;
-		height: 48px;
-		border-radius: 4px;
-		background: hsl(340 65% 55% / 0.1);
-		border: 1.5px solid hsl(340 65% 55% / 0.3);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 0.45rem;
-		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		color: hsl(var(--theme-text) / 0.45);
-	}
-
-	.hw-vproj-weight-dim {
-		font-size: 0.42rem;
-		color: hsl(var(--theme-text) / 0.35);
-	}
-
-	/* V output staging area */
-	.hw-vproj-output-wrap {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 3px;
-		flex-shrink: 0;
-		padding-top: 14px;
+	/* W_V weight matrix (pink, slides up) */
+	.hw-v9-wv-wrap {
 		opacity: 0;
-		transform: translateX(8px);
-		transition: opacity 0.5s ease, transform 0.5s ease;
+		transform: translateY(15px);
+		transition: opacity 0.4s ease, transform 0.4s ease;
 	}
 
-	.hw-vproj-output-wrap.visible {
+	.hw-v9-wv-wrap.visible {
 		opacity: 1;
-		transform: translateX(0);
+		transform: translateY(0);
 	}
 
-	.hw-vproj-output-label {
-		font-size: 0.55rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.06em;
-		color: hsl(340 65% 55% / 0.8);
+	.hw-v9-wv-col {
+		border: 1px solid hsl(340 65% 55% / 0.15);
 	}
 
-	.hw-vproj-output-token-labels {
-		display: grid;
-		gap: 1px;
-	}
-
-	.hw-vproj-output-token-label {
-		font-size: 0.42rem;
-		text-align: center;
-		color: hsl(340 65% 55% / 0.6);
-		min-width: 22px;
-		padding: 0 1px;
-	}
-
-	.hw-vproj-output-matrix {
-		display: grid;
-		gap: 1px;
-		background: hsl(340 65% 55% / 0.06);
-		border: 1.5px solid hsl(340 65% 55% / 0.2);
-		border-radius: 3px;
-		overflow: hidden;
-	}
-
-	.hw-vproj-output-cell {
+	.hw-v9-wv-cell {
 		background: hsl(340 65% 55% / 0.08);
 		color: hsl(340 65% 55% / 0.75);
-		font-size: 0.42rem;
-		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		padding: 2px 1px;
-		text-align: center;
-		min-width: 22px;
+		border-top: 1px solid hsl(340 65% 55% / 0.1);
 	}
 
-	.hw-vproj-output-cell.dots-cell {
-		font-size: 0.5rem;
-		color: hsl(340 65% 55% / 0.4);
-		padding: 1px 1px;
+	.hw-v9-wv-col .hw-q8-cell:first-child { border-top: none; }
+
+	.hw-v9-wv-dots {
+		color: hsl(340 65% 55% / 0.35);
+		background: hsl(340 65% 55% / 0.04);
 	}
 
-	.hw-vproj-output-dim {
-		font-size: 0.45rem;
-		color: hsl(var(--theme-text) / 0.35);
+	/* W_V flash during multiplication */
+	@keyframes hw-v9-wv-flash {
+		0% { box-shadow: 0 0 0 0 hsl(340 65% 55% / 0); }
+		40% { box-shadow: 0 0 12px 2px hsl(340 65% 55% / 0.35); }
+		100% { box-shadow: 0 0 0 0 hsl(340 65% 55% / 0); }
 	}
 
-	/* V Equation row */
-	.hw-vproj-equation {
+	.hw-v9-wv-wrap.flash .hw-v9-wv-col {
+		animation: hw-v9-wv-flash 0.25s ease;
+	}
+
+	/* Stacked output area: Q behind, V in front */
+	.hw-v9-stack-area {
+		position: relative;
+		min-width: 220px;
+	}
+
+	/* Q ghost (dimmed, behind) */
+	.hw-v9-q-ghost {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2px;
+		position: absolute;
+		top: -4px;
+		left: -4px;
+		transform: scale(0.95);
+		transform-origin: top left;
+		opacity: 0;
+		transition: opacity 0.4s ease;
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	.hw-v9-q-ghost.visible {
+		opacity: 0.4;
+	}
+
+	.hw-v9-q-ghost-col {
+		border: 1px solid hsl(210 70% 55% / 0.2);
+	}
+
+	.hw-v9-q-ghost-cell {
+		background: hsl(210 70% 55% / 0.06);
+		color: hsl(210 70% 55% / 0.6);
+		border-top: 1px solid hsl(210 70% 55% / 0.08);
+	}
+
+	.hw-v9-q-ghost-col .hw-q8-cell:first-child { border-top: none; }
+
+	.hw-v9-q-ghost-dots {
+		color: hsl(210 70% 55% / 0.3);
+		background: hsl(210 70% 55% / 0.03);
+	}
+
+	.hw-v9-q-ghost-label {
+		color: hsl(210 70% 55% / 0.6);
+	}
+
+	.hw-v9-q-ghost-token-label {
+		color: hsl(210 70% 55% / 0.35);
+	}
+
+	/* V output matrix (pink, front of stack, starts invisible) */
+	.hw-v9-out-wrap {
+		position: relative;
+		z-index: 2;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	.hw-v9-out-wrap.visible {
+		opacity: 1;
+	}
+
+	.hw-v9-out-col {
+		border: 1px solid hsl(340 65% 55% / 0.1);
+		transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.hw-v9-out-cell {
+		background: hsl(340 65% 55% / 0.04);
+		color: transparent;
+		border-top: 1px solid hsl(340 65% 55% / 0.06);
+		transition: color 0.2s ease, background 0.2s ease;
+	}
+
+	.hw-v9-out-col .hw-q8-cell:first-child { border-top: none; }
+
+	.hw-v9-out-dots {
+		color: transparent;
+		background: hsl(340 65% 55% / 0.02);
+		transition: color 0.2s ease;
+	}
+
+	/* Filled state for V output columns */
+	.hw-v9-out-col.hw-v9-filled {
+		border-color: hsl(340 65% 55% / 0.2);
+	}
+
+	.hw-v9-out-col.hw-v9-filled .hw-v9-out-cell {
+		color: hsl(340 65% 55% / 0.75);
+		background: hsl(340 65% 55% / 0.08);
+	}
+
+	.hw-v9-out-col.hw-v9-filled .hw-v9-out-dots {
+		color: hsl(340 65% 55% / 0.35);
+		background: hsl(340 65% 55% / 0.04);
+	}
+
+	.hw-v9-out-token-label {
+		color: hsl(340 65% 55% / 0.5);
+	}
+
+	/* Input column highlight (pink for V) */
+	.hw-q8-input-col.hw-v9-highlight {
+		border-color: hsl(340 65% 55% / 0.6);
+		box-shadow: 0 0 0 1.5px hsl(340 65% 55% / 0.3), 0 0 8px hsl(340 65% 55% / 0.15);
+	}
+
+	.hw-q8-input-col.hw-v9-highlight .hw-q8-input-cell {
+		background: hsl(340 65% 55% / 0.12);
+		color: hsl(340 65% 55% / 0.9);
+	}
+
+	.hw-q8-input-col.hw-v9-highlight .hw-q8-input-dots {
+		background: hsl(340 65% 55% / 0.06);
+		color: hsl(340 65% 55% / 0.5);
+	}
+
+	/* Equation row */
+	.hw-v9-equation {
 		font-size: 0.55rem;
 		color: hsl(var(--theme-text) / 0.5);
 		text-align: center;
 		margin-top: 4px;
 		opacity: 0;
-		transition: opacity 0.5s ease;
+		transition: opacity 0.4s ease;
 	}
 
-	.hw-vproj-equation.visible {
-		opacity: 1;
-	}
-
-	.hw-vproj-eq-norm { color: hsl(270 45% 55% / 0.8); }
-	.hw-vproj-eq-wv { color: hsl(340 65% 55%); }
-	.hw-vproj-eq-v { color: hsl(340 65% 55%); font-weight: 600; }
-	.hw-vproj-eq-dim { color: hsl(var(--theme-text) / 0.4); }
-
-	/* Staging area: side-by-side Q and V outputs */
-	.hw-vproj-staging {
-		display: flex;
-		gap: 16px;
-		justify-content: center;
-		align-items: flex-start;
-		margin-top: 4px;
-		opacity: 0;
-		transition: opacity 0.5s ease;
-	}
-
-	.hw-vproj-staging.visible {
-		opacity: 1;
-	}
-
-	.hw-vproj-staged-item {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 2px;
-	}
-
-	.hw-vproj-staged-label {
-		font-size: 0.5rem;
-		font-weight: 600;
-		letter-spacing: 0.05em;
-	}
-
-	.hw-vproj-staged-label-q { color: hsl(210 70% 55%); }
-	.hw-vproj-staged-label-v { color: hsl(340 65% 55%); }
-
-	.hw-vproj-staged-box {
-		width: 60px;
-		height: 36px;
-		border-radius: 3px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 0.4rem;
-		font-family: 'IBM Plex Mono', ui-monospace, monospace;
-		color: hsl(var(--theme-text) / 0.4);
-	}
-
-	.hw-vproj-staged-box-q {
-		background: hsl(210 70% 55% / 0.08);
-		border: 1.5px solid hsl(210 70% 55% / 0.2);
-	}
-
-	.hw-vproj-staged-box-v {
-		background: hsl(340 65% 55% / 0.08);
-		border: 1.5px solid hsl(340 65% 55% / 0.2);
-	}
-
-	.hw-vproj-staged-dim {
-		font-size: 0.38rem;
-		color: hsl(var(--theme-text) / 0.3);
-	}
-
-	/* Pulse animation for V highlighted column */
-	@keyframes hw-vproj-pulse {
-		0%, 100% { box-shadow: inset 0 0 0 1.5px hsl(340 65% 55% / 0.5); }
-		50% { box-shadow: inset 0 0 0 1.5px hsl(340 65% 55% / 0.8); }
-	}
-
-	.hw-vproj-cell-highlight.pulse {
-		animation: hw-vproj-pulse 1s ease infinite;
-	}
-
-	/* V-highlighted input cells */
-	.hw-qproj-cell.v-highlighted {
-		background: hsl(340 65% 55% / 0.2);
-		box-shadow: inset 0 0 0 1.5px hsl(340 65% 55% / 0.5);
-		color: hsl(340 65% 55% / 0.9);
-	}
-
-	.hw-qproj-token-label.v-highlighted {
-		color: hsl(340 65% 55%);
-		font-weight: 700;
-	}
-
-	.hw-qproj-cell.v-highlighted.pulse {
-		animation: hw-vproj-pulse 1s ease infinite;
-	}
+	.hw-v9-equation.visible { opacity: 1; }
+	.hw-v9-eq-norm { color: hsl(270 45% 55% / 0.8); }
+	.hw-v9-eq-wv { color: hsl(340 65% 55%); }
+	.hw-v9-eq-v { color: hsl(340 65% 55%); font-weight: 600; }
+	.hw-v9-eq-dim { color: hsl(var(--theme-text) / 0.4); }
 
 	/* Responsive */
 	@media (max-width: 480px) {
-		.hw-vproj-top-row {
+		.hw-v9-main {
 			flex-direction: column;
 			align-items: center;
 			gap: 10px;
 		}
-		.hw-vproj-weight-wrap, .hw-vproj-output-wrap {
-			padding-top: 0;
+		.hw-v9-stack-area {
+			min-width: auto;
 		}
-		.hw-vproj-output-cell {
-			font-size: 0.38rem;
-			min-width: 20px;
-			padding: 2px 1px;
+		.hw-v9-wv-wrap {
+			transform: none;
 		}
-		.hw-vproj-output-token-label {
-			font-size: 0.36rem;
-			min-width: 20px;
+		.hw-v9-wv-wrap.visible {
+			transform: none;
 		}
-		.hw-vproj-staging {
-			gap: 10px;
-		}
+	}
+
+	/* Dark mode adjustments */
+	:root[data-theme='dark'] .hw-q8-input-col.hw-v9-highlight {
+		box-shadow: 0 0 0 1.5px hsl(340 65% 55% / 0.4), 0 0 10px hsl(340 65% 55% / 0.2);
+	}
+
+	:root[data-theme='dark'] .hw-v9-out-col.hw-v9-filled .hw-v9-out-cell {
+		color: hsl(340 65% 65% / 0.85);
 	}
 
 	/* ===== Step 9: K Projection + Transpose ===== */
@@ -11315,298 +11291,6 @@ const sections = [
 		}
 
 
-		function renderStep9() {
-			var layout = el('div', 'hw-kproj-layout');
-			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
-
-			// Normalized values from Step 6 (same input as Q and V projections)
-			var normValues = [
-				['.91', '-.52', '1.4', '-1.1', '1.2', '-.75', '1.0', '.91'],
-				['-.68', '1.1', '-.40', '.83', '-.95', '1.3', '-.79', '-.68'],
-				['.73', '.20', '1.2', '-.47', '.61', '-1.0', '.86', '.73'],
-				['-1.2', '.64', '-.82', '1.2', '-.30', '.49', '-1.1', '-1.2']
-			];
-
-			// K output values (projected through W_K — different from Q and V)
-			var kValues = [
-				['.33', '-.61', '.82', '.14', '-.47', '.58', '-.22', '.33'],
-				['-.52', '.39', '-.71', '.55', '.28', '-.63', '.44', '-.52'],
-				['.18', '-.44', '.36', '-.29', '.65', '.11', '-.53', '.18']
-			];
-
-			var highlightCol = 2; // "cat" token (same as Q and V steps)
-
-			// === Top row: input matrix + multiply + W_K + arrow + K output ===
-			var topRow = el('div', 'hw-kproj-top-row');
-
-			// --- Input matrix (reuse qproj styles, K-colored highlight) ---
-			var matWrap = el('div', 'hw-qproj-matrix-wrap');
-			var matLabel = el('div', 'hw-qproj-matrix-label');
-			matLabel.innerHTML = 'X\u0302 <span class="hw-qproj-dim-label">(normalized)</span>';
-			if (astroAttr) matLabel.querySelectorAll('span').forEach(function(s) { s.setAttribute(astroAttr, ''); });
-			matWrap.appendChild(matLabel);
-
-			// Token labels
-			var tokenRow = el('div', 'hw-qproj-token-labels');
-			tokenRow.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
-			tokens.forEach(function(tok, i) {
-				var lbl = el('div', 'hw-qproj-token-label', tok);
-				if (i === highlightCol) lbl.classList.add('k-highlighted');
-				tokenRow.appendChild(lbl);
-			});
-			matWrap.appendChild(tokenRow);
-
-			// Matrix grid
-			var matrixEl = el('div', 'hw-qproj-matrix');
-			matrixEl.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
-			var matCells = [];
-			normValues.forEach(function(row) {
-				row.forEach(function(val, c) {
-					var cell = el('div', 'hw-qproj-cell', val);
-					if (c === highlightCol) cell.classList.add('k-highlighted');
-					matrixEl.appendChild(cell);
-					matCells.push({ el: cell, col: c });
-				});
-			});
-			// Dots row
-			tokens.forEach(function(tok, c) {
-				var dotCell = el('div', 'hw-qproj-cell dots-cell', '\u22EE');
-				if (c === highlightCol) dotCell.classList.add('k-highlighted');
-				matrixEl.appendChild(dotCell);
-			});
-			matWrap.appendChild(matrixEl);
-
-			// Dimension label
-			var matDim = el('div', 'hw-qproj-dim-label', 'T \u00d7 d_model');
-			matWrap.appendChild(matDim);
-			topRow.appendChild(matWrap);
-
-			// --- Multiply sign ---
-			topRow.appendChild(el('div', 'hw-qproj-times', '\u00b7'));
-
-			// --- W_K weight card (orange) ---
-			var wWrap = el('div', 'hw-kproj-weight-wrap');
-			var wLabel = el('div', 'hw-kproj-weight-label');
-			wLabel.innerHTML = 'W<sub>K</sub>';
-			if (astroAttr) wLabel.querySelector('sub').setAttribute(astroAttr, '');
-			wWrap.appendChild(wLabel);
-			wWrap.appendChild(el('div', 'hw-kproj-weight-box', '\u22EF'));
-			var wDim = el('div', 'hw-kproj-weight-dim');
-			var wDimD = el('span', 'hw-norm-dim-d');
-			wDimD.innerHTML = 'd<sub>model</sub>';
-			if (astroAttr) wDimD.querySelector('sub').setAttribute(astroAttr, '');
-			var wDimTimes = document.createTextNode(' \u00d7 ');
-			var wDimH = el('span', 'hw-norm-dim-dh');
-			wDimH.innerHTML = 'd<sub>head</sub>';
-			if (astroAttr) wDimH.querySelector('sub').setAttribute(astroAttr, '');
-			wDim.appendChild(wDimD);
-			wDim.appendChild(wDimTimes);
-			wDim.appendChild(wDimH);
-			wWrap.appendChild(wDim);
-			topRow.appendChild(wWrap);
-
-			// --- Arrow ---
-			topRow.appendChild(el('div', 'hw-qproj-arrow-right', '\u279C'));
-
-			// --- K output (before transpose) ---
-			var outWrap = el('div', 'hw-kproj-output-wrap');
-			var outLabel = el('div', 'hw-kproj-output-label', 'K');
-			outWrap.appendChild(outLabel);
-
-			// Output token labels
-			var outTokenRow = el('div', 'hw-kproj-output-token-labels');
-			outTokenRow.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
-			tokens.forEach(function(tok) {
-				outTokenRow.appendChild(el('div', 'hw-kproj-output-token-label', tok));
-			});
-			outWrap.appendChild(outTokenRow);
-
-			// Output matrix (3 rows + dots = d_head height, 8 columns = T)
-			var outMatrix = el('div', 'hw-kproj-output-matrix');
-			outMatrix.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
-			kValues.forEach(function(row) {
-				row.forEach(function(val) {
-					outMatrix.appendChild(el('div', 'hw-kproj-output-cell', val));
-				});
-			});
-			// Dots row
-			tokens.forEach(function() {
-				outMatrix.appendChild(el('div', 'hw-kproj-output-cell dots-cell', '\u22EE'));
-			});
-			outWrap.appendChild(outMatrix);
-
-			// Dimension label: T x d_head
-			var outDim = el('div', 'hw-kproj-output-dim');
-			var outDimT = el('span', 'hw-norm-dim-t');
-			outDimT.innerHTML = 'T';
-			var outDimTimes = document.createTextNode(' \u00d7 ');
-			var outDimH = el('span', 'hw-norm-dim-dh');
-			outDimH.innerHTML = 'd<sub>head</sub>';
-			if (astroAttr) outDimH.querySelector('sub').setAttribute(astroAttr, '');
-			outDim.appendChild(outDimT);
-			outDim.appendChild(outDimTimes);
-			outDim.appendChild(outDimH);
-			outWrap.appendChild(outDim);
-			topRow.appendChild(outWrap);
-
-			layout.appendChild(topRow);
-
-			// === Equation row ===
-			var eqRow = el('div', 'hw-kproj-equation');
-			var eqK = el('span', 'hw-kproj-eq-k', 'K');
-			var eqEq = document.createTextNode(' = ');
-			var eqNorm = el('span', 'hw-kproj-eq-norm', 'X\u0302');
-			var eqDot = document.createTextNode(' \u00b7 ');
-			var eqWk = el('span', 'hw-kproj-eq-wk');
-			eqWk.innerHTML = 'W<sub>K</sub>';
-			if (astroAttr) eqWk.querySelector('sub').setAttribute(astroAttr, '');
-			var eqDim = el('span', 'hw-kproj-eq-dim', '  (T\u00d7d_model) \u00b7 (d_model\u00d7d_head) = T\u00d7d_head');
-			eqRow.appendChild(eqK);
-			eqRow.appendChild(eqEq);
-			eqRow.appendChild(eqNorm);
-			eqRow.appendChild(eqDot);
-			eqRow.appendChild(eqWk);
-			eqRow.appendChild(eqDim);
-			layout.appendChild(eqRow);
-
-			// === Transpose section ===
-			var transposeSection = el('div', 'hw-kproj-transpose-section');
-
-			// Down arrow + label
-			transposeSection.appendChild(el('div', 'hw-kproj-transpose-arrow', '\u2193'));
-			var tLabel = el('div', 'hw-kproj-transpose-label');
-			tLabel.innerHTML = 'Transpose: rows \u2194 columns';
-			transposeSection.appendChild(tLabel);
-
-			// Transposed matrix container
-			var tWrap = el('div', 'hw-kproj-transposed-wrap');
-
-			// K^T label
-			var tMatLabel = el('div', 'hw-kproj-transposed-label');
-			tMatLabel.innerHTML = 'K<sup>T</sup>';
-			if (astroAttr) tMatLabel.querySelector('sup').setAttribute(astroAttr, '');
-			tWrap.appendChild(tMatLabel);
-
-			// Token labels (now along the TOP as columns)
-			var tTokenRow = el('div', 'hw-kproj-transposed-token-labels');
-			tTokenRow.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
-			tokens.forEach(function(tok) {
-				tTokenRow.appendChild(el('div', 'hw-kproj-transposed-token-label', tok));
-			});
-			tWrap.appendChild(tTokenRow);
-
-			// Transposed matrix: d_head rows x T columns
-			// kValues[row][col] becomes transposedValues[col_becomes_row][row_becomes_col]
-			// But since we have 3 data rows and 8 columns in K,
-			// K^T has 3 data rows (d_head) x 8 columns (T) visually the same grid
-			// BUT the conceptual meaning changes: rows are now d_head dimensions, columns are tokens
-			// We transpose the actual values: kValues[r][c] -> transposed[c][r] ... but we only show 3 rows
-			// K is 3 displayed rows x 8 cols, K^T should look different: fewer columns (d_head=3+dots), more rows (T=8)
-			// Actually: K = (T x d_head) = 8 rows x 3 cols but we show it as 3 displayed rows x 8 cols
-			// K^T = (d_head x T) = 3 rows x 8 cols — same visual grid size!
-			// The key visual: token labels move from being column headers to column headers still,
-			// but the ROW meaning changes from "d_model sample" to "d_head dimension"
-			// Let's show it as the same grid with dimension labels swapped
-
-			var tMatrix = el('div', 'hw-kproj-transposed-matrix');
-			tMatrix.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
-
-			// Transpose the values: kValues[r][c] -> row r of K^T picks across original columns
-			// K^T[i][j] = K[j][i], but our display is 3 rows x 8 cols for both
-			// For visual clarity, show the same values rearranged
-			// Actually the key insight: K is (T=8 x d_head=3+) displayed as 3 visible rows x 8 cols
-			// K^T is (d_head=3+ x T=8) — same display grid, different meaning
-			// Just show the transposed values
-			kValues.forEach(function(row) {
-				row.forEach(function(val) {
-					tMatrix.appendChild(el('div', 'hw-kproj-transposed-cell', val));
-				});
-			});
-			// Dots row
-			tokens.forEach(function() {
-				tMatrix.appendChild(el('div', 'hw-kproj-transposed-cell dots-cell', '\u22EE'));
-			});
-			tWrap.appendChild(tMatrix);
-
-			// New dimension label: d_head x T (swapped!)
-			var tDim = el('div', 'hw-kproj-transposed-dim');
-			var tDimH = el('span', 'hw-norm-dim-dh');
-			tDimH.innerHTML = 'd<sub>head</sub>';
-			if (astroAttr) tDimH.querySelector('sub').setAttribute(astroAttr, '');
-			var tDimTimes = document.createTextNode(' \u00d7 ');
-			var tDimT = el('span', 'hw-norm-dim-t');
-			tDimT.innerHTML = 'T';
-			tDim.appendChild(tDimH);
-			tDim.appendChild(tDimTimes);
-			tDim.appendChild(tDimT);
-			tWrap.appendChild(tDim);
-
-			transposeSection.appendChild(tWrap);
-			layout.appendChild(transposeSection);
-
-			// === Staging area: Q, K^T, V side by side ===
-			var staging = el('div', 'hw-kproj-staging');
-
-			// Q staged box
-			var qItem = el('div', 'hw-kproj-staged-item');
-			qItem.appendChild(el('div', 'hw-kproj-staged-label hw-kproj-staged-label-q', 'Q'));
-			qItem.appendChild(el('div', 'hw-kproj-staged-box hw-kproj-staged-box-q', 'T\u00d7d'));
-			qItem.appendChild(el('div', 'hw-kproj-staged-dim', 'Step 7'));
-			staging.appendChild(qItem);
-
-			// K^T staged box
-			var ktItem = el('div', 'hw-kproj-staged-item');
-			var ktLabel = el('div', 'hw-kproj-staged-label hw-kproj-staged-label-kt');
-			ktLabel.innerHTML = 'K<sup>T</sup>';
-			if (astroAttr) ktLabel.querySelector('sup').setAttribute(astroAttr, '');
-			ktItem.appendChild(ktLabel);
-			ktItem.appendChild(el('div', 'hw-kproj-staged-box hw-kproj-staged-box-kt', 'd\u00d7T'));
-			ktItem.appendChild(el('div', 'hw-kproj-staged-dim', 'new'));
-			staging.appendChild(ktItem);
-
-			// V staged box
-			var vItem = el('div', 'hw-kproj-staged-item');
-			vItem.appendChild(el('div', 'hw-kproj-staged-label hw-kproj-staged-label-v', 'V'));
-			vItem.appendChild(el('div', 'hw-kproj-staged-box hw-kproj-staged-box-v', 'T\u00d7d'));
-			vItem.appendChild(el('div', 'hw-kproj-staged-dim', 'Step 8'));
-			staging.appendChild(vItem);
-
-			layout.appendChild(staging);
-
-			// === Animation sequence ===
-			// Phase 1 (immediate): matrix + W_K shown, "cat" column highlighted in orange
-			// Phase 2 (600ms): pulse on highlighted column
-			setTimeout(function() {
-				matCells.forEach(function(mc) {
-					if (mc.col === highlightCol) mc.el.classList.add('pulse');
-				});
-			}, 600);
-
-			// Phase 3 (1200ms): K output appears
-			setTimeout(function() {
-				outWrap.classList.add('visible');
-			}, 1200);
-
-			// Phase 4 (1800ms): equation appears
-			setTimeout(function() {
-				eqRow.classList.add('visible');
-			}, 1800);
-
-			// Phase 5 (2400ms): transpose section appears with flip animation
-			setTimeout(function() {
-				transposeSection.classList.add('visible');
-				tWrap.classList.add('flip-in');
-			}, 2400);
-
-			// Phase 6 (3200ms): staging area with Q, K^T, V boxes
-			setTimeout(function() {
-				staging.classList.add('visible');
-			}, 3200);
-
-			return layout;
-		}
-
-
 		function renderStep10() {
 			var layout = el('div', 'hw-qkt-layout');
 			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
@@ -13134,10 +12818,10 @@ const sections = [
 		}
 
 		function renderStep9() {
-			var layout = el('div', 'hw-vproj-layout');
+			var layout = el('div', 'hw-v9-layout');
 			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
 
-			// Normalized values from Step 6 (same input as Q projection)
+			// Normalized values from Step 7 (same input as Q projection)
 			var normValues = [
 				['.91', '-.52', '1.4', '-1.1', '1.2', '-.75', '1.0', '.91'],
 				['-.68', '1.1', '-.40', '.83', '-.95', '1.3', '-.79', '-.68'],
@@ -13145,190 +12829,252 @@ const sections = [
 				['-1.2', '.64', '-.82', '1.2', '-.30', '.49', '-1.1', '-1.2']
 			];
 
-			// V output values (projected through W_V — different from Q)
+			// W_V weight values (same as Step 7)
+			var vW = [
+				['-0.27', ' 0.51', ' 0.38'],
+				[' 0.63', '-0.34', ' 0.15'],
+				[' 0.11', ' 0.42', '-0.56'],
+				['-0.48', ' 0.26', ' 0.69']
+			];
+
+			// V output values (projected through W_V)
 			var vValues = [
 				['.58', '-.34', '.91', '.17', '-.62', '.44', '-.28', '.58'],
 				['-.21', '.76', '-.45', '.63', '.38', '-.55', '.82', '-.21'],
 				['.35', '.12', '-.67', '-.41', '.73', '.29', '-.14', '.35']
 			];
 
-			var highlightCol = 2; // "cat" token (same as Q step for continuity)
+			// Q output values (from Step 8, for the ghost card)
+			var qValues = [
+				['.42', '.18', '.73', '-.31', '.56', '-.24', '.48', '.42'],
+				['-.19', '.55', '-.08', '.41', '-.33', '.62', '-.27', '-.19'],
+				['.31', '-.12', '.54', '-.22', '.28', '-.45', '.37', '.31']
+			];
 
-			// === Top row: input matrix + multiply + W_V + arrow + V output ===
-			var topRow = el('div', 'hw-vproj-top-row');
+			// === Main row: X_hat · W_V → [stacked: Q ghost + V output] ===
+			var main = el('div', 'hw-v9-main');
 
-			// --- Input matrix (reuse qproj styles, but with V-colored highlight) ---
-			var matWrap = el('div', 'hw-qproj-matrix-wrap');
-			var matLabel = el('div', 'hw-qproj-matrix-label');
-			matLabel.innerHTML = 'X\u0302 <span class="hw-qproj-dim-label">(normalized)</span>';
-			if (astroAttr) matLabel.querySelectorAll('span').forEach(function(s) { s.setAttribute(astroAttr, ''); });
-			matWrap.appendChild(matLabel);
+			// --- Input matrix X_hat (column pills, purple/normalized) ---
+			var inWrap = el('div', 'hw-q8-mat-wrap');
+			var inLabel = el('div', 'hw-q8-mat-label hw-q8-label-input');
+			inLabel.innerHTML = 'X\u0302 <span class="hw-q8-label-sub">(normalized)</span>';
+			if (astroAttr) inLabel.querySelectorAll('span').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			inWrap.appendChild(inLabel);
 
-			// Token labels
-			var tokenRow = el('div', 'hw-qproj-token-labels');
-			tokenRow.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
-			tokens.forEach(function(tok, i) {
-				var lbl = el('div', 'hw-qproj-token-label', tok);
-				if (i === highlightCol) lbl.classList.add('v-highlighted');
-				tokenRow.appendChild(lbl);
-			});
-			matWrap.appendChild(tokenRow);
+			var inTokenRow = el('div', 'hw-q8-token-labels');
+			tokens.forEach(function(tok) { inTokenRow.appendChild(el('div', 'hw-q8-token-label', tok)); });
+			inWrap.appendChild(inTokenRow);
 
-			// Matrix grid
-			var matrixEl = el('div', 'hw-qproj-matrix');
-			matrixEl.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
-			var matCells = [];
-			normValues.forEach(function(row) {
-				row.forEach(function(val, c) {
-					var cell = el('div', 'hw-qproj-cell', val);
-					if (c === highlightCol) cell.classList.add('v-highlighted');
-					matrixEl.appendChild(cell);
-					matCells.push({ el: cell, col: c });
-				});
-			});
-			// Dots row
+			var inCols = el('div', 'hw-q8-cols');
+			var inputColEls = [];
 			tokens.forEach(function(tok, c) {
-				var dotCell = el('div', 'hw-qproj-cell dots-cell', '\u22EE');
-				if (c === highlightCol) dotCell.classList.add('v-highlighted');
-				matrixEl.appendChild(dotCell);
+				var col = el('div', 'hw-q8-col hw-q8-input-col');
+				col.appendChild(el('div', 'hw-q8-cell hw-q8-input-cell', normValues[0][c]));
+				col.appendChild(el('div', 'hw-q8-cell hw-q8-input-cell', normValues[1][c]));
+				col.appendChild(el('div', 'hw-q8-cell hw-q8-dots hw-q8-input-dots', '\u22EF'));
+				col.appendChild(el('div', 'hw-q8-cell hw-q8-input-cell', normValues[2][c]));
+				col.appendChild(el('div', 'hw-q8-cell hw-q8-input-cell', normValues[3][c]));
+				inCols.appendChild(col);
+				inputColEls.push(col);
 			});
-			matWrap.appendChild(matrixEl);
-
-			// Dimension label
-			var matDim = el('div', 'hw-qproj-dim-label', 'T \u00d7 d_model');
-			matWrap.appendChild(matDim);
-			topRow.appendChild(matWrap);
+			inWrap.appendChild(inCols);
+			inWrap.appendChild(el('div', 'hw-q8-dim-label', 'T \u00d7 d_model'));
+			main.appendChild(inWrap);
 
 			// --- Multiply sign ---
-			topRow.appendChild(el('div', 'hw-qproj-times', '\u00b7'));
+			main.appendChild(el('div', 'hw-q8-op', '\u00b7'));
 
-			// --- W_V weight card (pink) ---
-			var wWrap = el('div', 'hw-vproj-weight-wrap');
-			var wLabel = el('div', 'hw-vproj-weight-label');
-			wLabel.innerHTML = 'W<sub>V</sub>';
-			if (astroAttr) wLabel.querySelector('sub').setAttribute(astroAttr, '');
-			wWrap.appendChild(wLabel);
-			wWrap.appendChild(el('div', 'hw-vproj-weight-box', '\u22EF'));
-			var wDim = el('div', 'hw-vproj-weight-dim');
-			var wDimD = el('span', 'hw-norm-dim-d');
-			wDimD.innerHTML = 'd<sub>model</sub>';
-			if (astroAttr) wDimD.querySelector('sub').setAttribute(astroAttr, '');
-			var wDimTimes = document.createTextNode(' \u00d7 ');
-			var wDimH = el('span', 'hw-norm-dim-dh');
-			wDimH.innerHTML = 'd<sub>head</sub>';
-			if (astroAttr) wDimH.querySelector('sub').setAttribute(astroAttr, '');
-			wDim.appendChild(wDimD);
-			wDim.appendChild(wDimTimes);
-			wDim.appendChild(wDimH);
-			wWrap.appendChild(wDim);
-			topRow.appendChild(wWrap);
+			// --- W_V weight matrix (column pills, pink, slides up) ---
+			var wvWrap = el('div', 'hw-q8-mat-wrap hw-v9-wv-wrap');
+			var wvLabel = el('div', 'hw-q8-mat-label hw-v9-label-wv');
+			wvLabel.innerHTML = 'W<sub>V</sub>';
+			if (astroAttr) wvLabel.querySelectorAll('sub').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			wvWrap.appendChild(wvLabel);
+
+			var wvCols = el('div', 'hw-q8-cols');
+			for (var ci = 0; ci < 3; ci++) {
+				var wCol = el('div', 'hw-q8-col hw-v9-wv-col');
+				wCol.appendChild(el('div', 'hw-q8-cell hw-v9-wv-cell', vW[0][ci]));
+				wCol.appendChild(el('div', 'hw-q8-cell hw-v9-wv-cell', vW[1][ci]));
+				wCol.appendChild(el('div', 'hw-q8-cell hw-q8-dots hw-v9-wv-dots', '\u22EF'));
+				wCol.appendChild(el('div', 'hw-q8-cell hw-v9-wv-cell', vW[2][ci]));
+				wCol.appendChild(el('div', 'hw-q8-cell hw-v9-wv-cell', vW[3][ci]));
+				wvCols.appendChild(wCol);
+			}
+			wvWrap.appendChild(wvCols);
+
+			var wvDim = el('div', 'hw-q8-dim-label');
+			wvDim.innerHTML = 'd<sub>model</sub> \u00d7 d<sub>head</sub>';
+			if (astroAttr) wvDim.querySelectorAll('sub').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			wvWrap.appendChild(wvDim);
+			main.appendChild(wvWrap);
 
 			// --- Arrow ---
-			topRow.appendChild(el('div', 'hw-qproj-arrow-right', '\u279C'));
+			main.appendChild(el('div', 'hw-q8-op', '\u2192'));
 
-			// --- V output staging area (pink) ---
-			var outWrap = el('div', 'hw-vproj-output-wrap');
-			var outLabel = el('div', 'hw-vproj-output-label', 'V');
-			outWrap.appendChild(outLabel);
+			// --- Stacked output area: Q ghost behind, V output in front ---
+			var stackArea = el('div', 'hw-v9-stack-area');
 
-			// Output token labels
-			var outTokenRow = el('div', 'hw-vproj-output-token-labels');
-			outTokenRow.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
-			tokens.forEach(function(tok) {
-				outTokenRow.appendChild(el('div', 'hw-vproj-output-token-label', tok));
+			// Q ghost (dimmed, behind) — shows completed Q from Step 8
+			var qGhost = el('div', 'hw-v9-q-ghost');
+			qGhost.appendChild(el('div', 'hw-q8-mat-label hw-v9-q-ghost-label', 'Q'));
+			var qGhostTokenRow = el('div', 'hw-q8-token-labels');
+			tokens.forEach(function(tok) { qGhostTokenRow.appendChild(el('div', 'hw-q8-token-label hw-v9-q-ghost-token-label', tok)); });
+			qGhost.appendChild(qGhostTokenRow);
+			var qGhostCols = el('div', 'hw-q8-cols');
+			tokens.forEach(function(tok, c) {
+				var col = el('div', 'hw-q8-col hw-v9-q-ghost-col');
+				col.appendChild(el('div', 'hw-q8-cell hw-v9-q-ghost-cell', qValues[0][c]));
+				col.appendChild(el('div', 'hw-q8-cell hw-q8-dots hw-v9-q-ghost-dots', '\u22EF'));
+				col.appendChild(el('div', 'hw-q8-cell hw-v9-q-ghost-cell', qValues[2][c]));
+				qGhostCols.appendChild(col);
 			});
+			qGhost.appendChild(qGhostCols);
+			var qGhostDim = el('div', 'hw-q8-dim-label');
+			qGhostDim.innerHTML = 'T \u00d7 d<sub>head</sub>';
+			if (astroAttr) qGhostDim.querySelectorAll('sub').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+			qGhost.appendChild(qGhostDim);
+			stackArea.appendChild(qGhost);
+
+			// V output matrix (pink, front of stack, starts empty)
+			var outWrap = el('div', 'hw-q8-mat-wrap hw-v9-out-wrap');
+			outWrap.appendChild(el('div', 'hw-q8-mat-label hw-v9-label-v', 'V'));
+
+			var outTokenRow = el('div', 'hw-q8-token-labels');
+			tokens.forEach(function(tok) { outTokenRow.appendChild(el('div', 'hw-q8-token-label hw-v9-out-token-label', tok)); });
 			outWrap.appendChild(outTokenRow);
 
-			// Output matrix (3 rows + dots = d_head height)
-			var outMatrix = el('div', 'hw-vproj-output-matrix');
-			outMatrix.style.gridTemplateColumns = 'repeat(' + tokens.length + ', 1fr)';
-			vValues.forEach(function(row) {
-				row.forEach(function(val) {
-					outMatrix.appendChild(el('div', 'hw-vproj-output-cell', val));
-				});
+			var outCols = el('div', 'hw-q8-cols');
+			var outputColEls = [];
+			tokens.forEach(function(tok, c) {
+				var col = el('div', 'hw-q8-col hw-v9-out-col');
+				col.appendChild(el('div', 'hw-q8-cell hw-v9-out-cell', vValues[0][c]));
+				col.appendChild(el('div', 'hw-q8-cell hw-q8-dots hw-v9-out-dots', '\u22EF'));
+				col.appendChild(el('div', 'hw-q8-cell hw-v9-out-cell', vValues[2][c]));
+				outCols.appendChild(col);
+				outputColEls.push(col);
 			});
-			// Dots row
-			tokens.forEach(function() {
-				outMatrix.appendChild(el('div', 'hw-vproj-output-cell dots-cell', '\u22EE'));
-			});
-			outWrap.appendChild(outMatrix);
+			outWrap.appendChild(outCols);
 
-			// Dimension label
-			var outDim = el('div', 'hw-vproj-output-dim');
-			var outDimT = el('span', 'hw-norm-dim-t');
-			outDimT.innerHTML = 'T';
-			var outDimTimes = document.createTextNode(' \u00d7 ');
-			var outDimH = el('span', 'hw-norm-dim-dh');
-			outDimH.innerHTML = 'd<sub>head</sub>';
-			if (astroAttr) outDimH.querySelector('sub').setAttribute(astroAttr, '');
-			outDim.appendChild(outDimT);
-			outDim.appendChild(outDimTimes);
-			outDim.appendChild(outDimH);
+			var outDim = el('div', 'hw-q8-dim-label');
+			outDim.innerHTML = 'T \u00d7 d<sub>head</sub>';
+			if (astroAttr) outDim.querySelectorAll('sub').forEach(function(s) { s.setAttribute(astroAttr, ''); });
 			outWrap.appendChild(outDim);
-			topRow.appendChild(outWrap);
+			stackArea.appendChild(outWrap);
 
-			layout.appendChild(topRow);
+			main.appendChild(stackArea);
+			layout.appendChild(main);
 
 			// === Equation row ===
-			var eqRow = el('div', 'hw-vproj-equation');
-			var eqV = el('span', 'hw-vproj-eq-v', 'V');
-			var eqEq = document.createTextNode(' = ');
-			var eqNorm = el('span', 'hw-vproj-eq-norm', 'X\u0302');
-			var eqDot = document.createTextNode(' \u00b7 ');
-			var eqWv = el('span', 'hw-vproj-eq-wv');
+			var eqRow = el('div', 'hw-v9-equation');
+			eqRow.appendChild(el('span', 'hw-v9-eq-v', 'V'));
+			eqRow.appendChild(document.createTextNode(' = '));
+			eqRow.appendChild(el('span', 'hw-v9-eq-norm', 'X\u0302'));
+			eqRow.appendChild(document.createTextNode(' \u00b7 '));
+			var eqWv = el('span', 'hw-v9-eq-wv');
 			eqWv.innerHTML = 'W<sub>V</sub>';
 			if (astroAttr) eqWv.querySelector('sub').setAttribute(astroAttr, '');
-			var eqDim = el('span', 'hw-vproj-eq-dim', '  (T\u00d7d_model) \u00b7 (d_model\u00d7d_head) = T\u00d7d_head');
-			eqRow.appendChild(eqV);
-			eqRow.appendChild(eqEq);
-			eqRow.appendChild(eqNorm);
-			eqRow.appendChild(eqDot);
 			eqRow.appendChild(eqWv);
-			eqRow.appendChild(eqDim);
+			eqRow.appendChild(el('span', 'hw-v9-eq-dim', '  (T\u00d7d_model) \u00b7 (d_model\u00d7d_head) = T\u00d7d_head'));
 			layout.appendChild(eqRow);
 
-			// === Staging area: Q and V side by side ===
-			var staging = el('div', 'hw-vproj-staging');
-
-			// Q staged box
-			var qItem = el('div', 'hw-vproj-staged-item');
-			qItem.appendChild(el('div', 'hw-vproj-staged-label hw-vproj-staged-label-q', 'Q'));
-			qItem.appendChild(el('div', 'hw-vproj-staged-box hw-vproj-staged-box-q', 'T\u00d7d'));
-			qItem.appendChild(el('div', 'hw-vproj-staged-dim', 'from Step 7'));
-			staging.appendChild(qItem);
-
-			// V staged box
-			var vItem = el('div', 'hw-vproj-staged-item');
-			vItem.appendChild(el('div', 'hw-vproj-staged-label hw-vproj-staged-label-v', 'V'));
-			vItem.appendChild(el('div', 'hw-vproj-staged-box hw-vproj-staged-box-v', 'T\u00d7d'));
-			vItem.appendChild(el('div', 'hw-vproj-staged-dim', 'new'));
-			staging.appendChild(vItem);
-
-			layout.appendChild(staging);
-
 			// === Animation sequence ===
-			// Phase 1 (immediate): matrix + W_V shown, "cat" column highlighted in pink
-			// Phase 2 (600ms): pulse on highlighted column
+			// Phase 1 (400ms): W_V slides up into position
 			setTimeout(function() {
-				matCells.forEach(function(mc) {
-					if (mc.col === highlightCol) mc.el.classList.add('pulse');
-				});
-			}, 600);
+				wvWrap.classList.add('visible');
+			}, 400);
 
-			// Phase 3 (1200ms): V output appears
+			// Phase 2 (800ms): Q ghost appears + V output frame appears
 			setTimeout(function() {
+				qGhost.classList.add('visible');
 				outWrap.classList.add('visible');
-			}, 1200);
+			}, 800);
 
-			// Phase 4 (1800ms): equation appears
+			// Helper: create a flying column copy from srcCol toward W_V
+			function flyCol(srcCol, dur) {
+				var lRect = layout.getBoundingClientRect();
+				var sRect = srcCol.getBoundingClientRect();
+				var wRect = wvCols.getBoundingClientRect();
+
+				var fly = srcCol.cloneNode(true);
+				fly.classList.add('hw-q8-fly-col');
+				fly.style.position = 'absolute';
+				fly.style.left = (sRect.left - lRect.left) + 'px';
+				fly.style.top = (sRect.top - lRect.top) + 'px';
+				fly.style.width = sRect.width + 'px';
+				fly.style.transition = 'transform ' + dur + 'ms ease-in-out, opacity ' + dur + 'ms ease';
+				layout.appendChild(fly);
+
+				var dx = (wRect.left + wRect.width / 2 - sRect.width / 2) - sRect.left;
+				requestAnimationFrame(function() {
+					requestAnimationFrame(function() {
+						fly.style.transform = 'translateX(' + dx + 'px) scale(0.8)';
+						fly.style.opacity = '0.2';
+					});
+				});
+
+				setTimeout(function() {
+					if (fly.parentNode) fly.remove();
+				}, dur + 80);
+			}
+
+			// Phase 3: Per-token column animation
+			// Tokens 0-2: detailed with flying column copy (500ms each)
+			// Tokens 3-7: rapid cascade (60ms each)
+			var detailedCount = 3;
+			var detailedGap = 500;
+			var cascadeGap = 60;
+			var baseDelay = 1100;
+
+			tokens.forEach(function(tok, i) {
+				var delay;
+				if (i < detailedCount) {
+					delay = baseDelay + i * detailedGap;
+				} else {
+					delay = baseDelay + detailedCount * detailedGap + (i - detailedCount) * cascadeGap;
+				}
+
+				setTimeout(function() {
+					// Highlight input column (pink for V)
+					inputColEls[i].classList.add('hw-v9-highlight');
+
+					if (i < detailedCount) {
+						// Detailed: fly column copy to W_V, then flash, then fill
+						flyCol(inputColEls[i], 250);
+
+						setTimeout(function() {
+							wvWrap.classList.add('flash');
+							setTimeout(function() { wvWrap.classList.remove('flash'); }, 200);
+						}, 250);
+
+						setTimeout(function() {
+							outputColEls[i].classList.add('hw-v9-filled');
+						}, 350);
+
+						setTimeout(function() {
+							inputColEls[i].classList.remove('hw-v9-highlight');
+						}, 450);
+					} else {
+						// Cascade: quick highlight + flash + fill
+						wvWrap.classList.add('flash');
+						setTimeout(function() { wvWrap.classList.remove('flash'); }, 40);
+
+						setTimeout(function() {
+							outputColEls[i].classList.add('hw-v9-filled');
+						}, 30);
+
+						setTimeout(function() {
+							inputColEls[i].classList.remove('hw-v9-highlight');
+						}, 50);
+					}
+				}, delay);
+			});
+
+			// Phase 4: Equation appears after all animations complete
+			var eqDelay = baseDelay + detailedCount * detailedGap + (tokens.length - detailedCount) * cascadeGap + 300;
 			setTimeout(function() {
 				eqRow.classList.add('visible');
-			}, 1800);
-
-			// Phase 5 (2400ms): staging area with Q and V boxes
-			setTimeout(function() {
-				staging.classList.add('visible');
-			}, 2400);
+			}, eqDelay);
 
 			return layout;
 		}
