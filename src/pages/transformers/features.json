@@ -215,5 +215,105 @@
       "Annotation text: this is what one attention head produces \u2014 the output is added back to the input (residual connection) and feeds forward to the next layer",
       "The figure should end with a sense of completion \u2014 this attention head's job is done"
     ]
+  },
+  {
+    "id": 17,
+    "name": "Object continuity for steps 3\u20135: token chips + embedding columns",
+    "passes": true,
+    "steps": [
+      "Create a persistent layer spanning steps 3\u20135 containing: 8 token chips (small, step-3 style), 8 down arrows, and 8 blue embedding pill columns",
+      "Step 3 shows all persistent elements at full opacity. Step-extras: y-axis label, pill grid values, sidenote",
+      "Step 3\u21924: token chips and blue pills persist in DOM. Blue pills shrink in width (CSS transition). Yellow positional pills and legend appear as volatile step-extras",
+      "Step 4\u21925: blue + yellow pill pairs persist. Volatile step-extras: green merged column, merge equation, sidenote. The merge animation collapses pairs into green under each token",
+      "FLIP animation on all persistent elements so positional shifts from step-extras height changes are smooth glides, not teleports",
+      "Backward navigation (5\u21924\u21923) reverse-animates: green splits back into blue+yellow, yellow collapses, pills grow back to step-3 size",
+      "Boundary transitions: step 2\u21923 inserts the persistent layer fresh (no FLIP needed). Step 5\u21926 destroys it (full rebuild for step 6)",
+      "Verify both themes, mobile width, and that step-specific content (sidenote, legend, equation) fades in/out properly"
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Object continuity for steps 5\u21926: green columns consolidate into matrix",
+    "passes": false,
+    "steps": [
+      "The 8 separate green column pills from step 5 should slide together into a unified matrix grid in step 6, not be destroyed and recreated",
+      "Persistent elements: 8 green column bodies (pill shapes), token labels above each column, d_model y-axis label",
+      "Step 5\u21926 transition: columns glide horizontally toward each other (gap shrinks), a matrix border/outline fades in around them, cell values (previously hidden or faded) become visible",
+      "Step 6\u21925 backward: matrix border fades out, columns spread apart, values fade, restoring the step-5 separated-pill look",
+      "FLIP animation handles the horizontal position changes of each column pill as gap collapses",
+      "Token labels FLIP from their step-5 positions (above separated pills) to step-6 positions (column headers in matrix)",
+      "Verify the consolidation animation looks like the columns are physically merging into a single object"
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Object continuity for steps 6\u21927: matrix normalization",
+    "passes": false,
+    "steps": [
+      "The matrix frame, token labels, y-axis label, and column structure from step 6 persist into step 7 \u2014 not destroyed and rebuilt",
+      "Persistent elements: matrix wrapper (border/outline), 8 column containers, 8 token column-header labels, d_model y-axis label",
+      "Step 6\u21927 transition: cell values animate from green text to purple text, background tint shifts green\u2192purple via CSS transition on the persistent container class",
+      "QKV weight matrices (W_Q, W_K, W_V) appear below as volatile step-extras with fade-in animation",
+      "Step 7\u21926 backward: purple\u2192green color transition reverses, QKV weights fade out",
+      "FLIP handles any vertical shift of the matrix caused by QKV weights appearing/disappearing below",
+      "Unify the CSS class names between step 6 (hw-mat6-*) and step 7 (hw-norm7-*) so the same DOM elements can be reused"
+    ]
+  },
+  {
+    "id": 20,
+    "name": "Object continuity for steps 8\u201310: input matrix across Q/V/K projections",
+    "passes": false,
+    "steps": [
+      "The normalized input matrix X\u0302 (T\u00d7d_model, purple) and its token labels are identical across steps 8, 9, and 10 \u2014 persist them as a single layer",
+      "Persistent elements: input matrix wrapper, 8 input column pills, 8 token labels, X\u0302 label, T\u00d7d_model dimension label, dot operator",
+      "Step 8: volatile content = W_Q weight matrix, arrow operator, Q output matrix (blue). Per-token animation runs on volatile elements only",
+      "Step 8\u21929: input matrix stays put. W_Q swaps to W_V (volatile rebuild). Q output moves to ghost/stack position, V output appears in front. FLIP animates the input matrix if its position shifts",
+      "Step 9\u219210: input matrix stays put. W_V swaps to W_K (volatile rebuild). Q/V stack clears, K output + transpose section appear as volatile content",
+      "Backward navigation reverses: volatile content swaps back, input matrix FLIPs to any new position",
+      "Steps 8-10 currently all use hw-q8-* classes for the input \u2014 reuse the same DOM nodes directly",
+      "Boundary: step 7\u21928 inserts the persistent layer fresh. Step 10\u219211 destroys it (step 11 has completely different layout)"
+    ]
+  },
+  {
+    "id": 21,
+    "name": "Object continuity for steps 10\u219211: K^T persists into QK^T",
+    "passes": false,
+    "steps": [
+      "The K^T matrix visualization from step 10's transpose section should persist as the K^T operand in step 11's QK^T multiplication",
+      "Persistent elements: K^T matrix wrapper, K^T label, d_head\u00d7T dimension label, token row labels, K^T cell grid",
+      "Step 10\u219211 transition: K^T slides/scales from its step-10 position (below K) to its step-11 position (right side of multiplication row). FLIP animates this movement",
+      "Step 10's input matrix, W_K, K output, and transpose arrow are destroyed. Step 11's Q matrix, dot operator, down arrow, and result matrix appear as volatile step-extras",
+      "Step 11\u219210 backward: K^T FLIPs back to its step-10 position, step 10's full layout rebuilds around it",
+      "The K^T DOM structure must be compatible between steps \u2014 unify hw-k10-kt-* and hw-qkt-kt-* class names or adopt the element with class swapping",
+      "Verify the K^T movement animation makes it visually clear the same object is being reused"
+    ]
+  },
+  {
+    "id": 22,
+    "name": "Object continuity for steps 11\u219212: scores matrix zooms into heatmap",
+    "passes": false,
+    "steps": [
+      "The T\u00d7T attention scores matrix from step 11's result section should zoom/expand into step 12's interactive heatmap \u2014 not be destroyed and recreated",
+      "Persistent elements: 8\u00d78 grid of score cells, query token row labels (left), key token column labels (top)",
+      "Step 11\u219212 transition: the scores grid scales up and repositions to fill the viz area. Cell backgrounds transition from the step-11 fill color to the heatmap color scale. Softmax banner fades in above. Interactive hover behavior activates",
+      "Step 12\u219211 backward: heatmap shrinks back into the scores matrix position, color scale reverses to step-11 styling, hover behavior deactivates, QK^T multiplication elements reappear",
+      "FLIP handles the scale + position change of the entire grid and each label",
+      "Token labels on both axes must FLIP from their step-11 positions (small, inside result section) to step-12 positions (larger, heatmap axes)",
+      "This is the most visually dramatic continuity transition \u2014 the matrix physically grows into the heatmap"
+    ]
+  },
+  {
+    "id": 23,
+    "name": "Object continuity for steps 13\u219214: attention output carries forward",
+    "passes": false,
+    "steps": [
+      "The green attention output matrix (T\u00d7d_head) from step 13 should persist as the Attn(x) operand in step 14's residual addition",
+      "Persistent elements: output matrix wrapper, 3 output column pills, output cell values, T\u00d7d_head dimension label",
+      "Step 13\u219214 transition: the attention matrix and V matrix fade out (destroyed). The green output matrix FLIPs from step 13's '= Output' position to step 14's 'Attn(x)' position. Input matrix and '+' operator appear as volatile step-extras",
+      "Step 14\u219213 backward: green output FLIPs back, step 13's multiplication layout rebuilds around it",
+      "Class names differ (hw-av13-out-* vs hw-ho14-attn-*) \u2014 either unify them or swap classes on the persistent elements during transition",
+      "The output label should transition from 'Output' to 'Attn(x)' (text content update, not DOM replacement)",
+      "Verify the green output visually 'carries forward' and the user perceives it as the same object moving to a new context"
+    ]
   }
 ]

@@ -5530,6 +5530,236 @@ const sections = [
 		}
 	}
 
+	/* ===== Persistent layer: steps 3-5 column layout ===== */
+	.hw-s35-layout {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.3rem;
+		width: 100%;
+		padding: 0.5rem 0.25rem;
+	}
+	.hw-s35-body {
+		display: flex;
+		align-items: center;
+		gap: 0.35rem;
+	}
+	.hw-s35-columns {
+		display: flex;
+		gap: 6px;
+		justify-content: center;
+	}
+	.hw-s35-col {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2px;
+	}
+	.hw-s35-chip {
+		font-size: 0.72rem;
+		padding: 2px 7px;
+		transition: transform 0.4s ease;
+	}
+	.hw-s35-arrow {
+		text-align: center;
+		font-size: 0.85rem;
+		color: hsl(210 60% 55% / 0.5);
+		line-height: 1;
+	}
+	/* Pair container */
+	.hw-s35-pair {
+		display: flex;
+		gap: 0px;
+		align-items: stretch;
+		transition: gap 0.5s ease 0.3s;
+	}
+	.hw-s35-at-4 .hw-s35-pair,
+	.hw-s35-at-5 .hw-s35-pair {
+		gap: 3px;
+	}
+	/* Blue pill — starts at step 3 full size, shrinks in step 4-5 */
+	.hw-s35-blue {
+		display: flex;
+		flex-direction: column;
+		width: 48px;
+		border-radius: 6px;
+		border: 1.5px solid hsl(210 60% 55% / 0.25);
+		background: hsl(210 60% 55% / 0.06);
+		overflow: hidden;
+		transition: width 0.5s ease calc(0.3s + var(--i, 0) * 0.06s),
+		            opacity 0.45s ease calc(0.1s + var(--i, 0) * 0.06s),
+		            border-color 0.35s ease calc(0.1s + var(--i, 0) * 0.06s);
+	}
+	.hw-s35-at-4 .hw-s35-blue,
+	.hw-s35-at-5 .hw-s35-blue {
+		width: 24px;
+	}
+	.hw-s35-bval {
+		padding: 3px 2px;
+		text-align: center;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.6rem;
+		line-height: 1.3;
+		color: hsl(210 60% 55% / 0.55);
+		border-top: 1px solid hsl(210 60% 55% / 0.12);
+		transition: opacity 0.4s ease calc(0.2s + var(--i, 0) * 0.06s);
+	}
+	.hw-s35-bval:first-child { border-top: none; }
+	.hw-s35-at-4 .hw-s35-bval,
+	.hw-s35-at-5 .hw-s35-bval { opacity: 0.15; }
+	.hw-s35-bdots {
+		padding: 2px 2px;
+		text-align: center;
+		font-size: 0.75rem;
+		line-height: 1;
+		color: hsl(210 60% 55% / 0.3);
+		border-top: 1px dashed hsl(210 60% 55% / 0.15);
+		border-bottom: 1px dashed hsl(210 60% 55% / 0.15);
+		background: hsl(210 60% 55% / 0.03);
+		transition: opacity 0.4s ease calc(0.2s + var(--i, 0) * 0.06s);
+	}
+	.hw-s35-at-4 .hw-s35-bdots,
+	.hw-s35-at-5 .hw-s35-bdots { opacity: 0.2; }
+	/* Plus sign — hidden in steps 3-4 */
+	.hw-s35-plus {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.7rem;
+		font-weight: 600;
+		color: hsl(var(--theme-text) / 0.35);
+		width: 0;
+		opacity: 0;
+		overflow: hidden;
+		transition: opacity 0.3s ease calc(var(--i, 0) * 0.06s),
+		            width 0.3s ease calc(var(--i, 0) * 0.06s);
+	}
+	.hw-s35-at-5 .hw-s35-plus {
+		width: 14px;
+		opacity: 1;
+	}
+	/* Yellow pill — hidden in step 3 */
+	.hw-s35-yellow {
+		display: flex;
+		flex-direction: column;
+		width: 0;
+		border-radius: 6px;
+		border: 1.5px solid transparent;
+		background: transparent;
+		overflow: hidden;
+		opacity: 0;
+		transition: width 0.5s ease calc(0.5s + var(--i, 0) * 0.06s),
+		            opacity 0.4s ease calc(0.6s + var(--i, 0) * 0.06s),
+		            border-color 0.4s ease calc(0.5s + var(--i, 0) * 0.06s),
+		            background-color 0.4s ease calc(0.5s + var(--i, 0) * 0.06s);
+	}
+	.hw-s35-at-4 .hw-s35-yellow,
+	.hw-s35-at-5 .hw-s35-yellow {
+		width: 24px;
+		opacity: 1;
+		border-color: hsl(42 90% 55% / 0.25);
+		background: hsl(42 90% 55% / 0.06);
+	}
+	.hw-s35-yval {
+		padding: 3px 2px;
+		text-align: center;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.6rem;
+		line-height: 1.3;
+		color: hsl(42 90% 55% / 0.45);
+		border-top: 1px solid hsl(42 90% 55% / 0.12);
+		opacity: 0.25;
+	}
+	.hw-s35-yval:first-child { border-top: none; }
+	.hw-s35-ydots {
+		padding: 2px 2px;
+		text-align: center;
+		font-size: 0.75rem;
+		line-height: 1;
+		color: hsl(42 90% 55% / 0.3);
+		border-top: 1px dashed hsl(42 90% 55% / 0.15);
+		border-bottom: 1px dashed hsl(42 90% 55% / 0.15);
+		background: hsl(42 90% 55% / 0.03);
+	}
+	/* Green pill — hidden until merge */
+	.hw-s35-green {
+		display: flex;
+		flex-direction: column;
+		width: 0;
+		border-radius: 6px;
+		border: 1.5px solid transparent;
+		background: transparent;
+		overflow: hidden;
+		opacity: 0;
+		transition: width 0.45s ease calc(0.2s + var(--i, 0) * 0.06s),
+		            opacity 0.35s ease calc(0.25s + var(--i, 0) * 0.06s),
+		            border-color 0.35s ease calc(0.2s + var(--i, 0) * 0.06s),
+		            background-color 0.35s ease calc(0.2s + var(--i, 0) * 0.06s);
+	}
+	.hw-s35-gval {
+		padding: 3px 3px;
+		text-align: center;
+		font-family: 'IBM Plex Mono', ui-monospace, monospace;
+		font-size: 0.55rem;
+		line-height: 1.3;
+		color: hsl(152 50% 48% / 0.7);
+		border-top: 1px solid hsl(152 50% 48% / 0.12);
+	}
+	.hw-s35-gval:first-child { border-top: none; }
+	.hw-s35-gdots {
+		padding: 2px 2px;
+		text-align: center;
+		font-size: 0.65rem;
+		line-height: 1;
+		color: hsl(152 50% 48% / 0.4);
+		border-top: 1px dashed hsl(152 50% 48% / 0.15);
+		border-bottom: 1px dashed hsl(152 50% 48% / 0.15);
+		background: hsl(152 50% 48% / 0.03);
+	}
+	/* === MERGED STATE === */
+	.hw-s35-merged .hw-s35-blue {
+		width: 0;
+		opacity: 0;
+		border-color: transparent;
+	}
+	.hw-s35-merged .hw-s35-yellow {
+		width: 0;
+		opacity: 0;
+		border-color: transparent;
+	}
+	.hw-s35-merged .hw-s35-plus {
+		opacity: 0;
+		width: 0;
+	}
+	.hw-s35-merged .hw-s35-green {
+		width: 36px;
+		opacity: 1;
+		border-color: hsl(152 50% 48% / 0.3);
+		background: hsl(152 50% 48% / 0.08);
+	}
+	/* Step-specific volatile extras */
+	.hw-s35-extras {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+		gap: 0.5rem;
+	}
+	.hw-s35-extras > * {
+		animation: hw-fade-in 0.3s ease forwards;
+	}
+	/* Mobile */
+	@media (max-width: 480px) {
+		.hw-s35-blue { width: 38px; }
+		.hw-s35-at-4 .hw-s35-blue,
+		.hw-s35-at-5 .hw-s35-blue { width: 18px; }
+		.hw-s35-at-4 .hw-s35-yellow,
+		.hw-s35-at-5 .hw-s35-yellow { width: 18px; }
+		.hw-s35-merged .hw-s35-green { width: 28px; }
+		.hw-s35-chip { font-size: 0.62rem; padding: 2px 5px; }
+		.hw-s35-columns { gap: 4px; }
+	}
+
 	/* ===== Step 6: Layer Norm + QKV Weights ===== */
 	.hw-norm-layout {
 		display: flex;
@@ -12027,6 +12257,79 @@ const sections = [
 		var TOTAL_STEPS = 14;
 		var currentStep = 1;
 
+		// === Persistent layer for steps 3-5: column-based token + embedding layout ===
+		var mergeTimeout = null;
+		var s35Tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
+		var s35Types = ['whole', 'whole', 'whole', 'whole', 'sub', 'sub', 'whole', 'whole'];
+		var s35SampleVecs = [
+			[0.12, -0.84, 0.31, 0.67],
+			[-0.45, 0.22, 0.91, -0.33],
+			[0.78, -0.15, -0.62, 0.44],
+			[-0.29, 0.56, 0.08, -0.71],
+			[0.63, -0.38, 0.47, 0.19],
+			[-0.11, 0.73, -0.55, 0.82],
+			[0.34, -0.67, 0.25, -0.48],
+			[0.52, 0.14, -0.39, 0.66]
+		];
+		var s35PosVecs = [
+			[0.00, 0.84, 0.54, 0.91],
+			[0.01, 0.54, 0.99, 0.42],
+			[0.01, 0.14, 0.65, -0.76],
+			[0.00, -0.42, -0.42, -0.91],
+			[0.00, -0.84, -0.99, -0.14],
+			[0.00, -1.00, -0.65, 0.66],
+			[0.01, -0.76, 0.28, 0.99],
+			[0.01, -0.28, 0.96, 0.54]
+		];
+
+		var s35Layout = el('div', 'hw-s35-layout hw-s35-at-3');
+		var s35Body = el('div', 'hw-s35-body');
+		var s35Yaxis = el('div', 'hw-embed-yaxis');
+		s35Yaxis.innerHTML = 'd<sub>model</sub>';
+		if (astroAttr) {
+			s35Yaxis.querySelectorAll('sub').forEach(function(s) { s.setAttribute(astroAttr, ''); });
+		}
+		s35Body.appendChild(s35Yaxis);
+
+		var s35Columns = el('div', 'hw-s35-columns');
+		s35Tokens.forEach(function(tok, i) {
+			var col = el('div', 'hw-s35-col');
+			col.style.setProperty('--i', i);
+			col.appendChild(el('span', 'hw-tok-chip hw-tok-' + s35Types[i] + ' hw-s35-chip', tok));
+			col.appendChild(el('div', 'hw-s35-arrow', '\u2193'));
+			var pair = el('div', 'hw-s35-pair');
+			var blue = el('div', 'hw-s35-blue');
+			blue.appendChild(el('div', 'hw-s35-bval', s35SampleVecs[i][0].toFixed(2)));
+			blue.appendChild(el('div', 'hw-s35-bval', s35SampleVecs[i][1].toFixed(2)));
+			blue.appendChild(el('div', 'hw-s35-bdots', '\u22EF'));
+			blue.appendChild(el('div', 'hw-s35-bval', s35SampleVecs[i][2].toFixed(2)));
+			blue.appendChild(el('div', 'hw-s35-bval', s35SampleVecs[i][3].toFixed(2)));
+			pair.appendChild(blue);
+			pair.appendChild(el('span', 'hw-s35-plus', '+'));
+			var yellow = el('div', 'hw-s35-yellow');
+			yellow.appendChild(el('div', 'hw-s35-yval', s35PosVecs[i][0].toFixed(2)));
+			yellow.appendChild(el('div', 'hw-s35-yval', s35PosVecs[i][1].toFixed(2)));
+			yellow.appendChild(el('div', 'hw-s35-ydots', '\u22EF'));
+			yellow.appendChild(el('div', 'hw-s35-yval', s35PosVecs[i][2].toFixed(2)));
+			yellow.appendChild(el('div', 'hw-s35-yval', s35PosVecs[i][3].toFixed(2)));
+			pair.appendChild(yellow);
+			var green = el('div', 'hw-s35-green');
+			var cv = s35SampleVecs[i].map(function(v, j) { return v + s35PosVecs[i][j]; });
+			green.appendChild(el('div', 'hw-s35-gval', cv[0].toFixed(2)));
+			green.appendChild(el('div', 'hw-s35-gval', cv[1].toFixed(2)));
+			green.appendChild(el('div', 'hw-s35-gdots', '\u22EF'));
+			green.appendChild(el('div', 'hw-s35-gval', cv[2].toFixed(2)));
+			green.appendChild(el('div', 'hw-s35-gval', cv[3].toFixed(2)));
+			pair.appendChild(green);
+			col.appendChild(pair);
+			s35Columns.appendChild(col);
+		});
+		s35Body.appendChild(s35Columns);
+		s35Layout.appendChild(s35Body);
+		var s35Extras = el('div', 'hw-s35-extras');
+		s35Layout.appendChild(s35Extras);
+
+
 		// Step metadata: title, description text, shape info
 		var STEP_DATA = [
 			null, // index 0 unused (1-indexed)
@@ -12224,78 +12527,7 @@ const sections = [
 			return layout;
 		}
 
-		function renderStep3() {
-			var layout = el('div', 'hw-embed-layout');
-
-			// Token chips row at the top (wider spacing to match pills below)
-			var chipsRow = el('div', 'hw-embed-chips');
-			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
-			var tokenTypes = ['whole', 'whole', 'whole', 'whole', 'sub', 'sub', 'whole', 'whole'];
-
-			tokens.forEach(function(tok, i) {
-				var chip = el('span', 'hw-tok-chip hw-tok-' + tokenTypes[i] + ' hw-embed-chip', tok);
-				chip.style.animationDelay = (i * 40) + 'ms';
-				chipsRow.appendChild(chip);
-			});
-			layout.appendChild(chipsRow);
-
-			// Down arrows row
-			var arrowRow = el('div', 'hw-embed-arrow-row');
-			tokens.forEach(function(tok, i) {
-				var arrow = el('span', 'hw-embed-arrow-cell', '\u2193');
-				arrow.style.animationDelay = (200 + i * 50) + 'ms';
-				arrowRow.appendChild(arrow);
-			});
-			layout.appendChild(arrowRow);
-
-			// Body: y-axis label + pill grid
-			var body = el('div', 'hw-embed-body');
-
-			// d_model y-axis label
-			var yaxis = el('div', 'hw-embed-yaxis');
-			yaxis.innerHTML = 'd<sub>model</sub>';
-			if (astroAttr) {
-				yaxis.querySelectorAll('sub').forEach(function(s) { s.setAttribute(astroAttr, ''); });
-			}
-			body.appendChild(yaxis);
-
-			// Column pills grid
-			var pillGrid = el('div', 'hw-embed-grid');
-
-			// Sample embedding values: 2 top + ellipsis + 2 bottom (pandas-style truncation)
-			var sampleVecs = [
-				[0.12, -0.84, 0.31, 0.67],
-				[-0.45, 0.22, 0.91, -0.33],
-				[0.78, -0.15, -0.62, 0.44],
-				[-0.29, 0.56, 0.08, -0.71],
-				[0.63, -0.38, 0.47, 0.19],
-				[-0.11, 0.73, -0.55, 0.82],
-				[0.34, -0.67, 0.25, -0.48],
-				[0.52, 0.14, -0.39, 0.66]
-			];
-
-			tokens.forEach(function(tok, i) {
-				var pill = el('div', 'hw-embed-pill');
-				pill.style.animationDelay = (350 + i * 60) + 'ms';
-
-				// Top 2 values
-				pill.appendChild(el('div', 'hw-embed-pill-val', sampleVecs[i][0].toFixed(2)));
-				pill.appendChild(el('div', 'hw-embed-pill-val', sampleVecs[i][1].toFixed(2)));
-
-				// Middle ellipsis row (pandas-style truncation)
-				pill.appendChild(el('div', 'hw-embed-pill-dots', '\u22EF'));
-
-				// Bottom 2 values
-				pill.appendChild(el('div', 'hw-embed-pill-val', sampleVecs[i][2].toFixed(2)));
-				pill.appendChild(el('div', 'hw-embed-pill-val', sampleVecs[i][3].toFixed(2)));
-
-				pillGrid.appendChild(pill);
-			});
-
-			body.appendChild(pillGrid);
-			layout.appendChild(body);
-
-			// Permanent sidenote (no close button)
+		function buildS35Step3Extras() {
 			var sn = el('div', 'hw-embed-sidenote');
 			var snText = el('span', 'hw-embed-sn-text');
 			snText.innerHTML = '<strong>Embedding lookup:</strong> The model learns a unique vector for every token in its vocabulary (often 30k\u2013100k+ entries). At inference time, this is a simple table lookup\u200a\u2014\u200ano computation, just retrieve the row.';
@@ -12303,73 +12535,10 @@ const sections = [
 				snText.querySelectorAll('strong').forEach(function(s) { s.setAttribute(astroAttr, ''); });
 			}
 			sn.appendChild(snText);
-			layout.appendChild(sn);
-
-			return layout;
+			s35Extras.appendChild(sn);
 		}
 
-		function renderStep4() {
-			var layout = el('div', 'hw-pos4-layout');
-			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
-			var tokenTypes = ['whole', 'whole', 'whole', 'whole', 'sub', 'sub', 'whole', 'whole'];
-
-			var sampleVecs = [
-				[0.12, -0.84, 0.31, 0.67],
-				[-0.45, 0.22, 0.91, -0.33],
-				[0.78, -0.15, -0.62, 0.44],
-				[-0.29, 0.56, 0.08, -0.71],
-				[0.63, -0.38, 0.47, 0.19],
-				[-0.11, 0.73, -0.55, 0.82],
-				[0.34, -0.67, 0.25, -0.48],
-				[0.52, 0.14, -0.39, 0.66]
-			];
-
-			var posVecs = [
-				[0.00, 0.84, 0.54, 0.91],
-				[0.01, 0.54, 0.99, 0.42],
-				[0.01, 0.14, 0.65, -0.76],
-				[0.00, -0.42, -0.42, -0.91],
-				[0.00, -0.84, -0.99, -0.14],
-				[0.00, -1.00, -0.65, 0.66],
-				[0.01, -0.76, 0.28, 0.99],
-				[0.01, -0.28, 0.96, 0.54]
-			];
-
-			var body = el('div', 'hw-pos4-body');
-			var yaxis = el('div', 'hw-embed-yaxis');
-			yaxis.innerHTML = 'd<sub>model</sub>';
-			if (astroAttr) {
-				yaxis.querySelectorAll('sub').forEach(function(s) { s.setAttribute(astroAttr, ''); });
-			}
-			body.appendChild(yaxis);
-
-			var columns = el('div', 'hw-pos4-columns');
-			tokens.forEach(function(tok, i) {
-				var col = el('div', 'hw-pos4-col');
-				col.style.setProperty('--i', i);
-				col.appendChild(el('span', 'hw-tok-chip hw-tok-' + tokenTypes[i] + ' hw-pos4-chip', tok));
-				col.appendChild(el('div', 'hw-pos4-arrow', '↓'));
-				var pair = el('div', 'hw-pos4-pair');
-				var blue = el('div', 'hw-pos4-blue');
-				blue.appendChild(el('div', 'hw-embed-pill-val', sampleVecs[i][0].toFixed(2)));
-				blue.appendChild(el('div', 'hw-embed-pill-val', sampleVecs[i][1].toFixed(2)));
-				blue.appendChild(el('div', 'hw-embed-pill-dots', '⋯'));
-				blue.appendChild(el('div', 'hw-embed-pill-val', sampleVecs[i][2].toFixed(2)));
-				blue.appendChild(el('div', 'hw-embed-pill-val', sampleVecs[i][3].toFixed(2)));
-				pair.appendChild(blue);
-				var yellow = el('div', 'hw-pos4-yellow');
-				yellow.appendChild(el('div', 'hw-pos4-yval', posVecs[i][0].toFixed(2)));
-				yellow.appendChild(el('div', 'hw-pos4-yval', posVecs[i][1].toFixed(2)));
-				yellow.appendChild(el('div', 'hw-pos4-ydots', '⋯'));
-				yellow.appendChild(el('div', 'hw-pos4-yval', posVecs[i][2].toFixed(2)));
-				yellow.appendChild(el('div', 'hw-pos4-yval', posVecs[i][3].toFixed(2)));
-				pair.appendChild(yellow);
-				col.appendChild(pair);
-				columns.appendChild(col);
-			});
-			body.appendChild(columns);
-			layout.appendChild(body);
-
+		function buildS35Step4Extras() {
 			var legend = el('div', 'hw-pos4-legend');
 			var tL = el('span', '');
 			tL.appendChild(el('span', 'hw-pos-legend-swatch hw-pos-legend-swatch-tok'));
@@ -12379,108 +12548,17 @@ const sections = [
 			pL.appendChild(el('span', 'hw-pos-legend-swatch hw-pos-legend-swatch-pos'));
 			pL.appendChild(document.createTextNode(' Positional embedding'));
 			legend.appendChild(pL);
-			layout.appendChild(legend);
-
-			requestAnimationFrame(function() {
-				requestAnimationFrame(function() {
-					layout.classList.add('hw-pos4-morphed');
-				});
-			});
-
-			return layout;
+			s35Extras.appendChild(legend);
 		}
 
-		function renderStep5() {
-			var layout = el('div', 'hw-merge5-layout');
-			var tokens = ['The', 'fat', 'cat', 'sat', 'quiet', 'ly', 'on', 'the'];
-			var tokenTypes = ['whole', 'whole', 'whole', 'whole', 'sub', 'sub', 'whole', 'whole'];
-
-			var sampleVecs = [
-				[0.12, -0.84, 0.31, 0.67],
-				[-0.45, 0.22, 0.91, -0.33],
-				[0.78, -0.15, -0.62, 0.44],
-				[-0.29, 0.56, 0.08, -0.71],
-				[0.63, -0.38, 0.47, 0.19],
-				[-0.11, 0.73, -0.55, 0.82],
-				[0.34, -0.67, 0.25, -0.48],
-				[0.52, 0.14, -0.39, 0.66]
-			];
-
-			var posVecs = [
-				[0.00, 0.84, 0.54, 0.91],
-				[0.01, 0.54, 0.99, 0.42],
-				[0.01, 0.14, 0.65, -0.76],
-				[0.00, -0.42, -0.42, -0.91],
-				[0.00, -0.84, -0.99, -0.14],
-				[0.00, -1.00, -0.65, 0.66],
-				[0.01, -0.76, 0.28, 0.99],
-				[0.01, -0.28, 0.96, 0.54]
-			];
-
-			var body = el('div', 'hw-pos4-body');
-			var yaxis = el('div', 'hw-embed-yaxis');
-			yaxis.innerHTML = 'd<sub>model</sub>';
-			if (astroAttr) {
-				yaxis.querySelectorAll('sub').forEach(function(s) { s.setAttribute(astroAttr, ''); });
-			}
-			body.appendChild(yaxis);
-
-			var columns = el('div', 'hw-pos4-columns');
-			tokens.forEach(function(tok, i) {
-				var col = el('div', 'hw-pos4-col');
-				col.style.setProperty('--i', i);
-				col.appendChild(el('span', 'hw-tok-chip hw-tok-' + tokenTypes[i] + ' hw-pos4-chip', tok));
-				col.appendChild(el('div', 'hw-pos4-arrow', '\u2193'));
-
-				var pair = el('div', 'hw-merge5-pair');
-
-				// Blue pill (matches Step 4 morphed state: 24px wide, faded values)
-				var blue = el('div', 'hw-merge5-blue');
-				blue.appendChild(el('div', 'hw-merge5-bval', sampleVecs[i][0].toFixed(2)));
-				blue.appendChild(el('div', 'hw-merge5-bval', sampleVecs[i][1].toFixed(2)));
-				blue.appendChild(el('div', 'hw-merge5-bdots', '\u22EF'));
-				blue.appendChild(el('div', 'hw-merge5-bval', sampleVecs[i][2].toFixed(2)));
-				blue.appendChild(el('div', 'hw-merge5-bval', sampleVecs[i][3].toFixed(2)));
-				pair.appendChild(blue);
-
-				// Plus sign
-				pair.appendChild(el('span', 'hw-merge5-plus', '+'));
-
-				// Yellow pill (matches Step 4 morphed state: 24px wide, faded values)
-				var yellow = el('div', 'hw-merge5-yellow');
-				yellow.appendChild(el('div', 'hw-merge5-yval', posVecs[i][0].toFixed(2)));
-				yellow.appendChild(el('div', 'hw-merge5-yval', posVecs[i][1].toFixed(2)));
-				yellow.appendChild(el('div', 'hw-merge5-ydots', '\u22EF'));
-				yellow.appendChild(el('div', 'hw-merge5-yval', posVecs[i][2].toFixed(2)));
-				yellow.appendChild(el('div', 'hw-merge5-yval', posVecs[i][3].toFixed(2)));
-				pair.appendChild(yellow);
-
-				// Green merged pill (hidden initially, expands on merge)
-				var green = el('div', 'hw-merge5-green');
-				var combinedVec = sampleVecs[i].map(function(v, j) { return v + posVecs[i][j]; });
-				green.appendChild(el('div', 'hw-merge5-gval', combinedVec[0].toFixed(2)));
-				green.appendChild(el('div', 'hw-merge5-gval', combinedVec[1].toFixed(2)));
-				green.appendChild(el('div', 'hw-merge5-gdots', '\u22EF'));
-				green.appendChild(el('div', 'hw-merge5-gval', combinedVec[2].toFixed(2)));
-				green.appendChild(el('div', 'hw-merge5-gval', combinedVec[3].toFixed(2)));
-				pair.appendChild(green);
-
-				col.appendChild(pair);
-				columns.appendChild(col);
-			});
-			body.appendChild(columns);
-			layout.appendChild(body);
-
-			// Equation row: token emb + pos emb = combined
+		function buildS35Step5Extras() {
 			var eqRow = el('div', 'hw-combine-equation');
 			eqRow.appendChild(el('span', 'hw-combine-eq-blue', 'token emb'));
 			eqRow.appendChild(el('span', '', ' + '));
 			eqRow.appendChild(el('span', 'hw-combine-eq-yellow', 'pos emb'));
 			eqRow.appendChild(el('span', '', ' = '));
 			eqRow.appendChild(el('span', 'hw-combine-eq-green', 'combined'));
-			layout.appendChild(eqRow);
-
-			// Sidenote explaining combination methods
+			s35Extras.appendChild(eqRow);
 			var sn = el('div', 'hw-combine-sidenote');
 			var snText = el('span', 'hw-combine-sn-text');
 			snText.innerHTML = '<strong>Combining embeddings:</strong> Addition is the standard approach\u200a\u2014\u200aconceptually, each dimension in the combined vector encodes both identity and position simultaneously. Alternative methods (concatenation, learned gating) exist, but simple addition provides maximal flexibility for the model to learn its own weighting through training.';
@@ -12488,18 +12566,7 @@ const sections = [
 				snText.querySelectorAll('strong').forEach(function(s) { s.setAttribute(astroAttr, ''); });
 			}
 			sn.appendChild(snText);
-			layout.appendChild(sn);
-
-			// Trigger merge animation: show blue+yellow briefly, then merge
-			requestAnimationFrame(function() {
-				requestAnimationFrame(function() {
-					setTimeout(function() {
-						layout.classList.add('hw-merge5-merged');
-					}, 500);
-				});
-			});
-
-			return layout;
+			s35Extras.appendChild(sn);
 		}
 
 				function renderStep6() {
@@ -14471,36 +14538,86 @@ function renderStep13() {
 			return layout;
 		}
 		function showStep(step) {
-			viz.innerHTML = '';
+			if (mergeTimeout) { clearTimeout(mergeTimeout); mergeTimeout = null; }
 
-			if (step === 1) {
-				viz.appendChild(renderStep1());
-			} else if (step === 2) {
-				viz.appendChild(renderStep2());
-			} else if (step === 3) {
-				viz.appendChild(renderStep3());
-			} else if (step === 4) {
-				viz.appendChild(renderStep4());
-			} else if (step === 5) {
-				viz.appendChild(renderStep5());
-			} else if (step === 6) {
-				viz.appendChild(renderStep6());
-			} else if (step === 7) {
-				viz.appendChild(renderStep7());
-			} else if (step === 8) {
-				viz.appendChild(renderStep8());
-			} else if (step === 9) {
-				viz.appendChild(renderStep9());
-			} else if (step === 10) {
-				viz.appendChild(renderStep10());
-			} else if (step === 11) {
-				viz.appendChild(renderStep11());
-			} else if (step === 12) {
-				viz.appendChild(renderStep12());
-			} else if (step === 13) {
-				viz.appendChild(renderStep13());
-			} else if (step === 14) {
-				viz.appendChild(renderStep14());
+			// === FLIP: Capture current token-chip positions ===
+			var oldChips = viz.querySelectorAll('.hw-s35-chip, .hw-tok-chip, .hw-tok-morph-word, .hw-bb-sentence-text');
+			var firstRects = [];
+			var doFlip = oldChips.length >= 1;
+			if (doFlip) {
+				oldChips.forEach(function(t) { firstRects.push(t.getBoundingClientRect()); });
+			}
+
+			if (step >= 3 && step <= 5) {
+				// Steps 3-5: column-based persistent layer
+				var needsInsert = !s35Layout.parentNode || s35Layout.parentNode !== viz;
+				if (needsInsert) {
+					viz.innerHTML = '';
+					viz.appendChild(s35Layout);
+				}
+				s35Layout.className = 'hw-s35-layout hw-s35-at-' + step;
+				if (astroAttr) s35Layout.setAttribute(astroAttr, '');
+				s35Extras.innerHTML = '';
+				if (step === 3) buildS35Step3Extras();
+				else if (step === 4) buildS35Step4Extras();
+				else if (step === 5) {
+					buildS35Step5Extras();
+					mergeTimeout = setTimeout(function() {
+						s35Layout.classList.add('hw-s35-merged');
+					}, 500);
+				}
+
+				// === FLIP: Animate s35 chip positions ===
+				if (doFlip) {
+					var newChips = s35Columns.querySelectorAll('.hw-s35-chip');
+					if (newChips.length === 8 && firstRects.length >= 8) {
+						void s35Layout.offsetHeight;
+						newChips.forEach(function(c, i) {
+							if (i >= firstRects.length) return;
+							var lastRect = c.getBoundingClientRect();
+							var dx = firstRects[i].left - lastRect.left;
+							var dy = firstRects[i].top - lastRect.top;
+							if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
+								c.style.transition = 'none';
+								c.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+							}
+						});
+						requestAnimationFrame(function() {
+							requestAnimationFrame(function() {
+								newChips.forEach(function(c) {
+									c.style.transition = '';
+									c.style.transform = '';
+								});
+							});
+						});
+					}
+				}
+			} else {
+				// Steps 1-2, 6-14: full rebuild
+				viz.innerHTML = '';
+				if (step === 1) {
+					viz.appendChild(renderStep1());
+				} else if (step === 2) {
+					viz.appendChild(renderStep2());
+				} else if (step === 6) {
+					viz.appendChild(renderStep6());
+				} else if (step === 7) {
+					viz.appendChild(renderStep7());
+				} else if (step === 8) {
+					viz.appendChild(renderStep8());
+				} else if (step === 9) {
+					viz.appendChild(renderStep9());
+				} else if (step === 10) {
+					viz.appendChild(renderStep10());
+				} else if (step === 11) {
+					viz.appendChild(renderStep11());
+				} else if (step === 12) {
+					viz.appendChild(renderStep12());
+				} else if (step === 13) {
+					viz.appendChild(renderStep13());
+				} else if (step === 14) {
+					viz.appendChild(renderStep14());
+				}
 			}
 
 			updateAnnotation(step);
