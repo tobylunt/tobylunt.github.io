@@ -185,3 +185,35 @@
 - Updated features.json: set passes to true for feature #13
 - ALL 13 FEATURES ARE NOW COMPLETE — the attention head walkthrough figure is finished
 - Next steps: all features pass; the figure is ready for review and polish
+
+=== Round 2 Planning Session — 2026-02-18 ===
+- All 13 original features complete. Reviewed implementation against attention-head-figure.md spec.
+- Combined review notes with user's edit notes (attention-head-figure-edits.md) into new features.json with 16 features.
+- Key changes for round 2:
+  - Step count increases from 12 to 14 (old step 6 splits into 2; new attention heatmap step inserted after QK^T)
+  - New step mapping: 1 Black Box, 2 Tokenize, 3 Embeddings, 4 Positional, 5 Combine, 6 Embeddings Matrix (NEW), 7 Layer Norm+QKV, 8 Q Proj, 9 V Proj, 10 K+Transpose, 11 QK^T, 12 Attention Heatmap (NEW, from 04c), 13 Attn×V, 14 Output
+  - Cross-cutting theme: VISUAL CONTINUITY — animate transitions between steps, don't wipe and redraw elements
+  - Annotations move from right panel inside the card to sidenotes gutter (frees horizontal space)
+  - Matrices use column pills (unified rounded rectangles), ellipsis in middle row (pandas-style)
+  - Proportional matrix sizing throughout
+  - Softmax explanation added (fills pedagogical gap between scores and weights)
+  - Interactive heatmap moves from section 04c into the walkthrough as step 12
+- Reference docs: attention-head-figure.md (original spec), attention-head-figure-edits.md (user's edit notes)
+- features.json has been overwritten with the 16 new features (all passes: false)
+- Next: Feature #1 — Move annotation panel to sidenotes gutter
+
+=== Round 2 Feature #1 Complete — 2026-02-18 ===
+- Moved annotation panel from inside the figure card (right column) to the sidenotes gutter
+- HTML: removed annotation from head-walk-body grid, added #hw-gutter-ann to .sidenote-gutter aside
+- HTML: kept .head-walk-ann-mobile inside the card below viz for mobile fallback
+- CSS: changed .head-walk-body from two-column grid (1fr 280px) to single-column (display: block)
+- CSS: .hw-gutter-ann uses absolute positioning in the sidenote gutter, styled to match existing sidenote aesthetics
+- CSS: .head-walk-ann-mobile hidden on desktop (>=1280px), shown on mobile with top border
+- JS: updateAnnotation() now updates both mobile and gutter annotation elements
+- JS: positionGutterAnn() calculates figure card top relative to gutter and positions annotation alongside
+- JS: resize/load event listeners keep gutter annotation positioned correctly
+- Removed old 640px media query that handled the previous mobile stacking
+- Verified: all 12 steps navigate correctly, annotations update in gutter on each step
+- Verified: dark and light themes both clean, mobile fallback works at 375px width
+- Build passes (pnpm build)
+- Next: Feature #2 — Renumber steps from 12 to 14 and update infrastructure

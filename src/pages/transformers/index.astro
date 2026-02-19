@@ -843,11 +843,12 @@ const sections = [
 						<div class="head-walk-viz-scroll">
 							<div id="head-walk-viz" class="head-walk-viz"></div>
 						</div>
-						<div class="head-walk-annotation">
-							<div id="head-walk-ann-title" class="head-walk-ann-title">The Black Box</div>
-							<div id="head-walk-ann-text" class="head-walk-ann-text">We will open this black box step by step, tracing an input sentence through every operation inside a single attention head.</div>
-							<div id="head-walk-ann-shape" class="head-walk-ann-shape"></div>
-						</div>
+					</div>
+					{/* Mobile annotation: shown below viz on narrow screens where sidenote gutter is hidden */}
+					<div class="head-walk-annotation head-walk-ann-mobile">
+						<div id="head-walk-ann-title" class="head-walk-ann-title">The Black Box</div>
+						<div id="head-walk-ann-text" class="head-walk-ann-text">We will open this black box step by step, tracing an input sentence through every operation inside a single attention head.</div>
+						<div id="head-walk-ann-shape" class="head-walk-ann-shape"></div>
 					</div>
 				</div>
 			</section>
@@ -2143,6 +2144,12 @@ const sections = [
 			<div class="sidenote" id="sn-induction"><span class="sn-number">29</span><span class="sn-content">The induction head circuit was also independently characterized in Elhage et al. (2021). It appears reliably in 2+ layer transformers and accounts for a substantial fraction of in-context learning performance.</span></div>
 			<div class="sidenote" id="sn-mi-olah"><span class="sn-number">30</span><span class="sn-content">Wang et al. “Interpretability in the Wild: a Circuit for Indirect Object Identification in GPT-2 Small.” <em>ICLR</em> 2023. A detailed circuit analysis identifying 26 heads involved in the IOI task. <a href="https://arxiv.org/abs/2211.00593" class="sn-link">arXiv</a></span></div>
 			<div class="sidenote" id="sn-saes"><span class="sn-number">31</span><span class="sn-content">Sparse autoencoders decompose residual stream activations into interpretable features. Bricken et al. “Towards Monosemanticity,” Anthropic, 2023. Recent scaling work (Templeton et al., 2024) extracted millions of interpretable features from Claude. <a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" class="sn-link">link</a></span></div>
+			{/* Head walkthrough annotation — positioned next to figure on desktop */}
+			<div id="hw-gutter-ann" class="hw-gutter-ann">
+				<div id="hw-gutter-ann-title" class="head-walk-ann-title">The Black Box</div>
+				<div id="hw-gutter-ann-text" class="head-walk-ann-text">We will open this black box step by step, tracing an input sentence through every operation inside a single attention head.</div>
+				<div id="hw-gutter-ann-shape" class="head-walk-ann-shape"></div>
+			</div>
 		</aside>
 	</div>
 
@@ -4371,10 +4378,7 @@ const sections = [
 	}
 
 	.head-walk-body {
-		display: grid;
-		grid-template-columns: 1fr 280px;
-		gap: 1rem;
-		align-items: start;
+		display: block;
 	}
 
 	.head-walk-viz-scroll {
@@ -4393,9 +4397,25 @@ const sections = [
 	}
 
 	.head-walk-annotation {
-		padding: 1rem 1.2rem;
-		border-left: 2px solid hsl(var(--theme-text) / 0.08);
-		min-height: 180px;
+		padding: 0.8rem 0 0;
+		border-top: 1px solid hsl(var(--theme-text) / 0.08);
+		margin-top: 1rem;
+	}
+
+	/* Hide mobile annotation on desktop where gutter is visible */
+	@media (min-width: 1280px) {
+		.head-walk-ann-mobile {
+			display: none;
+		}
+	}
+
+	/* Gutter annotation: positioned in sidenote column alongside figure */
+	.hw-gutter-ann {
+		position: absolute;
+		left: -2rem;
+		right: 0;
+		padding: 0.75rem 0;
+		transition: opacity 0.3s ease;
 	}
 
 	.head-walk-ann-title {
@@ -7250,17 +7270,7 @@ const sections = [
 		font-style: italic;
 	}
 
-	@media (max-width: 640px) {
-		.head-walk-body {
-			grid-template-columns: 1fr;
-		}
-		.head-walk-annotation {
-			border-left: none;
-			border-top: 1px solid hsl(var(--theme-text) / 0.08);
-			padding: 0.8rem 0 0;
-			min-height: auto;
-		}
-	}
+	/* (640px head-walk-body stacking removed — body is now single-column always, annotation in gutter on desktop) */
 
 	@media (max-width: 480px) {
 		.head-walk-viz {
@@ -11477,6 +11487,12 @@ const sections = [
 		var annText = document.getElementById('head-walk-ann-text');
 		var annShape = document.getElementById('head-walk-ann-shape');
 
+		// Gutter annotation elements (desktop sidenote column)
+		var gutterAnn = document.getElementById('hw-gutter-ann');
+		var gutterTitle = document.getElementById('hw-gutter-ann-title');
+		var gutterText = document.getElementById('hw-gutter-ann-text');
+		var gutterShape = document.getElementById('hw-gutter-ann-shape');
+
 		// Detect Astro scoping attribute
 		var astroAttr = null;
 		Array.from(viz.attributes).forEach(function(attr) {
@@ -11560,10 +11576,27 @@ const sections = [
 
 		function updateAnnotation(step) {
 			var d = STEP_DATA[step];
+			// Update mobile (in-card) annotation
 			annTitle.textContent = d.title;
 			annText.innerHTML = d.text;
 			annShape.innerHTML = d.shape;
+			// Update gutter (desktop) annotation
+			if (gutterTitle) gutterTitle.textContent = d.title;
+			if (gutterText) gutterText.innerHTML = d.text;
+			if (gutterShape) gutterShape.innerHTML = d.shape;
 			stepLabel.textContent = 'Step ' + step + ' / ' + TOTAL_STEPS;
+			// Position gutter annotation next to the figure
+			positionGutterAnn();
+		}
+
+		function positionGutterAnn() {
+			if (!gutterAnn || window.innerWidth < 1280) return;
+			var gutter = document.querySelector('.sidenote-gutter');
+			var container = document.querySelector('.head-walk-container');
+			if (!gutter || !container) return;
+			var gutterTop = gutter.getBoundingClientRect().top + window.scrollY;
+			var containerTop = container.getBoundingClientRect().top + window.scrollY;
+			gutterAnn.style.top = (containerTop - gutterTop) + 'px';
 		}
 
 		function updateButtons() {
@@ -13373,6 +13406,10 @@ const sections = [
 		backBtn.addEventListener('click', stepBack);
 		stepBtn.addEventListener('click', stepForward);
 		resetBtn.addEventListener('click', resetWalk);
+
+		// Reposition gutter annotation on resize/load
+		window.addEventListener('resize', positionGutterAnn);
+		window.addEventListener('load', positionGutterAnn);
 
 		// Initial render
 		showStep(1);
