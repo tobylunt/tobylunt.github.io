@@ -14518,6 +14518,7 @@ const sections = [
         body.appendChild(yaxis);
 
         var columns = el("div", "hw-s35-columns");
+        columns.dataset.flipId = "columns-wrap";
         var greenCellRefs = []; // for step 7 value swaps (not needed here but matches structure)
         s35Tokens.forEach(function (tok, i) {
           var col = el("div", "hw-s35-col");
@@ -15689,6 +15690,100 @@ const sections = [
           if (s54legend) {
             gsap.set(s54legend, { opacity: 0 });
             gsap.to(s54legend, { opacity: 1, duration: 0.3, delay: 0.45 });
+          }
+        }
+
+        // === Post-Flip visual tweens for step 5↔6 boundary ===
+        if (fromStep === 5 && step === 6) {
+          // 5→6: columns consolidate into matrix — animate gap, border, background
+          var s56cols = viz.querySelector(".hw-s35-columns");
+          var s56arrows = viz.querySelectorAll(".hw-s35-arrow");
+          var s56greens = viz.querySelectorAll(".hw-s35-green");
+          var s56dimLabel = viz.querySelector(".hw-norm-dim-label");
+          var s56matName = viz.querySelector(".hw-s36-mat-name");
+          if (s56cols) {
+            gsap.killTweensOf(s56cols);
+            // Animate gap from step-5 value to step-6 value
+            gsap.from(s56cols, {
+              gap: "6px",
+              borderColor: "transparent",
+              backgroundColor: "transparent",
+              borderRadius: "0px",
+              padding: "0px",
+              duration: 0.5,
+              ease: "power2.inOut",
+            });
+          }
+          // Arrows fade out (they're CSS-hidden but Flip may have set inline styles)
+          s56arrows.forEach(function (a) {
+            gsap.killTweensOf(a);
+            gsap.from(a, { opacity: 1, maxHeight: "20px", duration: 0.3, ease: "power2.in" });
+          });
+          // Green pills: animate border-radius and border-color to flat matrix cells
+          s56greens.forEach(function (g) {
+            gsap.killTweensOf(g);
+            gsap.from(g, {
+              borderRadius: "6px",
+              borderColor: "hsla(152, 50%, 48%, 0.3)",
+              duration: 0.4,
+              delay: 0.1,
+              ease: "power2.out",
+            });
+          });
+          // Dimension label + matrix name: delayed fade-in + slide-up
+          if (s56dimLabel) {
+            gsap.set(s56dimLabel, { opacity: 0, y: 10 });
+            gsap.to(s56dimLabel, { opacity: 1, y: 0, duration: 0.35, delay: 0.45, ease: "power2.out" });
+          }
+          if (s56matName) {
+            gsap.set(s56matName, { opacity: 0, y: 10 });
+            gsap.to(s56matName, { opacity: 1, y: 0, duration: 0.35, delay: 0.55, ease: "power2.out" });
+          }
+        }
+        if (fromStep === 6 && step === 5) {
+          // 6→5: matrix expands back into separated columns
+          var s65cols = viz.querySelector(".hw-s35-columns");
+          var s65arrows = viz.querySelectorAll(".hw-s35-arrow");
+          var s65greens = viz.querySelectorAll(".hw-s35-green");
+          var s65eq = viz.querySelector(".hw-combine-equation");
+          var s65sn = viz.querySelector(".hw-combine-sidenote");
+          if (s65cols) {
+            gsap.killTweensOf(s65cols);
+            // Animate gap from step-6 value back to step-5 value
+            gsap.from(s65cols, {
+              gap: "1px",
+              borderColor: "hsla(0, 0%, 50%, 0.12)",
+              backgroundColor: "hsla(0, 0%, 50%, 0.04)",
+              borderRadius: "4px",
+              padding: "2px",
+              duration: 0.5,
+              ease: "power2.inOut",
+            });
+          }
+          // Arrows fade back in (CSS shows them in step 5)
+          s65arrows.forEach(function (a) {
+            gsap.killTweensOf(a);
+            gsap.from(a, { opacity: 0, maxHeight: "0px", duration: 0.3, delay: 0.2, ease: "power2.out" });
+          });
+          // Green pills: animate back to rounded pill shape
+          s65greens.forEach(function (g) {
+            gsap.killTweensOf(g);
+            gsap.from(g, {
+              borderRadius: "0px",
+              borderColor: "transparent",
+              duration: 0.4,
+              delay: 0.1,
+              ease: "power2.out",
+            });
+          });
+          // Equation + sidenote: delayed fade-in
+          if (s65eq) {
+            gsap.set(s65eq, { opacity: 0 });
+            gsap.to(s65eq, { opacity: 1, duration: 0.3, delay: 0.4 });
+          }
+          if (s65sn) {
+            gsap.set(s65sn, { opacity: 0 });
+            gsap.to(s65sn, { opacity: 1, duration: 0.3, delay: 0.5 });
           }
         }
 

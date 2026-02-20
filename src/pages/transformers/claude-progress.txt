@@ -759,3 +759,21 @@ Key architecture context for next session:
 - Build: 0 errors
 - Commit: 9db0ed9
 - Next: Feature #27 — Smooth Step 5↔6 column consolidation
+
+=== Feature #27 Complete — 2026-02-20 ===
+- Implemented smooth Step 5↔6 transitions — column consolidation into matrix
+- Added data-flip-id="columns-wrap" to the .hw-s35-columns container in flipBuildColumns()
+  so Flip can match it across step transitions
+- Added post-Flip GSAP tweens in showStep() for:
+  - 5→6: Columns container animates gap (6px→1px), border (transparent→visible),
+    background (transparent→tinted), border-radius (0→4px), padding (0→2px) over 500ms.
+    Arrows fade out (opacity 1→0, maxHeight shrinks). Green pills animate border-radius
+    (6px→0) and border-color (visible→transparent). Dimension label + "This is X" text
+    enter with delayed fade-in + slide-up (y:10→0).
+  - 6→5: Reverse — container gap expands (1px→6px), border fades, background clears.
+    Arrows fade back in. Green pills regain rounded shape. Equation + sidenote delayed fade-in.
+- Verified: 5→6 forward, 6→5 backward, rapid clicking 5↔6→7, step 7 unaffected,
+  both dark and light themes
+- Build: 0 errors
+- Commit: 050fb9f
+- Next: Feature #28 — Smooth Step 6↔7 green→purple color tween + QKV entrance

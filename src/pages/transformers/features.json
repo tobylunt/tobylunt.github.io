@@ -379,7 +379,7 @@
   {
     "id": 27,
     "name": "Smooth Step 5\u21946 \u2014 column consolidation",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Both steps use flipBuildColumns() \u2014 step 5 has separated green columns, step 6 adds hw-s35-at-6 class which collapses column gaps. Since DOM is rebuilt, the gap change is instant instead of animated",
       "After Flip, GSAP-tween the column container's CSS gap property from step-5 spacing to step-6 spacing over 500ms, so columns visibly slide together",
