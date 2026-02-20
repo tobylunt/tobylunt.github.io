@@ -12567,9 +12567,10 @@ const sections = [
       var s12WordEls = []; // 8 word span references for FLIP
       var s12SplitGroup = null;
 
-      s12Words.forEach(function (w) {
+      s12Words.forEach(function (w, wi) {
         var word = el("span", "hw-s12-word hw-s12-" + w[1], w[0]);
         word.style.setProperty("--morph-delay", w[2] + "ms");
+        word.dataset.tokIdx = String(wi);
         s12WordEls.push(word);
 
         if (w[1] === "sub") {
@@ -12654,7 +12655,9 @@ const sections = [
       s35Tokens.forEach(function (tok, i) {
         var col = el("div", "hw-s35-col");
         col.style.setProperty("--i", i);
-        col.appendChild(el("span", "hw-tok-chip hw-tok-" + s35Types[i] + " hw-s35-chip", tok));
+        var chip = el("span", "hw-tok-chip hw-tok-" + s35Types[i] + " hw-s35-chip", tok);
+        chip.dataset.tokIdx = String(i);
+        col.appendChild(chip);
         col.appendChild(el("div", "hw-s35-arrow", "\u2193"));
         var pair = el("div", "hw-s35-pair");
         var blue = el("div", "hw-s35-blue");
@@ -12724,8 +12727,10 @@ const sections = [
       s810InWrap.appendChild(s810InLabel);
 
       var s810InTokenRow = el("div", "hw-q8-token-labels");
-      s810Tokens.forEach(function (tok) {
-        s810InTokenRow.appendChild(el("div", "hw-q8-token-label", tok));
+      s810Tokens.forEach(function (tok, i) {
+        var lbl = el("div", "hw-q8-token-label", tok);
+        lbl.dataset.tokIdx = String(i);
+        s810InTokenRow.appendChild(lbl);
       });
       s810InWrap.appendChild(s810InTokenRow);
 
@@ -12817,6 +12822,7 @@ const sections = [
         s1112GridEl.appendChild(el("div", "hw-s1112-corner"));
         for (var ci = 0; ci < T; ci++) {
           var colLabel = el("div", "hw-s1112-col-label", tokens[ci]);
+          colLabel.dataset.tokIdx = String(ci);
           s1112GridEl.appendChild(colLabel);
           s1112ColLabelEls.push(colLabel);
         }
@@ -14850,8 +14856,10 @@ const sections = [
 
         // Token labels
         var inputTokens = el("div", "hw-ho14-token-labels");
-        tokens.forEach(function (t) {
-          inputTokens.appendChild(el("div", "hw-ho14-token-label", t));
+        tokens.forEach(function (t, ti) {
+          var lbl = el("div", "hw-ho14-token-label", t);
+          lbl.dataset.tokIdx = String(ti);
+          inputTokens.appendChild(lbl);
         });
         inputWrap.appendChild(inputTokens);
 
@@ -15048,21 +15056,22 @@ const sections = [
           s1314OutWrap.remove(); // Detach before DOM rebuild (element survives)
         }
 
-        // === FLIP: Capture current token-chip positions ===
+        // === FLIP: Capture current token-text positions (keyed by token index) ===
         // Skip FLIP for within-persistent-layer transitions (steps 1-2, 3-7, or 8-10);
         // CSS transitions handle animation within those ranges.
         var bothPersistent =
           (fromStep >= 1 && fromStep <= 2 && step >= 1 && step <= 2) ||
           (fromStep >= 3 && fromStep <= 7 && step >= 3 && step <= 7) ||
           (fromStep >= 8 && fromStep <= 10 && step >= 8 && step <= 10);
-        var oldChips = viz.querySelectorAll(
-          ".hw-s35-chip, .hw-tok-chip, .hw-tok-morph-word, .hw-bb-sentence-text, .hw-s12-word",
-        );
-        var firstRects = [];
-        var doFlip = !bothPersistent && oldChips.length >= 1;
+        var oldTokenEls = viz.querySelectorAll("[data-tok-idx]");
+        var firstRectsByIdx = {};
+        var doFlip = !bothPersistent && oldTokenEls.length >= 1;
         if (doFlip) {
-          oldChips.forEach(function (t) {
-            firstRects.push(t.getBoundingClientRect());
+          oldTokenEls.forEach(function (t) {
+            var idx = t.dataset.tokIdx;
+            if (idx !== undefined && !firstRectsByIdx[idx]) {
+              firstRectsByIdx[idx] = t.getBoundingClientRect();
+            }
           });
         }
 
@@ -15082,31 +15091,6 @@ const sections = [
             buildS12Step2Extras();
           }
 
-          // === FLIP: Animate s12 word positions (boundary transitions only) ===
-          if (doFlip) {
-            var newWords = s12Sentence.querySelectorAll(".hw-s12-word");
-            if (newWords.length === 8 && firstRects.length >= 8) {
-              void s12Layout.offsetHeight;
-              newWords.forEach(function (c, i) {
-                if (i >= firstRects.length) return;
-                var lastRect = c.getBoundingClientRect();
-                var dx = firstRects[i].left - lastRect.left;
-                var dy = firstRects[i].top - lastRect.top;
-                if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
-                  c.style.transition = "none";
-                  c.style.transform = "translate(" + dx + "px, " + dy + "px)";
-                }
-              });
-              requestAnimationFrame(function () {
-                requestAnimationFrame(function () {
-                  newWords.forEach(function (c) {
-                    c.style.transition = "";
-                    c.style.transform = "";
-                  });
-                });
-              });
-            }
-          }
         } else if (step >= 3 && step <= 7) {
           // Steps 3-7: column-based persistent layer
           var needsInsert = !s35Layout.parentNode || s35Layout.parentNode !== viz;
@@ -15200,31 +15184,6 @@ const sections = [
             }
           }
 
-          // === FLIP: Animate s35 chip positions (boundary transitions only) ===
-          if (doFlip) {
-            var newChips = s35Columns.querySelectorAll(".hw-s35-chip");
-            if (newChips.length === 8 && firstRects.length >= 8) {
-              void s35Layout.offsetHeight;
-              newChips.forEach(function (c, i) {
-                if (i >= firstRects.length) return;
-                var lastRect = c.getBoundingClientRect();
-                var dx = firstRects[i].left - lastRect.left;
-                var dy = firstRects[i].top - lastRect.top;
-                if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
-                  c.style.transition = "none";
-                  c.style.transform = "translate(" + dx + "px, " + dy + "px)";
-                }
-              });
-              requestAnimationFrame(function () {
-                requestAnimationFrame(function () {
-                  newChips.forEach(function (c) {
-                    c.style.transition = "";
-                    c.style.transform = "";
-                  });
-                });
-              });
-            }
-          }
         } else if (step >= 8 && step <= 10) {
           // Steps 8–10: input matrix X̂ is persistent; only volatile content rebuilds
           var needsInsert810 = !s810Layout.parentNode || s810Layout.parentNode !== viz;
@@ -15339,6 +15298,67 @@ const sections = [
               });
             });
           }
+        }
+
+        // === Universal token-text FLIP ===
+        // Animates token labels (matched by data-tok-idx) from their old positions
+        // to their new positions with translate + scale. Handles all persistent-layer
+        // boundaries (2↔3, 7↔8, 10↔11, etc.) in one place.
+        // Skip when the s1112 grid itself is being FLIP-animated (11↔12) —
+        // token labels inside the grid move with the grid's transform.
+        var skipTokenFlip = doS1112Flip;
+        if (doFlip && !skipTokenFlip) {
+          void viz.offsetHeight; // force reflow
+          var newTokenEls = viz.querySelectorAll("[data-tok-idx]");
+          var seen = {};
+          newTokenEls.forEach(function (tokEl) {
+            var idx = tokEl.dataset.tokIdx;
+            if (idx === undefined || seen[idx] || !firstRectsByIdx[idx]) return;
+            seen[idx] = true;
+            var oldR = firstRectsByIdx[idx];
+            var newR = tokEl.getBoundingClientRect();
+            // Center-based delta for correct scale + translate
+            var dx =
+              oldR.left + oldR.width / 2 - (newR.left + newR.width / 2);
+            var dy =
+              oldR.top + oldR.height / 2 - (newR.top + newR.height / 2);
+            var sx = oldR.width / (newR.width || 1);
+            var sy = oldR.height / (newR.height || 1);
+            var needsFlip =
+              Math.abs(dx) > 0.5 ||
+              Math.abs(dy) > 0.5 ||
+              Math.abs(sx - 1) > 0.02 ||
+              Math.abs(sy - 1) > 0.02;
+            if (needsFlip) {
+              tokEl.style.transition = "none";
+              tokEl.style.transformOrigin = "center center";
+              tokEl.style.transform =
+                "translate(" +
+                dx +
+                "px, " +
+                dy +
+                "px) scale(" +
+                sx +
+                ", " +
+                sy +
+                ")";
+            }
+          });
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              newTokenEls.forEach(function (tokEl) {
+                if (tokEl.style.transform) {
+                  tokEl.style.transition =
+                    "transform 0.45s cubic-bezier(0.4, 0, 0.2, 1)";
+                  tokEl.style.transform = "";
+                  setTimeout(function () {
+                    tokEl.style.transition = "";
+                    tokEl.style.transformOrigin = "";
+                  }, 500);
+                }
+              });
+            });
+          });
         }
       }
 
