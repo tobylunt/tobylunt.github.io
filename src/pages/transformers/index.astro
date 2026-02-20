@@ -5493,6 +5493,163 @@ const sections = [
     }
   }
 
+  /* === Steps 1-2: Persistent layer — sentence words morph into token chips === */
+  .hw-s12-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 1.5rem 0.5rem;
+    gap: 1rem;
+  }
+
+  .hw-s12-sentence {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    max-width: 520px;
+    transition: gap 0.5s ease;
+  }
+
+  /* Step 1: sentence text appearance */
+  .hw-s12-at-1 .hw-s12-sentence {
+    gap: 0.4ch;
+  }
+
+  /* Step 2: chip layout with spacing */
+  .hw-s12-at-2 .hw-s12-sentence {
+    gap: 6px;
+  }
+
+  .hw-s12-word {
+    display: inline-block;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 1.05rem;
+    color: hsl(var(--theme-text) / 0.85);
+    padding: 0 1px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    white-space: nowrap;
+    line-height: 1.4;
+    font-weight: 500;
+    transition:
+      font-size 0.4s ease,
+      color 0.4s ease,
+      padding 0.4s ease,
+      background 0.4s ease,
+      border-color 0.4s ease;
+    transition-delay: var(--morph-delay, 0ms);
+  }
+
+  .hw-s12-at-2 .hw-s12-word.hw-s12-whole {
+    font-size: 0.82rem;
+    padding: 4px 10px;
+    color: hsl(210 60% 55%);
+    background: hsl(210 60% 55% / 0.12);
+    border-color: hsl(210 60% 55% / 0.2);
+  }
+
+  .hw-s12-at-2 .hw-s12-word.hw-s12-sub {
+    font-size: 0.82rem;
+    padding: 4px 10px;
+    color: hsl(35 80% 50%);
+    background: hsl(35 80% 50% / 0.12);
+    border-color: hsl(35 80% 50% / 0.2);
+  }
+
+  .hw-s12-split {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0;
+    position: relative;
+    transition: gap 0.4s ease;
+    transition-delay: 340ms;
+  }
+
+  .hw-s12-at-2 .hw-s12-split {
+    gap: 2px;
+  }
+
+  .hw-s12-bracket {
+    position: absolute;
+    bottom: -16px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.62rem;
+    color: hsl(35 80% 50% / 0.65);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    transition-delay: 0.7s;
+  }
+
+  .hw-s12-at-2 .hw-s12-bracket {
+    opacity: 1;
+  }
+
+  /* Blank "___" — visible in step 1, collapses in step 2 */
+  .hw-s12-blank {
+    color: hsl(var(--theme-text) / 0.3);
+    letter-spacing: 0.1em;
+    border-bottom: 2px dashed hsl(var(--theme-text) / 0.2);
+    padding-bottom: 0.1rem;
+    overflow: hidden;
+    max-width: 3rem;
+    opacity: 1;
+    transition:
+      max-width 0.35s ease,
+      opacity 0.25s ease,
+      padding 0.3s ease,
+      margin 0.3s ease;
+  }
+
+  .hw-s12-at-2 .hw-s12-blank {
+    max-width: 0;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+  }
+
+  /* Extras container */
+  .hw-s12-extras {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    min-height: 1rem;
+  }
+
+  /* Token count in step 2 */
+  .hw-s12-count {
+    font-size: 0.72rem;
+    color: hsl(var(--theme-text) / 0.4);
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    animation: hw-fade-in 0.3s ease 0.9s both;
+  }
+
+  @media (max-width: 480px) {
+    .hw-s12-layout {
+      padding: 1rem 0.2rem;
+    }
+    .hw-s12-at-1 .hw-s12-sentence {
+      font-size: 0.85rem;
+    }
+    .hw-s12-word {
+      font-size: 0.85rem;
+    }
+    .hw-s12-at-2 .hw-s12-word.hw-s12-whole,
+    .hw-s12-at-2 .hw-s12-word.hw-s12-sub {
+      font-size: 0.72rem;
+      padding: 3px 7px;
+    }
+  }
+
   /* Step 3: Token Embeddings layout — column pills */
   .hw-embed-layout {
     display: flex;
@@ -13955,6 +14112,49 @@ const sections = [
       var currentStep = 1;
       var prevStep = 0; // track previous step for FLIP skip logic
 
+      // === Persistent layer for steps 1-2: sentence words morph into token chips ===
+      var s12Words = [
+        ["The", "whole", 0],
+        ["fat", "whole", 80],
+        ["cat", "whole", 160],
+        ["sat", "whole", 240],
+        ["quiet", "sub", 340],
+        ["ly", "sub", 400],
+        ["on", "whole", 480],
+        ["the", "whole", 560],
+      ];
+
+      var s12Layout = el("div", "hw-s12-layout hw-s12-at-1");
+      var s12Sentence = el("div", "hw-s12-sentence");
+      var s12WordEls = []; // 8 word span references for FLIP
+      var s12SplitGroup = null;
+
+      s12Words.forEach(function (w) {
+        var word = el("span", "hw-s12-word hw-s12-" + w[1], w[0]);
+        word.style.setProperty("--morph-delay", w[2] + "ms");
+        s12WordEls.push(word);
+
+        if (w[1] === "sub") {
+          if (!s12SplitGroup) {
+            s12SplitGroup = el("span", "hw-s12-split");
+            s12Sentence.appendChild(s12SplitGroup);
+          }
+          s12SplitGroup.appendChild(word);
+          if (w[0] === "ly") {
+            s12SplitGroup.appendChild(el("span", "hw-s12-bracket", "\u2190 quietly"));
+            s12SplitGroup = null;
+          }
+        } else {
+          s12Sentence.appendChild(word);
+        }
+      });
+
+      s12Layout.appendChild(s12Sentence);
+      var s12Blank = el("span", "hw-s12-blank", "___");
+      s12Sentence.appendChild(s12Blank);
+      var s12Extras = el("div", "hw-s12-extras");
+      s12Layout.appendChild(s12Extras);
+
       // === Persistent layer for steps 3-6: column-based token + embedding layout ===
       var mergeTimeout = null;
       var s35Tokens = ["The", "fat", "cat", "sat", "quiet", "ly", "on", "the"];
@@ -14524,6 +14724,31 @@ const sections = [
         });
 
         return layout;
+      }
+
+      function buildS12Step1Extras() {
+        // Arrow down
+        s12Extras.appendChild(el("div", "hw-bb-arrow-down", "\u2193"));
+
+        // Pipeline row: black box → arrow → prediction
+        var pipeRow = el("div", "hw-bb-pipe");
+
+        var box = el("div", "hw-bb-box");
+        box.appendChild(el("div", "hw-bb-box-label", "Transformer"));
+        box.appendChild(el("div", "hw-bb-box-q", "?"));
+        pipeRow.appendChild(box);
+
+        pipeRow.appendChild(el("div", "hw-bb-arrow", "\u279C"));
+
+        var predWrap = el("div", "hw-bb-output");
+        predWrap.appendChild(el("div", "hw-bb-prediction", "mat"));
+        pipeRow.appendChild(predWrap);
+
+        s12Extras.appendChild(pipeRow);
+      }
+
+      function buildS12Step2Extras() {
+        s12Extras.appendChild(el("div", "hw-s12-count", "8 tokens"));
       }
 
       function buildS35Step3Extras() {
@@ -17616,13 +17841,14 @@ const sections = [
         }
 
         // === FLIP: Capture current token-chip positions ===
-        // Skip FLIP for within-persistent-layer transitions (steps 3-7 or 8-10);
-        // CSS gap / volatile-swap handles animation within those ranges.
+        // Skip FLIP for within-persistent-layer transitions (steps 1-2, 3-7, or 8-10);
+        // CSS transitions handle animation within those ranges.
         var bothPersistent =
+          (fromStep >= 1 && fromStep <= 2 && step >= 1 && step <= 2) ||
           (fromStep >= 3 && fromStep <= 7 && step >= 3 && step <= 7) ||
           (fromStep >= 8 && fromStep <= 10 && step >= 8 && step <= 10);
         var oldChips = viz.querySelectorAll(
-          ".hw-s35-chip, .hw-tok-chip, .hw-tok-morph-word, .hw-bb-sentence-text",
+          ".hw-s35-chip, .hw-tok-chip, .hw-tok-morph-word, .hw-bb-sentence-text, .hw-s12-word",
         );
         var firstRects = [];
         var doFlip = !bothPersistent && oldChips.length >= 1;
@@ -17632,7 +17858,48 @@ const sections = [
           });
         }
 
-        if (step >= 3 && step <= 7) {
+        if (step >= 1 && step <= 2) {
+          // Steps 1-2: persistent layer — sentence words morph into token chips
+          var needsInsert12 = !s12Layout.parentNode || s12Layout.parentNode !== viz;
+          if (needsInsert12) {
+            viz.innerHTML = "";
+            viz.appendChild(s12Layout);
+          }
+          s12Layout.className = "hw-s12-layout hw-s12-at-" + step;
+          if (astroAttr) s12Layout.setAttribute(astroAttr, "");
+          s12Extras.innerHTML = "";
+          if (step === 1) {
+            buildS12Step1Extras();
+          } else if (step === 2) {
+            buildS12Step2Extras();
+          }
+
+          // === FLIP: Animate s12 word positions (boundary transitions only) ===
+          if (doFlip) {
+            var newWords = s12Sentence.querySelectorAll(".hw-s12-word");
+            if (newWords.length === 8 && firstRects.length >= 8) {
+              void s12Layout.offsetHeight;
+              newWords.forEach(function (c, i) {
+                if (i >= firstRects.length) return;
+                var lastRect = c.getBoundingClientRect();
+                var dx = firstRects[i].left - lastRect.left;
+                var dy = firstRects[i].top - lastRect.top;
+                if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
+                  c.style.transition = "none";
+                  c.style.transform = "translate(" + dx + "px, " + dy + "px)";
+                }
+              });
+              requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                  newWords.forEach(function (c) {
+                    c.style.transition = "";
+                    c.style.transform = "";
+                  });
+                });
+              });
+            }
+          }
+        } else if (step >= 3 && step <= 7) {
           // Steps 3-7: column-based persistent layer
           var needsInsert = !s35Layout.parentNode || s35Layout.parentNode !== viz;
           if (needsInsert) {
@@ -17764,13 +18031,9 @@ const sections = [
           // so s1011KtWrap is visible in the transposeSection when the FLIP animation runs
           else if (step === 10) buildS810Step10Volatile(fromStep === 11);
         } else {
-          // Steps 1-2, 11-14: full rebuild
+          // Steps 11-14: full rebuild
           viz.innerHTML = "";
-          if (step === 1) {
-            viz.appendChild(renderStep1());
-          } else if (step === 2) {
-            viz.appendChild(renderStep2());
-          } else if (step === 11) {
+          if (step === 11) {
             viz.appendChild(renderStep11());
           } else if (step === 12) {
             viz.appendChild(renderStep12());

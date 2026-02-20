@@ -524,3 +524,39 @@
 
 ### Next session
 - Feature #18: next failing feature in features.json
+
+=== Feature #18: Object continuity for steps 5→6: green columns consolidate into matrix -- passed -- 2026-02-19 15:42 ===
+Completed successfully in 2766s
+- Commit: 60d62baca402
+- Session: 64629471-c2ce-4bab-9cc8-2575c10f07c9
+
+
+=== Feature #19: Object continuity for steps 6→7: matrix normalization -- passed -- 2026-02-19 16:12 ===
+Completed successfully in 1810s
+- Commit: 60d62baca402
+- Session: fbbeea28-e921-46bb-8b0c-d54f2481ab12
+
+
+=== Feature #20: Object continuity for steps 8–10: input matrix across Q/V/K projections -- passed -- 2026-02-19 18:17 ===
+Completed successfully in 7223s
+- Commit: 60d62baca402
+- Session: 10a0c637-1d68-42d4-9c09-4760ab392555
+
+
+=== Feature #21: Object continuity for steps 10→11: K^T persists into QK^T -- passed -- 2026-02-19 18:46 ===
+Completed successfully in 1753s
+- Commit: 60d62baca402
+- Session: 42ee9be4-d2e3-4055-9624-be74ae8f8434
+
+
+=== Feature #22: Object continuity for steps 11→12: scores matrix zooms into heatmap -- passed -- 2026-02-19 19:13 ===
+Completed successfully in 1605s
+- Commit: 60d62baca402
+- Session: 513ce460-dc33-4d4a-a810-ae8b92702bca
+
+
+=== Feature #23: Object continuity for steps 13→14: attention output carries forward -- passed -- 2026-02-19 20:01 ===
+Completed successfully in 2879s
+- Commit: 60d62baca402
+- Session: ff9612fd-2a38-47ee-aa06-4961d8a2a7e5
+

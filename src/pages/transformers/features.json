@@ -234,7 +234,7 @@
   {
     "id": 18,
     "name": "Object continuity for steps 5\u21926: green columns consolidate into matrix",
-    "passes": false,
+    "passes": true,
     "steps": [
       "The 8 separate green column pills from step 5 should slide together into a unified matrix grid in step 6, not be destroyed and recreated",
       "Persistent elements: 8 green column bodies (pill shapes), token labels above each column, d_model y-axis label",
@@ -243,12 +243,15 @@
       "FLIP animation handles the horizontal position changes of each column pill as gap collapses",
       "Token labels FLIP from their step-5 positions (above separated pills) to step-6 positions (column headers in matrix)",
       "Verify the consolidation animation looks like the columns are physically merging into a single object"
-    ]
+    ],
+    "attempts": 1,
+    "last_session_id": "64629471-c2ce-4bab-9cc8-2575c10f07c9",
+    "commit_hash": "60d62baca402"
   },
   {
     "id": 19,
     "name": "Object continuity for steps 6\u21927: matrix normalization",
-    "passes": false,
+    "passes": true,
     "steps": [
       "The matrix frame, token labels, y-axis label, and column structure from step 6 persist into step 7 \u2014 not destroyed and rebuilt",
       "Persistent elements: matrix wrapper (border/outline), 8 column containers, 8 token column-header labels, d_model y-axis label",
@@ -257,12 +260,15 @@
       "Step 7\u21926 backward: purple\u2192green color transition reverses, QKV weights fade out",
       "FLIP handles any vertical shift of the matrix caused by QKV weights appearing/disappearing below",
       "Unify the CSS class names between step 6 (hw-mat6-*) and step 7 (hw-norm7-*) so the same DOM elements can be reused"
-    ]
+    ],
+    "attempts": 1,
+    "last_session_id": "fbbeea28-e921-46bb-8b0c-d54f2481ab12",
+    "commit_hash": "60d62baca402"
   },
   {
     "id": 20,
     "name": "Object continuity for steps 8\u201310: input matrix across Q/V/K projections",
-    "passes": false,
+    "passes": true,
     "steps": [
       "The normalized input matrix X\u0302 (T\u00d7d_model, purple) and its token labels are identical across steps 8, 9, and 10 \u2014 persist them as a single layer",
       "Persistent elements: input matrix wrapper, 8 input column pills, 8 token labels, X\u0302 label, T\u00d7d_model dimension label, dot operator",
@@ -272,12 +278,15 @@
       "Backward navigation reverses: volatile content swaps back, input matrix FLIPs to any new position",
       "Steps 8-10 currently all use hw-q8-* classes for the input \u2014 reuse the same DOM nodes directly",
       "Boundary: step 7\u21928 inserts the persistent layer fresh. Step 10\u219211 destroys it (step 11 has completely different layout)"
-    ]
+    ],
+    "attempts": 1,
+    "last_session_id": "10a0c637-1d68-42d4-9c09-4760ab392555",
+    "commit_hash": "60d62baca402"
   },
   {
     "id": 21,
     "name": "Object continuity for steps 10\u219211: K^T persists into QK^T",
-    "passes": false,
+    "passes": true,
     "steps": [
       "The K^T matrix visualization from step 10's transpose section should persist as the K^T operand in step 11's QK^T multiplication",
       "Persistent elements: K^T matrix wrapper, K^T label, d_head\u00d7T dimension label, token row labels, K^T cell grid",
@@ -286,12 +295,15 @@
       "Step 11\u219210 backward: K^T FLIPs back to its step-10 position, step 10's full layout rebuilds around it",
       "The K^T DOM structure must be compatible between steps \u2014 unify hw-k10-kt-* and hw-qkt-kt-* class names or adopt the element with class swapping",
       "Verify the K^T movement animation makes it visually clear the same object is being reused"
-    ]
+    ],
+    "attempts": 1,
+    "last_session_id": "42ee9be4-d2e3-4055-9624-be74ae8f8434",
+    "commit_hash": "60d62baca402"
   },
   {
     "id": 22,
     "name": "Object continuity for steps 11\u219212: scores matrix zooms into heatmap",
-    "passes": false,
+    "passes": true,
     "steps": [
       "The T\u00d7T attention scores matrix from step 11's result section should zoom/expand into step 12's interactive heatmap \u2014 not be destroyed and recreated",
       "Persistent elements: 8\u00d78 grid of score cells, query token row labels (left), key token column labels (top)",
@@ -300,12 +312,15 @@
       "FLIP handles the scale + position change of the entire grid and each label",
       "Token labels on both axes must FLIP from their step-11 positions (small, inside result section) to step-12 positions (larger, heatmap axes)",
       "This is the most visually dramatic continuity transition \u2014 the matrix physically grows into the heatmap"
-    ]
+    ],
+    "attempts": 1,
+    "last_session_id": "513ce460-dc33-4d4a-a810-ae8b92702bca",
+    "commit_hash": "60d62baca402"
   },
   {
     "id": 23,
     "name": "Object continuity for steps 13\u219214: attention output carries forward",
-    "passes": false,
+    "passes": true,
     "steps": [
       "The green attention output matrix (T\u00d7d_head) from step 13 should persist as the Attn(x) operand in step 14's residual addition",
       "Persistent elements: output matrix wrapper, 3 output column pills, output cell values, T\u00d7d_head dimension label",
@@ -314,6 +329,9 @@
       "Class names differ (hw-av13-out-* vs hw-ho14-attn-*) \u2014 either unify them or swap classes on the persistent elements during transition",
       "The output label should transition from 'Output' to 'Attn(x)' (text content update, not DOM replacement)",
       "Verify the green output visually 'carries forward' and the user perceives it as the same object moving to a new context"
-    ]
+    ],
+    "attempts": 1,
+    "last_session_id": "ff9612fd-2a38-47ee-aa06-4961d8a2a7e5",
+    "commit_hash": "60d62baca402"
   }
 ]
