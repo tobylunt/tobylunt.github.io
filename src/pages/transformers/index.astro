@@ -12574,40 +12574,7 @@ const sections = [
         ["the", "whole", 560],
       ];
 
-      var s12Layout = el("div", "hw-s12-layout hw-s12-at-1");
-      var s12Sentence = el("div", "hw-s12-sentence");
-      var s12WordEls = []; // 8 word span references for FLIP
-      var s12SplitGroup = null;
-
-      s12Words.forEach(function (w, wi) {
-        var word = el("span", "hw-s12-word hw-s12-" + w[1], w[0]);
-        word.style.setProperty("--morph-delay", w[2] + "ms");
-        word.dataset.tokIdx = String(wi);
-        s12WordEls.push(word);
-
-        if (w[1] === "sub") {
-          if (!s12SplitGroup) {
-            s12SplitGroup = el("span", "hw-s12-split");
-            s12Sentence.appendChild(s12SplitGroup);
-          }
-          s12SplitGroup.appendChild(word);
-          if (w[0] === "ly") {
-            s12SplitGroup.appendChild(el("span", "hw-s12-bracket", "\u2190 quietly"));
-            s12SplitGroup = null;
-          }
-        } else {
-          s12Sentence.appendChild(word);
-        }
-      });
-
-      s12Layout.appendChild(s12Sentence);
-      var s12Blank = el("span", "hw-s12-blank", "___");
-      s12Sentence.appendChild(s12Blank);
-      var s12Extras = el("div", "hw-s12-extras");
-      s12Layout.appendChild(s12Extras);
-
-      // === Persistent layer for steps 3-6: column-based token + embedding layout ===
-      var mergeTimeout = null;
+      // === Data for steps 3-7 ===
       var s35Tokens = ["The", "fat", "cat", "sat", "quiet", "ly", "on", "the"];
       var s35Types = ["whole", "whole", "whole", "whole", "sub", "sub", "whole", "whole"];
       var s35SampleVecs = [
@@ -12645,72 +12612,6 @@ const sections = [
           return (v + s35PosVecs[i][j]).toFixed(2);
         });
       });
-      // Cell DOM references for step 7 value updates: [token][row 0-3] = gval cells
-      var s35GreenCells = [];
-      // Timeout handle for step 6 matrix name label (must be cancellable)
-      var nameTimeout = null;
-      // Timeout handle for step 7 QKV row fade-in (must be cancellable)
-      var s35Step7Timeout = null;
-
-      var s35Layout = el("div", "hw-s35-layout hw-s35-at-3");
-      var s35Body = el("div", "hw-s35-body");
-      var s35Yaxis = el("div", "hw-embed-yaxis");
-      s35Yaxis.innerHTML = "d<sub>model</sub>";
-      if (astroAttr) {
-        s35Yaxis.querySelectorAll("sub").forEach(function (s) {
-          s.setAttribute(astroAttr, "");
-        });
-      }
-      s35Body.appendChild(s35Yaxis);
-
-      var s35Columns = el("div", "hw-s35-columns");
-      s35Tokens.forEach(function (tok, i) {
-        var col = el("div", "hw-s35-col");
-        col.style.setProperty("--i", i);
-        var chip = el("span", "hw-tok-chip hw-tok-" + s35Types[i] + " hw-s35-chip", tok);
-        chip.dataset.tokIdx = String(i);
-        col.appendChild(chip);
-        col.appendChild(el("div", "hw-s35-arrow", "\u2193"));
-        var pair = el("div", "hw-s35-pair");
-        var blue = el("div", "hw-s35-blue");
-        blue.appendChild(el("div", "hw-s35-bval", s35SampleVecs[i][0].toFixed(2)));
-        blue.appendChild(el("div", "hw-s35-bval", s35SampleVecs[i][1].toFixed(2)));
-        blue.appendChild(el("div", "hw-s35-bdots", "\u22EF"));
-        blue.appendChild(el("div", "hw-s35-bval", s35SampleVecs[i][2].toFixed(2)));
-        blue.appendChild(el("div", "hw-s35-bval", s35SampleVecs[i][3].toFixed(2)));
-        pair.appendChild(blue);
-        pair.appendChild(el("span", "hw-s35-plus", "+"));
-        var yellow = el("div", "hw-s35-yellow");
-        yellow.appendChild(el("div", "hw-s35-yval", s35PosVecs[i][0].toFixed(2)));
-        yellow.appendChild(el("div", "hw-s35-yval", s35PosVecs[i][1].toFixed(2)));
-        yellow.appendChild(el("div", "hw-s35-ydots", "\u22EF"));
-        yellow.appendChild(el("div", "hw-s35-yval", s35PosVecs[i][2].toFixed(2)));
-        yellow.appendChild(el("div", "hw-s35-yval", s35PosVecs[i][3].toFixed(2)));
-        pair.appendChild(yellow);
-        var green = el("div", "hw-s35-green");
-        var cv = s35SampleVecs[i].map(function (v, j) {
-          return v + s35PosVecs[i][j];
-        });
-        var gv0 = el("div", "hw-s35-gval", cv[0].toFixed(2));
-        var gv1 = el("div", "hw-s35-gval", cv[1].toFixed(2));
-        var gdots = el("div", "hw-s35-gdots", "\u22EF");
-        var gv2 = el("div", "hw-s35-gval", cv[2].toFixed(2));
-        var gv3 = el("div", "hw-s35-gval", cv[3].toFixed(2));
-        green.appendChild(gv0);
-        green.appendChild(gv1);
-        green.appendChild(gdots);
-        green.appendChild(gv2);
-        green.appendChild(gv3);
-        s35GreenCells.push([gv0, gv1, gv2, gv3]);
-        pair.appendChild(green);
-        col.appendChild(pair);
-        s35Columns.appendChild(col);
-      });
-      s35Body.appendChild(s35Columns);
-      s35Layout.appendChild(s35Body);
-      var s35Extras = el("div", "hw-s35-extras");
-      s35Layout.appendChild(s35Extras);
-
       // === Persistent layer for steps 8–10: input matrix X̂ stays put across Q/V/K projections ===
       // Normalized values (row-major: normValues[row][col]) — identical to those used in steps 8, 9, 10
       var s810Tokens = ["The", "fat", "cat", "sat", "quiet", "ly", "on", "the"];
@@ -13090,202 +12991,6 @@ const sections = [
       function updateButtons() {
         backBtn.disabled = currentStep <= 1;
         stepBtn.disabled = currentStep >= TOTAL_STEPS;
-      }
-
-      function buildS12Step1Extras() {
-        // Arrow down
-        s12Extras.appendChild(el("div", "hw-bb-arrow-down", "\u2193"));
-
-        // Pipeline row: black box → arrow → prediction
-        var pipeRow = el("div", "hw-bb-pipe");
-
-        var box = el("div", "hw-bb-box");
-        box.appendChild(el("div", "hw-bb-box-label", "Transformer"));
-        box.appendChild(el("div", "hw-bb-box-q", "?"));
-        pipeRow.appendChild(box);
-
-        pipeRow.appendChild(el("div", "hw-bb-arrow", "\u279C"));
-
-        var predWrap = el("div", "hw-bb-output");
-        predWrap.appendChild(el("div", "hw-bb-prediction", "mat"));
-        pipeRow.appendChild(predWrap);
-
-        s12Extras.appendChild(pipeRow);
-      }
-
-      function buildS12Step2Extras() {
-        s12Extras.appendChild(el("div", "hw-s12-count", "8 tokens"));
-      }
-
-      function buildS35Step3Extras() {
-        var sn = el("div", "hw-embed-sidenote");
-        var snText = el("span", "hw-embed-sn-text");
-        snText.innerHTML =
-          "<strong>Embedding lookup:</strong> The model learns a unique vector for every token in its vocabulary (often 30k\u2013100k+ entries). At inference time, this is a simple table lookup\u200a\u2014\u200ano computation, just retrieve the row.";
-        if (astroAttr) {
-          snText.querySelectorAll("strong").forEach(function (s) {
-            s.setAttribute(astroAttr, "");
-          });
-        }
-        sn.appendChild(snText);
-        s35Extras.appendChild(sn);
-      }
-
-      function buildS35Step4Extras() {
-        var legend = el("div", "hw-pos4-legend");
-        var tL = el("span", "");
-        tL.appendChild(el("span", "hw-pos-legend-swatch hw-pos-legend-swatch-tok"));
-        tL.appendChild(document.createTextNode(" Token embedding"));
-        legend.appendChild(tL);
-        var pL = el("span", "");
-        pL.appendChild(el("span", "hw-pos-legend-swatch hw-pos-legend-swatch-pos"));
-        pL.appendChild(document.createTextNode(" Positional embedding"));
-        legend.appendChild(pL);
-        s35Extras.appendChild(legend);
-      }
-
-      function buildS35Step5Extras() {
-        var eqRow = el("div", "hw-combine-equation");
-        eqRow.appendChild(el("span", "hw-combine-eq-blue", "token emb"));
-        eqRow.appendChild(el("span", "", " + "));
-        eqRow.appendChild(el("span", "hw-combine-eq-yellow", "pos emb"));
-        eqRow.appendChild(el("span", "", " = "));
-        eqRow.appendChild(el("span", "hw-combine-eq-green", "combined"));
-        s35Extras.appendChild(eqRow);
-        var sn = el("div", "hw-combine-sidenote");
-        var snText = el("span", "hw-combine-sn-text");
-        snText.innerHTML =
-          "<strong>Combining embeddings:</strong> Addition is the standard approach\u200a\u2014\u200aconceptually, each dimension in the combined vector encodes both identity and position simultaneously. Alternative methods (concatenation, learned gating) exist, but simple addition provides maximal flexibility for the model to learn its own weighting through training.";
-        if (astroAttr) {
-          snText.querySelectorAll("strong").forEach(function (s) {
-            s.setAttribute(astroAttr, "");
-          });
-        }
-        sn.appendChild(snText);
-        s35Extras.appendChild(sn);
-      }
-
-      function buildS35Step6Extras() {
-        // Dimension label
-        var dimLabel = el("div", "hw-norm-dim-label");
-        dimLabel.appendChild(el("span", "hw-norm-dim-t", "8"));
-        dimLabel.appendChild(document.createTextNode(" tokens \u00d7 "));
-        var dimD = el("span", "hw-norm-dim-d");
-        dimD.innerHTML = "d<sub>model</sub>";
-        if (astroAttr) dimD.querySelector("sub").setAttribute(astroAttr, "");
-        dimLabel.appendChild(dimD);
-        dimLabel.appendChild(document.createTextNode(" dimensions"));
-        s35Extras.appendChild(dimLabel);
-
-        // Matrix name label — fades in after consolidation animation
-        nameTimeout = setTimeout(function () {
-          var matName = el("div", "hw-s36-mat-name");
-          matName.innerHTML =
-            "This is <strong>X</strong> \u2014 the input matrix to the attention mechanism";
-          if (astroAttr) {
-            matName.querySelectorAll("strong").forEach(function (s) {
-              s.setAttribute(astroAttr, "");
-            });
-          }
-          s35Extras.appendChild(matName);
-        }, 500);
-      }
-
-      function buildS35Step7Extras() {
-        // Dimension label
-        var dimLabel = el("div", "hw-norm-dim-label");
-        dimLabel.appendChild(el("span", "hw-norm-dim-t", "8"));
-        dimLabel.appendChild(document.createTextNode(" tokens \u00d7 "));
-        var dimD = el("span", "hw-norm-dim-d");
-        dimD.innerHTML = "d<sub>model</sub>";
-        if (astroAttr) dimD.querySelector("sub").setAttribute(astroAttr, "");
-        dimLabel.appendChild(dimD);
-        dimLabel.appendChild(document.createTextNode(" dimensions"));
-        s35Extras.appendChild(dimLabel);
-
-        // Arrow
-        s35Extras.appendChild(el("div", "hw-norm-arrow", "\u2193"));
-
-        // QKV weight matrices (fade in after short delay)
-        var qkvRow = el("div", "hw-norm-qkv-row");
-
-        var qW = [
-          [" 0.21", " 0.45", "-0.13"],
-          ["-0.38", " 0.17", " 0.62"],
-          [" 0.55", "-0.29", " 0.08"],
-          ["-0.14", " 0.71", "-0.46"],
-        ];
-        var kW = [
-          [" 0.33", "-0.58", " 0.19"],
-          [" 0.67", " 0.12", "-0.41"],
-          ["-0.22", " 0.48", " 0.35"],
-          [" 0.44", "-0.16", " 0.73"],
-        ];
-        var vW = [
-          ["-0.27", " 0.51", " 0.38"],
-          [" 0.63", "-0.34", " 0.15"],
-          [" 0.11", " 0.42", "-0.56"],
-          ["-0.48", " 0.26", " 0.69"],
-        ];
-        var weightDefs = [
-          { label: "W<sub>Q</sub>", cls: "q", vals: qW },
-          { label: "W<sub>K</sub>", cls: "k", vals: kW },
-          { label: "W<sub>V</sub>", cls: "v", vals: vW },
-        ];
-        weightDefs.forEach(function (w) {
-          var wmat = el("div", "hw-wmat");
-          var wlbl = el("div", "hw-wmat-label hw-wmat-label-" + w.cls);
-          wlbl.innerHTML = w.label;
-          if (astroAttr)
-            wlbl.querySelectorAll("sub").forEach(function (s) {
-              s.setAttribute(astroAttr, "");
-            });
-          wmat.appendChild(wlbl);
-          var wcols = el("div", "hw-wmat-cols hw-wmat-cols-" + w.cls);
-          for (var ci = 0; ci < 3; ci++) {
-            var wcol = el("div", "hw-wmat-col");
-            wcol.appendChild(
-              el("div", "hw-wmat-cell hw-wmat-cell-" + w.cls, w.vals[0][ci]),
-            );
-            wcol.appendChild(
-              el("div", "hw-wmat-cell hw-wmat-cell-" + w.cls, w.vals[1][ci]),
-            );
-            wcol.appendChild(
-              el(
-                "div",
-                "hw-wmat-cell hw-wmat-dots hw-wmat-dots-" + w.cls,
-                "\u22EF",
-              ),
-            );
-            wcol.appendChild(
-              el("div", "hw-wmat-cell hw-wmat-cell-" + w.cls, w.vals[2][ci]),
-            );
-            wcol.appendChild(
-              el("div", "hw-wmat-cell hw-wmat-cell-" + w.cls, w.vals[3][ci]),
-            );
-            wcols.appendChild(wcol);
-          }
-          wmat.appendChild(wcols);
-          var wdim = el("div", "hw-wmat-dim");
-          var dM = el("span", "hw-norm-dim-d");
-          dM.innerHTML = "d<sub>model</sub>";
-          if (astroAttr) dM.querySelector("sub").setAttribute(astroAttr, "");
-          wdim.appendChild(dM);
-          wdim.appendChild(document.createTextNode(" \u00d7 "));
-          var dH = el("span", "hw-norm-dim-dh");
-          dH.innerHTML = "d<sub>head</sub>";
-          if (astroAttr) dH.querySelector("sub").setAttribute(astroAttr, "");
-          wdim.appendChild(dH);
-          wmat.appendChild(wdim);
-          qkvRow.appendChild(wmat);
-        });
-        s35Extras.appendChild(qkvRow);
-
-        // Fade in QKV row after layout has settled
-        s35Step7Timeout = setTimeout(function () {
-          s35Step7Timeout = null;
-          qkvRow.classList.add("visible");
-        }, 600);
       }
 
       // =====================================================================
@@ -15383,21 +15088,8 @@ const sections = [
       }
 
       function showStep(step) {
-        // Cancel stale s810 animation callbacks when leaving steps 8-10
+        // Cancel stale callbacks
         s810BuildId++;
-
-        if (mergeTimeout) {
-          clearTimeout(mergeTimeout);
-          mergeTimeout = null;
-        }
-        if (nameTimeout) {
-          clearTimeout(nameTimeout);
-          nameTimeout = null;
-        }
-        if (s35Step7Timeout) {
-          clearTimeout(s35Step7Timeout);
-          s35Step7Timeout = null;
-        }
         if (s1314OutTimeout) {
           clearTimeout(s1314OutTimeout);
           s1314OutTimeout = null;
@@ -15406,48 +15098,125 @@ const sections = [
         var fromStep = prevStep;
         prevStep = step;
 
+        // ===============================================================
+        // GSAP Flip path (steps 1-7)
+        // Full rebuild per step — GSAP Flip animates matched elements.
+        // ===============================================================
+        if (step >= 1 && step <= 7) {
+          // Capture current positions of all flip-id elements
+          var flipState =
+            fromStep >= 1 ? Flip.getState("[data-flip-id]") : null;
+
+          // Full rebuild
+          viz.innerHTML = "";
+          switch (step) {
+            case 1:
+              viz.appendChild(renderStep1());
+              break;
+            case 2:
+              viz.appendChild(renderStep2());
+              break;
+            case 3:
+              viz.appendChild(renderStep3());
+              break;
+            case 4:
+              viz.appendChild(renderStep4());
+              break;
+            case 5:
+              viz.appendChild(renderStep5());
+              break;
+            case 6:
+              viz.appendChild(renderStep6());
+              break;
+            case 7:
+              viz.appendChild(renderStep7());
+              break;
+          }
+
+          if (flipState && fromStep >= 1 && fromStep <= 7) {
+            // Animate within GSAP system
+            Flip.from(flipState, {
+              duration: 0.5,
+              ease: "power2.inOut",
+              scale: true,
+              absolute: true,
+              nested: true,
+              onEnter: function (els) {
+                gsap.fromTo(
+                  els,
+                  { opacity: 0, scale: 0.8 },
+                  { opacity: 1, scale: 1, duration: 0.4, stagger: 0.02 },
+                );
+              },
+              onLeave: function (els) {
+                gsap.to(els, { opacity: 0, scale: 0.8, duration: 0.3 });
+              },
+            });
+          } else if (fromStep >= 8) {
+            // Crossing from old system (steps 8+) → GSAP: crossfade
+            viz.style.transition = "none";
+            viz.style.opacity = "0";
+            requestAnimationFrame(function () {
+              requestAnimationFrame(function () {
+                viz.style.transition = "opacity 0.3s ease-out";
+                viz.style.opacity = "1";
+                setTimeout(function () {
+                  viz.style.transition = "";
+                }, 350);
+              });
+            });
+          }
+
+          updateAnnotation(step);
+          updateButtons();
+          return; // Early return — skip old code below
+        }
+
+        // ===============================================================
+        // Old persistent-layer path (steps 8-14)
+        // Preserved as-is with existing manual FLIP animations.
+        // ===============================================================
+
+        // Crossfade when entering from GSAP system (step 7 → 8)
+        var crossingFromGsap = fromStep >= 1 && fromStep <= 7;
+
         // === K^T FLIP: detect and prepare for 10↔11 transitions ===
-        // The K^T wrapper element persists across these steps; we FLIP-animate its movement.
-        var doKtFlip = (fromStep === 10 && step === 11) || (fromStep === 11 && step === 10);
+        var doKtFlip =
+          (fromStep === 10 && step === 11) ||
+          (fromStep === 11 && step === 10);
         var ktFirstRect = null;
         if (doKtFlip && s1011KtWrap && s1011KtWrap.parentNode) {
           ktFirstRect = s1011KtWrap.getBoundingClientRect();
-          s1011KtWrap.remove(); // Detach before any DOM changes (survives innerHTML = "")
+          s1011KtWrap.remove();
         }
 
         // === s1112 FLIP: detect and prepare for 11↔12 transitions ===
-        // The persistent scores/heatmap grid zooms between step 11 (small, purple) and
-        // step 12 (full-size, amber) via a FLIP scale + translate animation.
-        var doS1112Flip = (fromStep === 11 && step === 12) || (fromStep === 12 && step === 11);
+        var doS1112Flip =
+          (fromStep === 11 && step === 12) ||
+          (fromStep === 12 && step === 11);
         var s1112FirstRect = null;
         if (doS1112Flip && s1112GridEl && s1112GridEl.parentNode) {
           s1112FirstRect = s1112GridEl.getBoundingClientRect();
-          s1112GridEl.remove(); // Detach before DOM rebuild (keeps element alive)
+          s1112GridEl.remove();
         }
-        // s1112Instant: coming backward from step 12 → skip row-fill animation, apply mode-11 styles now
         s1112Instant = fromStep === 12 && step === 11;
 
         // === s1314 FLIP: detect and prepare for 13↔14 transitions ===
-        // The persistent green output matrix moves from step 13's '= Output' position
-        // to step 14's 'Attn(x)' position (or back) via a FLIP translate animation.
-        var doS1314Flip = (fromStep === 13 && step === 14) || (fromStep === 14 && step === 13);
+        var doS1314Flip =
+          (fromStep === 13 && step === 14) ||
+          (fromStep === 14 && step === 13);
         var s1314FirstRect = null;
         if (doS1314Flip && s1314OutWrap && s1314OutWrap.parentNode) {
-          // Ensure fully visible before capturing position (may still be fading in)
           s1314OutWrap.style.opacity = "1";
           s1314OutWrap.style.transform = "";
           s1314OutWrap.style.transition = "none";
           s1314FirstRect = s1314OutWrap.getBoundingClientRect();
-          s1314OutWrap.remove(); // Detach before DOM rebuild (element survives)
+          s1314OutWrap.remove();
         }
 
-        // === FLIP: Capture current token-text positions (keyed by token index) ===
-        // Skip FLIP for within-persistent-layer transitions (steps 1-2, 3-7, or 8-10);
-        // CSS transitions handle animation within those ranges.
+        // === Token FLIP capture (steps 8-14 only) ===
         var bothPersistent =
-          (fromStep >= 1 && fromStep <= 2 && step >= 1 && step <= 2) ||
-          (fromStep >= 3 && fromStep <= 7 && step >= 3 && step <= 7) ||
-          (fromStep >= 8 && fromStep <= 10 && step >= 8 && step <= 10);
+          fromStep >= 8 && fromStep <= 10 && step >= 8 && step <= 10;
         var oldTokenEls = viz.querySelectorAll("[data-tok-idx]");
         var firstRectsByIdx = {};
         var doFlip = !bothPersistent && oldTokenEls.length >= 1;
@@ -15460,137 +15229,24 @@ const sections = [
           });
         }
 
-        if (step >= 1 && step <= 2) {
-          // Steps 1-2: persistent layer — sentence words morph into token chips
-          var needsInsert12 = !s12Layout.parentNode || s12Layout.parentNode !== viz;
-          if (needsInsert12) {
-            viz.innerHTML = "";
-            viz.appendChild(s12Layout);
-          }
-          s12Layout.className = "hw-s12-layout hw-s12-at-" + step;
-          if (astroAttr) s12Layout.setAttribute(astroAttr, "");
-          s12Extras.innerHTML = "";
-          if (step === 1) {
-            buildS12Step1Extras();
-          } else if (step === 2) {
-            buildS12Step2Extras();
-          }
-
-        } else if (step >= 3 && step <= 7) {
-          // Steps 3-7: column-based persistent layer
-          var needsInsert = !s35Layout.parentNode || s35Layout.parentNode !== viz;
-          if (needsInsert) {
-            viz.innerHTML = "";
-            viz.appendChild(s35Layout);
-          }
-
-          // Track which state we're coming from
-          var wasAtStep6 = s35Layout.classList.contains("hw-s35-at-6");
-          var wasAtStep7 = s35Layout.classList.contains("hw-s35-at-7");
-
-          // === FLIP: capture matrix position before layout changes (step 6↔7) ===
-          var needsMatrixFlip = (step === 7 && fromStep === 6) || (step === 6 && wasAtStep7);
-          var matrixFlipRect = null;
-          if (needsMatrixFlip) {
-            matrixFlipRect = s35Body.getBoundingClientRect();
-          }
-
-          if (step === 7) {
-            // Step 7: normalized matrix (purple) — keep consolidated matrix state
-            s35Layout.className = "hw-s35-layout hw-s35-merged hw-s35-at-6 hw-s35-at-7";
-          } else if (step === 6) {
-            // Step 6: green pills consolidated into matrix
-            s35Layout.className = "hw-s35-layout hw-s35-merged hw-s35-at-6";
-          } else {
-            s35Layout.className = "hw-s35-layout hw-s35-at-" + step;
-          }
-          if (astroAttr) s35Layout.setAttribute(astroAttr, "");
-
-          // Update cell values for step 6↔7 transitions
-          if (step === 7) {
-            // Forward 6→7: swap to normalized values with flash animation
-            s35GreenCells.forEach(function (cells, ti) {
-              cells.forEach(function (cell, ri) {
-                cell.textContent = s35NormVals[ri][ti];
-                cell.classList.add("hw-s35-flash");
-                (function (c) {
-                  setTimeout(function () {
-                    c.classList.remove("hw-s35-flash");
-                  }, 550);
-                })(cell);
-              });
-            });
-          } else if (wasAtStep7) {
-            // Backward from step 7: restore combined values (no flash)
-            s35GreenCells.forEach(function (cells, ti) {
-              cells.forEach(function (cell, ri) {
-                cell.textContent = s35CombinedVals[ti][ri];
-              });
-            });
-          }
-
-          s35Extras.innerHTML = "";
-          if (step === 3) buildS35Step3Extras();
-          else if (step === 4) buildS35Step4Extras();
-          else if (step === 5) {
-            buildS35Step5Extras();
-            if (wasAtStep6) {
-              // Coming backward from step 6 — restore merged immediately
-              // so columns spread apart while green pills stay visible
-              s35Layout.classList.add("hw-s35-merged");
-            } else {
-              mergeTimeout = setTimeout(function () {
-                s35Layout.classList.add("hw-s35-merged");
-              }, 500);
-            }
-          } else if (step === 6) {
-            buildS35Step6Extras();
-          } else if (step === 7) {
-            buildS35Step7Extras();
-          }
-
-          // === FLIP: Animate matrix vertical position for step 6↔7 ===
-          if (needsMatrixFlip && matrixFlipRect) {
-            void s35Layout.offsetHeight; // force reflow
-            var newMatrixRect = s35Body.getBoundingClientRect();
-            var matDy = matrixFlipRect.top - newMatrixRect.top;
-            if (Math.abs(matDy) > 0.5) {
-              s35Body.style.transition = "none";
-              s35Body.style.transform = "translateY(" + matDy + "px)";
-              requestAnimationFrame(function () {
-                requestAnimationFrame(function () {
-                  s35Body.style.transition = "transform 0.4s ease";
-                  s35Body.style.transform = "";
-                  setTimeout(function () {
-                    s35Body.style.transition = "";
-                  }, 450);
-                });
-              });
-            }
-          }
-
-        } else if (step >= 8 && step <= 10) {
-          // Steps 8–10: input matrix X̂ is persistent; only volatile content rebuilds
-          var needsInsert810 = !s810Layout.parentNode || s810Layout.parentNode !== viz;
+        // === Dispatch (steps 8-14) ===
+        if (step >= 8 && step <= 10) {
+          var needsInsert810 =
+            !s810Layout.parentNode || s810Layout.parentNode !== viz;
           if (needsInsert810) {
             viz.innerHTML = "";
             viz.appendChild(s810Layout);
           }
-
           if (step === 8) buildS810Step8Volatile();
           else if (step === 9) buildS810Step9Volatile();
-          // instant=true when coming backward from step 11: show fully-built layout immediately
-          // so s1011KtWrap is visible in the transposeSection when the FLIP animation runs
           else if (step === 10) buildS810Step10Volatile(fromStep === 11);
         } else {
-          // Steps 11-14: full rebuild
           viz.innerHTML = "";
           if (step === 11) {
             viz.appendChild(renderStep11());
           } else if (step === 12) {
             viz.appendChild(renderStep12());
           } else if (step === 13) {
-            // instant=true when backward from step 14: output wrapper already visible, skip slide-in
             viz.appendChild(renderStep13(fromStep === 14));
           } else if (step === 14) {
             viz.appendChild(renderStep14());
@@ -15600,11 +15256,21 @@ const sections = [
         updateAnnotation(step);
         updateButtons();
 
-        // === Cross-layer fade: dim viz so the instant DOM swap isn't visible,
-        // then fade in over 0.3s. The FLIP runs on top, animating token text.
-        // Skip when another FLIP (K^T, grid, output) already anchors the transition —
-        // those provide a smooth visual and the opacity dim would hide them.
-        if (doFlip && !doKtFlip && !doS1112Flip && !doS1314Flip) {
+        // === Cross-layer fade ===
+        if (crossingFromGsap) {
+          // Crossing from GSAP (step 7) → old system (step 8): crossfade
+          viz.style.transition = "none";
+          viz.style.opacity = "0";
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              viz.style.transition = "opacity 0.3s ease-out";
+              viz.style.opacity = "1";
+              setTimeout(function () {
+                viz.style.transition = "";
+              }, 350);
+            });
+          });
+        } else if (doFlip && !doKtFlip && !doS1112Flip && !doS1314Flip) {
           viz.style.transition = "none";
           viz.style.opacity = "0";
           requestAnimationFrame(function () {
@@ -15618,11 +15284,14 @@ const sections = [
           });
         }
 
-        // === K^T FLIP: animate to new position after dispatch ===
-        // s1011KtWrap is now in its new position (inside step 11 multRow or step 10 transposeSection).
-        // Apply inverse transform and animate to identity so it appears to slide from old position.
-        if (doKtFlip && ktFirstRect && s1011KtWrap && s1011KtWrap.parentNode) {
-          void viz.offsetHeight; // force reflow so getBoundingClientRect is accurate
+        // === K^T FLIP animation ===
+        if (
+          doKtFlip &&
+          ktFirstRect &&
+          s1011KtWrap &&
+          s1011KtWrap.parentNode
+        ) {
+          void viz.offsetHeight;
           var ktLastRect = s1011KtWrap.getBoundingClientRect();
           var ktDx = ktFirstRect.left - ktLastRect.left;
           var ktDy = ktFirstRect.top - ktLastRect.top;
@@ -15632,7 +15301,8 @@ const sections = [
               "translate(" + ktDx + "px, " + ktDy + "px)";
             requestAnimationFrame(function () {
               requestAnimationFrame(function () {
-                s1011KtWrap.style.transition = "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
+                s1011KtWrap.style.transition =
+                  "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
                 s1011KtWrap.style.transform = "";
                 setTimeout(function () {
                   s1011KtWrap.style.transition = "";
@@ -15642,11 +15312,14 @@ const sections = [
           }
         }
 
-        // === s1112 FLIP: animate scores grid from step-11 result position to step-12 heatmap (or back) ===
-        // The grid element is now in its new position (mode-11 inside result section, or mode-12 as heatmap).
-        // Apply inverse scale+translate so it appears to start at the old position/size, then animate to identity.
-        if (doS1112Flip && s1112FirstRect && s1112GridEl && s1112GridEl.parentNode) {
-          void viz.offsetHeight; // force reflow — measures new position accurately
+        // === s1112 FLIP animation ===
+        if (
+          doS1112Flip &&
+          s1112FirstRect &&
+          s1112GridEl &&
+          s1112GridEl.parentNode
+        ) {
+          void viz.offsetHeight;
           var gridLastRect = s1112GridEl.getBoundingClientRect();
           var gridDx = s1112FirstRect.left - gridLastRect.left;
           var gridDy = s1112FirstRect.top - gridLastRect.top;
@@ -15658,15 +15331,22 @@ const sections = [
             Math.abs(gridSX - 1) > 0.01 ||
             Math.abs(gridSY - 1) > 0.01;
           if (needsS1112Flip) {
-            // No transition — snap to old position/size immediately
             s1112GridEl.style.transition = "none";
             s1112GridEl.style.transformOrigin = "top left";
             s1112GridEl.style.transform =
-              "translate(" + gridDx + "px, " + gridDy + "px) scale(" + gridSX + ", " + gridSY + ")";
+              "translate(" +
+              gridDx +
+              "px, " +
+              gridDy +
+              "px) scale(" +
+              gridSX +
+              ", " +
+              gridSY +
+              ")";
             requestAnimationFrame(function () {
               requestAnimationFrame(function () {
-                // Animate back to natural position/size
-                s1112GridEl.style.transition = "transform 0.65s cubic-bezier(0.4, 0, 0.2, 1)";
+                s1112GridEl.style.transition =
+                  "transform 0.65s cubic-bezier(0.4, 0, 0.2, 1)";
                 s1112GridEl.style.transform = "";
                 setTimeout(function () {
                   s1112GridEl.style.transition = "";
@@ -15677,23 +15357,25 @@ const sections = [
           }
         }
 
-        // === s1314 FLIP: animate output matrix from step-13 '= Output' position
-        // to step-14 'Attn(x)' position (or back), so the user perceives it as the same
-        // green matrix carrying forward into the residual addition context.
-        if (doS1314Flip && s1314FirstRect && s1314OutWrap && s1314OutWrap.parentNode) {
-          void viz.offsetHeight; // force reflow — measures new position accurately
+        // === s1314 FLIP animation ===
+        if (
+          doS1314Flip &&
+          s1314FirstRect &&
+          s1314OutWrap &&
+          s1314OutWrap.parentNode
+        ) {
+          void viz.offsetHeight;
           var s1314LastRect = s1314OutWrap.getBoundingClientRect();
           var s1314Dx = s1314FirstRect.left - s1314LastRect.left;
           var s1314Dy = s1314FirstRect.top - s1314LastRect.top;
           if (Math.abs(s1314Dx) > 0.5 || Math.abs(s1314Dy) > 0.5) {
-            // Snap to old position (no transition)
             s1314OutWrap.style.transition = "none";
             s1314OutWrap.style.transform =
               "translate(" + s1314Dx + "px, " + s1314Dy + "px)";
             requestAnimationFrame(function () {
               requestAnimationFrame(function () {
-                // Animate to natural (new) position
-                s1314OutWrap.style.transition = "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
+                s1314OutWrap.style.transition =
+                  "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
                 s1314OutWrap.style.transform = "";
                 setTimeout(function () {
                   s1314OutWrap.style.transition = "";
@@ -15703,12 +15385,7 @@ const sections = [
           }
         }
 
-        // === Universal token-text FLIP ===
-        // Animates token labels (matched by data-tok-idx) from their old positions
-        // to their new positions with translate + scale. Handles all persistent-layer
-        // boundaries (2↔3, 7↔8, 10↔11, etc.) in one place.
-        // Skip when the s1112 grid itself is being FLIP-animated (11↔12) —
-        // token labels inside the grid move with the grid's transform.
+        // === Universal token-text FLIP (steps 8-14 boundaries) ===
         var skipTokenFlip = doS1112Flip;
         if (doFlip && !skipTokenFlip) {
           var newTokenEls = viz.querySelectorAll("[data-tok-idx]");
@@ -15716,11 +15393,11 @@ const sections = [
           var flippedEls = [];
           newTokenEls.forEach(function (tokEl) {
             var idx = tokEl.dataset.tokIdx;
-            if (idx === undefined || seen[idx] || !firstRectsByIdx[idx]) return;
+            if (idx === undefined || seen[idx] || !firstRectsByIdx[idx])
+              return;
             seen[idx] = true;
             var oldR = firstRectsByIdx[idx];
             var newR = tokEl.getBoundingClientRect();
-            // Center-based delta for correct scale + translate
             var dx =
               oldR.left + oldR.width / 2 - (newR.left + newR.width / 2);
             var dy =
@@ -15748,10 +15425,6 @@ const sections = [
               flippedEls.push(tokEl);
             }
           });
-          // Force per-element style computation — commits the inverse
-          // transforms so the browser paints them before animating.
-          // Uses double rAF (matching K^T, grid, output FLIPs) to
-          // guarantee one paint cycle with the inverse state visible.
           if (flippedEls.length > 0) {
             flippedEls.forEach(function (tokEl) {
               void getComputedStyle(tokEl).transform;

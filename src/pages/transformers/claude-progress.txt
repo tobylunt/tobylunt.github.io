@@ -560,3 +560,74 @@ Completed successfully in 2879s
 - Commit: 60d62baca402
 - Session: ff9612fd-2a38-47ee-aa06-4961d8a2a7e5
 
+
+=== Cross-layer transition polish — 2026-02-20 ===
+
+Context: User reported "items are still jumping around between steps" despite working
+within-step animations. The 6↔7 transition looked decent (CSS transitions within
+persistent layer), but all other cross-layer boundaries had instant teleportation.
+
+Work done across 3 sessions:
+1. Implemented universal token-text FLIP animation (commit 39c7765):
+   - Added data-tok-idx="0"-"7" to all token text elements across all persistent layers
+   - Unified FLIP code at end of showStep() matches old→new by token index
+   - Handles translate + scale for size differences between layers
+   - Replaced per-block chip FLIP code with single universal FLIP
+
+2. Debugged FLIP timing via MutationObserver diagnostics:
+   - FLIP transforms were being applied correctly but visually imperceptible
+   - Root cause: 6px token labels animating while everything else teleports instantly
+   - The eye can't track tiny animated text amid massive instant layout changes
+
+3. Added cross-layer opacity fade (commit 285a476):
+   - At persistent layer boundaries (2↔3, 7↔8), viz dims to opacity 0 instantly
+   - Fades in over 0.3s via CSS transition, masking the instant DOM swap
+   - Token FLIP runs simultaneously, providing subtle continuity
+   - Skipped when K^T, grid, or output FLIPs already anchor the transition
+   - Fixed token FLIP to use double rAF + getComputedStyle force (matching other FLIPs)
+
+Key architecture decisions:
+- Opacity dim only fires when doFlip && !doKtFlip && !doS1112Flip && !doS1314Flip
+- This prevents hiding the dedicated element FLIPs that already work well
+- All double rAFs fire in the same frames, ensuring consistent animation start
+
+Verified: All 14 steps forward and backward render correctly, opacity always 1 after
+cleanup, no stale inline styles.
+
+Next session: User should test visually to confirm the fade+FLIP feels smooth enough.
+Consider extending to within-step transitions if needed.
+
+=== GSAP Flip Rewrite — Session 1 (steps 1-7) — 2026-02-20 ===
+
+User requested full GSAP Flip rewrite to replace the persistent DOM layer architecture.
+The old system (s12, s35, s810 persistent layers) caused visual "teleportation" at layer
+boundaries. GSAP Flip enables full-rebuild-per-step with automatic cross-step animation
+via data-flip-id matching.
+
+Completed:
+1. Added GSAP 3.14.2 + Flip plugin (pnpm install, bundled Astro script exposing
+   window.__gsap / window.__Flip — CDN UMD failed due to Chrome's read-only window.window)
+2. Created 7 pure render functions (renderStep1-7) + 2 helpers (flipBuildSentence,
+   flipBuildColumns). Each returns a complete DOM subtree with data-flip-id attributes.
+3. Rewrote showStep() with hybrid dispatch:
+   - Steps 1-7: GSAP Flip path (capture → clear → rebuild → Flip.from → early return)
+   - Steps 8-14: Old persistent layer path preserved exactly
+   - 7↔8 boundary: crossfade (opacity dim + fade-in)
+4. Deleted dead code from old s12/s35 persistent layers:
+   - Removed s12Layout/s12Sentence/s12WordEls/s12Extras DOM construction (~30 lines)
+   - Removed s35Layout/s35Body/s35Columns/s35Extras DOM construction (~65 lines)
+   - Removed s35GreenCells, mergeTimeout, nameTimeout, s35Step7Timeout variables
+   - Removed 7 builder functions (buildS12Step1Extras through buildS35Step7Extras, ~195 lines)
+   - Removed dead timeout cleanup in showStep()
+   - Kept all data arrays (s12Words, s35Tokens, s35Types, etc.) still used by render functions
+
+Net: 195 insertions, 486 deletions = ~291 lines removed.
+
+WIP commit: 99402cb (GSAP infra + render functions)
+Final commit: (this session)
+
+Verified: All 14 steps render correctly forward and backward. 7↔8 boundary crossfade
+works both directions. Reset button works. No JS errors.
+
+Next session (Session 2): Convert steps 8-14 to GSAP Flip, delete s810 persistent layer
+and all remaining manual FLIP code, CSS cleanup.
