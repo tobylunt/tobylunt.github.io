@@ -5213,7 +5213,7 @@ const sections = [
     justify-content: center;
     width: 160px;
     height: 100px;
-    background: hsl(220 15% 12%);
+    background: hsl(var(--theme-text) / 0.88);
     border-radius: 10px;
     box-shadow: 0 4px 20px hsl(0 0% 0% / 0.35);
     flex-shrink: 0;
@@ -5223,13 +5223,13 @@ const sections = [
   .hw-bb-box-label {
     font-size: 0.82rem;
     font-weight: 700;
-    color: hsl(0 0% 100% / 0.9);
+    color: hsl(var(--theme-bg) / 0.95);
     letter-spacing: 0.03em;
   }
 
   .hw-bb-box-q {
     font-size: 1.4rem;
-    color: hsl(0 0% 100% / 0.5);
+    color: hsl(var(--theme-bg) / 0.55);
     margin-top: 0.2rem;
   }
 
@@ -6721,8 +6721,7 @@ const sections = [
     color: hsl(210 70% 55% / 0.5) !important;
   }
 
-  /* ===== Step 8: V Projection ===== */
-  /* ===== Step 9: V Projection with Stacked Card Effect ===== */
+  /* ===== Step 9: V Projection ===== */
   .hw-v9-layout {
     display: flex;
     flex-direction: column;
@@ -6985,8 +6984,7 @@ const sections = [
     color: hsl(340 65% 65% / 0.85);
   }
 
-  /* ===== Step 9: K Projection + Transpose ===== */
-  /* ===== Step 10: K Projection + Transpose (redesigned) ===== */
+  /* ===== Step 10: K Projection + Transpose ===== */
   .hw-k10-layout {
     display: flex;
     flex-direction: column;
@@ -8763,9 +8761,6 @@ const sections = [
     .head-walk-container {
       padding: 1rem;
     }
-  }
-
-  @media (max-width: 480px) {
     .val-output-container {
       padding: 1rem;
     }
@@ -8849,12 +8844,7 @@ const sections = [
     gap: 0.2rem;
   }
 
-  .mha-mini-attn {
-    background: hsl(35 90% 55% / 0.12);
-    color: hsl(35 90% 55%);
-    border: 1px solid hsl(35 90% 55% / 0.25);
-  }
-
+  .mha-mini-attn,
   .mha-mini-out {
     background: hsl(35 90% 55% / 0.12);
     color: hsl(35 90% 55%);
@@ -11724,7 +11714,6 @@ const sections = [
             // Pure punctuation or number
             if (!/[a-zA-Z]/.test(seg)) {
               tokens.push({ text: (tokens.length === 0 ? "" : leading) + seg, type: "special" });
-              leading && tokens.length > 1; // consume leading space
               continue;
             }
 
@@ -12612,6 +12601,8 @@ const sections = [
       var s35GreenCells = [];
       // Timeout handle for step 6 matrix name label (must be cancellable)
       var nameTimeout = null;
+      // Timeout handle for step 7 QKV row fade-in (must be cancellable)
+      var s35Step7Timeout = null;
 
       var s35Layout = el("div", "hw-s35-layout hw-s35-at-3");
       var s35Body = el("div", "hw-s35-body");
@@ -13238,7 +13229,8 @@ const sections = [
         s35Extras.appendChild(qkvRow);
 
         // Fade in QKV row after layout has settled
-        setTimeout(function () {
+        s35Step7Timeout = setTimeout(function () {
+          s35Step7Timeout = null;
           qkvRow.classList.add("visible");
         }, 600);
       }
@@ -14963,6 +14955,9 @@ const sections = [
         return layout;
       }
       function showStep(step) {
+        // Cancel stale s810 animation callbacks when leaving steps 8-10
+        s810BuildId++;
+
         if (mergeTimeout) {
           clearTimeout(mergeTimeout);
           mergeTimeout = null;
@@ -14970,6 +14965,10 @@ const sections = [
         if (nameTimeout) {
           clearTimeout(nameTimeout);
           nameTimeout = null;
+        }
+        if (s35Step7Timeout) {
+          clearTimeout(s35Step7Timeout);
+          s35Step7Timeout = null;
         }
         if (s1314OutTimeout) {
           clearTimeout(s1314OutTimeout);
@@ -15509,6 +15508,20 @@ const sections = [
     if (!_lazyEl) return;
     function _lazyInit() {
       // ===== Feature #12: Multi-Head Attention heatmaps =====
+      // Detect astroAttr for scoped CSS on dynamic elements
+      var mhaAstroAttr = null;
+      Array.from(_lazyEl.attributes).forEach(function (attr) {
+        if (attr.name.indexOf("data-astro-cid-") === 0)
+          mhaAstroAttr = attr.name;
+      });
+      function mhaEl(tag, cls, text) {
+        var e = document.createElement(tag);
+        if (cls) e.className = cls;
+        if (text !== undefined) e.textContent = text;
+        if (mhaAstroAttr) e.setAttribute(mhaAstroAttr, "");
+        return e;
+      }
+
       const mhaTokens = ["The", "cat", "sat"];
 
       // Three heads with distinct attention patterns
@@ -15547,31 +15560,26 @@ const sections = [
         if (!gridEl) return;
 
         // Corner
-        const corner = document.createElement("div");
-        corner.className = "mha-heatmap-corner";
+        const corner = mhaEl("div", "mha-heatmap-corner");
         corner.innerHTML = "K→<br>Q↓";
+        if (mhaAstroAttr)
+          corner.querySelectorAll("br").forEach((b) => b.setAttribute(mhaAstroAttr, ""));
         gridEl.appendChild(corner);
 
         // Column labels
         mhaTokens.forEach((tok) => {
-          const label = document.createElement("div");
-          label.className = "mha-heatmap-col-label";
-          label.textContent = tok;
+          const label = mhaEl("div", "mha-heatmap-col-label", tok);
           gridEl.appendChild(label);
         });
 
         // Rows: label + 3 cells
         for (let row = 0; row < 3; row++) {
-          const rowLabel = document.createElement("div");
-          rowLabel.className = "mha-heatmap-row-label";
-          rowLabel.textContent = mhaTokens[row];
+          const rowLabel = mhaEl("div", "mha-heatmap-row-label", mhaTokens[row]);
           gridEl.appendChild(rowLabel);
 
           for (let col = 0; col < 3; col++) {
             const w = head.weights[row][col];
-            const cell = document.createElement("div");
-            cell.className = "mha-heatmap-cell";
-            cell.textContent = w.toFixed(2);
+            const cell = mhaEl("div", "mha-heatmap-cell", w.toFixed(2));
             // Color intensity proportional to weight
             const alpha = (0.08 + w * 0.85).toFixed(2);
             cell.style.background = "hsl(35 90% 55% / " + alpha + ")";
@@ -15814,27 +15822,33 @@ const sections = [
     if (!_lazyEl) return;
     function _lazyInit() {
       // ===== Feature #15: Residual stream animations =====
+      // Detect astroAttr for scoped CSS on dynamic elements
+      var lnAstroAttr = null;
+      Array.from(_lazyEl.attributes).forEach(function (attr) {
+        if (attr.name.indexOf("data-astro-cid-") === 0)
+          lnAstroAttr = attr.name;
+      });
 
       // --- Layer accumulation animation ---
       const rows = document.querySelectorAll(".res-layer-row");
       const animateBtn = document.getElementById("res-animate-btn");
       const resetBtn = document.getElementById("res-reset-btn");
-      let animationTimer = null;
+      let animationTimers = [];
 
       function resetAnimation() {
-        if (animationTimer) {
-          clearTimeout(animationTimer);
-          animationTimer = null;
-        }
+        animationTimers.forEach((t) => clearTimeout(t));
+        animationTimers = [];
         rows.forEach((r) => r.classList.remove("res-row-visible"));
       }
 
       function animateLayers() {
         resetAnimation();
         rows.forEach((row, i) => {
-          animationTimer = setTimeout(() => {
-            row.classList.add("res-row-visible");
-          }, i * 500);
+          animationTimers.push(
+            setTimeout(() => {
+              row.classList.add("res-row-visible");
+            }, i * 500),
+          );
         });
       }
 
@@ -15888,6 +15902,7 @@ const sections = [
         values.forEach((v, i) => {
           const bar = document.createElement("div");
           bar.className = "ln-bar";
+          if (lnAstroAttr) bar.setAttribute(lnAstroAttr, "");
           const h = (Math.abs(v) / absMax) * barHeight;
           const isNeg = v < 0;
           if (isNeg) {
@@ -15903,6 +15918,7 @@ const sections = [
           }
           const label = document.createElement("div");
           label.className = "ln-bar-label";
+          if (lnAstroAttr) label.setAttribute(lnAstroAttr, "");
           label.textContent = v.toFixed(1);
           bar.appendChild(label);
           container.appendChild(bar);
@@ -15957,6 +15973,20 @@ const sections = [
     const restEl = document.getElementById("out-topk-rest");
     if (!slider || !barsContainer) return;
 
+    // Detect astroAttr for scoped CSS on dynamic elements
+    var outAstroAttr = null;
+    Array.from(barsContainer.attributes).forEach(function (attr) {
+      if (attr.name.indexOf("data-astro-cid-") === 0)
+        outAstroAttr = attr.name;
+    });
+    function outEl(tag, cls, text) {
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (text !== undefined) e.textContent = text;
+      if (outAstroAttr) e.setAttribute(outAstroAttr, "");
+      return e;
+    }
+
     // Simulated logits for "The cat sat on the ___"
     // These represent the raw model output before softmax
     const candidates = [
@@ -15992,32 +16022,14 @@ const sections = [
         shownSum += prob;
         const pct = (prob / maxProb) * 100;
 
-        const row = document.createElement("div");
-        row.style.cssText = "display:flex;align-items:center;gap:8px;";
-
-        const tokenEl = document.createElement("div");
-        tokenEl.style.cssText =
-          "font-size:0.8rem;font-weight:600;width:60px;text-align:right;color:hsl(var(--theme-text)/0.7);";
-        tokenEl.textContent = candidates[i].token;
-
-        const trackEl = document.createElement("div");
-        trackEl.style.cssText =
-          "flex:1;height:28px;background:hsl(var(--theme-text)/0.04);border-radius:6px;overflow:hidden;position:relative;";
-
-        const fillEl = document.createElement("div");
-        fillEl.style.cssText =
-          "height:100%;border-radius:6px;background:hsl(350 65% 55%);transition:width 0.4s ease;min-width:2px;width:" +
-          pct +
-          "%;opacity:" +
-          (0.4 + (prob / maxProb) * 0.6) +
-          ";";
-
+        const row = outEl("div", "out-topk-row");
+        const tokenEl = outEl("div", "out-topk-token", candidates[i].token);
+        const trackEl = outEl("div", "out-topk-bar-track");
+        const fillEl = outEl("div", "out-topk-bar-fill");
+        fillEl.style.width = pct + "%";
+        fillEl.style.opacity = (0.4 + (prob / maxProb) * 0.6);
         trackEl.appendChild(fillEl);
-
-        const probEl = document.createElement("div");
-        probEl.style.cssText =
-          "font-family:'SF Mono','Fira Code',monospace;font-size:0.72rem;width:52px;color:hsl(var(--theme-text)/0.5);";
-        probEl.textContent = (prob * 100).toFixed(1) + "%";
+        const probEl = outEl("div", "out-topk-prob", (prob * 100).toFixed(1) + "%");
 
         row.appendChild(tokenEl);
         row.appendChild(trackEl);
