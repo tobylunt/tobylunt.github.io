@@ -15215,6 +15215,24 @@ const sections = [
         updateAnnotation(step);
         updateButtons();
 
+        // === Cross-layer fade: dim viz so the instant DOM swap isn't visible,
+        // then fade in over 0.3s. The FLIP runs on top, animating token text.
+        // Skip when another FLIP (K^T, grid, output) already anchors the transition —
+        // those provide a smooth visual and the opacity dim would hide them.
+        if (doFlip && !doKtFlip && !doS1112Flip && !doS1314Flip) {
+          viz.style.transition = "none";
+          viz.style.opacity = "0";
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              viz.style.transition = "opacity 0.3s ease-out";
+              viz.style.opacity = "1";
+              setTimeout(function () {
+                viz.style.transition = "";
+              }, 350);
+            });
+          });
+        }
+
         // === K^T FLIP: animate to new position after dispatch ===
         // s1011KtWrap is now in its new position (inside step 11 multRow or step 10 transposeSection).
         // Apply inverse transform and animate to identity so it appears to slide from old position.
@@ -15308,9 +15326,9 @@ const sections = [
         // token labels inside the grid move with the grid's transform.
         var skipTokenFlip = doS1112Flip;
         if (doFlip && !skipTokenFlip) {
-          void viz.offsetHeight; // force reflow
           var newTokenEls = viz.querySelectorAll("[data-tok-idx]");
           var seen = {};
+          var flippedEls = [];
           newTokenEls.forEach(function (tokEl) {
             var idx = tokEl.dataset.tokIdx;
             if (idx === undefined || seen[idx] || !firstRectsByIdx[idx]) return;
@@ -15342,23 +15360,33 @@ const sections = [
                 ", " +
                 sy +
                 ")";
+              flippedEls.push(tokEl);
             }
           });
-          requestAnimationFrame(function () {
+          // Force per-element style computation — commits the inverse
+          // transforms so the browser paints them before animating.
+          // Uses double rAF (matching K^T, grid, output FLIPs) to
+          // guarantee one paint cycle with the inverse state visible.
+          if (flippedEls.length > 0) {
+            flippedEls.forEach(function (tokEl) {
+              void getComputedStyle(tokEl).transform;
+            });
             requestAnimationFrame(function () {
-              newTokenEls.forEach(function (tokEl) {
-                if (tokEl.style.transform) {
+              requestAnimationFrame(function () {
+                flippedEls.forEach(function (tokEl) {
                   tokEl.style.transition =
-                    "transform 0.45s cubic-bezier(0.4, 0, 0.2, 1)";
+                    "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
                   tokEl.style.transform = "";
-                  setTimeout(function () {
+                });
+                setTimeout(function () {
+                  flippedEls.forEach(function (tokEl) {
                     tokEl.style.transition = "";
                     tokEl.style.transformOrigin = "";
-                  }, 500);
-                }
+                  });
+                }, 550);
               });
             });
-          });
+          }
         }
       }
 
