@@ -14505,6 +14505,7 @@ const sections = [
         // opts: { showYellow, showGreen, greenVals, cellVals }
         var layout = el("div", layoutClass);
         var body = el("div", "hw-s35-body");
+        body.dataset.flipId = "input-matrix";
 
         var yaxis = el("div", "hw-embed-yaxis");
         yaxis.innerHTML = "d<sub>model</sub>";
@@ -14763,6 +14764,7 @@ const sections = [
         var qkvRow = el("div", "hw-norm-qkv-row visible");
         weightDefs.forEach(function (w) {
           var wmat = el("div", "hw-wmat");
+          if (w.cls === "q") wmat.dataset.flipId = "wq-matrix";
           var wlbl = el("div", "hw-wmat-label hw-wmat-label-" + w.cls);
           wlbl.innerHTML = w.label;
           if (astroAttr)
@@ -14988,6 +14990,7 @@ const sections = [
         var tokens = s810Tokens;
         var nv = s810NormValues;
         var wrap = el("div", "hw-q8-mat-wrap");
+        wrap.dataset.flipId = "input-matrix";
         var label = el("div", "hw-q8-mat-label hw-q8-label-input");
         label.innerHTML = 'X\u0302 <span class="hw-q8-label-sub">(normalized)</span>';
         if (astroAttr) label.querySelectorAll("span").forEach(function (s) { s.setAttribute(astroAttr, ""); });
@@ -15039,6 +15042,7 @@ const sections = [
         ];
 
         var wqWrap = el("div", "hw-q8-mat-wrap hw-q8-wq-wrap");
+        wqWrap.dataset.flipId = "wq-matrix";
         var wqLabel = el("div", "hw-q8-mat-label hw-q8-label-wq");
         wqLabel.innerHTML = "W<sub>Q</sub>";
         if (astroAttr) wqLabel.querySelectorAll("sub").forEach(function (s) { s.setAttribute(astroAttr, ""); });
@@ -15916,6 +15920,82 @@ const sections = [
           }
         }
 
+        // === Post-Flip visual tweens for step 7↔8 boundary ===
+        if (fromStep === 7 && step === 8) {
+          // 7→8: Layout reorganization — matrix moves left, W_Q moves into multiplication
+          // Make W_Q immediately visible (Flip matched it from step 7's QKV row)
+          var s78wq = viz.querySelector(".hw-q8-wq-wrap");
+          var s78out = viz.querySelector(".hw-q8-out-wrap");
+          var s78eq = viz.querySelector(".hw-q8-equation");
+          var s78ops = viz.querySelectorAll(".hw-q8-op");
+          if (s78wq) {
+            s78wq.classList.add("visible");
+            // Kill Flip tweens that may fight with CSS transition
+            gsap.killTweensOf(s78wq);
+            gsap.set(s78wq, { clearProps: "opacity,transform" });
+          }
+          // Operators (dot and arrow): staggered fade-in
+          s78ops.forEach(function (op, i) {
+            gsap.killTweensOf(op);
+            gsap.set(op, { opacity: 0 });
+            gsap.to(op, { opacity: 1, duration: 0.3, delay: 0.3 + i * 0.15, ease: "power2.out" });
+          });
+          // Q output matrix: delayed slide-in from right with filled columns
+          if (s78out) {
+            s78out.classList.add("visible");
+            // Fill all output columns immediately (full result is shown)
+            s78out.querySelectorAll(".hw-q8-out-col").forEach(function (col) {
+              col.classList.add("hw-q8-filled");
+            });
+            gsap.killTweensOf(s78out);
+            gsap.set(s78out, { opacity: 0, x: 30 });
+            gsap.to(s78out, { opacity: 1, x: 0, duration: 0.45, delay: 0.5, ease: "power2.out" });
+          }
+          // Mark input columns as processed (persistent highlight)
+          viz.querySelectorAll(".hw-q8-input-col").forEach(function (col) {
+            col.classList.add("hw-q8-persistent");
+          });
+          // Equation: delayed fade-in
+          if (s78eq) {
+            gsap.set(s78eq, { opacity: 0 });
+            gsap.to(s78eq, { opacity: 1, duration: 0.3, delay: 0.8, ease: "power2.out" });
+          }
+        }
+        if (fromStep === 8 && step === 7) {
+          // 8→7: Back to vertical layout — QKV row entrance, "This is X" text
+          var s87arrow = viz.querySelector(".hw-norm-arrow");
+          var s87qkvRow = viz.querySelector(".hw-norm-qkv-row");
+          var s87wmats = s87qkvRow ? s87qkvRow.querySelectorAll(".hw-wmat") : [];
+          var s87dimLabel = viz.querySelector(".hw-norm-dim-label");
+          // Arrow: delayed fade-in
+          if (s87arrow) {
+            gsap.set(s87arrow, { opacity: 0, y: 10 });
+            gsap.to(s87arrow, { opacity: 1, y: 0, duration: 0.3, delay: 0.3, ease: "power2.out" });
+          }
+          // QKV weight matrices: staggered slide-up (W_Q already matched via Flip)
+          s87wmats.forEach(function (wm, i) {
+            // W_Q (i=0) is Flip-matched so kill its Flip tween and let it settle
+            if (i === 0) {
+              gsap.killTweensOf(wm);
+              gsap.set(wm, { clearProps: "opacity,transform,scale" });
+            } else {
+              // W_K, W_V: staggered entrance
+              gsap.killTweensOf(wm);
+              gsap.set(wm, { opacity: 0, y: 20 });
+              gsap.to(wm, {
+                opacity: 1, y: 0,
+                duration: 0.4, delay: 0.35 + i * 0.1,
+                ease: "power2.out",
+              });
+            }
+          });
+          // Dim label: delayed fade-in
+          if (s87dimLabel) {
+            gsap.set(s87dimLabel, { opacity: 0 });
+            gsap.to(s87dimLabel, { opacity: 1, duration: 0.3, delay: 0.25 });
+          }
+        }
+
         // === Post-Flip visual tweens for step 1↔2 boundary ===
         if (
           (fromStep === 1 && step === 2) ||
@@ -15956,7 +16036,8 @@ const sections = [
         }
 
         // Run within-step effects (cascade animations for steps 8-10)
-        if (stepLayout && stepLayout._runEffects) {
+        // Skip cascade when entering step 8 from step 7 — Flip handles the transition
+        if (stepLayout && stepLayout._runEffects && !(fromStep === 7 && step === 8)) {
           stepLayout._runEffects();
         }
 

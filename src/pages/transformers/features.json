@@ -408,7 +408,7 @@
   {
     "id": 29,
     "name": "Smooth Step 7\u21948 \u2014 layout reorganization with element tracking",
-    "passes": false,
+    "passes": true,
     "steps": [
       "This is the biggest layout change: step 7 has vertical layout (normalized matrix + QKV below via flipBuildColumns) \u2192 step 8 has horizontal layout (input matrix left + multiplication right via renderStep8). Only tok-0..7 match across the transition",
       "Add data-flip-id='input-matrix' to the normalized matrix CONTAINER in step 7 (the hw-s35-body or equivalent wrapper) AND to the input matrix wrapper in step 8 (hw-q8-mat-wrap) \u2014 so the matrix itself animates from center to left position",
