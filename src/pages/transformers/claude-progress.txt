@@ -845,4 +845,28 @@ Key architecture context for next session:
   step 11 no regression, both dark and light themes
 - Build: 0 errors
 - Commit: 2027b7d
-- Next: Feature #31 — Smooth Step 9↔10→11 boundary — K^T persistence
+- Next: Feature #31 — Smooth Step 10↔11 boundary — K^T persistence
+
+=== Feature #31: Smooth Step 10↔11 — K^T persistence into QK^T — 2026-02-20 ===
+- Both step 10 and step 11 already had matching data-flip-id="kt-wrap" on K^T containers,
+  so GSAP Flip handles the position/scale animation of K^T between steps
+- Added post-Flip tweens for 10→11 boundary:
+  - K^T: clearProps on Flip-matched element to avoid stale inline styles
+  - Q matrix: gsap slide-in from left (opacity 0→1, x -30→0, delay 0.3s)
+  - Multiply sign (·): delayed fade-in (delay 0.5s)
+  - Down arrow, result grid, equation, callout: handled by renderStep11's internal setTimeout
+    animation sequence (phases 1-5 at 800ms, 1200ms, 1600ms+)
+- Added post-Flip tweens for 11→10 boundary:
+  - K^T: clearProps on Flip-matched element
+  - W_K weight matrix: Flip-matched via "weight-matrix", slide-in from right (delay 0.2s)
+  - K output: slide-in from right with hw-k10-filled class (delay 0.35s)
+  - Transpose section: slide-up entrance (delay 0.5s)
+  - Operators: staggered fade-in (delay 0.15s + 0.1s per operator)
+  - Equation: delayed fade-in (delay 0.55s)
+  - Input columns: marked hw-q8-persistent
+- Extended _runEffects skip gate to cover 10↔11 transitions
+- Verified: 10→11 forward, 11→10 backward, rapid clicking 10↔11, step 12 no regression,
+  both dark and light themes
+- Build: 0 errors
+- Commit: a54c8b4
+- Next: All features 24-31 complete. Visual continuity pass is done.

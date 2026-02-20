@@ -438,7 +438,7 @@
   {
     "id": 31,
     "name": "Smooth Step 10\u219211 \u2014 K^T persistence into QK^T",
-    "passes": false,
+    "passes": true,
     "steps": [
       "The K^T matrix from step 10's transpose section should persist as the K^T operand in step 11's QK^T multiplication layout",
       "Add matching data-flip-id='kt-wrap' on the K^T container in step 10 (the transpose result wrapper) \u2014 step 11 already has this on the K^T operand, verify it matches exactly",

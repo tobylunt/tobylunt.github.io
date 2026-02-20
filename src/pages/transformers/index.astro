@@ -16218,6 +16218,80 @@ const sections = [
           });
         }
 
+        // === Post-Flip visual tweens for step 10↔11 boundary ===
+        if (fromStep === 10 && step === 11) {
+          // K^T: Flip matched via "kt-wrap" — ensure visible, clear stale inline styles
+          var s1011kt = viz.querySelector(".hw-qkt-kt-wrap");
+          if (s1011kt) {
+            gsap.killTweensOf(s1011kt);
+            gsap.set(s1011kt, { clearProps: "opacity,transform" });
+          }
+          // Q matrix: staggered slide-in from left
+          var s1011q = viz.querySelector(".hw-qkt-q-wrap");
+          if (s1011q) {
+            gsap.set(s1011q, { opacity: 0, x: -30 });
+            gsap.to(s1011q, { opacity: 1, x: 0, duration: 0.45, delay: 0.3, ease: "power2.out", clearProps: "transform" });
+          }
+          // Multiply sign: fade-in after Q arrives
+          var s1011times = viz.querySelector(".hw-qkt-times");
+          if (s1011times) {
+            gsap.set(s1011times, { opacity: 0 });
+            gsap.to(s1011times, { opacity: 1, duration: 0.3, delay: 0.5, ease: "power2.out" });
+          }
+          // Down arrow: handled by renderStep11 internal setTimeout (1200ms)
+          // Result wrap: handled by renderStep11 internal setTimeout (1200ms)
+          // Equation + callout: handled by renderStep11 internal timing
+        }
+        if (fromStep === 11 && step === 10) {
+          // K^T: Flip matched — ensure visible, clear stale inline styles
+          var s1110kt = viz.querySelector(".hw-k10-kt-wrap");
+          if (s1110kt) {
+            gsap.killTweensOf(s1110kt);
+            gsap.set(s1110kt, { clearProps: "opacity,transform" });
+          }
+          // Weight matrix: Flip matched via "weight-matrix", stagger entrance
+          var s1110wm = viz.querySelector(".hw-k10-wk-wrap");
+          if (s1110wm) {
+            s1110wm.classList.add("visible");
+            gsap.killTweensOf(s1110wm);
+            gsap.set(s1110wm, { opacity: 0, x: 20 });
+            gsap.to(s1110wm, { opacity: 1, x: 0, duration: 0.4, delay: 0.2, ease: "power2.out", clearProps: "transform" });
+          }
+          // K output: slide-in from right
+          var s1110out = viz.querySelector(".hw-k10-out-wrap");
+          if (s1110out) {
+            s1110out.classList.add("visible");
+            s1110out.querySelectorAll(".hw-k10-out-col").forEach(function (col) {
+              col.classList.add("hw-k10-filled");
+            });
+            gsap.killTweensOf(s1110out);
+            gsap.set(s1110out, { opacity: 0, x: 20 });
+            gsap.to(s1110out, { opacity: 1, x: 0, duration: 0.4, delay: 0.35, ease: "power2.out", clearProps: "transform" });
+          }
+          // Transpose section: staggered entrance
+          var s1110trans = viz.querySelector(".hw-k10-transpose");
+          if (s1110trans) {
+            gsap.set(s1110trans, { opacity: 0, y: 15 });
+            gsap.to(s1110trans, { opacity: 1, y: 0, duration: 0.4, delay: 0.5, ease: "power2.out", clearProps: "transform" });
+          }
+          // Operators: staggered fade-in
+          viz.querySelectorAll(".hw-q8-op").forEach(function (op, i) {
+            gsap.killTweensOf(op);
+            gsap.set(op, { opacity: 0 });
+            gsap.to(op, { opacity: 1, duration: 0.3, delay: 0.15 + i * 0.1, ease: "power2.out" });
+          });
+          // Equation: delayed fade-in
+          var s1110eq = viz.querySelector(".hw-q8-equation");
+          if (s1110eq) {
+            gsap.set(s1110eq, { opacity: 0 });
+            gsap.to(s1110eq, { opacity: 1, duration: 0.3, delay: 0.55, ease: "power2.out" });
+          }
+          // Input columns: mark as processed
+          viz.querySelectorAll(".hw-q8-input-col").forEach(function (col) {
+            col.classList.add("hw-q8-persistent");
+          });
+        }
+
         // === Post-Flip visual tweens for step 1↔2 boundary ===
         if (
           (fromStep === 1 && step === 2) ||
@@ -16261,7 +16335,8 @@ const sections = [
         // Skip cascade when Flip handles the transition between adjacent projection steps
         var skipCascade = (fromStep === 7 && step === 8) ||
           (fromStep === 8 && step === 9) || (fromStep === 9 && step === 8) ||
-          (fromStep === 9 && step === 10) || (fromStep === 10 && step === 9);
+          (fromStep === 9 && step === 10) || (fromStep === 10 && step === 9) ||
+          (fromStep === 10 && step === 11) || (fromStep === 11 && step === 10);
         if (stepLayout && stepLayout._runEffects && !skipCascade) {
           stepLayout._runEffects();
         }
