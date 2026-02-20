@@ -14474,9 +14474,12 @@ const sections = [
 
       function renderStep1() {
         var r = flipBuildSentence("hw-s12-layout hw-s12-at-1");
-        // Black box pipeline
-        r.extras.appendChild(el("div", "hw-bb-arrow-down", "\u2193"));
+        // Black box pipeline — flip IDs so Flip.onLeave animates them out
+        var arrowDown = el("div", "hw-bb-arrow-down", "\u2193");
+        arrowDown.dataset.flipId = "bb-arrow-down";
+        r.extras.appendChild(arrowDown);
         var pipeRow = el("div", "hw-bb-pipe");
+        pipeRow.dataset.flipId = "bb-pipe";
         var box = el("div", "hw-bb-box");
         box.appendChild(el("div", "hw-bb-box-label", "Transformer"));
         box.appendChild(el("div", "hw-bb-box-q", "?"));
@@ -14491,7 +14494,9 @@ const sections = [
 
       function renderStep2() {
         var r = flipBuildSentence("hw-s12-layout hw-s12-at-2");
-        r.extras.appendChild(el("div", "hw-s12-count", "8 tokens"));
+        var count = el("div", "hw-s12-count", "8 tokens");
+        count.dataset.flipId = "s2-count";
+        r.extras.appendChild(count);
         return r.layout;
       }
 
@@ -15522,6 +15527,45 @@ const sections = [
               gsap.to(els, { opacity: 0, scale: 0.8, duration: 0.3 });
             },
           });
+        }
+
+        // === Post-Flip visual tweens for step 1↔2 boundary ===
+        if (
+          (fromStep === 1 && step === 2) ||
+          (fromStep === 2 && step === 1)
+        ) {
+          var toks = viz.querySelectorAll(".hw-s12-word");
+          // Kill any stale tweens from rapid clicking
+          toks.forEach(function (t) {
+            gsap.killTweensOf(t);
+          });
+          if (fromStep === 1 && step === 2) {
+            // 1→2: tween chip backgrounds from transparent to colored
+            toks.forEach(function (tok, i) {
+              gsap.from(tok, {
+                backgroundColor: "transparent",
+                borderColor: "transparent",
+                duration: 0.4,
+                delay: 0.1 + i * 0.04,
+                ease: "power2.out",
+              });
+            });
+          } else {
+            // 2→1: tween from colored chip appearance to plain text
+            toks.forEach(function (tok) {
+              var isSub = tok.classList.contains("hw-s12-sub");
+              gsap.from(tok, {
+                backgroundColor: isSub
+                  ? "hsla(35, 80%, 50%, 0.12)"
+                  : "hsla(210, 60%, 55%, 0.12)",
+                borderColor: isSub
+                  ? "hsla(35, 80%, 50%, 0.2)"
+                  : "hsla(210, 60%, 55%, 0.2)",
+                duration: 0.4,
+                ease: "power2.out",
+              });
+            });
+          }
         }
 
         // Run within-step effects (cascade animations for steps 8-10)

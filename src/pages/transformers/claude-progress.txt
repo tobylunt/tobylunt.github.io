@@ -682,3 +682,51 @@ Verified: All 14 steps render correctly forward and backward. Step 12 hover inte
 works (tooltip shows correct attention info). Reset button works. No JS errors.
 
 Next session: Delete remaining s810 dead code, CSS transition cleanup, performance tuning.
+
+=== ACTIVE BUG: Token card transitions between steps 2↔3 ===
+Tokens disappear then reappear with a drop-down animation instead of smoothly
+translating position. This means GSAP Flip is NOT matching elements between steps.
+Root cause: likely mismatched data-flip-id values between renderStep2() and renderStep3().
+Need to check what flip IDs are on token elements in each step's render function.
+
+Key architecture context for next session:
+- All 14 steps now use GSAP Flip via showStep() at ~line 15750
+- renderStep1-7 are in the "GSAP Flip render functions (steps 1-7)" section (~line 14720+)
+- renderStep8-10 use flipBuildInputMatrix() helper (~line 15090+)
+- renderStep11-14 use flipBuildGrid() and flipBuildOutputMatrix() helpers
+- flipBuildGrid/flipBuildOutputMatrix helpers are at ~line 15090
+- showStep() captures Flip.getState("[data-flip-id]"), rebuilds viz, calls Flip.from()
+- The onEnter/onLeave handlers do opacity+scale fade — this is what causes the "drop-down" appearance for unmatched elements
+- Commit: f89bdd2 on branch feature/transformers-harness
+- Dev server running on port 4322
+- s810 persistent layer code (buildS810Step8/9/10Volatile) is still in file but dead code
+
+=== Round 4 Features Added — 2026-02-20 ===
+- Added features 24-31 to features.json (visual continuity / smooth transitions)
+- These address 8 step transitions with continuity breaks identified in video analysis
+- Root cause: GSAP Flip animates position/scale of matched elements, but full DOM rebuild
+  means CSS-driven transitions (color, opacity, width) fire instantly in final state
+- Fix strategy: post-Flip GSAP tweens + staggered entrance animations within existing Flip architecture
+- Feature 24: Step 1↔2 — black box fade + token separation color tween
+- Feature 25: Step 2↔3 — tokens persist into columns with staggered entrance
+- Feature 26: Step 3↔4↔5 — embedding transitions (pill width, merge crossfade)
+- Feature 27: Step 5↔6 — column consolidation gap animation
+- Feature 28: Step 6↔7 — green→purple color tween + QKV entrance
+- Feature 29: Step 7↔8 — layout reorganization with input-matrix and wq-matrix flip IDs
+- Feature 30: Step 8↔9↔10 — projection carousel with weight/output matrix tracking
+- Feature 31: Step 10→11 — K^T persistence into QK^T multiplication
+- Next: Implement feature 24 (first feature with passes: false)
+
+=== Feature #24 Complete — 2026-02-20 ===
+- Implemented smooth Step 1↔2 transition — black box fade + token chip background tween
+- Added data-flip-id to black box extras (bb-arrow-down, bb-pipe) in renderStep1() so
+  GSAP Flip's onLeave animates them out with fade+scale instead of instant vanish
+- Added data-flip-id (s2-count) to "8 tokens" label in renderStep2() for proper onEnter
+- Added post-Flip GSAP tweens in showStep() for the 1↔2 boundary:
+  - 1→2: gsap.from() tweens token backgrounds/borders from transparent to colored with stagger
+  - 2→1: gsap.from() tweens token backgrounds/borders from colored to transparent
+  - gsap.killTweensOf() at start of each transition to handle rapid clicking
+- Verified: forward (1→2), backward (2→1), rapid clicking, both dark and light themes
+- Pre-existing build errors (window.__gsap, window.__Flip TS types) — not caused by this change
+- Commit: (pending)
+- Next: Feature #25 — Smooth Step 2↔3 tokens persist into columns
