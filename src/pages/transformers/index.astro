@@ -12510,6 +12510,14 @@ const sections = [
   });
 </script>
 
+<script>
+  import gsap from "gsap";
+  import { Flip } from "gsap/Flip";
+  gsap.registerPlugin(Flip);
+  window.__gsap = gsap;
+  window.__Flip = Flip;
+</script>
+
 <script is:inline>
   // 04e: Head walkthrough — attention head stepped figure (lazy-init)
   document.addEventListener("DOMContentLoaded", function () {
@@ -12545,6 +12553,10 @@ const sections = [
         if (astroAttr) e.setAttribute(astroAttr, "");
         return e;
       }
+
+      // Access GSAP + Flip from bundled script (exposed as window globals)
+      var gsap = window.__gsap;
+      var Flip = window.__Flip;
 
       var TOTAL_STEPS = 14;
       var currentStep = 1;
@@ -14997,6 +15009,379 @@ const sections = [
 
         return layout;
       }
+      // =================================================================
+      // GSAP Flip render functions (steps 1-7)
+      // Pure functions — each returns a complete DOM subtree with
+      // data-flip-id attributes for GSAP Flip cross-step animation.
+      // =================================================================
+
+      function flipBuildSentence(layoutClass) {
+        var layout = el("div", layoutClass);
+        var sentence = el("div", "hw-s12-sentence");
+        var splitGroup = null;
+        s12Words.forEach(function (w, i) {
+          var word = el("span", "hw-s12-word hw-s12-" + w[1], w[0]);
+          word.style.setProperty("--morph-delay", w[2] + "ms");
+          word.dataset.flipId = "tok-" + i;
+          if (w[1] === "sub") {
+            if (!splitGroup) {
+              splitGroup = el("span", "hw-s12-split");
+              sentence.appendChild(splitGroup);
+            }
+            splitGroup.appendChild(word);
+            if (w[0] === "ly") {
+              splitGroup.appendChild(
+                el("span", "hw-s12-bracket", "\u2190 quietly"),
+              );
+              splitGroup = null;
+            }
+          } else {
+            sentence.appendChild(word);
+          }
+        });
+        sentence.appendChild(el("span", "hw-s12-blank", "___"));
+        layout.appendChild(sentence);
+        var extras = el("div", "hw-s12-extras");
+        layout.appendChild(extras);
+        return { layout: layout, extras: extras };
+      }
+
+      function renderStep1() {
+        var r = flipBuildSentence("hw-s12-layout hw-s12-at-1");
+        // Black box pipeline
+        r.extras.appendChild(el("div", "hw-bb-arrow-down", "\u2193"));
+        var pipeRow = el("div", "hw-bb-pipe");
+        var box = el("div", "hw-bb-box");
+        box.appendChild(el("div", "hw-bb-box-label", "Transformer"));
+        box.appendChild(el("div", "hw-bb-box-q", "?"));
+        pipeRow.appendChild(box);
+        pipeRow.appendChild(el("div", "hw-bb-arrow", "\u279C"));
+        var predWrap = el("div", "hw-bb-output");
+        predWrap.appendChild(el("div", "hw-bb-prediction", "mat"));
+        pipeRow.appendChild(predWrap);
+        r.extras.appendChild(pipeRow);
+        return r.layout;
+      }
+
+      function renderStep2() {
+        var r = flipBuildSentence("hw-s12-layout hw-s12-at-2");
+        r.extras.appendChild(el("div", "hw-s12-count", "8 tokens"));
+        return r.layout;
+      }
+
+      // Helper: build the column-based layout used by steps 3-7
+      function flipBuildColumns(layoutClass, opts) {
+        // opts: { showYellow, showGreen, greenVals, cellVals }
+        var layout = el("div", layoutClass);
+        var body = el("div", "hw-s35-body");
+
+        var yaxis = el("div", "hw-embed-yaxis");
+        yaxis.innerHTML = "d<sub>model</sub>";
+        yaxis.dataset.flipId = "yaxis";
+        if (astroAttr)
+          yaxis
+            .querySelectorAll("sub")
+            .forEach(function (s) {
+              s.setAttribute(astroAttr, "");
+            });
+        body.appendChild(yaxis);
+
+        var columns = el("div", "hw-s35-columns");
+        var greenCellRefs = []; // for step 7 value swaps (not needed here but matches structure)
+        s35Tokens.forEach(function (tok, i) {
+          var col = el("div", "hw-s35-col");
+          col.style.setProperty("--i", i);
+
+          var chip = el(
+            "span",
+            "hw-tok-chip hw-tok-" + s35Types[i] + " hw-s35-chip",
+            tok,
+          );
+          chip.dataset.flipId = "tok-" + i;
+          col.appendChild(chip);
+
+          var arrow = el("div", "hw-s35-arrow", "\u2193");
+          arrow.dataset.flipId = "arrow-" + i;
+          col.appendChild(arrow);
+
+          var pair = el("div", "hw-s35-pair");
+
+          // Blue pill
+          var blue = el("div", "hw-s35-blue");
+          blue.dataset.flipId = "col-blue-" + i;
+          blue.appendChild(
+            el("div", "hw-s35-bval", s35SampleVecs[i][0].toFixed(2)),
+          );
+          blue.appendChild(
+            el("div", "hw-s35-bval", s35SampleVecs[i][1].toFixed(2)),
+          );
+          blue.appendChild(el("div", "hw-s35-bdots", "\u22EF"));
+          blue.appendChild(
+            el("div", "hw-s35-bval", s35SampleVecs[i][2].toFixed(2)),
+          );
+          blue.appendChild(
+            el("div", "hw-s35-bval", s35SampleVecs[i][3].toFixed(2)),
+          );
+          pair.appendChild(blue);
+
+          pair.appendChild(el("span", "hw-s35-plus", "+"));
+
+          // Yellow pill
+          var yellow = el("div", "hw-s35-yellow");
+          yellow.dataset.flipId = "col-yellow-" + i;
+          yellow.appendChild(
+            el("div", "hw-s35-yval", s35PosVecs[i][0].toFixed(2)),
+          );
+          yellow.appendChild(
+            el("div", "hw-s35-yval", s35PosVecs[i][1].toFixed(2)),
+          );
+          yellow.appendChild(el("div", "hw-s35-ydots", "\u22EF"));
+          yellow.appendChild(
+            el("div", "hw-s35-yval", s35PosVecs[i][2].toFixed(2)),
+          );
+          yellow.appendChild(
+            el("div", "hw-s35-yval", s35PosVecs[i][3].toFixed(2)),
+          );
+          pair.appendChild(yellow);
+
+          // Green pill
+          var green = el("div", "hw-s35-green");
+          green.dataset.flipId = "col-green-" + i;
+          var cv = opts.cellVals
+            ? opts.cellVals[i]
+            : s35SampleVecs[i].map(function (v, j) {
+                return (v + s35PosVecs[i][j]).toFixed(2);
+              });
+          var gv0 = el("div", "hw-s35-gval", cv[0]);
+          var gv1 = el("div", "hw-s35-gval", cv[1]);
+          var gdots = el("div", "hw-s35-gdots", "\u22EF");
+          var gv2 = el("div", "hw-s35-gval", cv[2]);
+          var gv3 = el("div", "hw-s35-gval", cv[3]);
+          green.appendChild(gv0);
+          green.appendChild(gv1);
+          green.appendChild(gdots);
+          green.appendChild(gv2);
+          green.appendChild(gv3);
+          greenCellRefs.push([gv0, gv1, gv2, gv3]);
+          pair.appendChild(green);
+
+          col.appendChild(pair);
+          columns.appendChild(col);
+        });
+        body.appendChild(columns);
+        layout.appendChild(body);
+
+        var extras = el("div", "hw-s35-extras");
+        layout.appendChild(extras);
+
+        return {
+          layout: layout,
+          extras: extras,
+          body: body,
+          greenCellRefs: greenCellRefs,
+        };
+      }
+
+      function renderStep3() {
+        var r = flipBuildColumns("hw-s35-layout hw-s35-at-3", {});
+        // Sidenote
+        var sn = el("div", "hw-embed-sidenote");
+        var snText = el("span", "hw-embed-sn-text");
+        snText.innerHTML =
+          "<strong>Embedding lookup:</strong> The model learns a unique vector for every token in its vocabulary (often 30k\u2013100k+ entries). At inference time, this is a simple table lookup\u200a\u2014\u200ano computation, just retrieve the row.";
+        if (astroAttr)
+          snText
+            .querySelectorAll("strong")
+            .forEach(function (s) {
+              s.setAttribute(astroAttr, "");
+            });
+        sn.appendChild(snText);
+        r.extras.appendChild(sn);
+        return r.layout;
+      }
+
+      function renderStep4() {
+        var r = flipBuildColumns("hw-s35-layout hw-s35-at-4", {});
+        // Legend
+        var legend = el("div", "hw-pos4-legend");
+        var tL = el("span", "");
+        tL.appendChild(
+          el("span", "hw-pos-legend-swatch hw-pos-legend-swatch-tok"),
+        );
+        tL.appendChild(document.createTextNode(" Token embedding"));
+        legend.appendChild(tL);
+        var pL = el("span", "");
+        pL.appendChild(
+          el("span", "hw-pos-legend-swatch hw-pos-legend-swatch-pos"),
+        );
+        pL.appendChild(document.createTextNode(" Positional embedding"));
+        legend.appendChild(pL);
+        r.extras.appendChild(legend);
+        return r.layout;
+      }
+
+      function renderStep5() {
+        // Render in post-merge state (green visible).
+        // The merge animation (blue/yellow collapse → green expand) is
+        // handled by runStepEffects() as a GSAP timeline.
+        var r = flipBuildColumns("hw-s35-layout hw-s35-at-5 hw-s35-merged", {});
+        // Equation
+        var eqRow = el("div", "hw-combine-equation");
+        eqRow.appendChild(el("span", "hw-combine-eq-blue", "token emb"));
+        eqRow.appendChild(el("span", "", " + "));
+        eqRow.appendChild(el("span", "hw-combine-eq-yellow", "pos emb"));
+        eqRow.appendChild(el("span", "", " = "));
+        eqRow.appendChild(el("span", "hw-combine-eq-green", "combined"));
+        r.extras.appendChild(eqRow);
+        // Sidenote
+        var sn = el("div", "hw-combine-sidenote");
+        var snText = el("span", "hw-combine-sn-text");
+        snText.innerHTML =
+          "<strong>Combining embeddings:</strong> Addition is the standard approach\u200a\u2014\u200aconceptually, each dimension in the combined vector encodes both identity and position simultaneously. Alternative methods (concatenation, learned gating) exist, but simple addition provides maximal flexibility for the model to learn its own weighting through training.";
+        if (astroAttr)
+          snText
+            .querySelectorAll("strong")
+            .forEach(function (s) {
+              s.setAttribute(astroAttr, "");
+            });
+        sn.appendChild(snText);
+        r.extras.appendChild(sn);
+        return r.layout;
+      }
+
+      function renderStep6() {
+        var r = flipBuildColumns(
+          "hw-s35-layout hw-s35-merged hw-s35-at-6",
+          {},
+        );
+        // Dimension label
+        var dimLabel = el("div", "hw-norm-dim-label");
+        dimLabel.appendChild(el("span", "hw-norm-dim-t", "8"));
+        dimLabel.appendChild(document.createTextNode(" tokens \u00d7 "));
+        var dimD = el("span", "hw-norm-dim-d");
+        dimD.innerHTML = "d<sub>model</sub>";
+        if (astroAttr) dimD.querySelector("sub").setAttribute(astroAttr, "");
+        dimLabel.appendChild(dimD);
+        dimLabel.appendChild(document.createTextNode(" dimensions"));
+        r.extras.appendChild(dimLabel);
+        // Matrix name label (rendered immediately — no delay needed)
+        var matName = el("div", "hw-s36-mat-name");
+        matName.innerHTML =
+          "This is <strong>X</strong> \u2014 the input matrix to the attention mechanism";
+        if (astroAttr)
+          matName
+            .querySelectorAll("strong")
+            .forEach(function (s) {
+              s.setAttribute(astroAttr, "");
+            });
+        r.extras.appendChild(matName);
+        return r.layout;
+      }
+
+      function renderStep7() {
+        // Normalized values (row-major → per-token columns)
+        var normCellVals = s35Tokens.map(function (_, ti) {
+          return [
+            s35NormVals[0][ti],
+            s35NormVals[1][ti],
+            s35NormVals[2][ti],
+            s35NormVals[3][ti],
+          ];
+        });
+        var r = flipBuildColumns(
+          "hw-s35-layout hw-s35-merged hw-s35-at-6 hw-s35-at-7",
+          { cellVals: normCellVals },
+        );
+        // Dimension label
+        var dimLabel = el("div", "hw-norm-dim-label");
+        dimLabel.appendChild(el("span", "hw-norm-dim-t", "8"));
+        dimLabel.appendChild(document.createTextNode(" tokens \u00d7 "));
+        var dimD = el("span", "hw-norm-dim-d");
+        dimD.innerHTML = "d<sub>model</sub>";
+        if (astroAttr) dimD.querySelector("sub").setAttribute(astroAttr, "");
+        dimLabel.appendChild(dimD);
+        dimLabel.appendChild(document.createTextNode(" dimensions"));
+        r.extras.appendChild(dimLabel);
+        // Arrow
+        r.extras.appendChild(el("div", "hw-norm-arrow", "\u2193"));
+        // QKV weight matrices (rendered immediately visible)
+        var qW = [
+          [" 0.21", " 0.45", "-0.13"],
+          ["-0.38", " 0.17", " 0.62"],
+          [" 0.55", "-0.29", " 0.08"],
+          ["-0.14", " 0.71", "-0.46"],
+        ];
+        var kW = [
+          [" 0.33", "-0.58", " 0.19"],
+          [" 0.67", " 0.12", "-0.41"],
+          ["-0.22", " 0.48", " 0.35"],
+          [" 0.44", "-0.16", " 0.73"],
+        ];
+        var vW = [
+          ["-0.27", " 0.51", " 0.38"],
+          [" 0.63", "-0.34", " 0.15"],
+          [" 0.11", " 0.42", "-0.56"],
+          ["-0.48", " 0.26", " 0.69"],
+        ];
+        var weightDefs = [
+          { label: "W<sub>Q</sub>", cls: "q", vals: qW },
+          { label: "W<sub>K</sub>", cls: "k", vals: kW },
+          { label: "W<sub>V</sub>", cls: "v", vals: vW },
+        ];
+        var qkvRow = el("div", "hw-norm-qkv-row visible");
+        weightDefs.forEach(function (w) {
+          var wmat = el("div", "hw-wmat");
+          var wlbl = el("div", "hw-wmat-label hw-wmat-label-" + w.cls);
+          wlbl.innerHTML = w.label;
+          if (astroAttr)
+            wlbl
+              .querySelectorAll("sub")
+              .forEach(function (s) {
+                s.setAttribute(astroAttr, "");
+              });
+          wmat.appendChild(wlbl);
+          var wcols = el("div", "hw-wmat-cols hw-wmat-cols-" + w.cls);
+          for (var ci = 0; ci < 3; ci++) {
+            var wcol = el("div", "hw-wmat-col");
+            wcol.appendChild(
+              el("div", "hw-wmat-cell hw-wmat-cell-" + w.cls, w.vals[0][ci]),
+            );
+            wcol.appendChild(
+              el("div", "hw-wmat-cell hw-wmat-cell-" + w.cls, w.vals[1][ci]),
+            );
+            wcol.appendChild(
+              el(
+                "div",
+                "hw-wmat-cell hw-wmat-dots hw-wmat-dots-" + w.cls,
+                "\u22EF",
+              ),
+            );
+            wcol.appendChild(
+              el("div", "hw-wmat-cell hw-wmat-cell-" + w.cls, w.vals[2][ci]),
+            );
+            wcol.appendChild(
+              el("div", "hw-wmat-cell hw-wmat-cell-" + w.cls, w.vals[3][ci]),
+            );
+            wcols.appendChild(wcol);
+          }
+          wmat.appendChild(wcols);
+          var wdim = el("div", "hw-wmat-dim");
+          var dM = el("span", "hw-norm-dim-d");
+          dM.innerHTML = "d<sub>model</sub>";
+          if (astroAttr) dM.querySelector("sub").setAttribute(astroAttr, "");
+          wdim.appendChild(dM);
+          wdim.appendChild(document.createTextNode(" \u00d7 "));
+          var dH = el("span", "hw-norm-dim-dh");
+          dH.innerHTML = "d<sub>head</sub>";
+          if (astroAttr) dH.querySelector("sub").setAttribute(astroAttr, "");
+          wdim.appendChild(dH);
+          wmat.appendChild(wdim);
+          qkvRow.appendChild(wmat);
+        });
+        r.extras.appendChild(qkvRow);
+        return r.layout;
+      }
+
       function showStep(step) {
         // Cancel stale s810 animation callbacks when leaving steps 8-10
         s810BuildId++;
