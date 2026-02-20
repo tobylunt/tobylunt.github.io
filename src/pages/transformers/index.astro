@@ -12514,8 +12514,8 @@ const sections = [
   import gsap from "gsap";
   import { Flip } from "gsap/Flip";
   gsap.registerPlugin(Flip);
-  window.__gsap = gsap;
-  window.__Flip = Flip;
+  (window as any).__gsap = gsap;
+  (window as any).__Flip = Flip;
 </script>
 
 <script is:inline>
