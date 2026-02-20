@@ -15506,14 +15506,11 @@ const sections = [
         viz.appendChild(stepLayout);
 
         if (flipState && fromStep >= 1) {
-          // Animate matched elements between old and new state
           Flip.from(flipState, {
             targets: "[data-flip-id]",
             duration: 0.5,
             ease: "power2.inOut",
             scale: true,
-            absolute: true,
-            nested: true,
             onEnter: function (els) {
               gsap.fromTo(
                 els,
