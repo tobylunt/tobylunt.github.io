@@ -351,7 +351,7 @@
   {
     "id": 25,
     "name": "Smooth Step 2↔3 — tokens persist into columns",
-    "passes": false,
+    "passes": true,
     "steps": [
       "tok-0..7 matches across flipBuildSentence() → flipBuildColumns(), but tokens go from inline sentence spans to block column-header chips with very different geometry — ensure Flip animates this position/size change smoothly (may need duration 0.6-0.8s for this boundary)",
       "Embedding columns (blue pills), down arrows, and y-axis label appear all at once via onEnter — add stagger by token index (stagger: 0.04) so columns cascade left-to-right instead of popping in simultaneously",

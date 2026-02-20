@@ -728,5 +728,22 @@ Key architecture context for next session:
   - gsap.killTweensOf() at start of each transition to handle rapid clicking
 - Verified: forward (1→2), backward (2→1), rapid clicking, both dark and light themes
 - Pre-existing build errors (window.__gsap, window.__Flip TS types) — not caused by this change
-- Commit: (pending)
+- Commit: 02f8e84
 - Next: Feature #25 — Smooth Step 2↔3 tokens persist into columns
+
+=== Feature #25 Complete — 2026-02-20 ===
+- Implemented smooth Step 2↔3 transition — staggered column entrance animation
+- Added post-Flip override in showStep() for 2→3 boundary:
+  - Kills default onEnter tweens on arrows, blue pills, yaxis
+  - Arrows: staggered fade-in (0.25s, stagger 0.03)
+  - Blue pills: scaleY grow from 0 with transformOrigin 'top center' (0.4s, stagger 0.04, delayed 0.2s after arrows)
+  - Y-axis label: fade-in delayed 0.25s
+  - Sidenote: set to opacity:0 then fade-in after columns complete (delay 0.55s)
+- Also clears GSAP inline styles on CSS-hidden yellow/green/plus elements to prevent
+  onEnter from interfering with their CSS-driven visibility in later steps
+- For 3→2 backward: default Flip onLeave handles adequately, just clear hidden element styles
+- Verified: 2→3 forward, 3→2 backward, 4→3 backward (no custom animation), rapid clicking,
+  steps 4 and 5 unaffected, both dark and light themes
+- Build: 0 errors
+- Commit: (pending)
+- Next: Feature #26 — Smooth Step 3↔4↔5 embedding transitions

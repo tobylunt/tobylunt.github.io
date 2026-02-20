@@ -15529,6 +15529,55 @@ const sections = [
           });
         }
 
+        // === Post-Flip visual tweens for step 2↔3 boundary ===
+        if (fromStep === 2 && step === 3) {
+          var s23arrows = viz.querySelectorAll(".hw-s35-arrow");
+          var s23blues = viz.querySelectorAll(".hw-s35-blue");
+          var s23yaxis = viz.querySelector(".hw-embed-yaxis");
+          var s23sidenote = viz.querySelector(".hw-embed-sidenote");
+          // Kill default onEnter tweens and clear inline styles on hidden elements
+          s23arrows.forEach(function (a) { gsap.killTweensOf(a); });
+          s23blues.forEach(function (b) { gsap.killTweensOf(b); });
+          if (s23yaxis) gsap.killTweensOf(s23yaxis);
+          // Clear GSAP inline styles on yellow/green/plus (CSS-hidden in step 3)
+          viz.querySelectorAll(".hw-s35-yellow, .hw-s35-green, .hw-s35-plus").forEach(function (h) {
+            gsap.killTweensOf(h);
+            gsap.set(h, { clearProps: "all" });
+          });
+          // Arrows: staggered fade-in
+          gsap.fromTo(
+            s23arrows,
+            { opacity: 0 },
+            { opacity: 1, duration: 0.25, stagger: 0.03, ease: "power2.out" },
+          );
+          // Blue pills: scaleY grow from 0 under each token, delayed after arrows
+          gsap.fromTo(
+            s23blues,
+            { opacity: 0, scaleY: 0, transformOrigin: "top center" },
+            {
+              opacity: 1, scaleY: 1, duration: 0.4, delay: 0.2,
+              stagger: 0.04, ease: "power2.out",
+              clearProps: "transform,transformOrigin",
+            },
+          );
+          // Y-axis label: fade in with pills
+          if (s23yaxis) {
+            gsap.fromTo(s23yaxis, { opacity: 0 }, { opacity: 1, duration: 0.3, delay: 0.25 });
+          }
+          // Sidenote: fade in after columns complete
+          if (s23sidenote) {
+            gsap.set(s23sidenote, { opacity: 0 });
+            gsap.to(s23sidenote, { opacity: 1, duration: 0.3, delay: 0.55 });
+          }
+        }
+        if (fromStep === 3 && step === 2) {
+          // Clear GSAP inline styles on step-3 elements that might linger
+          viz.querySelectorAll(".hw-s35-yellow, .hw-s35-green, .hw-s35-plus").forEach(function (h) {
+            gsap.killTweensOf(h);
+            gsap.set(h, { clearProps: "all" });
+          });
+        }
+
         // === Post-Flip visual tweens for step 1↔2 boundary ===
         if (
           (fromStep === 1 && step === 2) ||
