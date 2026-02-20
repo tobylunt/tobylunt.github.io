@@ -777,3 +777,21 @@ Key architecture context for next session:
 - Build: 0 errors
 - Commit: 050fb9f
 - Next: Feature #28 — Smooth Step 6↔7 green→purple color tween + QKV entrance
+
+=== Feature #28 Complete — 2026-02-20 ===
+- Implemented smooth Step 6↔7 transitions — green→purple color tween + QKV entrance
+- Added post-Flip GSAP tweens in showStep() for:
+  - 6→7: Columns border tweens green→purple (0.5s). Green pill containers tween
+    borderColor/backgroundColor from green to purple. Cell values (.hw-s35-gval) tween
+    color/background/borderColor from green to purple. Dots (.hw-s35-gdots) tween similarly.
+    Arrow fades in with slide-up (delay 0.35s). QKV weight matrices enter with staggered
+    slide-up per card (W_Q first, W_K, W_V — stagger 0.1s, delay 0.45s).
+  - 7→6: Reverse color tween purple→green on all elements. Dimension label fades in
+    (delay 0.3s). "This is X" text slides up (delay 0.45s). No QKV (not in step 6 DOM).
+- Cell value text changes (combined→normalized) happen instantly on DOM rebuild; the color
+  tween masks this transition so it's not jarring
+- Verified: 6→7 forward, 7→6 backward, rapid clicking 6↔7→8, step 8 unaffected,
+  both dark and light themes
+- Build: 0 errors
+- Commit: 88e0b3f
+- Next: Feature #29 — Smooth Step 7↔8 layout reorganization

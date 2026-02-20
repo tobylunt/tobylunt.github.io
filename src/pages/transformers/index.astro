@@ -15787,6 +15787,135 @@ const sections = [
           }
         }
 
+        // === Post-Flip visual tweens for step 6↔7 boundary ===
+        if (fromStep === 6 && step === 7) {
+          // 6→7: green→purple color tween on columns + cell value swap + QKV entrance
+          var s67cols = viz.querySelector(".hw-s35-columns");
+          var s67greens = viz.querySelectorAll(".hw-s35-green");
+          var s67gvals = viz.querySelectorAll(".hw-s35-gval");
+          var s67gdots = viz.querySelectorAll(".hw-s35-gdots");
+          var s67arrow = viz.querySelector(".hw-norm-arrow");
+          var s67qkvRow = viz.querySelector(".hw-norm-qkv-row");
+          var s67wmats = s67qkvRow ? s67qkvRow.querySelectorAll(".hw-wmat") : [];
+          // Columns border: green → purple
+          if (s67cols) {
+            gsap.killTweensOf(s67cols);
+            gsap.from(s67cols, {
+              borderColor: "hsla(152, 50%, 48%, 0.2)",
+              duration: 0.5,
+              ease: "power2.inOut",
+            });
+          }
+          // Green pills: green → purple background/border
+          s67greens.forEach(function (g) {
+            gsap.killTweensOf(g);
+            gsap.from(g, {
+              borderColor: "hsla(152, 50%, 48%, 0.3)",
+              backgroundColor: "hsla(152, 50%, 48%, 0.08)",
+              duration: 0.5,
+              ease: "power2.inOut",
+            });
+          });
+          // Cell values: green → purple color/background/border
+          s67gvals.forEach(function (v) {
+            gsap.killTweensOf(v);
+            gsap.from(v, {
+              color: "hsla(152, 50%, 48%, 0.7)",
+              backgroundColor: "transparent",
+              borderColor: "hsla(152, 50%, 48%, 0.12)",
+              duration: 0.5,
+              ease: "power2.inOut",
+            });
+          });
+          // Dots: green → purple
+          s67gdots.forEach(function (d) {
+            gsap.killTweensOf(d);
+            gsap.from(d, {
+              color: "hsla(152, 50%, 48%, 0.4)",
+              backgroundColor: "hsla(152, 50%, 48%, 0.03)",
+              borderColor: "hsla(152, 50%, 48%, 0.15)",
+              duration: 0.5,
+              ease: "power2.inOut",
+            });
+          });
+          // Arrow: fade-in
+          if (s67arrow) {
+            gsap.set(s67arrow, { opacity: 0, y: 10 });
+            gsap.to(s67arrow, { opacity: 1, y: 0, duration: 0.3, delay: 0.35, ease: "power2.out" });
+          }
+          // QKV weight matrices: staggered slide-up + fade-in per card
+          if (s67qkvRow) {
+            gsap.set(s67qkvRow, { opacity: 1 }); // ensure row visible
+            s67wmats.forEach(function (wm, i) {
+              gsap.set(wm, { opacity: 0, y: 30 });
+              gsap.to(wm, {
+                opacity: 1, y: 0,
+                duration: 0.4, delay: 0.45 + i * 0.1,
+                ease: "power2.out",
+              });
+            });
+          }
+        }
+        if (fromStep === 7 && step === 6) {
+          // 7→6: purple→green color tween + cell value restore (already in new DOM) + no QKV
+          var s76cols = viz.querySelector(".hw-s35-columns");
+          var s76greens = viz.querySelectorAll(".hw-s35-green");
+          var s76gvals = viz.querySelectorAll(".hw-s35-gval");
+          var s76gdots = viz.querySelectorAll(".hw-s35-gdots");
+          var s76dimLabel = viz.querySelector(".hw-norm-dim-label");
+          var s76matName = viz.querySelector(".hw-s36-mat-name");
+          // Columns border: purple → green
+          if (s76cols) {
+            gsap.killTweensOf(s76cols);
+            gsap.from(s76cols, {
+              borderColor: "hsla(270, 45%, 55%, 0.2)",
+              duration: 0.5,
+              ease: "power2.inOut",
+            });
+          }
+          // Green pills: purple → green background/border
+          s76greens.forEach(function (g) {
+            gsap.killTweensOf(g);
+            gsap.from(g, {
+              borderColor: "hsla(270, 45%, 55%, 0.2)",
+              backgroundColor: "hsla(270, 45%, 55%, 0.06)",
+              duration: 0.5,
+              ease: "power2.inOut",
+            });
+          });
+          // Cell values: purple → green color/background/border
+          s76gvals.forEach(function (v) {
+            gsap.killTweensOf(v);
+            gsap.from(v, {
+              color: "hsla(270, 45%, 55%, 0.85)",
+              backgroundColor: "hsla(270, 45%, 55%, 0.08)",
+              borderColor: "hsla(270, 45%, 55%, 0.1)",
+              duration: 0.5,
+              ease: "power2.inOut",
+            });
+          });
+          // Dots: purple → green
+          s76gdots.forEach(function (d) {
+            gsap.killTweensOf(d);
+            gsap.from(d, {
+              color: "hsla(270, 45%, 55%, 0.4)",
+              backgroundColor: "hsla(270, 45%, 55%, 0.04)",
+              borderColor: "hsla(270, 45%, 55%, 0.08)",
+              duration: 0.5,
+              ease: "power2.inOut",
+            });
+          });
+          // Dim label + matrix name: delayed fade-in
+          if (s76dimLabel) {
+            gsap.set(s76dimLabel, { opacity: 0 });
+            gsap.to(s76dimLabel, { opacity: 1, duration: 0.3, delay: 0.3 });
+          }
+          if (s76matName) {
+            gsap.set(s76matName, { opacity: 0, y: 10 });
+            gsap.to(s76matName, { opacity: 1, y: 0, duration: 0.35, delay: 0.45, ease: "power2.out" });
+          }
+        }
+
         // === Post-Flip visual tweens for step 1↔2 boundary ===
         if (
           (fromStep === 1 && step === 2) ||

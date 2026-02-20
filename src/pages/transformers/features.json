@@ -393,7 +393,7 @@
   {
     "id": 28,
     "name": "Smooth Step 6\u21947 \u2014 green\u2192purple color tween + QKV entrance",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Both steps use flipBuildColumns() \u2014 step 7 passes cellVals: normCellVals and adds hw-s35-at-7 class. The green\u2192purple color change and QKV weight matrix appearance are both instant on DOM rebuild",
       "After Flip match, GSAP-tween cell text color from green values (#4ade80 or var(--green)) to purple values (#a78bfa or var(--purple)) over 500ms using gsap.to() on all .hw-s35-cell elements",
