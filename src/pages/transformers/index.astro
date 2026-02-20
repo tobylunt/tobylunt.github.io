@@ -12668,34 +12668,18 @@ const sections = [
       // Volatile content will be appended to s810Main / s810Layout by step builders
       s810Layout.appendChild(s810Main);
 
-      // === Persistent K^T element for steps 10→11 object continuity ===
-      // K^T values are identical in both step 10 and step 11 (same data, different layout)
+      // K^T values shared between steps 10 and 11
       var kValues1011 = [
         [".33", "-.61", ".82", ".14", "-.47", ".58", "-.22", ".33"],
         ["-.52", ".39", "-.71", ".55", ".28", "-.63", ".44", "-.52"],
         [".18", "-.44", ".36", "-.29", ".65", ".11", "-.53", ".18"],
       ];
-      var s1011KtWrap = el("div", ""); // outer wrapper, inner content rebuilt per step
-      var s1011KtDimCancel = null; // reference to cancelable dim span (step 11 only)
-      var s1011KtInstant = false; // true when backward-transitioning from step 11 to 10
 
-      // === Persistent scores grid for steps 11↔12 object continuity ===
-      // The 8×8 T×T attention scores matrix in step 11's result section zooms into
-      // step 12's interactive heatmap via FLIP animation.
-      var s1112GridEl = null; // persistent CSS grid (9 cols: label + 8 data)
+      // Module-level refs updated by flipBuildGrid() for hover handler compatibility
       var s1112Cells = []; // [row][col] → cell elements (64 total)
       var s1112RowLabelEls = []; // 8 query-token row label elements
       var s1112ColLabelEls = []; // 8 key-token col label elements
-      var s1112TooltipEl = null; // tooltip element (rebuilt each time step 12 is shown)
-      var s1112Instant = false; // true when entering step 11 backward from step 12 (skip fill anim)
-
-      // === Persistent green output matrix: steps 13→14 object continuity ===
-      // The green T×d_head output from step 13 (Attn×V = Output) persists into step 14
-      // as the Attn(x) operand in the residual addition, FLIPping from its step-13 position
-      // to its step-14 position so the user perceives it as the same object in a new context.
-      var s1314OutWrap = null;    // outer mat-wrap element (persists across steps 13 and 14)
-      var s1314OutLabelEl = null; // label element (text: "Output" in s13, "Attn(x)" in s14)
-      var s1314OutTimeout = null; // handle for step-13 slide-in animation (clearable on nav)
+      var s1112TooltipEl = null; // tooltip element (set by renderStep12)
 
       // Score values (step 11 — raw QK^T output)
       var s1112ScoreValues = [
@@ -12720,111 +12704,6 @@ const sections = [
         [0.11, 0.09, 0.09, 0.1, 0.09, 0.09, 0.3, 0.12],
         [0.2, 0.08, 0.09, 0.08, 0.07, 0.08, 0.11, 0.28],
       ];
-
-      function buildS1112Grid() {
-        if (s1112GridEl) return; // already built — reuse
-        var tokens = ["The", "fat", "cat", "sat", "quiet", "ly", "on", "the"];
-        var T = tokens.length;
-
-        s1112GridEl = el("div", "hw-s1112-grid hw-s1112-at-11");
-        s1112Cells = [];
-        s1112RowLabelEls = [];
-        s1112ColLabelEls = [];
-
-        // Row 0: corner + column labels (key tokens)
-        s1112GridEl.appendChild(el("div", "hw-s1112-corner"));
-        for (var ci = 0; ci < T; ci++) {
-          var colLabel = el("div", "hw-s1112-col-label", tokens[ci]);
-          colLabel.dataset.tokIdx = String(ci);
-          s1112GridEl.appendChild(colLabel);
-          s1112ColLabelEls.push(colLabel);
-        }
-
-        // Data rows: row label (query token) + 8 cells
-        for (var ri = 0; ri < T; ri++) {
-          var rowLabel = el("div", "hw-s1112-row-label", tokens[ri]);
-          rowLabel.dataset.row = String(ri);
-          s1112GridEl.appendChild(rowLabel);
-          s1112RowLabelEls.push(rowLabel);
-
-          var rowCells = [];
-          for (ci = 0; ci < T; ci++) {
-            var cell = el("div", "hw-s1112-cell", s1112ScoreValues[ri][ci]);
-            cell.dataset.row = String(ri);
-            cell.dataset.col = String(ci);
-            if (ri === ci) cell.classList.add("hw-s1112-diag");
-            s1112GridEl.appendChild(cell);
-            rowCells.push(cell);
-          }
-          s1112Cells.push(rowCells);
-        }
-
-        // Attach hover handlers (pointer-events: none in mode-11 prevents them firing)
-        s1112Cells.forEach(function (rowCells, ri) {
-          rowCells.forEach(function (cell) {
-            cell.addEventListener("mouseenter", function () {
-              s1112HighlightRow(ri);
-            });
-            cell.addEventListener("mouseleave", s1112ClearHighlight);
-          });
-        });
-
-        applyS1112Mode11Styles();
-      }
-
-      function applyS1112Mode11Styles() {
-        // Purple score-mode cell styling
-        for (var ri = 0; ri < 8; ri++) {
-          for (var ci = 0; ci < 8; ci++) {
-            var cell = s1112Cells[ri][ci];
-            cell.textContent = s1112ScoreValues[ri][ci];
-            if (ri === ci) {
-              cell.style.background = "hsl(280 55% 55% / 0.14)";
-              cell.style.color = "hsl(280 55% 55% / 0.9)";
-              cell.style.fontWeight = "600";
-            } else {
-              cell.style.background = "hsl(280 55% 55% / 0.06)";
-              cell.style.color = "hsl(280 55% 55% / 0.75)";
-              cell.style.fontWeight = "";
-            }
-          }
-        }
-        // Reset label highlights
-        s1112RowLabelEls.forEach(function (l) {
-          l.classList.remove("highlight", "dimmed");
-        });
-        s1112ColLabelEls.forEach(function (l) {
-          l.classList.remove("highlight", "dimmed");
-        });
-      }
-
-      function applyS1112Mode12Styles() {
-        // Amber heatmap-mode cell styling
-        for (var ri = 0; ri < 8; ri++) {
-          for (var ci = 0; ci < 8; ci++) {
-            var cell = s1112Cells[ri][ci];
-            var weight = s1112AttnWeights[ri][ci];
-            cell.textContent = weight.toFixed(2);
-            var alpha = 0.06 + weight * 2.5;
-            if (alpha > 1) alpha = 1;
-            cell.style.background = "hsl(35 90% 55% / " + alpha.toFixed(2) + ")";
-            if (weight > 0.2) {
-              cell.style.color = "hsl(35 20% 15%)";
-              cell.style.fontWeight = "600";
-            } else {
-              cell.style.color = "hsl(var(--theme-text) / 0.65)";
-              cell.style.fontWeight = "";
-            }
-          }
-        }
-        // Reset label highlights
-        s1112RowLabelEls.forEach(function (l) {
-          l.classList.remove("highlight", "dimmed");
-        });
-        s1112ColLabelEls.forEach(function (l) {
-          l.classList.remove("highlight", "dimmed");
-        });
-      }
 
       function s1112HighlightRow(row) {
         var tokens = ["The", "fat", "cat", "sat", "quiet", "ly", "on", "the"];
@@ -13774,102 +13653,10 @@ const sections = [
         }, eqDelay + 600);
       }
 
-      // Build K^T inner content for step 10 (3 d_head column pills, token row labels on left)
-      function buildKtInnerStep10() {
-        var tokens = s810Tokens;
-        s1011KtWrap.innerHTML = "";
-        s1011KtWrap.style.transition = "";
-        s1011KtWrap.style.transform = "";
-        s1011KtWrap.className = "hw-k10-kt-wrap";
-        if (astroAttr) s1011KtWrap.setAttribute(astroAttr, "");
-
-        var ktLabel = el("div", "hw-k10-kt-label");
-        ktLabel.innerHTML = "K<sup>T</sup>";
-        if (astroAttr) ktLabel.querySelector("sup").setAttribute(astroAttr, "");
-        s1011KtWrap.appendChild(ktLabel);
-
-        var ktBody = el("div", "hw-k10-kt-body");
-
-        var ktRowLabels = el("div", "hw-k10-kt-row-labels");
-        ktRowLabels.appendChild(el("div", "hw-k10-kt-row-label", tokens[0]));
-        ktRowLabels.appendChild(el("div", "hw-k10-kt-row-label", tokens[1]));
-        ktRowLabels.appendChild(el("div", "hw-k10-kt-row-label dots-label", "\u22EE"));
-        ktRowLabels.appendChild(el("div", "hw-k10-kt-row-label", tokens[tokens.length - 2]));
-        ktRowLabels.appendChild(el("div", "hw-k10-kt-row-label", tokens[tokens.length - 1]));
-        ktBody.appendChild(ktRowLabels);
-
-        var ktCols = el("div", "hw-k10-kt-cols");
-        for (var d = 0; d < 3; d++) {
-          var ktCol = el("div", "hw-k10-kt-col");
-          ktCol.appendChild(el("div", "hw-k10-kt-cell", kValues1011[d][0]));
-          ktCol.appendChild(el("div", "hw-k10-kt-cell", kValues1011[d][1]));
-          ktCol.appendChild(el("div", "hw-k10-kt-dots-cell", "\u22EF"));
-          ktCol.appendChild(el("div", "hw-k10-kt-cell", kValues1011[d][6]));
-          ktCol.appendChild(el("div", "hw-k10-kt-cell", kValues1011[d][7]));
-          ktCols.appendChild(ktCol);
-        }
-        ktBody.appendChild(ktCols);
-        s1011KtWrap.appendChild(ktBody);
-
-        var ktDim = el("div", "hw-k10-kt-dim");
-        ktDim.innerHTML = "d<sub>head</sub> \u00d7 T";
-        if (astroAttr)
-          ktDim.querySelectorAll("sub").forEach(function (s) {
-            s.setAttribute(astroAttr, "");
-          });
-        s1011KtWrap.appendChild(ktDim);
-      }
-
-      // Build K^T inner content for step 11 (8 token column pills, d_head rows per column)
-      function buildKtInnerStep11() {
-        var tokens = s810Tokens;
-        s1011KtWrap.innerHTML = "";
-        s1011KtWrap.style.transition = "";
-        s1011KtWrap.style.transform = "";
-        s1011KtDimCancel = null;
-        s1011KtWrap.className = "hw-qkt-kt-wrap";
-        if (astroAttr) s1011KtWrap.setAttribute(astroAttr, "");
-
-        var ktLabel = el("div", "hw-qkt-kt-label");
-        ktLabel.innerHTML = "K<sup>T</sup>";
-        if (astroAttr) ktLabel.querySelector("sup").setAttribute(astroAttr, "");
-        s1011KtWrap.appendChild(ktLabel);
-
-        var ktTokenLabels = el("div", "hw-qkt-kt-token-labels");
-        tokens.forEach(function (tok) {
-          ktTokenLabels.appendChild(el("div", "hw-qkt-kt-token-label", tok));
-        });
-        s1011KtWrap.appendChild(ktTokenLabels);
-
-        var ktCols = el("div", "hw-qkt-kt-cols");
-        tokens.forEach(function (tok, t) {
-          var ktCol = el("div", "hw-qkt-kt-col");
-          for (var dd = 0; dd < 3; dd++) {
-            ktCol.appendChild(el("div", "hw-qkt-kt-cell", kValues1011[dd][t]));
-          }
-          ktCols.appendChild(ktCol);
-        });
-        s1011KtWrap.appendChild(ktCols);
-
-        var ktDim = el("div", "hw-qkt-kt-dim");
-        var ktDimD = el("span", "hw-qkt-dim-cancel");
-        ktDimD.innerHTML = "d<sub>head</sub>";
-        if (astroAttr) ktDimD.querySelector("sub").setAttribute(astroAttr, "");
-        var ktDimX = document.createTextNode(" \u00d7 ");
-        var ktDimT = el("span", "");
-        ktDimT.textContent = "T";
-        ktDimT.style.color = "hsl(30 80% 50%)";
-        ktDim.appendChild(ktDimD);
-        ktDim.appendChild(ktDimX);
-        ktDim.appendChild(ktDimT);
-        s1011KtWrap.appendChild(ktDim);
-
-        s1011KtDimCancel = ktDimD;
-      }
-
-      function renderStep11() {
+      function renderStep11(fromStep) {
         var layout = el("div", "hw-qkt-layout");
         var tokens = ["The", "fat", "cat", "sat", "quiet", "ly", "on", "the"];
+        var isBackward = fromStep >= 12;
         var T = tokens.length; // 8
 
         // Q values (d_head=3 dimensions, T=8 tokens)
@@ -13955,9 +13742,45 @@ const sections = [
         // --- Multiply sign ---
         multRow.appendChild(el("div", "hw-qkt-times", "\u00b7"));
 
-        // --- K^T matrix (persistent element — shared with step 10, rebuilt for step 11 layout) ---
-        buildKtInnerStep11();
-        multRow.appendChild(s1011KtWrap);
+        // --- K^T matrix (fresh build with data-flip-id for GSAP matching with step 10) ---
+        var ktWrap = el("div", "hw-qkt-kt-wrap");
+        ktWrap.setAttribute("data-flip-id", "kt-wrap");
+
+        var ktLabel = el("div", "hw-qkt-kt-label");
+        ktLabel.innerHTML = "K<sup>T</sup>";
+        if (astroAttr) ktLabel.querySelector("sup").setAttribute(astroAttr, "");
+        ktWrap.appendChild(ktLabel);
+
+        var ktTokenLabels = el("div", "hw-qkt-kt-token-labels");
+        tokens.forEach(function (tok) {
+          ktTokenLabels.appendChild(el("div", "hw-qkt-kt-token-label", tok));
+        });
+        ktWrap.appendChild(ktTokenLabels);
+
+        var ktCols = el("div", "hw-qkt-kt-cols");
+        tokens.forEach(function (tok, t) {
+          var ktCol = el("div", "hw-qkt-kt-col");
+          for (var dd = 0; dd < 3; dd++) {
+            ktCol.appendChild(el("div", "hw-qkt-kt-cell", kValues1011[dd][t]));
+          }
+          ktCols.appendChild(ktCol);
+        });
+        ktWrap.appendChild(ktCols);
+
+        var ktDim = el("div", "hw-qkt-kt-dim");
+        var ktDimD = el("span", "hw-qkt-dim-cancel");
+        ktDimD.innerHTML = "d<sub>head</sub>";
+        if (astroAttr) ktDimD.querySelector("sub").setAttribute(astroAttr, "");
+        var ktDimX = document.createTextNode(" \u00d7 ");
+        var ktDimT = el("span", "");
+        ktDimT.textContent = "T";
+        ktDimT.style.color = "hsl(30 80% 50%)";
+        ktDim.appendChild(ktDimD);
+        ktDim.appendChild(ktDimX);
+        ktDim.appendChild(ktDimT);
+        ktWrap.appendChild(ktDim);
+
+        multRow.appendChild(ktWrap);
 
         layout.appendChild(multRow);
 
@@ -13979,16 +13802,11 @@ const sections = [
         resultInner.style.alignItems = "flex-start";
         resultInner.appendChild(el("div", "hw-qkt-axis-label-q", "queries"));
 
-        // Build (or reuse) the persistent grid in mode-11
-        buildS1112Grid();
-        s1112GridEl.className = "hw-s1112-grid hw-s1112-at-11";
-        if (astroAttr) s1112GridEl.setAttribute(astroAttr, "");
+        // Build fresh grid with data-flip-id (mode-11 styles applied)
+        var gridEl = flipBuildGrid("11");
 
-        if (s1112Instant) {
-          // Backward from step 12: apply mode-11 styles instantly (FLIP provides the visual)
-          applyS1112Mode11Styles();
-        } else {
-          // Forward into step 11: start cells faint, fill row-by-row
+        if (!isBackward) {
+          // Forward into step 11: start cells faint, fill row-by-row in animation
           for (var fi = 0; fi < 8; fi++) {
             for (var fj = 0; fj < 8; fj++) {
               var initCell = s1112Cells[fi][fj];
@@ -14000,7 +13818,7 @@ const sections = [
           }
         }
 
-        resultInner.appendChild(s1112GridEl);
+        resultInner.appendChild(gridEl);
         resultWrap.appendChild(resultInner);
 
         // Result dimension label
@@ -14057,7 +13875,7 @@ const sections = [
         // Phase 1 (800ms): d_head dimensions get strikethrough
         setTimeout(function () {
           qDimD.classList.add("active");
-          if (s1011KtDimCancel) s1011KtDimCancel.classList.add("active");
+          ktDimD.classList.add("active");
         }, 800);
 
         // Phase 2 (1200ms): Down arrow + result frame appears
@@ -14074,7 +13892,7 @@ const sections = [
         var detailedGap = 350;
         var cascadeGap = 60;
 
-        if (!s1112Instant) {
+        if (!isBackward) {
           for (var r = 0; r < T; r++) {
             (function (row) {
               var delay;
@@ -14132,8 +13950,8 @@ const sections = [
         }
 
         // Phase 4: Equation + Phase 5: Callout
-        // When coming backward from step 12 (s1112Instant), skip row fill → show equation quickly
-        var eqDelay = s1112Instant
+        // When coming backward from step 12, skip row fill → show equation quickly
+        var eqDelay = isBackward
           ? 400
           : rowBaseDelay + 2 * detailedGap + (T - 4) * cascadeGap + 2 * detailedGap + 300;
         setTimeout(function () {
@@ -14142,7 +13960,7 @@ const sections = [
 
         setTimeout(function () {
           callout.classList.add("visible");
-        }, eqDelay + (s1112Instant ? 200 : 400));
+        }, eqDelay + (isBackward ? 200 : 400));
 
         return layout;
       }
@@ -14163,20 +13981,17 @@ const sections = [
         softmaxBanner.appendChild(softmaxText);
         layout.appendChild(softmaxBanner);
 
-        // === Heatmap container (axis labels surround the persistent grid) ===
+        // === Heatmap container (axis labels surround grid) ===
         var heatWrap = el("div", "hw-hm12-wrap");
         heatWrap.appendChild(el("div", "hw-hm12-axis-query", "query"));
 
         var inner = el("div", "hw-hm12-inner");
         inner.appendChild(el("div", "hw-hm12-axis-key", "key"));
 
-        // Switch persistent grid to mode-12 and apply heatmap colors
-        buildS1112Grid();
-        s1112GridEl.className = "hw-s1112-grid hw-s1112-at-12";
-        if (astroAttr) s1112GridEl.setAttribute(astroAttr, "");
-        applyS1112Mode12Styles();
+        // Build fresh grid with data-flip-id in mode-12 (amber heatmap)
+        var gridEl = flipBuildGrid("12");
 
-        inner.appendChild(s1112GridEl);
+        inner.appendChild(gridEl);
         heatWrap.appendChild(inner);
         layout.appendChild(heatWrap);
 
@@ -14215,83 +14030,8 @@ const sections = [
         return layout;
       }
 
-      // === Builder for the persistent green output matrix (steps 13→14) ===
-      // Called once; subsequent calls are no-ops. Creates s1314OutWrap with label,
-      // 3 green column pills (hw-av13-out-* classes), and T×d_head dimension label.
-      function buildS1314OutWrap() {
-        if (s1314OutWrap) return; // already built — reuse
-
-        var d_head = 3;
-        var visibleRows = [0, 1, -1, 6, 7]; // -1 = dots row
-        var outData = [
-          [" .37", "-.04", " .12"],
-          [" .22", " .03", "-.14"],
-          [" .41", "-.10", "-.22"],
-          [" .18", " .19", "-.18"],
-          ["-.08", " .30", " .24"],
-          [" .04", " .16", " .18"],
-          ["-.06", " .52", "-.01"],
-          [" .35", "-.06", " .15"],
-        ];
-
-        s1314OutWrap = el("div", "hw-av13-mat-wrap");
-        if (astroAttr) s1314OutWrap.setAttribute(astroAttr, "");
-
-        // Label — text changes between "Output" (s13) and "Attn(x)" (s14)
-        s1314OutLabelEl = el("div", "hw-av13-mat-label out-color", "Output");
-        s1314OutWrap.appendChild(s1314OutLabelEl);
-
-        // Spacer row (matches step-13 column-label alignment)
-        var outColLabels = el("div", "hw-av13-token-labels");
-        for (var ci = 0; ci < d_head; ci++) {
-          var lbl = el("div", "hw-av13-token-label", "");
-          lbl.style.width = "32px";
-          outColLabels.appendChild(lbl);
-        }
-        s1314OutWrap.appendChild(outColLabels);
-
-        // 3 green column pills
-        var outBody = el("div", "hw-av13-out-body");
-        for (var ci = 0; ci < d_head; ci++) {
-          var col = el("div", "hw-av13-out-col");
-          visibleRows.forEach(function (ri) {
-            if (ri === -1) {
-              col.appendChild(el("div", "hw-av13-out-cell dots-cell", "\u22EF"));
-            } else {
-              col.appendChild(el("div", "hw-av13-out-cell", outData[ri][ci]));
-            }
-          });
-          outBody.appendChild(col);
-        }
-        s1314OutWrap.appendChild(outBody);
-
-        // Dimension label: T × d_head
-        var outDim = el("div", "hw-av13-dim-label");
-        var outDimT = el("span", "", "T");
-        outDimT.style.color = "hsl(145 55% 42%)";
-        var outDimX = document.createTextNode(" \u00d7 ");
-        var outDimD = el("span", "");
-        outDimD.innerHTML = "d<sub>head</sub>";
-        if (astroAttr) outDimD.querySelector("sub").setAttribute(astroAttr, "");
-        outDimD.style.color = "hsl(145 55% 42%)";
-        outDim.appendChild(outDimT);
-        outDim.appendChild(outDimX);
-        outDim.appendChild(outDimD);
-        s1314OutWrap.appendChild(outDim);
-      }
-
-      // instant=true when coming backward from step 14 — s1314OutWrap is already visible,
-      // so skip the slide-in animation and insert it directly into the mult row.
-      function renderStep13(instant) {
-        // Ensure persistent green output wrapper exists
-        buildS1314OutWrap();
-
-        // Reset label for step 13 context
-        s1314OutLabelEl.textContent = "Output";
-
-        // Reset any lingering FLIP transform from showStep animation
-        s1314OutWrap.style.transform = "";
-        s1314OutWrap.style.transition = "";
+      function renderStep13(fromStep) {
+        var isBackward = fromStep >= 14;
 
         var layout = el("div", "hw-av13-layout");
         var tokens = ["The", "fat", "cat", "sat", "quiet", "ly", "on", "the"];
@@ -14460,20 +14200,15 @@ const sections = [
         // --- Equals sign ---
         multRow.appendChild(el("div", "hw-av13-op", "="));
 
-        // --- Output matrix: use persistent s1314OutWrap (carries forward into step 14) ---
-        // Visibility: if instant (backward from step 14), show immediately; otherwise animate in.
-        if (instant) {
-          // Coming backward from step 14 — wrapper already visible, no fade-in needed
-          s1314OutWrap.style.opacity = "1";
-          s1314OutWrap.style.transform = "";
-          s1314OutWrap.style.transition = "";
-        } else {
+        // --- Output matrix (fresh build with data-flip-id for GSAP matching with step 14) ---
+        var outWrap = flipBuildOutputMatrix("Output");
+        if (!isBackward) {
           // Fresh entry (forward from step 12) — start hidden, animate in at 1600ms
-          s1314OutWrap.style.opacity = "0";
-          s1314OutWrap.style.transform = "translateX(8px)";
-          s1314OutWrap.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+          outWrap.style.opacity = "0";
+          outWrap.style.transform = "translateX(8px)";
+          outWrap.style.transition = "opacity 0.5s ease, transform 0.5s ease";
         }
-        multRow.appendChild(s1314OutWrap);
+        multRow.appendChild(outWrap);
 
         layout.appendChild(multRow);
 
@@ -14501,12 +14236,11 @@ const sections = [
           vDimT.classList.add("active");
         }, 1000);
 
-        // Phase 3 (1600ms): output matrix slides in (only for fresh entry, not instant)
-        if (!instant) {
-          s1314OutTimeout = setTimeout(function () {
-            s1314OutTimeout = null;
-            s1314OutWrap.style.opacity = "1";
-            s1314OutWrap.style.transform = "";
+        // Phase 3 (1600ms): output matrix slides in (only for fresh entry, not backward)
+        if (!isBackward) {
+          setTimeout(function () {
+            outWrap.style.opacity = "1";
+            outWrap.style.transform = "";
           }, 1600);
         }
 
@@ -14519,17 +14253,6 @@ const sections = [
       }
 
       function renderStep14() {
-        // Ensure persistent green output wrapper exists
-        buildS1314OutWrap();
-
-        // Update label for step 14 context (text transition, no DOM replacement)
-        s1314OutLabelEl.textContent = "Attn(x)";
-
-        // Ensure wrapper is fully visible (no opacity/transform leftover from step 13)
-        s1314OutWrap.style.opacity = "1";
-        s1314OutWrap.style.transform = "";
-        s1314OutWrap.style.transition = "";
-
         var layout = el("div", "hw-ho14-layout");
         var tokens = ["The", "fat", "cat", "sat", "quiet", "ly", "on", "the"];
         var d_head = 3;
@@ -14609,10 +14332,8 @@ const sections = [
         var plus = el("div", "hw-ho14-op", "+");
         flowRow.appendChild(plus);
 
-        // --- Attention output: use persistent s1314OutWrap (carried forward from step 13) ---
-        // The wrapper already has its content (green column pills, "Attn(x)" label, T×d_head dim).
-        // Just insert it into the flow row — FLIP animation in showStep() handles the transition.
-        flowRow.appendChild(s1314OutWrap);
+        // --- Attention output (fresh build with data-flip-id for GSAP matching with step 13) ---
+        flowRow.appendChild(flipBuildOutputMatrix("Attn(x)"));
 
         // --- Equals sign ---
         flowRow.appendChild(el("div", "hw-ho14-op", "="));
@@ -15087,365 +14808,733 @@ const sections = [
         return r.layout;
       }
 
+      // =====================================================================
+      // Shared helpers for GSAP Flip render functions (steps 11-14)
+      // =====================================================================
+
+      // Build a fresh 8×8 attention grid with data-flip-id on cells/labels.
+      // mode = "11" for purple score mode, "12" for amber heatmap mode.
+      // Updates module-level s1112Cells/RowLabelEls/ColLabelEls for hover.
+      function flipBuildGrid(mode) {
+        var tokens = ["The", "fat", "cat", "sat", "quiet", "ly", "on", "the"];
+        var T = tokens.length;
+        var gridEl = el("div", "hw-s1112-grid hw-s1112-at-" + mode);
+
+        var cells = [];
+        var rowLabelEls = [];
+        var colLabelEls = [];
+
+        // Row 0: corner + column labels (key tokens)
+        gridEl.appendChild(el("div", "hw-s1112-corner"));
+        for (var ci = 0; ci < T; ci++) {
+          var colLabel = el("div", "hw-s1112-col-label", tokens[ci]);
+          colLabel.dataset.tokIdx = String(ci);
+          colLabel.setAttribute("data-flip-id", "col-label-" + ci);
+          gridEl.appendChild(colLabel);
+          colLabelEls.push(colLabel);
+        }
+
+        // Data rows: row label (query token) + 8 cells
+        for (var ri = 0; ri < T; ri++) {
+          var rowLabel = el("div", "hw-s1112-row-label", tokens[ri]);
+          rowLabel.dataset.row = String(ri);
+          rowLabel.setAttribute("data-flip-id", "row-label-" + ri);
+          gridEl.appendChild(rowLabel);
+          rowLabelEls.push(rowLabel);
+
+          var rowCells = [];
+          for (var cj = 0; cj < T; cj++) {
+            var cell = el("div", "hw-s1112-cell");
+            cell.dataset.row = String(ri);
+            cell.dataset.col = String(cj);
+            cell.setAttribute("data-flip-id", "score-r" + ri + "c" + cj);
+            if (ri === cj) cell.classList.add("hw-s1112-diag");
+            gridEl.appendChild(cell);
+            rowCells.push(cell);
+          }
+          cells.push(rowCells);
+        }
+
+        // Apply mode-specific styles
+        if (mode === "11") {
+          for (var ri2 = 0; ri2 < 8; ri2++) {
+            for (var ci2 = 0; ci2 < 8; ci2++) {
+              var c = cells[ri2][ci2];
+              c.textContent = s1112ScoreValues[ri2][ci2];
+              if (ri2 === ci2) {
+                c.style.background = "hsl(280 55% 55% / 0.14)";
+                c.style.color = "hsl(280 55% 55% / 0.9)";
+                c.style.fontWeight = "600";
+              } else {
+                c.style.background = "hsl(280 55% 55% / 0.06)";
+                c.style.color = "hsl(280 55% 55% / 0.75)";
+                c.style.fontWeight = "";
+              }
+            }
+          }
+        } else {
+          for (var ri3 = 0; ri3 < 8; ri3++) {
+            for (var ci3 = 0; ci3 < 8; ci3++) {
+              var c2 = cells[ri3][ci3];
+              var weight = s1112AttnWeights[ri3][ci3];
+              c2.textContent = weight.toFixed(2);
+              var alpha = 0.06 + weight * 2.5;
+              if (alpha > 1) alpha = 1;
+              c2.style.background = "hsl(35 90% 55% / " + alpha.toFixed(2) + ")";
+              if (weight > 0.2) {
+                c2.style.color = "hsl(35 20% 15%)";
+                c2.style.fontWeight = "600";
+              } else {
+                c2.style.color = "hsl(var(--theme-text) / 0.65)";
+                c2.style.fontWeight = "";
+              }
+            }
+          }
+        }
+
+        // Update module-level refs for hover handlers
+        s1112Cells = cells;
+        s1112RowLabelEls = rowLabelEls;
+        s1112ColLabelEls = colLabelEls;
+
+        // Attach hover handlers (pointer-events: none in mode-11 prevents them firing)
+        cells.forEach(function (rowCells, ri4) {
+          rowCells.forEach(function (cell2) {
+            cell2.addEventListener("mouseenter", function () {
+              s1112HighlightRow(ri4);
+            });
+            cell2.addEventListener("mouseleave", s1112ClearHighlight);
+          });
+        });
+
+        return gridEl;
+      }
+
+      // Build a fresh green output matrix (T×d_head) with data-flip-id="output-wrap".
+      // label = "Output" for step 13, "Attn(x)" for step 14.
+      function flipBuildOutputMatrix(label) {
+        var d_head = 3;
+        var visibleRows = [0, 1, -1, 6, 7];
+        var outData = [
+          [" .37", "-.04", " .12"],
+          [" .22", " .03", "-.14"],
+          [" .41", "-.10", "-.22"],
+          [" .18", " .19", "-.18"],
+          ["-.08", " .30", " .24"],
+          [" .04", " .16", " .18"],
+          ["-.06", " .52", "-.01"],
+          [" .35", "-.06", " .15"],
+        ];
+
+        var wrap = el("div", "hw-av13-mat-wrap");
+        wrap.setAttribute("data-flip-id", "output-wrap");
+
+        wrap.appendChild(el("div", "hw-av13-mat-label out-color", label));
+
+        // Spacer row (matches column-label alignment)
+        var outColLabels = el("div", "hw-av13-token-labels");
+        for (var ci = 0; ci < d_head; ci++) {
+          var lbl = el("div", "hw-av13-token-label", "");
+          lbl.style.width = "32px";
+          outColLabels.appendChild(lbl);
+        }
+        wrap.appendChild(outColLabels);
+
+        // 3 green column pills
+        var outBody = el("div", "hw-av13-out-body");
+        for (var ci2 = 0; ci2 < d_head; ci2++) {
+          var col = el("div", "hw-av13-out-col");
+          visibleRows.forEach(function (ri) {
+            if (ri === -1) {
+              col.appendChild(el("div", "hw-av13-out-cell dots-cell", "\u22EF"));
+            } else {
+              col.appendChild(el("div", "hw-av13-out-cell", outData[ri][ci2]));
+            }
+          });
+          outBody.appendChild(col);
+        }
+        wrap.appendChild(outBody);
+
+        // Dimension label: T × d_head
+        var outDim = el("div", "hw-av13-dim-label");
+        var outDimT = el("span", "", "T");
+        outDimT.style.color = "hsl(145 55% 42%)";
+        var outDimX = document.createTextNode(" \u00d7 ");
+        var outDimD = el("span", "");
+        outDimD.innerHTML = "d<sub>head</sub>";
+        if (astroAttr) outDimD.querySelector("sub").setAttribute(astroAttr, "");
+        outDimD.style.color = "hsl(145 55% 42%)";
+        outDim.appendChild(outDimT);
+        outDim.appendChild(outDimX);
+        outDim.appendChild(outDimD);
+        wrap.appendChild(outDim);
+
+        return wrap;
+      }
+
+      // =====================================================================
+      // Pure render functions for steps 8-10 (GSAP Flip)
+      // Each builds the COMPLETE DOM subtree for its step.
+      // Animation sequences are attached as layout._runEffects().
+      // =====================================================================
+
+      function flipBuildInputMatrix() {
+        var tokens = s810Tokens;
+        var nv = s810NormValues;
+        var wrap = el("div", "hw-q8-mat-wrap");
+        var label = el("div", "hw-q8-mat-label hw-q8-label-input");
+        label.innerHTML = 'X\u0302 <span class="hw-q8-label-sub">(normalized)</span>';
+        if (astroAttr) label.querySelectorAll("span").forEach(function (s) { s.setAttribute(astroAttr, ""); });
+        wrap.appendChild(label);
+        var tokenRow = el("div", "hw-q8-token-labels");
+        tokens.forEach(function (tok, i) {
+          var lbl = el("div", "hw-q8-token-label", tok);
+          lbl.dataset.tokIdx = String(i);
+          lbl.dataset.flipId = "tok-" + i;
+          lbl.setAttribute("data-flip-id", "tok-" + i);
+          tokenRow.appendChild(lbl);
+        });
+        wrap.appendChild(tokenRow);
+        var cols = el("div", "hw-q8-cols");
+        var colEls = [];
+        tokens.forEach(function (tok, c) {
+          var col = el("div", "hw-q8-col hw-q8-input-col");
+          col.appendChild(el("div", "hw-q8-cell hw-q8-input-cell", nv[0][c]));
+          col.appendChild(el("div", "hw-q8-cell hw-q8-input-cell", nv[1][c]));
+          col.appendChild(el("div", "hw-q8-cell hw-q8-dots hw-q8-input-dots", "\u22EF"));
+          col.appendChild(el("div", "hw-q8-cell hw-q8-input-cell", nv[2][c]));
+          col.appendChild(el("div", "hw-q8-cell hw-q8-input-cell", nv[3][c]));
+          cols.appendChild(col);
+          colEls.push(col);
+        });
+        wrap.appendChild(cols);
+        wrap.appendChild(el("div", "hw-q8-dim-label", "T \u00d7 d_model"));
+        return { wrap: wrap, colEls: colEls };
+      }
+
+      function renderStep8() {
+        var tokens = s810Tokens;
+        var layout = el("div", "hw-s810-layout");
+        var main = el("div", "hw-q8-main");
+        var inp = flipBuildInputMatrix();
+        main.appendChild(inp.wrap);
+        main.appendChild(el("div", "hw-q8-op", "\u00b7"));
+
+        var qW = [
+          [" 0.21", " 0.45", "-0.13"],
+          ["-0.38", " 0.17", " 0.62"],
+          [" 0.55", "-0.29", " 0.08"],
+          ["-0.14", " 0.71", "-0.46"],
+        ];
+        var qValues = [
+          [".42", ".18", ".73", "-.31", ".56", "-.24", ".48", ".42"],
+          ["-.19", ".55", "-.08", ".41", "-.33", ".62", "-.27", "-.19"],
+          [".31", "-.12", ".54", "-.22", ".28", "-.45", ".37", ".31"],
+        ];
+
+        var wqWrap = el("div", "hw-q8-mat-wrap hw-q8-wq-wrap");
+        var wqLabel = el("div", "hw-q8-mat-label hw-q8-label-wq");
+        wqLabel.innerHTML = "W<sub>Q</sub>";
+        if (astroAttr) wqLabel.querySelectorAll("sub").forEach(function (s) { s.setAttribute(astroAttr, ""); });
+        wqWrap.appendChild(wqLabel);
+        var wqCols = el("div", "hw-q8-cols");
+        for (var ci = 0; ci < 3; ci++) {
+          var wCol = el("div", "hw-q8-col hw-q8-wq-col");
+          wCol.appendChild(el("div", "hw-q8-cell hw-q8-wq-cell", qW[0][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-q8-wq-cell", qW[1][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-q8-dots hw-q8-wq-dots", "\u22EF"));
+          wCol.appendChild(el("div", "hw-q8-cell hw-q8-wq-cell", qW[2][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-q8-wq-cell", qW[3][ci]));
+          wqCols.appendChild(wCol);
+        }
+        wqWrap.appendChild(wqCols);
+        var wqDim = el("div", "hw-q8-dim-label");
+        wqDim.innerHTML = "d<sub>model</sub> \u00d7 d<sub>head</sub>";
+        if (astroAttr) wqDim.querySelectorAll("sub").forEach(function (s) { s.setAttribute(astroAttr, ""); });
+        wqWrap.appendChild(wqDim);
+        main.appendChild(wqWrap);
+
+        main.appendChild(el("div", "hw-q8-op", "\u2192"));
+
+        var outWrap = el("div", "hw-q8-mat-wrap hw-q8-out-wrap");
+        outWrap.appendChild(el("div", "hw-q8-mat-label hw-q8-label-q", "Q"));
+        var outTokenRow = el("div", "hw-q8-token-labels");
+        tokens.forEach(function (tok) {
+          outTokenRow.appendChild(el("div", "hw-q8-token-label hw-q8-out-token-label", tok));
+        });
+        outWrap.appendChild(outTokenRow);
+        var outCols = el("div", "hw-q8-cols");
+        var outputColEls = [];
+        tokens.forEach(function (tok, c) {
+          var col = el("div", "hw-q8-col hw-q8-out-col");
+          col.appendChild(el("div", "hw-q8-cell hw-q8-out-cell", qValues[0][c]));
+          col.appendChild(el("div", "hw-q8-cell hw-q8-dots hw-q8-out-dots", "\u22EF"));
+          col.appendChild(el("div", "hw-q8-cell hw-q8-out-cell", qValues[2][c]));
+          outCols.appendChild(col);
+          outputColEls.push(col);
+        });
+        outWrap.appendChild(outCols);
+        var outDim = el("div", "hw-q8-dim-label");
+        outDim.innerHTML = "T \u00d7 d<sub>head</sub>";
+        if (astroAttr) outDim.querySelectorAll("sub").forEach(function (s) { s.setAttribute(astroAttr, ""); });
+        outWrap.appendChild(outDim);
+        main.appendChild(outWrap);
+        layout.appendChild(main);
+
+        var eqRow = el("div", "hw-q8-equation");
+        eqRow.appendChild(el("span", "hw-q8-eq-q", "Q"));
+        eqRow.appendChild(document.createTextNode(" = "));
+        eqRow.appendChild(el("span", "hw-q8-eq-norm", "X\u0302"));
+        eqRow.appendChild(document.createTextNode(" \u00b7 "));
+        var eqWq = el("span", "hw-q8-eq-wq");
+        eqWq.innerHTML = "W<sub>Q</sub>";
+        if (astroAttr) eqWq.querySelector("sub").setAttribute(astroAttr, "");
+        eqRow.appendChild(eqWq);
+        eqRow.appendChild(el("span", "hw-q8-eq-dim", "  (T\u00d7d_model) \u00b7 (d_model\u00d7d_head) = T\u00d7d_head"));
+        layout.appendChild(eqRow);
+
+        // Animation closure
+        var inputColEls = inp.colEls;
+        layout._runEffects = function () {
+          var myId = ++s810BuildId;
+          setTimeout(function () { if (s810BuildId !== myId) return; wqWrap.classList.add("visible"); }, 400);
+          setTimeout(function () { if (s810BuildId !== myId) return; outWrap.classList.add("visible"); }, 800);
+
+          function flyCol(srcCol, dur) {
+            if (s810BuildId !== myId) return;
+            var lRect = layout.getBoundingClientRect();
+            var sRect = srcCol.getBoundingClientRect();
+            var wRect = wqCols.getBoundingClientRect();
+            var fly = srcCol.cloneNode(true);
+            fly.classList.add("hw-q8-fly-col");
+            fly.style.position = "absolute";
+            fly.style.left = sRect.left - lRect.left + "px";
+            fly.style.top = sRect.top - lRect.top + "px";
+            fly.style.width = sRect.width + "px";
+            fly.style.transition = "transform " + dur + "ms ease-in-out, opacity " + dur + "ms ease";
+            layout.appendChild(fly);
+            var dx = wRect.left + wRect.width / 2 - sRect.width / 2 - sRect.left;
+            requestAnimationFrame(function () { requestAnimationFrame(function () {
+              fly.style.transform = "translateX(" + dx + "px) scale(0.8)";
+              fly.style.opacity = "0.2";
+            }); });
+            setTimeout(function () { if (fly.parentNode) fly.remove(); }, dur + 80);
+          }
+
+          var detailedCount = 3, detailedGap = 500, cascadeGap = 60, baseDelay = 1100;
+          tokens.forEach(function (tok, i) {
+            var delay = i < detailedCount ? baseDelay + i * detailedGap : baseDelay + detailedCount * detailedGap + (i - detailedCount) * cascadeGap;
+            setTimeout(function () {
+              if (s810BuildId !== myId) return;
+              inputColEls[i].classList.add("hw-q8-highlight");
+              if (i < detailedCount) {
+                flyCol(inputColEls[i], 250);
+                setTimeout(function () { if (s810BuildId !== myId) return; wqWrap.classList.add("flash"); setTimeout(function () { wqWrap.classList.remove("flash"); }, 200); }, 250);
+                setTimeout(function () { if (s810BuildId !== myId) return; outputColEls[i].classList.add("hw-q8-filled"); }, 350);
+                setTimeout(function () { if (s810BuildId !== myId) return; inputColEls[i].classList.remove("hw-q8-highlight"); if (i === 2) inputColEls[i].classList.add("hw-q8-persistent"); }, 450);
+              } else {
+                wqWrap.classList.add("flash"); setTimeout(function () { wqWrap.classList.remove("flash"); }, 40);
+                setTimeout(function () { if (s810BuildId !== myId) return; outputColEls[i].classList.add("hw-q8-filled"); }, 30);
+                setTimeout(function () { if (s810BuildId !== myId) return; inputColEls[i].classList.remove("hw-q8-highlight"); }, 50);
+              }
+            }, delay);
+          });
+          var eqDelay = baseDelay + detailedCount * detailedGap + (tokens.length - detailedCount) * cascadeGap + 300;
+          setTimeout(function () { if (s810BuildId !== myId) return; eqRow.classList.add("visible"); }, eqDelay);
+        };
+        return layout;
+      }
+
+      function renderStep9() {
+        var tokens = s810Tokens;
+        var layout = el("div", "hw-s810-layout");
+        var main = el("div", "hw-q8-main");
+        var inp = flipBuildInputMatrix();
+        main.appendChild(inp.wrap);
+        main.appendChild(el("div", "hw-q8-op", "\u00b7"));
+
+        var vW = [
+          ["-0.27", " 0.51", " 0.38"],
+          [" 0.63", "-0.34", " 0.15"],
+          [" 0.11", " 0.42", "-0.56"],
+          ["-0.48", " 0.26", " 0.69"],
+        ];
+        var vValues = [
+          [".58", "-.34", ".91", "-.22", ".47", "-.65", ".33", ".58"],
+          ["-.76", ".12", "-.53", ".68", "-.32", ".21", "-.41", "-.76"],
+          [".35", "-.21", "-.14", ".43", ".56", ".85", ".29", ".35"],
+        ];
+        var qValues = [
+          [".42", ".18", ".73", "-.31", ".56", "-.24", ".48", ".42"],
+          ["-.19", ".55", "-.08", ".41", "-.33", ".62", "-.27", "-.19"],
+          [".31", "-.12", ".54", "-.22", ".28", "-.45", ".37", ".31"],
+        ];
+
+        var wvWrap = el("div", "hw-q8-mat-wrap hw-v9-wv-wrap");
+        var wvLabel = el("div", "hw-q8-mat-label hw-v9-label-wv");
+        wvLabel.innerHTML = "W<sub>V</sub>";
+        if (astroAttr) wvLabel.querySelectorAll("sub").forEach(function (s) { s.setAttribute(astroAttr, ""); });
+        wvWrap.appendChild(wvLabel);
+        var wvCols = el("div", "hw-q8-cols");
+        for (var ci = 0; ci < 3; ci++) {
+          var wCol = el("div", "hw-q8-col hw-v9-wv-col");
+          wCol.appendChild(el("div", "hw-q8-cell hw-v9-wv-cell", vW[0][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-v9-wv-cell", vW[1][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-q8-dots hw-v9-wv-dots", "\u22EF"));
+          wCol.appendChild(el("div", "hw-q8-cell hw-v9-wv-cell", vW[2][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-v9-wv-cell", vW[3][ci]));
+          wvCols.appendChild(wCol);
+        }
+        wvWrap.appendChild(wvCols);
+        var wvDim = el("div", "hw-q8-dim-label");
+        wvDim.innerHTML = "d<sub>model</sub> \u00d7 d<sub>head</sub>";
+        if (astroAttr) wvDim.querySelectorAll("sub").forEach(function (s) { s.setAttribute(astroAttr, ""); });
+        wvWrap.appendChild(wvDim);
+        main.appendChild(wvWrap);
+
+        main.appendChild(el("div", "hw-q8-op", "\u2192"));
+
+        // Stacked area: Q ghost behind, V output in front
+        var stackArea = el("div", "hw-v9-stack");
+        var qGhost = el("div", "hw-q8-mat-wrap hw-v9-q-ghost");
+        qGhost.appendChild(el("div", "hw-q8-mat-label hw-q8-label-q", "Q"));
+        var qGhostTokenRow = el("div", "hw-q8-token-labels");
+        tokens.forEach(function (tok) { qGhostTokenRow.appendChild(el("div", "hw-q8-token-label", tok)); });
+        qGhost.appendChild(qGhostTokenRow);
+        var qGhostCols = el("div", "hw-q8-cols");
+        tokens.forEach(function (tok, c) {
+          var col = el("div", "hw-q8-col hw-q8-out-col hw-q8-filled");
+          col.appendChild(el("div", "hw-q8-cell hw-q8-out-cell", qValues[0][c]));
+          col.appendChild(el("div", "hw-q8-cell hw-q8-dots hw-q8-out-dots", "\u22EF"));
+          col.appendChild(el("div", "hw-q8-cell hw-q8-out-cell", qValues[2][c]));
+          qGhostCols.appendChild(col);
+        });
+        qGhost.appendChild(qGhostCols);
+        stackArea.appendChild(qGhost);
+
+        var outWrap = el("div", "hw-q8-mat-wrap hw-v9-out-wrap");
+        outWrap.appendChild(el("div", "hw-q8-mat-label hw-v9-label-v", "V"));
+        var outTokenRow = el("div", "hw-q8-token-labels");
+        tokens.forEach(function (tok) { outTokenRow.appendChild(el("div", "hw-q8-token-label hw-q8-out-token-label", tok)); });
+        outWrap.appendChild(outTokenRow);
+        var outCols = el("div", "hw-q8-cols");
+        var outputColEls = [];
+        tokens.forEach(function (tok, c) {
+          var col = el("div", "hw-q8-col hw-v9-out-col");
+          col.appendChild(el("div", "hw-q8-cell hw-v9-out-cell", vValues[0][c]));
+          col.appendChild(el("div", "hw-q8-cell hw-q8-dots hw-v9-out-dots", "\u22EF"));
+          col.appendChild(el("div", "hw-q8-cell hw-v9-out-cell", vValues[2][c]));
+          outCols.appendChild(col);
+          outputColEls.push(col);
+        });
+        outWrap.appendChild(outCols);
+        var outDim = el("div", "hw-q8-dim-label");
+        outDim.innerHTML = "T \u00d7 d<sub>head</sub>";
+        if (astroAttr) outDim.querySelectorAll("sub").forEach(function (s) { s.setAttribute(astroAttr, ""); });
+        outWrap.appendChild(outDim);
+        stackArea.appendChild(outWrap);
+        main.appendChild(stackArea);
+        layout.appendChild(main);
+
+        var eqRow = el("div", "hw-q8-equation");
+        eqRow.appendChild(el("span", "hw-v9-eq-v", "V"));
+        eqRow.appendChild(document.createTextNode(" = "));
+        eqRow.appendChild(el("span", "hw-q8-eq-norm", "X\u0302"));
+        eqRow.appendChild(document.createTextNode(" \u00b7 "));
+        var eqWv = el("span", "hw-v9-eq-wv");
+        eqWv.innerHTML = "W<sub>V</sub>";
+        if (astroAttr) eqWv.querySelector("sub").setAttribute(astroAttr, "");
+        eqRow.appendChild(eqWv);
+        eqRow.appendChild(el("span", "hw-q8-eq-dim", "  (T\u00d7d_model) \u00b7 (d_model\u00d7d_head) = T\u00d7d_head"));
+        layout.appendChild(eqRow);
+
+        var inputColEls = inp.colEls;
+        layout._runEffects = function () {
+          var myId = ++s810BuildId;
+          setTimeout(function () { if (s810BuildId !== myId) return; wvWrap.classList.add("visible"); }, 400);
+          setTimeout(function () { if (s810BuildId !== myId) return; qGhost.classList.add("visible"); outWrap.classList.add("visible"); }, 800);
+
+          function flyCol(srcCol, dur) {
+            if (s810BuildId !== myId) return;
+            var lRect = layout.getBoundingClientRect();
+            var sRect = srcCol.getBoundingClientRect();
+            var wRect = wvCols.getBoundingClientRect();
+            var fly = srcCol.cloneNode(true);
+            fly.classList.add("hw-q8-fly-col");
+            fly.style.position = "absolute";
+            fly.style.left = sRect.left - lRect.left + "px";
+            fly.style.top = sRect.top - lRect.top + "px";
+            fly.style.width = sRect.width + "px";
+            fly.style.transition = "transform " + dur + "ms ease-in-out, opacity " + dur + "ms ease";
+            layout.appendChild(fly);
+            var dx = wRect.left + wRect.width / 2 - sRect.width / 2 - sRect.left;
+            requestAnimationFrame(function () { requestAnimationFrame(function () {
+              fly.style.transform = "translateX(" + dx + "px) scale(0.8)";
+              fly.style.opacity = "0.2";
+            }); });
+            setTimeout(function () { if (fly.parentNode) fly.remove(); }, dur + 80);
+          }
+
+          var detailedCount = 3, detailedGap = 500, cascadeGap = 60, baseDelay = 1100;
+          tokens.forEach(function (tok, i) {
+            var delay = i < detailedCount ? baseDelay + i * detailedGap : baseDelay + detailedCount * detailedGap + (i - detailedCount) * cascadeGap;
+            setTimeout(function () {
+              if (s810BuildId !== myId) return;
+              inputColEls[i].classList.add("hw-v9-highlight");
+              if (i < detailedCount) {
+                flyCol(inputColEls[i], 250);
+                setTimeout(function () { if (s810BuildId !== myId) return; wvWrap.classList.add("flash"); setTimeout(function () { wvWrap.classList.remove("flash"); }, 200); }, 250);
+                setTimeout(function () { if (s810BuildId !== myId) return; outputColEls[i].classList.add("hw-q8-filled"); }, 350);
+                setTimeout(function () { if (s810BuildId !== myId) return; inputColEls[i].classList.remove("hw-v9-highlight"); }, 450);
+              } else {
+                wvWrap.classList.add("flash"); setTimeout(function () { wvWrap.classList.remove("flash"); }, 40);
+                setTimeout(function () { if (s810BuildId !== myId) return; outputColEls[i].classList.add("hw-q8-filled"); }, 30);
+                setTimeout(function () { if (s810BuildId !== myId) return; inputColEls[i].classList.remove("hw-v9-highlight"); }, 50);
+              }
+            }, delay);
+          });
+          var eqDelay = baseDelay + detailedCount * detailedGap + (tokens.length - detailedCount) * cascadeGap + 300;
+          setTimeout(function () { if (s810BuildId !== myId) return; eqRow.classList.add("visible"); }, eqDelay);
+        };
+        return layout;
+      }
+
+      function renderStep10() {
+        var tokens = s810Tokens;
+        var layout = el("div", "hw-s810-layout");
+        var main = el("div", "hw-q8-main");
+        var inp = flipBuildInputMatrix();
+        main.appendChild(inp.wrap);
+        main.appendChild(el("div", "hw-q8-op", "\u00b7"));
+
+        var kW = [
+          [" 0.33", "-0.58", " 0.19"],
+          [" 0.67", " 0.12", "-0.41"],
+          ["-0.22", " 0.48", " 0.35"],
+          [" 0.44", "-0.16", " 0.73"],
+        ];
+        var kValues = [
+          [".33", "-.61", ".82", ".14", "-.47", ".58", "-.22", ".33"],
+          ["-.52", ".39", "-.71", ".55", ".28", "-.63", ".44", "-.52"],
+          [".18", "-.44", ".36", "-.29", ".65", ".11", "-.53", ".18"],
+        ];
+
+        var wkWrap = el("div", "hw-q8-mat-wrap hw-k10-wk-wrap");
+        var wkLabel = el("div", "hw-q8-mat-label hw-k10-label-wk");
+        wkLabel.innerHTML = "W<sub>K</sub>";
+        if (astroAttr) wkLabel.querySelectorAll("sub").forEach(function (s) { s.setAttribute(astroAttr, ""); });
+        wkWrap.appendChild(wkLabel);
+        var wkCols = el("div", "hw-q8-cols");
+        for (var ci = 0; ci < 3; ci++) {
+          var wCol = el("div", "hw-q8-col hw-k10-wk-col");
+          wCol.appendChild(el("div", "hw-q8-cell hw-k10-wk-cell", kW[0][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-k10-wk-cell", kW[1][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-q8-dots hw-k10-wk-dots", "\u22EF"));
+          wCol.appendChild(el("div", "hw-q8-cell hw-k10-wk-cell", kW[2][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-k10-wk-cell", kW[3][ci]));
+          wkCols.appendChild(wCol);
+        }
+        wkWrap.appendChild(wkCols);
+        var wkDim = el("div", "hw-q8-dim-label");
+        wkDim.innerHTML = "d<sub>model</sub> \u00d7 d<sub>head</sub>";
+        if (astroAttr) wkDim.querySelectorAll("sub").forEach(function (s) { s.setAttribute(astroAttr, ""); });
+        wkWrap.appendChild(wkDim);
+        main.appendChild(wkWrap);
+
+        main.appendChild(el("div", "hw-q8-op", "\u2192"));
+
+        var outWrap = el("div", "hw-q8-mat-wrap hw-k10-out-wrap");
+        outWrap.appendChild(el("div", "hw-q8-mat-label hw-k10-label-k", "K"));
+        var outTokenRow = el("div", "hw-q8-token-labels");
+        tokens.forEach(function (tok) { outTokenRow.appendChild(el("div", "hw-q8-token-label hw-q8-out-token-label", tok)); });
+        outWrap.appendChild(outTokenRow);
+        var outCols = el("div", "hw-q8-cols");
+        var outputColEls = [];
+        tokens.forEach(function (tok, c) {
+          var col = el("div", "hw-q8-col hw-k10-out-col");
+          col.appendChild(el("div", "hw-q8-cell hw-k10-out-cell", kValues[0][c]));
+          col.appendChild(el("div", "hw-q8-cell hw-q8-dots hw-k10-out-dots", "\u22EF"));
+          col.appendChild(el("div", "hw-q8-cell hw-k10-out-cell", kValues[2][c]));
+          outCols.appendChild(col);
+          outputColEls.push(col);
+        });
+        outWrap.appendChild(outCols);
+        var outDim = el("div", "hw-q8-dim-label");
+        outDim.innerHTML = "T \u00d7 d<sub>head</sub>";
+        if (astroAttr) outDim.querySelectorAll("sub").forEach(function (s) { s.setAttribute(astroAttr, ""); });
+        outWrap.appendChild(outDim);
+        main.appendChild(outWrap);
+        layout.appendChild(main);
+
+        var eqRow = el("div", "hw-q8-equation");
+        eqRow.appendChild(el("span", "hw-k10-eq-k", "K"));
+        eqRow.appendChild(document.createTextNode(" = "));
+        eqRow.appendChild(el("span", "hw-q8-eq-norm", "X\u0302"));
+        eqRow.appendChild(document.createTextNode(" \u00b7 "));
+        var eqWk = el("span", "hw-k10-eq-wk");
+        eqWk.innerHTML = "W<sub>K</sub>";
+        if (astroAttr) eqWk.querySelector("sub").setAttribute(astroAttr, "");
+        eqRow.appendChild(eqWk);
+        eqRow.appendChild(el("span", "hw-q8-eq-dim", "  (T\u00d7d_model) \u00b7 (d_model\u00d7d_head) = T\u00d7d_head"));
+        layout.appendChild(eqRow);
+
+        // K^T transpose section
+        var transposeSection = el("div", "hw-k10-transpose");
+        transposeSection.appendChild(el("div", "hw-k10-transpose-arrow", "\u2193"));
+        transposeSection.appendChild(el("div", "hw-k10-transpose-label", "Transpose: rows \u2194 columns"));
+        var ktWrap = el("div", "hw-k10-kt-wrap");
+        ktWrap.setAttribute("data-flip-id", "kt-wrap");
+        // K^T content (transposed: 3 rows become 3 columns of 8 tokens each)
+        var ktLabel = el("div", "hw-k10-kt-label");
+        ktLabel.innerHTML = "K<sup>T</sup>";
+        if (astroAttr) ktLabel.querySelectorAll("sup").forEach(function (s) { s.setAttribute(astroAttr, ""); });
+        ktWrap.appendChild(ktLabel);
+        var ktBody = el("div", "hw-k10-kt-body");
+        var ktRowLabels = el("div", "hw-k10-kt-row-labels");
+        ktRowLabels.appendChild(el("div", "hw-k10-kt-row-label", tokens[0]));
+        ktRowLabels.appendChild(el("div", "hw-k10-kt-row-label", tokens[1]));
+        ktRowLabels.appendChild(el("div", "hw-k10-kt-row-label dots-label", "\u22EE"));
+        ktRowLabels.appendChild(el("div", "hw-k10-kt-row-label", tokens[tokens.length - 2]));
+        ktRowLabels.appendChild(el("div", "hw-k10-kt-row-label", tokens[tokens.length - 1]));
+        ktBody.appendChild(ktRowLabels);
+        var ktCols = el("div", "hw-k10-kt-cols");
+        for (ci = 0; ci < 3; ci++) {
+          var ktCol = el("div", "hw-k10-kt-col");
+          ktCol.appendChild(el("div", "hw-k10-kt-cell", kValues[ci][0]));
+          ktCol.appendChild(el("div", "hw-k10-kt-cell", kValues[ci][1]));
+          ktCol.appendChild(el("div", "hw-k10-kt-cell hw-k10-kt-dots", "\u22EF"));
+          ktCol.appendChild(el("div", "hw-k10-kt-cell", kValues[ci][tokens.length - 2]));
+          ktCol.appendChild(el("div", "hw-k10-kt-cell", kValues[ci][tokens.length - 1]));
+          ktCols.appendChild(ktCol);
+        }
+        ktBody.appendChild(ktCols);
+        ktWrap.appendChild(ktBody);
+        var ktDim = el("div", "hw-k10-kt-dim");
+        ktDim.innerHTML = "d<sub>head</sub> \u00d7 T";
+        if (astroAttr) ktDim.querySelectorAll("sub").forEach(function (s) { s.setAttribute(astroAttr, ""); });
+        ktWrap.appendChild(ktDim);
+        transposeSection.appendChild(ktWrap);
+        layout.appendChild(transposeSection);
+
+        var inputColEls = inp.colEls;
+        layout._runEffects = function () {
+          var myId = ++s810BuildId;
+          setTimeout(function () { if (s810BuildId !== myId) return; wkWrap.classList.add("visible"); }, 400);
+          setTimeout(function () { if (s810BuildId !== myId) return; outWrap.classList.add("visible"); }, 800);
+
+          function flyCol(srcCol, dur) {
+            if (s810BuildId !== myId) return;
+            var lRect = layout.getBoundingClientRect();
+            var sRect = srcCol.getBoundingClientRect();
+            var wRect = wkCols.getBoundingClientRect();
+            var fly = srcCol.cloneNode(true);
+            fly.classList.add("hw-q8-fly-col");
+            fly.style.position = "absolute";
+            fly.style.left = sRect.left - lRect.left + "px";
+            fly.style.top = sRect.top - lRect.top + "px";
+            fly.style.width = sRect.width + "px";
+            fly.style.transition = "transform " + dur + "ms ease-in-out, opacity " + dur + "ms ease";
+            layout.appendChild(fly);
+            var dx = wRect.left + wRect.width / 2 - sRect.width / 2 - sRect.left;
+            requestAnimationFrame(function () { requestAnimationFrame(function () {
+              fly.style.transform = "translateX(" + dx + "px) scale(0.8)";
+              fly.style.opacity = "0.2";
+            }); });
+            setTimeout(function () { if (fly.parentNode) fly.remove(); }, dur + 80);
+          }
+
+          var detailedCount = 3, detailedGap = 500, cascadeGap = 60, baseDelay = 1100;
+          tokens.forEach(function (tok, i) {
+            var delay = i < detailedCount ? baseDelay + i * detailedGap : baseDelay + detailedCount * detailedGap + (i - detailedCount) * cascadeGap;
+            setTimeout(function () {
+              if (s810BuildId !== myId) return;
+              inputColEls[i].classList.add("hw-k10-highlight");
+              if (i < detailedCount) {
+                flyCol(inputColEls[i], 250);
+                setTimeout(function () { if (s810BuildId !== myId) return; wkWrap.classList.add("flash"); setTimeout(function () { wkWrap.classList.remove("flash"); }, 200); }, 250);
+                setTimeout(function () { if (s810BuildId !== myId) return; outputColEls[i].classList.add("hw-q8-filled"); }, 350);
+                setTimeout(function () { if (s810BuildId !== myId) return; inputColEls[i].classList.remove("hw-k10-highlight"); }, 450);
+              } else {
+                wkWrap.classList.add("flash"); setTimeout(function () { wkWrap.classList.remove("flash"); }, 40);
+                setTimeout(function () { if (s810BuildId !== myId) return; outputColEls[i].classList.add("hw-q8-filled"); }, 30);
+                setTimeout(function () { if (s810BuildId !== myId) return; inputColEls[i].classList.remove("hw-k10-highlight"); }, 50);
+              }
+            }, delay);
+          });
+          var eqDelay = baseDelay + detailedCount * detailedGap + (tokens.length - detailedCount) * cascadeGap + 300;
+          setTimeout(function () { if (s810BuildId !== myId) return; eqRow.classList.add("visible"); }, eqDelay);
+          setTimeout(function () { if (s810BuildId !== myId) return; transposeSection.classList.add("visible"); ktWrap.classList.add("flip-in"); }, eqDelay + 600);
+        };
+        return layout;
+      }
+
       function showStep(step) {
         // Cancel stale callbacks
         s810BuildId++;
-        if (s1314OutTimeout) {
-          clearTimeout(s1314OutTimeout);
-          s1314OutTimeout = null;
-        }
 
         var fromStep = prevStep;
         prevStep = step;
 
         // ===============================================================
-        // GSAP Flip path (steps 1-7)
+        // GSAP Flip path (all 14 steps)
         // Full rebuild per step — GSAP Flip animates matched elements.
         // ===============================================================
-        if (step >= 1 && step <= 7) {
-          // Capture current positions of all flip-id elements
-          var flipState =
-            fromStep >= 1 ? Flip.getState("[data-flip-id]") : null;
 
-          // Full rebuild
-          viz.innerHTML = "";
-          switch (step) {
-            case 1:
-              viz.appendChild(renderStep1());
-              break;
-            case 2:
-              viz.appendChild(renderStep2());
-              break;
-            case 3:
-              viz.appendChild(renderStep3());
-              break;
-            case 4:
-              viz.appendChild(renderStep4());
-              break;
-            case 5:
-              viz.appendChild(renderStep5());
-              break;
-            case 6:
-              viz.appendChild(renderStep6());
-              break;
-            case 7:
-              viz.appendChild(renderStep7());
-              break;
-          }
+        // Capture current positions of all flip-id elements
+        var flipState =
+          fromStep >= 1 ? Flip.getState("[data-flip-id]") : null;
 
-          if (flipState && fromStep >= 1 && fromStep <= 7) {
-            // Animate within GSAP system
-            Flip.from(flipState, {
-              duration: 0.5,
-              ease: "power2.inOut",
-              scale: true,
-              absolute: true,
-              nested: true,
-              onEnter: function (els) {
-                gsap.fromTo(
-                  els,
-                  { opacity: 0, scale: 0.8 },
-                  { opacity: 1, scale: 1, duration: 0.4, stagger: 0.02 },
-                );
-              },
-              onLeave: function (els) {
-                gsap.to(els, { opacity: 0, scale: 0.8, duration: 0.3 });
-              },
-            });
-          } else if (fromStep >= 8) {
-            // Crossing from old system (steps 8+) → GSAP: crossfade
-            viz.style.transition = "none";
-            viz.style.opacity = "0";
-            requestAnimationFrame(function () {
-              requestAnimationFrame(function () {
-                viz.style.transition = "opacity 0.3s ease-out";
-                viz.style.opacity = "1";
-                setTimeout(function () {
-                  viz.style.transition = "";
-                }, 350);
-              });
-            });
-          }
-
-          updateAnnotation(step);
-          updateButtons();
-          return; // Early return — skip old code below
+        // Full rebuild
+        viz.innerHTML = "";
+        var stepLayout = null;
+        switch (step) {
+          case 1: stepLayout = renderStep1(); break;
+          case 2: stepLayout = renderStep2(); break;
+          case 3: stepLayout = renderStep3(); break;
+          case 4: stepLayout = renderStep4(); break;
+          case 5: stepLayout = renderStep5(); break;
+          case 6: stepLayout = renderStep6(); break;
+          case 7: stepLayout = renderStep7(); break;
+          case 8: stepLayout = renderStep8(); break;
+          case 9: stepLayout = renderStep9(); break;
+          case 10: stepLayout = renderStep10(); break;
+          case 11: stepLayout = renderStep11(fromStep); break;
+          case 12: stepLayout = renderStep12(); break;
+          case 13: stepLayout = renderStep13(fromStep); break;
+          case 14: stepLayout = renderStep14(); break;
         }
+        viz.appendChild(stepLayout);
 
-        // ===============================================================
-        // Old persistent-layer path (steps 8-14)
-        // Preserved as-is with existing manual FLIP animations.
-        // ===============================================================
-
-        // Crossfade when entering from GSAP system (step 7 → 8)
-        var crossingFromGsap = fromStep >= 1 && fromStep <= 7;
-
-        // === K^T FLIP: detect and prepare for 10↔11 transitions ===
-        var doKtFlip =
-          (fromStep === 10 && step === 11) ||
-          (fromStep === 11 && step === 10);
-        var ktFirstRect = null;
-        if (doKtFlip && s1011KtWrap && s1011KtWrap.parentNode) {
-          ktFirstRect = s1011KtWrap.getBoundingClientRect();
-          s1011KtWrap.remove();
-        }
-
-        // === s1112 FLIP: detect and prepare for 11↔12 transitions ===
-        var doS1112Flip =
-          (fromStep === 11 && step === 12) ||
-          (fromStep === 12 && step === 11);
-        var s1112FirstRect = null;
-        if (doS1112Flip && s1112GridEl && s1112GridEl.parentNode) {
-          s1112FirstRect = s1112GridEl.getBoundingClientRect();
-          s1112GridEl.remove();
-        }
-        s1112Instant = fromStep === 12 && step === 11;
-
-        // === s1314 FLIP: detect and prepare for 13↔14 transitions ===
-        var doS1314Flip =
-          (fromStep === 13 && step === 14) ||
-          (fromStep === 14 && step === 13);
-        var s1314FirstRect = null;
-        if (doS1314Flip && s1314OutWrap && s1314OutWrap.parentNode) {
-          s1314OutWrap.style.opacity = "1";
-          s1314OutWrap.style.transform = "";
-          s1314OutWrap.style.transition = "none";
-          s1314FirstRect = s1314OutWrap.getBoundingClientRect();
-          s1314OutWrap.remove();
-        }
-
-        // === Token FLIP capture (steps 8-14 only) ===
-        var bothPersistent =
-          fromStep >= 8 && fromStep <= 10 && step >= 8 && step <= 10;
-        var oldTokenEls = viz.querySelectorAll("[data-tok-idx]");
-        var firstRectsByIdx = {};
-        var doFlip = !bothPersistent && oldTokenEls.length >= 1;
-        if (doFlip) {
-          oldTokenEls.forEach(function (t) {
-            var idx = t.dataset.tokIdx;
-            if (idx !== undefined && !firstRectsByIdx[idx]) {
-              firstRectsByIdx[idx] = t.getBoundingClientRect();
-            }
+        if (flipState && fromStep >= 1) {
+          // Animate matched elements between old and new state
+          Flip.from(flipState, {
+            duration: 0.5,
+            ease: "power2.inOut",
+            scale: true,
+            absolute: true,
+            nested: true,
+            onEnter: function (els) {
+              gsap.fromTo(
+                els,
+                { opacity: 0, scale: 0.8 },
+                { opacity: 1, scale: 1, duration: 0.4, stagger: 0.02 },
+              );
+            },
+            onLeave: function (els) {
+              gsap.to(els, { opacity: 0, scale: 0.8, duration: 0.3 });
+            },
           });
         }
 
-        // === Dispatch (steps 8-14) ===
-        if (step >= 8 && step <= 10) {
-          var needsInsert810 =
-            !s810Layout.parentNode || s810Layout.parentNode !== viz;
-          if (needsInsert810) {
-            viz.innerHTML = "";
-            viz.appendChild(s810Layout);
-          }
-          if (step === 8) buildS810Step8Volatile();
-          else if (step === 9) buildS810Step9Volatile();
-          else if (step === 10) buildS810Step10Volatile(fromStep === 11);
-        } else {
-          viz.innerHTML = "";
-          if (step === 11) {
-            viz.appendChild(renderStep11());
-          } else if (step === 12) {
-            viz.appendChild(renderStep12());
-          } else if (step === 13) {
-            viz.appendChild(renderStep13(fromStep === 14));
-          } else if (step === 14) {
-            viz.appendChild(renderStep14());
-          }
+        // Run within-step effects (cascade animations for steps 8-10)
+        if (stepLayout && stepLayout._runEffects) {
+          stepLayout._runEffects();
         }
 
         updateAnnotation(step);
         updateButtons();
 
-        // === Cross-layer fade ===
-        if (crossingFromGsap) {
-          // Crossing from GSAP (step 7) → old system (step 8): crossfade
-          viz.style.transition = "none";
-          viz.style.opacity = "0";
-          requestAnimationFrame(function () {
-            requestAnimationFrame(function () {
-              viz.style.transition = "opacity 0.3s ease-out";
-              viz.style.opacity = "1";
-              setTimeout(function () {
-                viz.style.transition = "";
-              }, 350);
-            });
-          });
-        } else if (doFlip && !doKtFlip && !doS1112Flip && !doS1314Flip) {
-          viz.style.transition = "none";
-          viz.style.opacity = "0";
-          requestAnimationFrame(function () {
-            requestAnimationFrame(function () {
-              viz.style.transition = "opacity 0.3s ease-out";
-              viz.style.opacity = "1";
-              setTimeout(function () {
-                viz.style.transition = "";
-              }, 350);
-            });
-          });
-        }
-
-        // === K^T FLIP animation ===
-        if (
-          doKtFlip &&
-          ktFirstRect &&
-          s1011KtWrap &&
-          s1011KtWrap.parentNode
-        ) {
-          void viz.offsetHeight;
-          var ktLastRect = s1011KtWrap.getBoundingClientRect();
-          var ktDx = ktFirstRect.left - ktLastRect.left;
-          var ktDy = ktFirstRect.top - ktLastRect.top;
-          if (Math.abs(ktDx) > 0.5 || Math.abs(ktDy) > 0.5) {
-            s1011KtWrap.style.transition = "none";
-            s1011KtWrap.style.transform =
-              "translate(" + ktDx + "px, " + ktDy + "px)";
-            requestAnimationFrame(function () {
-              requestAnimationFrame(function () {
-                s1011KtWrap.style.transition =
-                  "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
-                s1011KtWrap.style.transform = "";
-                setTimeout(function () {
-                  s1011KtWrap.style.transition = "";
-                }, 550);
-              });
-            });
-          }
-        }
-
-        // === s1112 FLIP animation ===
-        if (
-          doS1112Flip &&
-          s1112FirstRect &&
-          s1112GridEl &&
-          s1112GridEl.parentNode
-        ) {
-          void viz.offsetHeight;
-          var gridLastRect = s1112GridEl.getBoundingClientRect();
-          var gridDx = s1112FirstRect.left - gridLastRect.left;
-          var gridDy = s1112FirstRect.top - gridLastRect.top;
-          var gridSX = s1112FirstRect.width / (gridLastRect.width || 1);
-          var gridSY = s1112FirstRect.height / (gridLastRect.height || 1);
-          var needsS1112Flip =
-            Math.abs(gridDx) > 0.5 ||
-            Math.abs(gridDy) > 0.5 ||
-            Math.abs(gridSX - 1) > 0.01 ||
-            Math.abs(gridSY - 1) > 0.01;
-          if (needsS1112Flip) {
-            s1112GridEl.style.transition = "none";
-            s1112GridEl.style.transformOrigin = "top left";
-            s1112GridEl.style.transform =
-              "translate(" +
-              gridDx +
-              "px, " +
-              gridDy +
-              "px) scale(" +
-              gridSX +
-              ", " +
-              gridSY +
-              ")";
-            requestAnimationFrame(function () {
-              requestAnimationFrame(function () {
-                s1112GridEl.style.transition =
-                  "transform 0.65s cubic-bezier(0.4, 0, 0.2, 1)";
-                s1112GridEl.style.transform = "";
-                setTimeout(function () {
-                  s1112GridEl.style.transition = "";
-                  s1112GridEl.style.transformOrigin = "";
-                }, 700);
-              });
-            });
-          }
-        }
-
-        // === s1314 FLIP animation ===
-        if (
-          doS1314Flip &&
-          s1314FirstRect &&
-          s1314OutWrap &&
-          s1314OutWrap.parentNode
-        ) {
-          void viz.offsetHeight;
-          var s1314LastRect = s1314OutWrap.getBoundingClientRect();
-          var s1314Dx = s1314FirstRect.left - s1314LastRect.left;
-          var s1314Dy = s1314FirstRect.top - s1314LastRect.top;
-          if (Math.abs(s1314Dx) > 0.5 || Math.abs(s1314Dy) > 0.5) {
-            s1314OutWrap.style.transition = "none";
-            s1314OutWrap.style.transform =
-              "translate(" + s1314Dx + "px, " + s1314Dy + "px)";
-            requestAnimationFrame(function () {
-              requestAnimationFrame(function () {
-                s1314OutWrap.style.transition =
-                  "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
-                s1314OutWrap.style.transform = "";
-                setTimeout(function () {
-                  s1314OutWrap.style.transition = "";
-                }, 550);
-              });
-            });
-          }
-        }
-
-        // === Universal token-text FLIP (steps 8-14 boundaries) ===
-        var skipTokenFlip = doS1112Flip;
-        if (doFlip && !skipTokenFlip) {
-          var newTokenEls = viz.querySelectorAll("[data-tok-idx]");
-          var seen = {};
-          var flippedEls = [];
-          newTokenEls.forEach(function (tokEl) {
-            var idx = tokEl.dataset.tokIdx;
-            if (idx === undefined || seen[idx] || !firstRectsByIdx[idx])
-              return;
-            seen[idx] = true;
-            var oldR = firstRectsByIdx[idx];
-            var newR = tokEl.getBoundingClientRect();
-            var dx =
-              oldR.left + oldR.width / 2 - (newR.left + newR.width / 2);
-            var dy =
-              oldR.top + oldR.height / 2 - (newR.top + newR.height / 2);
-            var sx = oldR.width / (newR.width || 1);
-            var sy = oldR.height / (newR.height || 1);
-            var needsFlip =
-              Math.abs(dx) > 0.5 ||
-              Math.abs(dy) > 0.5 ||
-              Math.abs(sx - 1) > 0.02 ||
-              Math.abs(sy - 1) > 0.02;
-            if (needsFlip) {
-              tokEl.style.transition = "none";
-              tokEl.style.transformOrigin = "center center";
-              tokEl.style.transform =
-                "translate(" +
-                dx +
-                "px, " +
-                dy +
-                "px) scale(" +
-                sx +
-                ", " +
-                sy +
-                ")";
-              flippedEls.push(tokEl);
-            }
-          });
-          if (flippedEls.length > 0) {
-            flippedEls.forEach(function (tokEl) {
-              void getComputedStyle(tokEl).transform;
-            });
-            requestAnimationFrame(function () {
-              requestAnimationFrame(function () {
-                flippedEls.forEach(function (tokEl) {
-                  tokEl.style.transition =
-                    "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
-                  tokEl.style.transform = "";
-                });
-                setTimeout(function () {
-                  flippedEls.forEach(function (tokEl) {
-                    tokEl.style.transition = "";
-                    tokEl.style.transformOrigin = "";
-                  });
-                }, 550);
-              });
-            });
-          }
-        }
+        // (Old persistent-layer path removed — all steps use GSAP Flip above)
       }
 
       function stepForward() {

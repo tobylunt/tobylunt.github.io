@@ -631,3 +631,54 @@ works both directions. Reset button works. No JS errors.
 
 Next session (Session 2): Convert steps 8-14 to GSAP Flip, delete s810 persistent layer
 and all remaining manual FLIP code, CSS cleanup.
+
+=== Session 2: GSAP Flip rewrite for steps 8-14 ===
+
+Completed the GSAP Flip rewrite for ALL 14 steps. The entire head walkthrough now uses
+full-rebuild-per-step with GSAP Flip for cross-step animations. No more persistent DOM layers.
+
+Changes:
+1. Created flipBuildInputMatrix() helper and renderStep8/9/10 pure functions.
+   Each builds complete DOM with data-flip-id="tok-N" on token labels.
+   Animation cascades attached as layout._runEffects closures.
+2. Created flipBuildGrid(mode) helper — builds fresh 8×8 grid with data-flip-id
+   on cells (score-rNcM), row labels (row-label-N), col labels (col-label-N).
+   Updates module-level s1112Cells/RowLabelEls/ColLabelEls for hover handler compat.
+3. Created flipBuildOutputMatrix(label) helper — builds green output matrix with
+   data-flip-id="output-wrap" for GSAP matching between steps 13 and 14.
+4. Refactored renderStep11 to build K^T inline with data-flip-id="kt-wrap" (matches
+   step 10's K^T) instead of using persistent s1011KtWrap. Accepts fromStep parameter
+   to control row-fill animation (skip when backward from step 12).
+5. Refactored renderStep12 to use flipBuildGrid("12") instead of persistent s1112GridEl.
+6. Refactored renderStep13 to use flipBuildOutputMatrix("Output") instead of persistent
+   s1314OutWrap. Accepts fromStep to control slide-in animation.
+7. Refactored renderStep14 to use flipBuildOutputMatrix("Attn(x)").
+8. Extended showStep() GSAP Flip path from steps 1-10 to ALL 14 steps.
+   Deleted entire old persistent-layer dispatch path (~260 lines):
+   - K^T FLIP detection and animation
+   - s1112 grid FLIP detection and animation
+   - s1314 output FLIP detection and animation
+   - Universal token-text FLIP
+   - Cross-layer fade logic
+   - Old steps 8-10 dispatch via s810Layout
+9. Deleted dead code:
+   - s1011KtWrap, s1011KtDimCancel, s1011KtInstant variables
+   - s1112GridEl, s1112Instant variables
+   - s1314OutWrap, s1314OutLabelEl, s1314OutTimeout variables
+   - buildS1112Grid(), applyS1112Mode11Styles(), applyS1112Mode12Styles()
+   - buildKtInnerStep10(), buildKtInnerStep11()
+   - buildS1314OutWrap()
+   - s1314OutTimeout cleanup in showStep()
+
+Net: 773 insertions, 684 deletions (mostly restructuring into pure functions + helper extraction).
+
+Remaining dead code (harmless, can clean up later):
+- s810Layout persistent layer construction and buildS810Step8/9/10Volatile functions
+  (steps 8-10 now use GSAP renderStep8/9/10, so these never execute)
+
+Commit: (this session)
+
+Verified: All 14 steps render correctly forward and backward. Step 12 hover interactivity
+works (tooltip shows correct attention info). Reset button works. No JS errors.
+
+Next session: Delete remaining s810 dead code, CSS transition cleanup, performance tuning.
