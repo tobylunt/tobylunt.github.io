@@ -5152,6 +5152,41 @@ const sections = [
   .hw-gutter-ann {
     display: none;
   }
+  /* Y-axis label and sidenote used by the s35 persistent layer (steps 3-7) */
+  .hw-embed-yaxis {
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.62rem;
+    color: hsl(210 60% 55% / 0.6);
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    opacity: 0;
+    animation: hw-fade-in 0.3s ease 0.8s both;
+  }
+
+  .hw-embed-sidenote {
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.72rem;
+    line-height: 1.5;
+    color: hsl(var(--theme-text) / 0.55);
+    border-left: 2px solid hsl(210 60% 55% / 0.25);
+    background: hsl(210 60% 55% / 0.04);
+    border-radius: 0 4px 4px 0;
+    max-width: 480px;
+    opacity: 0;
+    animation: hw-fade-in 0.4s ease 1.2s both;
+  }
+
+  .hw-embed-sn-text {
+    flex: 1;
+  }
+
+  .hw-embed-sn-text strong {
+    color: hsl(var(--theme-text) / 0.7);
+  }
+
   /* Step 1: Black box visualization — horizontal sentence layout */
   .hw-blackbox-layout {
     display: flex;
