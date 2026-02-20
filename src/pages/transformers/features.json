@@ -423,7 +423,7 @@
   {
     "id": 30,
     "name": "Smooth Step 8\u21949\u219410 \u2014 projection carousel",
-    "passes": false,
+    "passes": true,
     "steps": [
       "Input matrix already matches via tok-0..7 across steps 8-10. The issues are: weight matrices swap instantly, output matrices appear/disappear without visual connection",
       "Add data-flip-id='weight-matrix' to the weight matrix element in steps 8, 9, and 10 so it Flips in place \u2014 only the label and color change. After Flip, tween the weight matrix background/border color from step N's color to step N+1's color over 400ms",

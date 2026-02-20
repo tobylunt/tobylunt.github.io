@@ -14764,7 +14764,7 @@ const sections = [
         var qkvRow = el("div", "hw-norm-qkv-row visible");
         weightDefs.forEach(function (w) {
           var wmat = el("div", "hw-wmat");
-          if (w.cls === "q") wmat.dataset.flipId = "wq-matrix";
+          if (w.cls === "q") wmat.dataset.flipId = "weight-matrix";
           var wlbl = el("div", "hw-wmat-label hw-wmat-label-" + w.cls);
           wlbl.innerHTML = w.label;
           if (astroAttr)
@@ -15042,7 +15042,7 @@ const sections = [
         ];
 
         var wqWrap = el("div", "hw-q8-mat-wrap hw-q8-wq-wrap");
-        wqWrap.dataset.flipId = "wq-matrix";
+        wqWrap.dataset.flipId = "weight-matrix";
         var wqLabel = el("div", "hw-q8-mat-label hw-q8-label-wq");
         wqLabel.innerHTML = "W<sub>Q</sub>";
         if (astroAttr) wqLabel.querySelectorAll("sub").forEach(function (s) { s.setAttribute(astroAttr, ""); });
@@ -15067,6 +15067,7 @@ const sections = [
         main.appendChild(el("div", "hw-q8-op", "\u2192"));
 
         var outWrap = el("div", "hw-q8-mat-wrap hw-q8-out-wrap");
+        outWrap.dataset.flipId = "output-matrix";
         outWrap.appendChild(el("div", "hw-q8-mat-label hw-q8-label-q", "Q"));
         var outTokenRow = el("div", "hw-q8-token-labels");
         tokens.forEach(function (tok) {
@@ -15181,6 +15182,7 @@ const sections = [
         ];
 
         var wvWrap = el("div", "hw-q8-mat-wrap hw-v9-wv-wrap");
+        wvWrap.dataset.flipId = "weight-matrix";
         var wvLabel = el("div", "hw-q8-mat-label hw-v9-label-wv");
         wvLabel.innerHTML = "W<sub>V</sub>";
         if (astroAttr) wvLabel.querySelectorAll("sub").forEach(function (s) { s.setAttribute(astroAttr, ""); });
@@ -15223,6 +15225,7 @@ const sections = [
         stackArea.appendChild(qGhost);
 
         var outWrap = el("div", "hw-q8-mat-wrap hw-v9-out-wrap");
+        outWrap.dataset.flipId = "output-matrix";
         outWrap.appendChild(el("div", "hw-q8-mat-label hw-v9-label-v", "V"));
         var outTokenRow = el("div", "hw-q8-token-labels");
         tokens.forEach(function (tok) { outTokenRow.appendChild(el("div", "hw-q8-token-label hw-q8-out-token-label", tok)); });
@@ -15294,11 +15297,11 @@ const sections = [
               if (i < detailedCount) {
                 flyCol(inputColEls[i], 250);
                 setTimeout(function () { if (s810BuildId !== myId) return; wvWrap.classList.add("flash"); setTimeout(function () { wvWrap.classList.remove("flash"); }, 200); }, 250);
-                setTimeout(function () { if (s810BuildId !== myId) return; outputColEls[i].classList.add("hw-q8-filled"); }, 350);
+                setTimeout(function () { if (s810BuildId !== myId) return; outputColEls[i].classList.add("hw-v9-filled"); }, 350);
                 setTimeout(function () { if (s810BuildId !== myId) return; inputColEls[i].classList.remove("hw-v9-highlight"); }, 450);
               } else {
                 wvWrap.classList.add("flash"); setTimeout(function () { wvWrap.classList.remove("flash"); }, 40);
-                setTimeout(function () { if (s810BuildId !== myId) return; outputColEls[i].classList.add("hw-q8-filled"); }, 30);
+                setTimeout(function () { if (s810BuildId !== myId) return; outputColEls[i].classList.add("hw-v9-filled"); }, 30);
                 setTimeout(function () { if (s810BuildId !== myId) return; inputColEls[i].classList.remove("hw-v9-highlight"); }, 50);
               }
             }, delay);
@@ -15330,6 +15333,7 @@ const sections = [
         ];
 
         var wkWrap = el("div", "hw-q8-mat-wrap hw-k10-wk-wrap");
+        wkWrap.dataset.flipId = "weight-matrix";
         var wkLabel = el("div", "hw-q8-mat-label hw-k10-label-wk");
         wkLabel.innerHTML = "W<sub>K</sub>";
         if (astroAttr) wkLabel.querySelectorAll("sub").forEach(function (s) { s.setAttribute(astroAttr, ""); });
@@ -15462,11 +15466,11 @@ const sections = [
               if (i < detailedCount) {
                 flyCol(inputColEls[i], 250);
                 setTimeout(function () { if (s810BuildId !== myId) return; wkWrap.classList.add("flash"); setTimeout(function () { wkWrap.classList.remove("flash"); }, 200); }, 250);
-                setTimeout(function () { if (s810BuildId !== myId) return; outputColEls[i].classList.add("hw-q8-filled"); }, 350);
+                setTimeout(function () { if (s810BuildId !== myId) return; outputColEls[i].classList.add("hw-k10-filled"); }, 350);
                 setTimeout(function () { if (s810BuildId !== myId) return; inputColEls[i].classList.remove("hw-k10-highlight"); }, 450);
               } else {
                 wkWrap.classList.add("flash"); setTimeout(function () { wkWrap.classList.remove("flash"); }, 40);
-                setTimeout(function () { if (s810BuildId !== myId) return; outputColEls[i].classList.add("hw-q8-filled"); }, 30);
+                setTimeout(function () { if (s810BuildId !== myId) return; outputColEls[i].classList.add("hw-k10-filled"); }, 30);
                 setTimeout(function () { if (s810BuildId !== myId) return; inputColEls[i].classList.remove("hw-k10-highlight"); }, 50);
               }
             }, delay);
@@ -15996,6 +16000,224 @@ const sections = [
           }
         }
 
+        // === Post-Flip visual tweens for step 8↔9 boundary ===
+        if (fromStep === 8 && step === 9) {
+          // Weight matrix: Flip matched (blue W_Q → pink W_V), tween colors
+          var s89wm = viz.querySelector(".hw-v9-wv-wrap");
+          if (s89wm) {
+            s89wm.classList.add("visible");
+            gsap.killTweensOf(s89wm);
+            gsap.set(s89wm, { clearProps: "opacity,transform" });
+          }
+          viz.querySelectorAll(".hw-v9-wv-col").forEach(function (col) {
+            gsap.from(col, { borderColor: "hsla(210, 70%, 55%, 0.15)", duration: 0.4, ease: "power2.out" });
+          });
+          viz.querySelectorAll(".hw-v9-wv-cell").forEach(function (cell) {
+            gsap.from(cell, { backgroundColor: "hsla(210, 70%, 55%, 0.08)", color: "hsla(210, 70%, 55%, 0.75)", duration: 0.4, ease: "power2.out" });
+          });
+          viz.querySelectorAll(".hw-v9-wv-dots").forEach(function (d) {
+            gsap.from(d, { color: "hsla(210, 70%, 55%, 0.35)", backgroundColor: "hsla(210, 70%, 55%, 0.04)", duration: 0.4, ease: "power2.out" });
+          });
+          // Output matrix: Flip matched (Q → V), make visible with filled cols
+          var s89out = viz.querySelector(".hw-v9-out-wrap");
+          var s89ghost = viz.querySelector(".hw-v9-q-ghost");
+          if (s89out) {
+            s89out.classList.add("visible");
+            s89out.querySelectorAll(".hw-v9-out-col").forEach(function (col) {
+              col.classList.add("hw-v9-filled");
+            });
+            gsap.killTweensOf(s89out);
+            gsap.set(s89out, { clearProps: "opacity,transform" });
+            // Tween output columns from blue to pink (use fromTo to avoid transparent endpoint)
+            s89out.querySelectorAll(".hw-v9-out-col").forEach(function (col) {
+              gsap.fromTo(col, { borderColor: "hsla(210, 70%, 55%, 0.2)" }, { borderColor: "hsla(340, 65%, 55%, 0.2)", duration: 0.4, ease: "power2.out", clearProps: "borderColor" });
+            });
+            s89out.querySelectorAll(".hw-v9-out-cell").forEach(function (cell) {
+              gsap.fromTo(cell, { backgroundColor: "hsla(210, 70%, 55%, 0.08)", color: "hsla(210, 70%, 55%, 0.75)" }, { backgroundColor: "hsla(340, 65%, 55%, 0.08)", color: "hsla(340, 65%, 55%, 0.75)", duration: 0.4, ease: "power2.out", clearProps: "backgroundColor,color" });
+            });
+          }
+          // Q ghost: delayed fade-in (new element in step 9)
+          if (s89ghost) {
+            s89ghost.classList.add("visible");
+            gsap.set(s89ghost, { opacity: 0 });
+            gsap.to(s89ghost, { opacity: 1, duration: 0.35, delay: 0.4, ease: "power2.out" });
+          }
+          // Operators: staggered fade-in
+          viz.querySelectorAll(".hw-q8-op").forEach(function (op, i) {
+            gsap.killTweensOf(op);
+            gsap.set(op, { opacity: 0 });
+            gsap.to(op, { opacity: 1, duration: 0.3, delay: 0.15 + i * 0.1, ease: "power2.out" });
+          });
+          // Equation: delayed fade-in
+          var s89eq = viz.querySelector(".hw-q8-equation");
+          if (s89eq) {
+            gsap.set(s89eq, { opacity: 0 });
+            gsap.to(s89eq, { opacity: 1, duration: 0.3, delay: 0.5, ease: "power2.out" });
+          }
+          // Input columns: mark as processed
+          viz.querySelectorAll(".hw-q8-input-col").forEach(function (col) {
+            col.classList.add("hw-q8-persistent");
+          });
+        }
+        if (fromStep === 9 && step === 8) {
+          // Weight matrix: Flip matched (pink W_V → blue W_Q), tween colors
+          var s98wm = viz.querySelector(".hw-q8-wq-wrap");
+          if (s98wm) {
+            s98wm.classList.add("visible");
+            gsap.killTweensOf(s98wm);
+            gsap.set(s98wm, { clearProps: "opacity,transform" });
+          }
+          viz.querySelectorAll(".hw-q8-wq-col").forEach(function (col) {
+            gsap.from(col, { borderColor: "hsla(340, 65%, 55%, 0.15)", duration: 0.4, ease: "power2.out" });
+          });
+          viz.querySelectorAll(".hw-q8-wq-cell").forEach(function (cell) {
+            gsap.from(cell, { backgroundColor: "hsla(340, 65%, 55%, 0.08)", color: "hsla(340, 65%, 55%, 0.75)", duration: 0.4, ease: "power2.out" });
+          });
+          viz.querySelectorAll(".hw-q8-wq-dots").forEach(function (d) {
+            gsap.from(d, { color: "hsla(340, 65%, 55%, 0.35)", backgroundColor: "hsla(340, 65%, 55%, 0.04)", duration: 0.4, ease: "power2.out" });
+          });
+          // Output matrix: Flip matched (V → Q), make visible with filled cols
+          var s98out = viz.querySelector(".hw-q8-out-wrap");
+          if (s98out) {
+            s98out.classList.add("visible");
+            s98out.querySelectorAll(".hw-q8-out-col").forEach(function (col) {
+              col.classList.add("hw-q8-filled");
+            });
+            gsap.killTweensOf(s98out);
+            gsap.set(s98out, { clearProps: "opacity,transform" });
+            // Tween output columns from pink to blue (use fromTo to avoid transparent endpoint)
+            s98out.querySelectorAll(".hw-q8-out-col").forEach(function (col) {
+              gsap.fromTo(col, { borderColor: "hsla(340, 65%, 55%, 0.2)" }, { borderColor: "hsla(210, 70%, 55%, 0.2)", duration: 0.4, ease: "power2.out", clearProps: "borderColor" });
+            });
+            s98out.querySelectorAll(".hw-q8-out-cell").forEach(function (cell) {
+              gsap.fromTo(cell, { backgroundColor: "hsla(340, 65%, 55%, 0.08)", color: "hsla(340, 65%, 55%, 0.75)" }, { backgroundColor: "hsla(210, 70%, 55%, 0.08)", color: "hsla(210, 70%, 55%, 0.75)", duration: 0.4, ease: "power2.out", clearProps: "backgroundColor,color" });
+            });
+          }
+          // Operators: staggered fade-in
+          viz.querySelectorAll(".hw-q8-op").forEach(function (op, i) {
+            gsap.killTweensOf(op);
+            gsap.set(op, { opacity: 0 });
+            gsap.to(op, { opacity: 1, duration: 0.3, delay: 0.15 + i * 0.1, ease: "power2.out" });
+          });
+          // Equation: delayed fade-in
+          var s98eq = viz.querySelector(".hw-q8-equation");
+          if (s98eq) {
+            gsap.set(s98eq, { opacity: 0 });
+            gsap.to(s98eq, { opacity: 1, duration: 0.3, delay: 0.5, ease: "power2.out" });
+          }
+          // Input columns: mark as processed
+          viz.querySelectorAll(".hw-q8-input-col").forEach(function (col) {
+            col.classList.add("hw-q8-persistent");
+          });
+        }
+
+        // === Post-Flip visual tweens for step 9↔10 boundary ===
+        if (fromStep === 9 && step === 10) {
+          // Weight matrix: Flip matched (pink W_V → orange W_K), tween colors
+          var s910wm = viz.querySelector(".hw-k10-wk-wrap");
+          if (s910wm) {
+            s910wm.classList.add("visible");
+            gsap.killTweensOf(s910wm);
+            gsap.set(s910wm, { clearProps: "opacity,transform" });
+          }
+          viz.querySelectorAll(".hw-k10-wk-col").forEach(function (col) {
+            gsap.from(col, { borderColor: "hsla(340, 65%, 55%, 0.15)", duration: 0.4, ease: "power2.out" });
+          });
+          viz.querySelectorAll(".hw-k10-wk-cell").forEach(function (cell) {
+            gsap.from(cell, { backgroundColor: "hsla(340, 65%, 55%, 0.08)", color: "hsla(340, 65%, 55%, 0.75)", duration: 0.4, ease: "power2.out" });
+          });
+          viz.querySelectorAll(".hw-k10-wk-dots").forEach(function (d) {
+            gsap.from(d, { color: "hsla(340, 65%, 55%, 0.35)", backgroundColor: "hsla(340, 65%, 55%, 0.04)", duration: 0.4, ease: "power2.out" });
+          });
+          // K output matrix: make visible with filled cols, slide-in from right
+          var s910out = viz.querySelector(".hw-k10-out-wrap");
+          if (s910out) {
+            s910out.classList.add("visible");
+            s910out.querySelectorAll(".hw-k10-out-col").forEach(function (col) {
+              col.classList.add("hw-k10-filled");
+            });
+            gsap.killTweensOf(s910out);
+            gsap.set(s910out, { opacity: 0, x: 20 });
+            gsap.to(s910out, { opacity: 1, x: 0, duration: 0.4, delay: 0.3, ease: "power2.out" });
+          }
+          // Transpose section: staggered entrance
+          var s910transpose = viz.querySelector(".hw-k10-transpose");
+          if (s910transpose) {
+            s910transpose.classList.add("visible");
+            gsap.set(s910transpose, { opacity: 0, y: 15 });
+            gsap.to(s910transpose, { opacity: 1, y: 0, duration: 0.4, delay: 0.6, ease: "power2.out" });
+            var s910kt = viz.querySelector(".hw-k10-kt-wrap");
+            if (s910kt) s910kt.classList.add("flip-in");
+          }
+          // Operators: staggered fade-in
+          viz.querySelectorAll(".hw-q8-op").forEach(function (op, i) {
+            gsap.killTweensOf(op);
+            gsap.set(op, { opacity: 0 });
+            gsap.to(op, { opacity: 1, duration: 0.3, delay: 0.15 + i * 0.1, ease: "power2.out" });
+          });
+          // Equation: delayed fade-in
+          var s910eq = viz.querySelector(".hw-q8-equation");
+          if (s910eq) {
+            gsap.set(s910eq, { opacity: 0 });
+            gsap.to(s910eq, { opacity: 1, duration: 0.3, delay: 0.5, ease: "power2.out" });
+          }
+          // Input columns: mark as processed
+          viz.querySelectorAll(".hw-q8-input-col").forEach(function (col) {
+            col.classList.add("hw-q8-persistent");
+          });
+        }
+        if (fromStep === 10 && step === 9) {
+          // Weight matrix: Flip matched (orange W_K → pink W_V), tween colors
+          var s109wm = viz.querySelector(".hw-v9-wv-wrap");
+          if (s109wm) {
+            s109wm.classList.add("visible");
+            gsap.killTweensOf(s109wm);
+            gsap.set(s109wm, { clearProps: "opacity,transform" });
+          }
+          viz.querySelectorAll(".hw-v9-wv-col").forEach(function (col) {
+            gsap.from(col, { borderColor: "hsla(30, 80%, 50%, 0.15)", duration: 0.4, ease: "power2.out" });
+          });
+          viz.querySelectorAll(".hw-v9-wv-cell").forEach(function (cell) {
+            gsap.from(cell, { backgroundColor: "hsla(30, 80%, 50%, 0.08)", color: "hsla(30, 80%, 50%, 0.75)", duration: 0.4, ease: "power2.out" });
+          });
+          viz.querySelectorAll(".hw-v9-wv-dots").forEach(function (d) {
+            gsap.from(d, { color: "hsla(30, 80%, 50%, 0.35)", backgroundColor: "hsla(30, 80%, 50%, 0.04)", duration: 0.4, ease: "power2.out" });
+          });
+          // V output + Q ghost: make visible, delayed entrance
+          var s109out = viz.querySelector(".hw-v9-out-wrap");
+          var s109ghost = viz.querySelector(".hw-v9-q-ghost");
+          if (s109out) {
+            s109out.classList.add("visible");
+            s109out.querySelectorAll(".hw-v9-out-col").forEach(function (col) {
+              col.classList.add("hw-v9-filled");
+            });
+            gsap.killTweensOf(s109out);
+            gsap.set(s109out, { opacity: 0, x: -20 });
+            gsap.to(s109out, { opacity: 1, x: 0, duration: 0.4, delay: 0.3, ease: "power2.out" });
+          }
+          if (s109ghost) {
+            s109ghost.classList.add("visible");
+            gsap.set(s109ghost, { opacity: 0 });
+            gsap.to(s109ghost, { opacity: 1, duration: 0.3, delay: 0.45, ease: "power2.out" });
+          }
+          // Operators: staggered fade-in
+          viz.querySelectorAll(".hw-q8-op").forEach(function (op, i) {
+            gsap.killTweensOf(op);
+            gsap.set(op, { opacity: 0 });
+            gsap.to(op, { opacity: 1, duration: 0.3, delay: 0.15 + i * 0.1, ease: "power2.out" });
+          });
+          // Equation: delayed fade-in
+          var s109eq = viz.querySelector(".hw-q8-equation");
+          if (s109eq) {
+            gsap.set(s109eq, { opacity: 0 });
+            gsap.to(s109eq, { opacity: 1, duration: 0.3, delay: 0.5, ease: "power2.out" });
+          }
+          // Input columns: mark as processed
+          viz.querySelectorAll(".hw-q8-input-col").forEach(function (col) {
+            col.classList.add("hw-q8-persistent");
+          });
+        }
+
         // === Post-Flip visual tweens for step 1↔2 boundary ===
         if (
           (fromStep === 1 && step === 2) ||
@@ -16036,8 +16258,11 @@ const sections = [
         }
 
         // Run within-step effects (cascade animations for steps 8-10)
-        // Skip cascade when entering step 8 from step 7 — Flip handles the transition
-        if (stepLayout && stepLayout._runEffects && !(fromStep === 7 && step === 8)) {
+        // Skip cascade when Flip handles the transition between adjacent projection steps
+        var skipCascade = (fromStep === 7 && step === 8) ||
+          (fromStep === 8 && step === 9) || (fromStep === 9 && step === 8) ||
+          (fromStep === 9 && step === 10) || (fromStep === 10 && step === 9);
+        if (stepLayout && stepLayout._runEffects && !skipCascade) {
           stepLayout._runEffects();
         }
 

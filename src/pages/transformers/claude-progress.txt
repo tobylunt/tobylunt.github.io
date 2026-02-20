@@ -819,5 +819,30 @@ Key architecture context for next session:
 - Verified: 7→8 forward (matrix slides left, W_Q FLIPs, Q output slides in), 8→7 backward
   (matrix returns to center, W_K/W_V stagger in), rapid clicking 7↔8→9, both dark and light themes
 - Build: 0 errors
-- Commit: (this session)
+- Commit: e682a0a
 - Next: Feature #30 — Smooth Step 8↔9↔10 projection carousel
+
+=== Feature #30: Smooth Step 8↔9↔10 — projection carousel — 2026-02-20 ===
+- Added `data-flip-id="weight-matrix"` to weight wraps in steps 7, 8, 9, 10 (renamed from
+  wq-matrix) so GSAP Flip matches the weight matrix across all projection steps
+- Added `data-flip-id="output-matrix"` to Q output wrap (step 8) and V output wrap (step 9)
+  for Flip matching between output matrices
+- Added 4 post-Flip tween blocks for 8↔9 and 9↔10 boundaries:
+  - 8→9: Weight columns tween blue→pink, output cells tween blue→pink via gsap.fromTo(),
+    Q ghost delayed fade-in, operators/equation fade
+  - 9→8: Reverse pink→blue tweens, operators/equation fade
+  - 9→10: Weight tween pink→orange, K output slide-in with hw-k10-filled, transpose section
+    staggered entrance
+  - 10→9: Weight tween orange→pink, V output slide-in with hw-v9-filled, Q ghost entrance
+- Extended _runEffects() skip gate to cover all adjacent 8↔9↔10 transitions
+- Fixed pre-existing cascade bugs: renderStep9._runEffects used hw-q8-filled instead of
+  hw-v9-filled (V output values were invisible); renderStep10._runEffects used hw-q8-filled
+  instead of hw-k10-filled (K output values invisible)
+- Fixed gsap.from() → gsap.fromTo() for output cell color tweens: gsap.from() reads the
+  current computed color as endpoint, but output cells have color:transparent by default,
+  so tween endpoint was transparent. gsap.fromTo() with explicit start/end + clearProps fixes this
+- Verified: 8→9 forward, 9→10 forward, 10→9 backward, 9→8 backward, rapid clicking 8↔9↔10,
+  step 11 no regression, both dark and light themes
+- Build: 0 errors
+- Commit: 2027b7d
+- Next: Feature #31 — Smooth Step 9↔10→11 boundary — K^T persistence
