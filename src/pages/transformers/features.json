@@ -336,118 +336,118 @@
   },
   {
     "id": 24,
-    "name": "Smooth Step 1↔2 — black box fade + token separation",
+    "name": "Smooth Step 1\u21942 \u2014 black box fade + token separation",
     "passes": true,
     "steps": [
       "Both steps share flipBuildSentence() with tok-0..7 flip IDs, so words already match across the transition",
-      "Black box, arrow, and prediction elements (in r.extras) snap-disappear on 1→2 — add a GSAP fade-out tween (opacity 1→0, duration 300ms) that runs BEFORE the Flip rebuild, or use onLeave with longer duration",
-      "Token spacing goes from continuous sentence to separated chips instantly — Flip handles position but the colored chip backgrounds (appearing on step 2) need a post-Flip tween from transparent/no-background to colored background",
-      "After Flip.from() completes for 1→2, tween each tok-0..7 chip's background-color from transparent to the token color, and border from none to the chip border style, over 400ms with per-token stagger",
-      "For backward 2→1: reverse the effect — tween chip backgrounds to transparent before or during Flip, and fade-in the black box / arrow / prediction extras via onEnter",
-      "Verify rapid clicking (1→2→1→2) doesn't leave artifacts from interrupted tweens — use gsap.killTweensOf() on the relevant elements at the start of each transition",
+      "Black box, arrow, and prediction elements (in r.extras) snap-disappear on 1\u21922 \u2014 add a GSAP fade-out tween (opacity 1\u21920, duration 300ms) that runs BEFORE the Flip rebuild, or use onLeave with longer duration",
+      "Token spacing goes from continuous sentence to separated chips instantly \u2014 Flip handles position but the colored chip backgrounds (appearing on step 2) need a post-Flip tween from transparent/no-background to colored background",
+      "After Flip.from() completes for 1\u21922, tween each tok-0..7 chip's background-color from transparent to the token color, and border from none to the chip border style, over 400ms with per-token stagger",
+      "For backward 2\u21921: reverse the effect \u2014 tween chip backgrounds to transparent before or during Flip, and fade-in the black box / arrow / prediction extras via onEnter",
+      "Verify rapid clicking (1\u21922\u21921\u21922) doesn't leave artifacts from interrupted tweens \u2014 use gsap.killTweensOf() on the relevant elements at the start of each transition",
       "Test in both dark and light themes"
     ]
   },
   {
     "id": 25,
-    "name": "Smooth Step 2↔3 — tokens persist into columns",
+    "name": "Smooth Step 2\u21943 \u2014 tokens persist into columns",
     "passes": true,
     "steps": [
-      "tok-0..7 matches across flipBuildSentence() → flipBuildColumns(), but tokens go from inline sentence spans to block column-header chips with very different geometry — ensure Flip animates this position/size change smoothly (may need duration 0.6-0.8s for this boundary)",
-      "Embedding columns (blue pills), down arrows, and y-axis label appear all at once via onEnter — add stagger by token index (stagger: 0.04) so columns cascade left-to-right instead of popping in simultaneously",
-      "Blue pills should animate height from 0 to full (growing downward under each token) — set initial scaleY(0) with transformOrigin 'top center' in onEnter, tween to scaleY(1)",
-      "Down arrows between token chips and blue pills should fade in before the pills grow (sequence: arrows fade in → pills grow downward)",
-      "For backward 3→2: columns should shrink upward (scaleY → 0) and arrows fade out before tokens Flip back to sentence positions",
+      "tok-0..7 matches across flipBuildSentence() \u2192 flipBuildColumns(), but tokens go from inline sentence spans to block column-header chips with very different geometry \u2014 ensure Flip animates this position/size change smoothly (may need duration 0.6-0.8s for this boundary)",
+      "Embedding columns (blue pills), down arrows, and y-axis label appear all at once via onEnter \u2014 add stagger by token index (stagger: 0.04) so columns cascade left-to-right instead of popping in simultaneously",
+      "Blue pills should animate height from 0 to full (growing downward under each token) \u2014 set initial scaleY(0) with transformOrigin 'top center' in onEnter, tween to scaleY(1)",
+      "Down arrows between token chips and blue pills should fade in before the pills grow (sequence: arrows fade in \u2192 pills grow downward)",
+      "For backward 3\u21922: columns should shrink upward (scaleY \u2192 0) and arrows fade out before tokens Flip back to sentence positions",
       "The sidenote in step 3 extras should fade in after the column entrance animation completes, not simultaneously",
       "Verify the transition feels like 'tokens dropping into place and columns growing beneath them' rather than an instant layout swap"
     ]
   },
   {
     "id": 26,
-    "name": "Smooth Step 3↔4↔5 — embedding transitions within columns range",
-    "passes": false,
+    "name": "Smooth Step 3\u21944\u21945 \u2014 embedding transitions within columns range",
+    "passes": true,
     "steps": [
-      "All three steps use flipBuildColumns() with matching flip IDs — since DOM is rebuilt each step, CSS-driven transitions don't fire and need GSAP tweens instead",
-      "3→4: After Flip, tween blue pill width from full to narrow over 400ms. Yellow pills enter via onEnter with staggered fade-in (stagger: 0.03) plus scaleY grow from 0 (transformOrigin 'top center') — not instant pop",
-      "4→5: Blue+yellow pairs must animate to green merged pill. Set green pills to opacity:0 initially, after Flip tween green to opacity:1 while simultaneously tweening blue+yellow to opacity:0, over 500ms. No intermediate 'washed out' ghost state where all three are partially visible",
-      "For backward 5→4: green pill fades to 0, blue+yellow fade from 0 to 1 (reverse of merge). 4→3: yellow pills shrink (scaleY→0) and fade out, blue pills tween width back to full",
-      "Verify the merge animation (4→5) keeps elements centered under their token chips — no horizontal drift during the opacity crossfade",
+      "All three steps use flipBuildColumns() with matching flip IDs \u2014 since DOM is rebuilt each step, CSS-driven transitions don't fire and need GSAP tweens instead",
+      "3\u21924: After Flip, tween blue pill width from full to narrow over 400ms. Yellow pills enter via onEnter with staggered fade-in (stagger: 0.03) plus scaleY grow from 0 (transformOrigin 'top center') \u2014 not instant pop",
+      "4\u21925: Blue+yellow pairs must animate to green merged pill. Set green pills to opacity:0 initially, after Flip tween green to opacity:1 while simultaneously tweening blue+yellow to opacity:0, over 500ms. No intermediate 'washed out' ghost state where all three are partially visible",
+      "For backward 5\u21924: green pill fades to 0, blue+yellow fade from 0 to 1 (reverse of merge). 4\u21923: yellow pills shrink (scaleY\u21920) and fade out, blue pills tween width back to full",
+      "Verify the merge animation (4\u21925) keeps elements centered under their token chips \u2014 no horizontal drift during the opacity crossfade",
       "The legend (step 4), equation (step 5), and sidenote extras should fade in after the primary column animation completes",
-      "Test rapid forward/backward clicking through 3↔4↔5 — verify no stacking artifacts from interrupted tweens"
+      "Test rapid forward/backward clicking through 3\u21944\u21945 \u2014 verify no stacking artifacts from interrupted tweens"
     ]
   },
   {
     "id": 27,
-    "name": "Smooth Step 5↔6 — column consolidation",
+    "name": "Smooth Step 5\u21946 \u2014 column consolidation",
     "passes": false,
     "steps": [
-      "Both steps use flipBuildColumns() — step 5 has separated green columns, step 6 adds hw-s35-at-6 class which collapses column gaps. Since DOM is rebuilt, the gap change is instant instead of animated",
+      "Both steps use flipBuildColumns() \u2014 step 5 has separated green columns, step 6 adds hw-s35-at-6 class which collapses column gaps. Since DOM is rebuilt, the gap change is instant instead of animated",
       "After Flip, GSAP-tween the column container's CSS gap property from step-5 spacing to step-6 spacing over 500ms, so columns visibly slide together",
-      "Token labels persist via tok-0..7 flip IDs — verify they move smoothly as gap collapses",
-      "Dimension labels ('T × d_model'), matrix border, and 'This is X' annotation text should enter with GSAP fade (opacity 0→1) + slight slide-up (y: 10→0) after the gap animation completes",
-      "For backward 6→5: GSAP-tween gap from step-6 spacing back to step-5 spacing. Dimension labels and matrix border fade out before gap expands",
+      "Token labels persist via tok-0..7 flip IDs \u2014 verify they move smoothly as gap collapses",
+      "Dimension labels ('T \u00d7 d_model'), matrix border, and 'This is X' annotation text should enter with GSAP fade (opacity 0\u21921) + slight slide-up (y: 10\u21920) after the gap animation completes",
+      "For backward 6\u21925: GSAP-tween gap from step-6 spacing back to step-5 spacing. Dimension labels and matrix border fade out before gap expands",
       "Verify the consolidation animation looks like columns physically merging into a single matrix object",
-      "Test in both themes — matrix border color differs between dark and light mode"
+      "Test in both themes \u2014 matrix border color differs between dark and light mode"
     ]
   },
   {
     "id": 28,
-    "name": "Smooth Step 6↔7 — green→purple color tween + QKV entrance",
+    "name": "Smooth Step 6\u21947 \u2014 green\u2192purple color tween + QKV entrance",
     "passes": false,
     "steps": [
-      "Both steps use flipBuildColumns() — step 7 passes cellVals: normCellVals and adds hw-s35-at-7 class. The green→purple color change and QKV weight matrix appearance are both instant on DOM rebuild",
+      "Both steps use flipBuildColumns() \u2014 step 7 passes cellVals: normCellVals and adds hw-s35-at-7 class. The green\u2192purple color change and QKV weight matrix appearance are both instant on DOM rebuild",
       "After Flip match, GSAP-tween cell text color from green values (#4ade80 or var(--green)) to purple values (#a78bfa or var(--purple)) over 500ms using gsap.to() on all .hw-s35-cell elements",
-      "GSAP-tween background tint from green to purple on the column pill containers (.hw-s35-green elements) — use backgroundColor or a CSS custom property tween",
-      "Cell VALUE text should update during the color tween — start showing green numbers, crossfade to purple numbers at the midpoint (set old values initially, swap textContent at 250ms into the 500ms tween)",
-      "QKV weight matrices row (hw-norm-qkv-row or equivalent) enters with GSAP slide-up (y: 30→0) + staggered fade-in per matrix card (stagger: 0.1, duration: 0.4) — W_Q first, then W_K, then W_V",
+      "GSAP-tween background tint from green to purple on the column pill containers (.hw-s35-green elements) \u2014 use backgroundColor or a CSS custom property tween",
+      "Cell VALUE text should update during the color tween \u2014 start showing green numbers, crossfade to purple numbers at the midpoint (set old values initially, swap textContent at 250ms into the 500ms tween)",
+      "QKV weight matrices row (hw-norm-qkv-row or equivalent) enters with GSAP slide-up (y: 30\u21920) + staggered fade-in per matrix card (stagger: 0.1, duration: 0.4) \u2014 W_Q first, then W_K, then W_V",
       "The normalization arrow/label enters with fade before QKV cards appear",
-      "For backward 7→6: purple→green color tween reverses, cell values revert, QKV cards slide down and fade out",
-      "Verify cell VALUE text updates (green numbers → purple numbers) are visible and not jarring"
+      "For backward 7\u21926: purple\u2192green color tween reverses, cell values revert, QKV cards slide down and fade out",
+      "Verify cell VALUE text updates (green numbers \u2192 purple numbers) are visible and not jarring"
     ]
   },
   {
     "id": 29,
-    "name": "Smooth Step 7↔8 — layout reorganization with element tracking",
+    "name": "Smooth Step 7\u21948 \u2014 layout reorganization with element tracking",
     "passes": false,
     "steps": [
-      "This is the biggest layout change: step 7 has vertical layout (normalized matrix + QKV below via flipBuildColumns) → step 8 has horizontal layout (input matrix left + multiplication right via renderStep8). Only tok-0..7 match across the transition",
-      "Add data-flip-id='input-matrix' to the normalized matrix CONTAINER in step 7 (the hw-s35-body or equivalent wrapper) AND to the input matrix wrapper in step 8 (hw-q8-mat-wrap) — so the matrix itself animates from center to left position",
-      "Add data-flip-id='wq-matrix' to the W_Q card in step 7's QKV row AND to the weight matrix in step 8 — so W_Q appears to move from the QKV row into the multiplication area",
+      "This is the biggest layout change: step 7 has vertical layout (normalized matrix + QKV below via flipBuildColumns) \u2192 step 8 has horizontal layout (input matrix left + multiplication right via renderStep8). Only tok-0..7 match across the transition",
+      "Add data-flip-id='input-matrix' to the normalized matrix CONTAINER in step 7 (the hw-s35-body or equivalent wrapper) AND to the input matrix wrapper in step 8 (hw-q8-mat-wrap) \u2014 so the matrix itself animates from center to left position",
+      "Add data-flip-id='wq-matrix' to the W_Q card in step 7's QKV row AND to the weight matrix in step 8 \u2014 so W_Q appears to move from the QKV row into the multiplication area",
       "W_K and W_V should fade out via onLeave with duration 0.3 (verify they don't teleport or scale-shrink awkwardly)",
       "The Q output matrix, dot operator symbol, and equals sign enter via onEnter with staggered fade-in (stagger: 0.05)",
-      "For backward 8→7: matrix animates from left back to center, W_Q returns from multiplication area to QKV row position, W_K and W_V fade back in via onEnter",
+      "For backward 8\u21927: matrix animates from left back to center, W_Q returns from multiplication area to QKV row position, W_K and W_V fade back in via onEnter",
       "This transition benefits from a slightly longer Flip duration (0.6-0.7s) due to the large layout shift",
-      "Verify the input matrix column pills match visually between step 7's purple pills and step 8's purple input columns — styles must be compatible for the Flip to look right"
+      "Verify the input matrix column pills match visually between step 7's purple pills and step 8's purple input columns \u2014 styles must be compatible for the Flip to look right"
     ]
   },
   {
     "id": 30,
-    "name": "Smooth Step 8↔9↔10 — projection carousel",
+    "name": "Smooth Step 8\u21949\u219410 \u2014 projection carousel",
     "passes": false,
     "steps": [
       "Input matrix already matches via tok-0..7 across steps 8-10. The issues are: weight matrices swap instantly, output matrices appear/disappear without visual connection",
-      "Add data-flip-id='weight-matrix' to the weight matrix element in steps 8, 9, and 10 so it Flips in place — only the label and color change. After Flip, tween the weight matrix background/border color from step N's color to step N+1's color over 400ms",
-      "Add data-flip-id='output-matrix' to the Q output matrix in step 8 and the V output matrix in step 9 — so Q output Flips to V output position (or stays in place if positions match)",
-      "After Flip for 8→9, tween the output matrix header label from 'Q' to 'V' styling (color change), and tween output column colors from blue (Q) to pink (V) over 400ms",
-      "Step 9→10: Q/V output stack clears with fade. K output matrix + transpose section enter with staggered onEnter. Weight matrix color tweens from pink (W_V) to orange (W_K)",
-      "For backward transitions: reverse color tweens and entrance/exit animations for all three directions (10→9, 9→8)",
+      "Add data-flip-id='weight-matrix' to the weight matrix element in steps 8, 9, and 10 so it Flips in place \u2014 only the label and color change. After Flip, tween the weight matrix background/border color from step N's color to step N+1's color over 400ms",
+      "Add data-flip-id='output-matrix' to the Q output matrix in step 8 and the V output matrix in step 9 \u2014 so Q output Flips to V output position (or stays in place if positions match)",
+      "After Flip for 8\u21929, tween the output matrix header label from 'Q' to 'V' styling (color change), and tween output column colors from blue (Q) to pink (V) over 400ms",
+      "Step 9\u219210: Q/V output stack clears with fade. K output matrix + transpose section enter with staggered onEnter. Weight matrix color tweens from pink (W_V) to orange (W_K)",
+      "For backward transitions: reverse color tweens and entrance/exit animations for all three directions (10\u21929, 9\u21928)",
       "Verify the weight matrix color tween makes it clear the same matrix slot is being reused with different learned weights",
-      "Test rapid cycling through 8↔9↔10 — verify cascade animations (per-token highlights) don't conflict with Flip tweens"
+      "Test rapid cycling through 8\u21949\u219410 \u2014 verify cascade animations (per-token highlights) don't conflict with Flip tweens"
     ]
   },
   {
     "id": 31,
-    "name": "Smooth Step 10→11 — K^T persistence into QK^T",
+    "name": "Smooth Step 10\u219211 \u2014 K^T persistence into QK^T",
     "passes": false,
     "steps": [
       "The K^T matrix from step 10's transpose section should persist as the K^T operand in step 11's QK^T multiplication layout",
-      "Add matching data-flip-id='kt-wrap' on the K^T container in step 10 (the transpose result wrapper) — step 11 already has this on the K^T operand, verify it matches exactly",
-      "K^T should Flip from its step-10 position (below/beside K in the transpose section) to its step-11 position (right side of the Q × K^T multiplication row)",
-      "Step 10's input matrix, W_K weight matrix, K output, and transpose arrow should fade out via onLeave — verify timing so they don't disappear before K^T starts moving",
-      "Step 11's Q matrix, dot operator (·), and result scores grid should enter via onEnter with stagger (Q first, then operator, then result grid)",
-      "For backward 11→10: K^T Flips back from step-11 position to step-10 position. Step 10's full projection layout rebuilds around it with cascade entrance animation",
+      "Add matching data-flip-id='kt-wrap' on the K^T container in step 10 (the transpose result wrapper) \u2014 step 11 already has this on the K^T operand, verify it matches exactly",
+      "K^T should Flip from its step-10 position (below/beside K in the transpose section) to its step-11 position (right side of the Q \u00d7 K^T multiplication row)",
+      "Step 10's input matrix, W_K weight matrix, K output, and transpose arrow should fade out via onLeave \u2014 verify timing so they don't disappear before K^T starts moving",
+      "Step 11's Q matrix, dot operator (\u00b7), and result scores grid should enter via onEnter with stagger (Q first, then operator, then result grid)",
+      "For backward 11\u219210: K^T Flips back from step-11 position to step-10 position. Step 10's full projection layout rebuilds around it with cascade entrance animation",
       "Verify the K^T movement animation makes it visually obvious that the same transposed key matrix is being carried forward into the dot product",
-      "Test both directions and verify the dimension labels (d_head × T) persist on the K^T element during the transition"
+      "Test both directions and verify the dimension labels (d_head \u00d7 T) persist on the K^T element during the transition"
     ]
   }
 ]

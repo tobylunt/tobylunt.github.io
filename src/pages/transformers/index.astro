@@ -15578,6 +15578,120 @@ const sections = [
           });
         }
 
+        // === Post-Flip visual tweens for step 3↔4↔5 boundaries ===
+        if (fromStep === 3 && step === 4) {
+          // 3→4: Yellow pills appear, blue pills shrink and dim
+          var s34yellows = viz.querySelectorAll(".hw-s35-yellow");
+          var s34bvals = viz.querySelectorAll(".hw-s35-bval");
+          var s34bdots = viz.querySelectorAll(".hw-s35-bdots");
+          var s34legend = viz.querySelector(".hw-pos4-legend");
+          // Kill default Flip tweens on yellows (they're matched but were invisible)
+          s34yellows.forEach(function (y) { gsap.killTweensOf(y); });
+          // Clear inline styles on still-hidden green/plus
+          viz.querySelectorAll(".hw-s35-green, .hw-s35-plus").forEach(function (h) {
+            gsap.killTweensOf(h);
+            gsap.set(h, { clearProps: "all" });
+          });
+          // Yellow pills: fade in from transparent
+          gsap.from(s34yellows, {
+            opacity: 0, borderColor: "transparent", backgroundColor: "transparent",
+            duration: 0.4, stagger: 0.03, delay: 0.15, ease: "power2.out",
+          });
+          // Blue pill values: dim from full opacity to 0.15
+          gsap.from(s34bvals, { opacity: 1, duration: 0.35, stagger: 0.02, delay: 0.1 });
+          gsap.from(s34bdots, { opacity: 1, duration: 0.35, stagger: 0.02, delay: 0.1 });
+          // Legend: fade in after columns
+          if (s34legend) {
+            gsap.set(s34legend, { opacity: 0 });
+            gsap.to(s34legend, { opacity: 1, duration: 0.3, delay: 0.45 });
+          }
+        }
+        if (fromStep === 4 && step === 3) {
+          // 4→3: Yellow pills disappear, blue pills grow and brighten
+          var s43yellows = viz.querySelectorAll(".hw-s35-yellow");
+          var s43sidenote = viz.querySelector(".hw-embed-sidenote");
+          // Kill Flip tweens on yellows and clear inline styles on hidden elements
+          s43yellows.forEach(function (y) { gsap.killTweensOf(y); });
+          viz.querySelectorAll(".hw-s35-green, .hw-s35-plus").forEach(function (h) {
+            gsap.killTweensOf(h);
+            gsap.set(h, { clearProps: "all" });
+          });
+          // Yellow pills: fade from visible to hidden (new DOM has them hidden)
+          gsap.from(s43yellows, {
+            opacity: 1, borderColor: "hsla(42, 90%, 55%, 0.25)", backgroundColor: "hsla(42, 90%, 55%, 0.06)",
+            duration: 0.35, stagger: 0.02, ease: "power2.in",
+          });
+          // Sidenote: delayed fade-in
+          if (s43sidenote) {
+            gsap.set(s43sidenote, { opacity: 0 });
+            gsap.to(s43sidenote, { opacity: 1, duration: 0.3, delay: 0.4 });
+          }
+        }
+        if (fromStep === 4 && step === 5) {
+          // 4→5: Blue+yellow collapse, green appears (merge)
+          var s45blues = viz.querySelectorAll(".hw-s35-blue");
+          var s45yellows = viz.querySelectorAll(".hw-s35-yellow");
+          var s45greens = viz.querySelectorAll(".hw-s35-green");
+          var s45pluses = viz.querySelectorAll(".hw-s35-plus");
+          var s45eq = viz.querySelector(".hw-combine-equation");
+          var s45sn = viz.querySelector(".hw-combine-sidenote");
+          // Kill default Flip tweens on all paired elements
+          s45blues.forEach(function (b) { gsap.killTweensOf(b); });
+          s45yellows.forEach(function (y) { gsap.killTweensOf(y); });
+          s45greens.forEach(function (g) { gsap.killTweensOf(g); });
+          s45pluses.forEach(function (p) { gsap.killTweensOf(p); });
+          // Blue+yellow: fade from visible to collapsed (new DOM has them at width:0/opacity:0)
+          gsap.from(s45blues, {
+            opacity: 1, duration: 0.4, stagger: 0.02, ease: "power2.in",
+          });
+          gsap.from(s45yellows, {
+            opacity: 1, borderColor: "hsla(42, 90%, 55%, 0.25)", backgroundColor: "hsla(42, 90%, 55%, 0.06)",
+            duration: 0.4, stagger: 0.02, ease: "power2.in",
+          });
+          // Green: fade in from transparent (new DOM has them visible)
+          gsap.from(s45greens, {
+            opacity: 0, borderColor: "transparent", backgroundColor: "transparent",
+            duration: 0.45, stagger: 0.03, delay: 0.2, ease: "power2.out",
+          });
+          // Equation + sidenote: fade in after merge
+          if (s45eq) {
+            gsap.set(s45eq, { opacity: 0 });
+            gsap.to(s45eq, { opacity: 1, duration: 0.3, delay: 0.55 });
+          }
+          if (s45sn) {
+            gsap.set(s45sn, { opacity: 0 });
+            gsap.to(s45sn, { opacity: 1, duration: 0.3, delay: 0.65 });
+          }
+        }
+        if (fromStep === 5 && step === 4) {
+          // 5→4: Green collapses, blue+yellow reappear
+          var s54blues = viz.querySelectorAll(".hw-s35-blue");
+          var s54yellows = viz.querySelectorAll(".hw-s35-yellow");
+          var s54greens = viz.querySelectorAll(".hw-s35-green");
+          var s54pluses = viz.querySelectorAll(".hw-s35-plus");
+          var s54legend = viz.querySelector(".hw-pos4-legend");
+          // Kill default Flip tweens
+          s54blues.forEach(function (b) { gsap.killTweensOf(b); });
+          s54yellows.forEach(function (y) { gsap.killTweensOf(y); });
+          s54greens.forEach(function (g) { gsap.killTweensOf(g); });
+          s54pluses.forEach(function (p) { gsap.killTweensOf(p); gsap.set(p, { clearProps: "all" }); });
+          // Green: fade from visible (was shown in step 5)
+          gsap.from(s54greens, {
+            opacity: 1, borderColor: "hsla(152, 50%, 48%, 0.3)", backgroundColor: "hsla(152, 50%, 48%, 0.08)",
+            duration: 0.4, stagger: 0.02, ease: "power2.in",
+          });
+          // Blue+yellow: fade in (new DOM has them visible at width:24px)
+          gsap.from(s54yellows, {
+            opacity: 0, borderColor: "transparent", backgroundColor: "transparent",
+            duration: 0.4, stagger: 0.03, delay: 0.15, ease: "power2.out",
+          });
+          // Legend: delayed fade-in
+          if (s54legend) {
+            gsap.set(s54legend, { opacity: 0 });
+            gsap.to(s54legend, { opacity: 1, duration: 0.3, delay: 0.45 });
+          }
+        }
+
         // === Post-Flip visual tweens for step 1↔2 boundary ===
         if (
           (fromStep === 1 && step === 2) ||
