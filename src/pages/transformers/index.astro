@@ -1073,10 +1073,8 @@ const sections = [
               <div id="head-walk-viz" class="head-walk-viz"></div>
             </div>
           </div>
-          {
-            /* Mobile annotation: shown below viz on narrow screens where sidenote gutter is hidden */
-          }
-          <div class="head-walk-annotation head-walk-ann-mobile">
+          {/* Step annotation: displayed below the visualization, attached to the card */}
+          <div class="head-walk-annotation">
             <div id="head-walk-ann-title" class="head-walk-ann-title">The Black Box</div>
             <div id="head-walk-ann-text" class="head-walk-ann-text">
               We will open this black box step by step, tracing an input sentence through every
@@ -2807,7 +2805,7 @@ const sections = [
           ></span
         >
       </div>
-      {/* Head walkthrough annotation — positioned next to figure on desktop */}
+      {/* Head walkthrough annotation — hidden, annotation now lives below the card */}
       <div id="hw-gutter-ann" class="hw-gutter-ann">
         <div id="hw-gutter-ann-title" class="head-walk-ann-title">The Black Box</div>
         <div id="hw-gutter-ann-text" class="head-walk-ann-text">
@@ -5141,25 +5139,23 @@ const sections = [
   }
 
   .head-walk-annotation {
-    padding: 0.8rem 0 0;
-    border-top: 1px solid hsl(var(--theme-text) / 0.08);
-    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    margin: 0 -1.5rem -1.5rem;
+    background: hsl(var(--theme-text) / 0.03);
+    border-top: 1px solid hsl(var(--theme-text) / 0.06);
+    border-radius: 0 0 12px 12px;
   }
 
-  /* Hide mobile annotation on desktop where gutter is visible */
-  @media (min-width: 1280px) {
-    .head-walk-ann-mobile {
-      display: none;
+  @media (max-width: 480px) {
+    .head-walk-annotation {
+      margin: 0 -1rem -1rem;
+      padding: 0.6rem 0.75rem;
     }
   }
 
-  /* Gutter annotation: positioned in sidenote column alongside figure */
+  /* Gutter annotation: hidden — annotation now lives below the card */
   .hw-gutter-ann {
-    position: absolute;
-    left: -2rem;
-    right: 0;
-    padding: 0.75rem 0;
-    transition: opacity 0.3s ease;
+    display: none;
   }
 
   .head-walk-ann-title {
@@ -6375,12 +6371,22 @@ const sections = [
     display: flex;
     gap: 6px;
     justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 0;
+    padding: 0;
+    transition:
+      gap 0.6s ease,
+      border-color 0.5s ease,
+      background 0.5s ease,
+      border-radius 0.4s ease,
+      padding 0.4s ease;
   }
   .hw-s35-col {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2px;
+    transition: gap 0.4s ease;
   }
   .hw-s35-chip {
     font-size: 0.72rem;
@@ -6392,6 +6398,11 @@ const sections = [
     font-size: 0.85rem;
     color: hsl(210 60% 55% / 0.5);
     line-height: 1;
+    overflow: hidden;
+    max-height: 2rem;
+    transition:
+      max-height 0.4s ease,
+      opacity 0.35s ease;
   }
   /* Pair container */
   .hw-s35-pair {
@@ -6533,7 +6544,8 @@ const sections = [
       width 0.45s ease calc(0.2s + var(--i, 0) * 0.06s),
       opacity 0.35s ease calc(0.25s + var(--i, 0) * 0.06s),
       border-color 0.35s ease calc(0.2s + var(--i, 0) * 0.06s),
-      background-color 0.35s ease calc(0.2s + var(--i, 0) * 0.06s);
+      background-color 0.35s ease calc(0.2s + var(--i, 0) * 0.06s),
+      border-radius 0.5s ease;
   }
   .hw-s35-gval {
     padding: 3px 3px;
@@ -6543,6 +6555,10 @@ const sections = [
     line-height: 1.3;
     color: hsl(152 50% 48% / 0.7);
     border-top: 1px solid hsl(152 50% 48% / 0.12);
+    transition:
+      color 0.4s ease,
+      background-color 0.4s ease,
+      border-color 0.4s ease;
   }
   .hw-s35-gval:first-child {
     border-top: none;
@@ -6556,6 +6572,10 @@ const sections = [
     border-top: 1px dashed hsl(152 50% 48% / 0.15);
     border-bottom: 1px dashed hsl(152 50% 48% / 0.15);
     background: hsl(152 50% 48% / 0.03);
+    transition:
+      color 0.4s ease,
+      background-color 0.4s ease,
+      border-color 0.4s ease;
   }
   /* === MERGED STATE === */
   .hw-s35-merged .hw-s35-blue {
@@ -6577,6 +6597,33 @@ const sections = [
     opacity: 1;
     border-color: hsl(152 50% 48% / 0.3);
     background: hsl(152 50% 48% / 0.08);
+  }
+  /* === STEP 6: Green columns consolidate into matrix === */
+  .hw-s35-at-6 .hw-s35-columns {
+    gap: 1px;
+    border-color: hsl(var(--theme-text) / 0.12);
+    background: hsl(var(--theme-text) / 0.04);
+    border-radius: 4px;
+    padding: 2px;
+  }
+  .hw-s35-at-6 .hw-s35-col {
+    gap: 0;
+  }
+  .hw-s35-at-6 .hw-s35-arrow {
+    max-height: 0;
+    opacity: 0;
+  }
+  /* Green pill loses its individual pill shape, becomes flat matrix cell */
+  .hw-s35-at-6 .hw-s35-green {
+    border-radius: 0;
+    border-color: transparent;
+  }
+  /* Dim label below matrix */
+  .hw-s36-mat-name {
+    font-size: 0.7rem;
+    color: hsl(var(--theme-text) / 0.5);
+    text-align: center;
+    padding: 2px 0;
   }
   /* Step-specific volatile extras */
   .hw-s35-extras {
@@ -6612,6 +6659,43 @@ const sections = [
     .hw-s35-columns {
       gap: 4px;
     }
+    .hw-s35-at-6 .hw-s35-columns {
+      gap: 1px;
+    }
+    .hw-s35-at-7 .hw-s35-columns {
+      gap: 1px;
+    }
+  }
+
+  /* === STEP 7: Normalized state — green → purple transition === */
+  .hw-s35-at-7 .hw-s35-columns {
+    border-color: hsl(270 45% 55% / 0.2);
+  }
+  .hw-s35-at-7 .hw-s35-green {
+    border-color: hsl(270 45% 55% / 0.2);
+    background: hsl(270 45% 55% / 0.06);
+  }
+  .hw-s35-at-7 .hw-s35-gval {
+    color: hsl(270 45% 55% / 0.85);
+    background: hsl(270 45% 55% / 0.08);
+    border-color: hsl(270 45% 55% / 0.1);
+  }
+  .hw-s35-at-7 .hw-s35-gdots {
+    color: hsl(270 45% 55% / 0.4);
+    background: hsl(270 45% 55% / 0.04);
+    border-color: hsl(270 45% 55% / 0.08);
+  }
+  /* Flash animation for normalization value swap */
+  @keyframes hw-s35-norm-flash {
+    0% {
+      background: hsl(270 45% 55% / 0.4);
+    }
+    100% {
+      background: hsl(270 45% 55% / 0.08);
+    }
+  }
+  .hw-s35-flash {
+    animation: hw-s35-norm-flash 0.5s ease forwards;
   }
 
   /* ===== Step 6: Layer Norm + QKV Weights ===== */
@@ -7819,6 +7903,16 @@ const sections = [
     position: relative;
   }
 
+  /* Persistent layout container for steps 8–10 (same geometry as individual layouts) */
+  .hw-s810-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    position: relative;
+  }
+
   .hw-k10-main {
     display: flex;
     align-items: flex-start;
@@ -8835,6 +8929,119 @@ const sections = [
     .hw-hm12-axis-query {
       display: none;
     }
+  }
+
+  /* ===== Persistent scores↔heatmap grid (steps 11↔12 object continuity) ===== */
+  .hw-s1112-grid {
+    display: grid;
+    gap: 1px;
+    align-items: center;
+    transform-origin: top left;
+  }
+
+  /* Mode-11: compact purple scoring grid */
+  .hw-s1112-at-11 {
+    grid-template-columns: 28px repeat(8, 22px);
+    pointer-events: none;
+  }
+
+  /* Mode-12: full-size amber heatmap */
+  .hw-s1112-at-12 {
+    grid-template-columns: 40px repeat(8, 32px);
+    pointer-events: auto;
+  }
+
+  .hw-s1112-corner {
+    width: 1px;
+    height: 1px;
+  }
+
+  .hw-s1112-col-label {
+    text-align: center;
+    font-weight: 500;
+    padding: 2px 0;
+    transition: color 0.25s, font-size 0.4s, opacity 0.15s;
+  }
+  .hw-s1112-at-11 .hw-s1112-col-label {
+    font-size: 0.34rem;
+    color: hsl(30 80% 50% / 0.6);
+  }
+  .hw-s1112-at-12 .hw-s1112-col-label {
+    font-size: 0.4rem;
+    color: hsl(30 80% 50% / 0.55);
+  }
+  .hw-s1112-col-label.highlight {
+    color: hsl(35 90% 55%);
+    font-weight: 700;
+  }
+  .hw-s1112-col-label.dimmed {
+    opacity: 0.3;
+  }
+
+  .hw-s1112-row-label {
+    font-weight: 600;
+    text-align: right;
+    padding: 0 4px 0 2px;
+    transition: color 0.25s, font-size 0.4s, opacity 0.15s;
+  }
+  .hw-s1112-at-11 .hw-s1112-row-label {
+    font-size: 0.36rem;
+    color: hsl(210 70% 55% / 0.6);
+    min-width: 28px;
+  }
+  .hw-s1112-at-12 .hw-s1112-row-label {
+    font-size: 0.42rem;
+    color: hsl(210 70% 55% / 0.65);
+    min-width: 40px;
+  }
+  .hw-s1112-row-label.highlight {
+    color: hsl(210 70% 60%);
+    font-weight: 700;
+  }
+  .hw-s1112-row-label.dimmed {
+    opacity: 0.3;
+  }
+
+  .hw-s1112-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    transition:
+      background 0.55s ease,
+      color 0.45s ease,
+      transform 0.12s,
+      box-shadow 0.12s,
+      opacity 0.12s,
+      min-height 0.4s ease,
+      font-size 0.4s ease;
+  }
+  .hw-s1112-at-11 .hw-s1112-cell {
+    min-width: 22px;
+    min-height: 16px;
+    font-size: 0.36rem;
+    padding: 1px 1px;
+    cursor: default;
+  }
+  .hw-s1112-at-12 .hw-s1112-cell {
+    min-width: 32px;
+    min-height: 26px;
+    font-size: 0.4rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .hw-s1112-at-12 .hw-s1112-cell:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 1.5px hsl(35 90% 55% / 0.6);
+    z-index: 2;
+  }
+  .hw-s1112-cell.dimmed {
+    opacity: 0.2;
+  }
+  .hw-s1112-cell.row-active {
+    transform: scale(1.02);
   }
 
   /* ===== Step 11: Attention × V (column pill redesign) ===== */
@@ -13746,8 +13953,9 @@ const sections = [
 
       var TOTAL_STEPS = 14;
       var currentStep = 1;
+      var prevStep = 0; // track previous step for FLIP skip logic
 
-      // === Persistent layer for steps 3-5: column-based token + embedding layout ===
+      // === Persistent layer for steps 3-6: column-based token + embedding layout ===
       var mergeTimeout = null;
       var s35Tokens = ["The", "fat", "cat", "sat", "quiet", "ly", "on", "the"];
       var s35Types = ["whole", "whole", "whole", "whole", "sub", "sub", "whole", "whole"];
@@ -13771,6 +13979,25 @@ const sections = [
         [0.01, -0.76, 0.28, 0.99],
         [0.01, -0.28, 0.96, 0.54],
       ];
+
+      // Normalized values for step 7 (layer-norm outputs), row-major: [row][token]
+      var s35NormVals = [
+        ["0.91", "-0.52", "1.43", "-1.08", "1.21", "-0.75", "1.04", "0.91"],
+        ["-0.68", "1.12", "-0.40", "0.83", "-0.95", "1.34", "-0.79", "-0.68"],
+        ["0.73", "0.20", "1.18", "-0.47", "0.61", "-1.02", "0.86", "0.73"],
+        ["-1.15", "0.64", "-0.82", "1.24", "-0.30", "0.49", "-1.05", "-1.15"],
+      ];
+      // Combined values per token (sample + pos) for restoring when leaving step 7
+      // [token][row] format — matches initial cell content
+      var s35CombinedVals = s35Tokens.map(function (_, i) {
+        return s35SampleVecs[i].map(function (v, j) {
+          return (v + s35PosVecs[i][j]).toFixed(2);
+        });
+      });
+      // Cell DOM references for step 7 value updates: [token][row 0-3] = gval cells
+      var s35GreenCells = [];
+      // Timeout handle for step 6 matrix name label (must be cancellable)
+      var nameTimeout = null;
 
       var s35Layout = el("div", "hw-s35-layout hw-s35-at-3");
       var s35Body = el("div", "hw-s35-body");
@@ -13809,11 +14036,17 @@ const sections = [
         var cv = s35SampleVecs[i].map(function (v, j) {
           return v + s35PosVecs[i][j];
         });
-        green.appendChild(el("div", "hw-s35-gval", cv[0].toFixed(2)));
-        green.appendChild(el("div", "hw-s35-gval", cv[1].toFixed(2)));
-        green.appendChild(el("div", "hw-s35-gdots", "\u22EF"));
-        green.appendChild(el("div", "hw-s35-gval", cv[2].toFixed(2)));
-        green.appendChild(el("div", "hw-s35-gval", cv[3].toFixed(2)));
+        var gv0 = el("div", "hw-s35-gval", cv[0].toFixed(2));
+        var gv1 = el("div", "hw-s35-gval", cv[1].toFixed(2));
+        var gdots = el("div", "hw-s35-gdots", "\u22EF");
+        var gv2 = el("div", "hw-s35-gval", cv[2].toFixed(2));
+        var gv3 = el("div", "hw-s35-gval", cv[3].toFixed(2));
+        green.appendChild(gv0);
+        green.appendChild(gv1);
+        green.appendChild(gdots);
+        green.appendChild(gv2);
+        green.appendChild(gv3);
+        s35GreenCells.push([gv0, gv1, gv2, gv3]);
         pair.appendChild(green);
         col.appendChild(pair);
         s35Columns.appendChild(col);
@@ -13822,6 +14055,279 @@ const sections = [
       s35Layout.appendChild(s35Body);
       var s35Extras = el("div", "hw-s35-extras");
       s35Layout.appendChild(s35Extras);
+
+      // === Persistent layer for steps 8–10: input matrix X̂ stays put across Q/V/K projections ===
+      // Normalized values (row-major: normValues[row][col]) — identical to those used in steps 8, 9, 10
+      var s810Tokens = ["The", "fat", "cat", "sat", "quiet", "ly", "on", "the"];
+      var s810NormValues = [
+        [".91", "-.52", "1.4", "-1.1", "1.2", "-.75", "1.0", ".91"],
+        ["-.68", "1.1", "-.40", ".83", "-.95", "1.3", "-.79", "-.68"],
+        [".73", ".20", "1.2", "-.47", ".61", "-1.0", ".86", ".73"],
+        ["-1.2", ".64", "-.82", "1.2", "-.30", ".49", "-1.1", "-1.2"],
+      ];
+      // Build ID for cancelling stale animation callbacks
+      var s810BuildId = 0;
+      // Persistent column DOM references (highlight/persistent classes added/removed per step)
+      var s810InputColEls = [];
+
+      var s810Layout = el("div", "hw-s810-layout");
+      var s810Main = el("div", "hw-q8-main");
+
+      // --- Persistent: input matrix X̂ ---
+      var s810InWrap = el("div", "hw-q8-mat-wrap");
+      var s810InLabel = el("div", "hw-q8-mat-label hw-q8-label-input");
+      s810InLabel.innerHTML = 'X\u0302 <span class="hw-q8-label-sub">(normalized)</span>';
+      if (astroAttr)
+        s810InLabel.querySelectorAll("span").forEach(function (s) {
+          s.setAttribute(astroAttr, "");
+        });
+      s810InWrap.appendChild(s810InLabel);
+
+      var s810InTokenRow = el("div", "hw-q8-token-labels");
+      s810Tokens.forEach(function (tok) {
+        s810InTokenRow.appendChild(el("div", "hw-q8-token-label", tok));
+      });
+      s810InWrap.appendChild(s810InTokenRow);
+
+      var s810InCols = el("div", "hw-q8-cols");
+      s810Tokens.forEach(function (tok, c) {
+        var col = el("div", "hw-q8-col hw-q8-input-col");
+        col.appendChild(el("div", "hw-q8-cell hw-q8-input-cell", s810NormValues[0][c]));
+        col.appendChild(el("div", "hw-q8-cell hw-q8-input-cell", s810NormValues[1][c]));
+        col.appendChild(el("div", "hw-q8-cell hw-q8-dots hw-q8-input-dots", "\u22EF"));
+        col.appendChild(el("div", "hw-q8-cell hw-q8-input-cell", s810NormValues[2][c]));
+        col.appendChild(el("div", "hw-q8-cell hw-q8-input-cell", s810NormValues[3][c]));
+        s810InCols.appendChild(col);
+        s810InputColEls.push(col);
+      });
+      s810InWrap.appendChild(s810InCols);
+      s810InWrap.appendChild(el("div", "hw-q8-dim-label", "T \u00d7 d_model"));
+      s810Main.appendChild(s810InWrap);
+
+      // --- Persistent: dot operator ---
+      s810Main.appendChild(el("div", "hw-q8-op", "\u00b7"));
+
+      // Volatile content will be appended to s810Main / s810Layout by step builders
+      s810Layout.appendChild(s810Main);
+
+      // === Persistent K^T element for steps 10→11 object continuity ===
+      // K^T values are identical in both step 10 and step 11 (same data, different layout)
+      var kValues1011 = [
+        [".33", "-.61", ".82", ".14", "-.47", ".58", "-.22", ".33"],
+        ["-.52", ".39", "-.71", ".55", ".28", "-.63", ".44", "-.52"],
+        [".18", "-.44", ".36", "-.29", ".65", ".11", "-.53", ".18"],
+      ];
+      var s1011KtWrap = el("div", ""); // outer wrapper, inner content rebuilt per step
+      var s1011KtDimCancel = null; // reference to cancelable dim span (step 11 only)
+      var s1011KtInstant = false; // true when backward-transitioning from step 11 to 10
+
+      // === Persistent scores grid for steps 11↔12 object continuity ===
+      // The 8×8 T×T attention scores matrix in step 11's result section zooms into
+      // step 12's interactive heatmap via FLIP animation.
+      var s1112GridEl = null; // persistent CSS grid (9 cols: label + 8 data)
+      var s1112Cells = []; // [row][col] → cell elements (64 total)
+      var s1112RowLabelEls = []; // 8 query-token row label elements
+      var s1112ColLabelEls = []; // 8 key-token col label elements
+      var s1112TooltipEl = null; // tooltip element (rebuilt each time step 12 is shown)
+      var s1112Instant = false; // true when entering step 11 backward from step 12 (skip fill anim)
+
+      // === Persistent green output matrix: steps 13→14 object continuity ===
+      // The green T×d_head output from step 13 (Attn×V = Output) persists into step 14
+      // as the Attn(x) operand in the residual addition, FLIPping from its step-13 position
+      // to its step-14 position so the user perceives it as the same object in a new context.
+      var s1314OutWrap = null;    // outer mat-wrap element (persists across steps 13 and 14)
+      var s1314OutLabelEl = null; // label element (text: "Output" in s13, "Attn(x)" in s14)
+      var s1314OutTimeout = null; // handle for step-13 slide-in animation (clearable on nav)
+
+      // Score values (step 11 — raw QK^T output)
+      var s1112ScoreValues = [
+        ["2.1", ".30", ".80", ".10", "-.20", ".10", ".20", "1.8"],
+        [".20", "1.6", "1.3", ".20", ".00", "-.10", ".10", ".20"],
+        [".40", ".90", "2.0", ".60", ".10", ".10", "-.10", ".30"],
+        [".10", ".20", "1.1", "1.8", ".50", ".20", ".10", ".10"],
+        ["-.10", ".00", ".10", "1.2", "1.9", "1.5", ".00", "-.10"],
+        [".00", "-.10", ".10", ".80", "1.4", "1.7", ".00", ".00"],
+        [".30", ".00", "-.10", ".10", ".00", ".00", "2.0", ".50"],
+        ["1.6", ".10", ".30", ".00", "-.10", ".00", ".60", "2.2"],
+      ];
+
+      // Softmax-normalized attention weights (step 12 — each row sums to 1)
+      var s1112AttnWeights = [
+        [0.26, 0.09, 0.12, 0.08, 0.07, 0.08, 0.09, 0.22],
+        [0.1, 0.23, 0.19, 0.1, 0.09, 0.09, 0.1, 0.1],
+        [0.11, 0.14, 0.27, 0.12, 0.09, 0.09, 0.08, 0.1],
+        [0.09, 0.1, 0.16, 0.25, 0.12, 0.1, 0.09, 0.09],
+        [0.08, 0.08, 0.09, 0.16, 0.24, 0.19, 0.08, 0.08],
+        [0.09, 0.08, 0.09, 0.14, 0.2, 0.23, 0.09, 0.09],
+        [0.11, 0.09, 0.09, 0.1, 0.09, 0.09, 0.3, 0.12],
+        [0.2, 0.08, 0.09, 0.08, 0.07, 0.08, 0.11, 0.28],
+      ];
+
+      function buildS1112Grid() {
+        if (s1112GridEl) return; // already built — reuse
+        var tokens = ["The", "fat", "cat", "sat", "quiet", "ly", "on", "the"];
+        var T = tokens.length;
+
+        s1112GridEl = el("div", "hw-s1112-grid hw-s1112-at-11");
+        s1112Cells = [];
+        s1112RowLabelEls = [];
+        s1112ColLabelEls = [];
+
+        // Row 0: corner + column labels (key tokens)
+        s1112GridEl.appendChild(el("div", "hw-s1112-corner"));
+        for (var ci = 0; ci < T; ci++) {
+          var colLabel = el("div", "hw-s1112-col-label", tokens[ci]);
+          s1112GridEl.appendChild(colLabel);
+          s1112ColLabelEls.push(colLabel);
+        }
+
+        // Data rows: row label (query token) + 8 cells
+        for (var ri = 0; ri < T; ri++) {
+          var rowLabel = el("div", "hw-s1112-row-label", tokens[ri]);
+          rowLabel.dataset.row = String(ri);
+          s1112GridEl.appendChild(rowLabel);
+          s1112RowLabelEls.push(rowLabel);
+
+          var rowCells = [];
+          for (ci = 0; ci < T; ci++) {
+            var cell = el("div", "hw-s1112-cell", s1112ScoreValues[ri][ci]);
+            cell.dataset.row = String(ri);
+            cell.dataset.col = String(ci);
+            if (ri === ci) cell.classList.add("hw-s1112-diag");
+            s1112GridEl.appendChild(cell);
+            rowCells.push(cell);
+          }
+          s1112Cells.push(rowCells);
+        }
+
+        // Attach hover handlers (pointer-events: none in mode-11 prevents them firing)
+        s1112Cells.forEach(function (rowCells, ri) {
+          rowCells.forEach(function (cell) {
+            cell.addEventListener("mouseenter", function () {
+              s1112HighlightRow(ri);
+            });
+            cell.addEventListener("mouseleave", s1112ClearHighlight);
+          });
+        });
+
+        applyS1112Mode11Styles();
+      }
+
+      function applyS1112Mode11Styles() {
+        // Purple score-mode cell styling
+        for (var ri = 0; ri < 8; ri++) {
+          for (var ci = 0; ci < 8; ci++) {
+            var cell = s1112Cells[ri][ci];
+            cell.textContent = s1112ScoreValues[ri][ci];
+            if (ri === ci) {
+              cell.style.background = "hsl(280 55% 55% / 0.14)";
+              cell.style.color = "hsl(280 55% 55% / 0.9)";
+              cell.style.fontWeight = "600";
+            } else {
+              cell.style.background = "hsl(280 55% 55% / 0.06)";
+              cell.style.color = "hsl(280 55% 55% / 0.75)";
+              cell.style.fontWeight = "";
+            }
+          }
+        }
+        // Reset label highlights
+        s1112RowLabelEls.forEach(function (l) {
+          l.classList.remove("highlight", "dimmed");
+        });
+        s1112ColLabelEls.forEach(function (l) {
+          l.classList.remove("highlight", "dimmed");
+        });
+      }
+
+      function applyS1112Mode12Styles() {
+        // Amber heatmap-mode cell styling
+        for (var ri = 0; ri < 8; ri++) {
+          for (var ci = 0; ci < 8; ci++) {
+            var cell = s1112Cells[ri][ci];
+            var weight = s1112AttnWeights[ri][ci];
+            cell.textContent = weight.toFixed(2);
+            var alpha = 0.06 + weight * 2.5;
+            if (alpha > 1) alpha = 1;
+            cell.style.background = "hsl(35 90% 55% / " + alpha.toFixed(2) + ")";
+            if (weight > 0.2) {
+              cell.style.color = "hsl(35 20% 15%)";
+              cell.style.fontWeight = "600";
+            } else {
+              cell.style.color = "hsl(var(--theme-text) / 0.65)";
+              cell.style.fontWeight = "";
+            }
+          }
+        }
+        // Reset label highlights
+        s1112RowLabelEls.forEach(function (l) {
+          l.classList.remove("highlight", "dimmed");
+        });
+        s1112ColLabelEls.forEach(function (l) {
+          l.classList.remove("highlight", "dimmed");
+        });
+      }
+
+      function s1112HighlightRow(row) {
+        var tokens = ["The", "fat", "cat", "sat", "quiet", "ly", "on", "the"];
+        s1112RowLabelEls.forEach(function (label, i) {
+          if (i === row) {
+            label.classList.add("highlight");
+            label.classList.remove("dimmed");
+          } else {
+            label.classList.remove("highlight");
+            label.classList.add("dimmed");
+          }
+        });
+        s1112ColLabelEls.forEach(function (label) {
+          label.classList.remove("highlight", "dimmed");
+        });
+        s1112Cells.forEach(function (rowCells, ri) {
+          rowCells.forEach(function (cell) {
+            if (ri === row) {
+              cell.classList.add("row-active");
+              cell.classList.remove("dimmed");
+            } else {
+              cell.classList.remove("row-active");
+              cell.classList.add("dimmed");
+            }
+          });
+        });
+        // Update tooltip
+        if (s1112TooltipEl) {
+          var maxW = 0,
+            maxIdx = 0;
+          s1112AttnWeights[row].forEach(function (w, i) {
+            if (w > maxW) {
+              maxW = w;
+              maxIdx = i;
+            }
+          });
+          s1112TooltipEl.textContent =
+            "\u201c" +
+            tokens[row] +
+            "\u201d attends most to \u201c" +
+            tokens[maxIdx] +
+            "\u201d (" +
+            maxW.toFixed(2) +
+            ")";
+          s1112TooltipEl.classList.add("visible");
+        }
+      }
+
+      function s1112ClearHighlight() {
+        s1112RowLabelEls.forEach(function (l) {
+          l.classList.remove("highlight", "dimmed");
+        });
+        s1112ColLabelEls.forEach(function (l) {
+          l.classList.remove("highlight", "dimmed");
+        });
+        s1112Cells.forEach(function (rowCells) {
+          rowCells.forEach(function (cell) {
+            cell.classList.remove("row-active", "dimmed");
+          });
+        });
+        if (s1112TooltipEl) s1112TooltipEl.classList.remove("visible");
+      }
 
       // Step metadata: title, description text, shape info
       var STEP_DATA = [
@@ -14066,6 +14572,128 @@ const sections = [
         }
         sn.appendChild(snText);
         s35Extras.appendChild(sn);
+      }
+
+      function buildS35Step6Extras() {
+        // Dimension label
+        var dimLabel = el("div", "hw-norm-dim-label");
+        dimLabel.appendChild(el("span", "hw-norm-dim-t", "8"));
+        dimLabel.appendChild(document.createTextNode(" tokens \u00d7 "));
+        var dimD = el("span", "hw-norm-dim-d");
+        dimD.innerHTML = "d<sub>model</sub>";
+        if (astroAttr) dimD.querySelector("sub").setAttribute(astroAttr, "");
+        dimLabel.appendChild(dimD);
+        dimLabel.appendChild(document.createTextNode(" dimensions"));
+        s35Extras.appendChild(dimLabel);
+
+        // Matrix name label — fades in after consolidation animation
+        nameTimeout = setTimeout(function () {
+          var matName = el("div", "hw-s36-mat-name");
+          matName.innerHTML =
+            "This is <strong>X</strong> \u2014 the input matrix to the attention mechanism";
+          if (astroAttr) {
+            matName.querySelectorAll("strong").forEach(function (s) {
+              s.setAttribute(astroAttr, "");
+            });
+          }
+          s35Extras.appendChild(matName);
+        }, 500);
+      }
+
+      function buildS35Step7Extras() {
+        // Dimension label
+        var dimLabel = el("div", "hw-norm-dim-label");
+        dimLabel.appendChild(el("span", "hw-norm-dim-t", "8"));
+        dimLabel.appendChild(document.createTextNode(" tokens \u00d7 "));
+        var dimD = el("span", "hw-norm-dim-d");
+        dimD.innerHTML = "d<sub>model</sub>";
+        if (astroAttr) dimD.querySelector("sub").setAttribute(astroAttr, "");
+        dimLabel.appendChild(dimD);
+        dimLabel.appendChild(document.createTextNode(" dimensions"));
+        s35Extras.appendChild(dimLabel);
+
+        // Arrow
+        s35Extras.appendChild(el("div", "hw-norm-arrow", "\u2193"));
+
+        // QKV weight matrices (fade in after short delay)
+        var qkvRow = el("div", "hw-norm-qkv-row");
+
+        var qW = [
+          [" 0.21", " 0.45", "-0.13"],
+          ["-0.38", " 0.17", " 0.62"],
+          [" 0.55", "-0.29", " 0.08"],
+          ["-0.14", " 0.71", "-0.46"],
+        ];
+        var kW = [
+          [" 0.33", "-0.58", " 0.19"],
+          [" 0.67", " 0.12", "-0.41"],
+          ["-0.22", " 0.48", " 0.35"],
+          [" 0.44", "-0.16", " 0.73"],
+        ];
+        var vW = [
+          ["-0.27", " 0.51", " 0.38"],
+          [" 0.63", "-0.34", " 0.15"],
+          [" 0.11", " 0.42", "-0.56"],
+          ["-0.48", " 0.26", " 0.69"],
+        ];
+        var weightDefs = [
+          { label: "W<sub>Q</sub>", cls: "q", vals: qW },
+          { label: "W<sub>K</sub>", cls: "k", vals: kW },
+          { label: "W<sub>V</sub>", cls: "v", vals: vW },
+        ];
+        weightDefs.forEach(function (w) {
+          var wmat = el("div", "hw-wmat");
+          var wlbl = el("div", "hw-wmat-label hw-wmat-label-" + w.cls);
+          wlbl.innerHTML = w.label;
+          if (astroAttr)
+            wlbl.querySelectorAll("sub").forEach(function (s) {
+              s.setAttribute(astroAttr, "");
+            });
+          wmat.appendChild(wlbl);
+          var wcols = el("div", "hw-wmat-cols hw-wmat-cols-" + w.cls);
+          for (var ci = 0; ci < 3; ci++) {
+            var wcol = el("div", "hw-wmat-col");
+            wcol.appendChild(
+              el("div", "hw-wmat-cell hw-wmat-cell-" + w.cls, w.vals[0][ci]),
+            );
+            wcol.appendChild(
+              el("div", "hw-wmat-cell hw-wmat-cell-" + w.cls, w.vals[1][ci]),
+            );
+            wcol.appendChild(
+              el(
+                "div",
+                "hw-wmat-cell hw-wmat-dots hw-wmat-dots-" + w.cls,
+                "\u22EF",
+              ),
+            );
+            wcol.appendChild(
+              el("div", "hw-wmat-cell hw-wmat-cell-" + w.cls, w.vals[2][ci]),
+            );
+            wcol.appendChild(
+              el("div", "hw-wmat-cell hw-wmat-cell-" + w.cls, w.vals[3][ci]),
+            );
+            wcols.appendChild(wcol);
+          }
+          wmat.appendChild(wcols);
+          var wdim = el("div", "hw-wmat-dim");
+          var dM = el("span", "hw-norm-dim-d");
+          dM.innerHTML = "d<sub>model</sub>";
+          if (astroAttr) dM.querySelector("sub").setAttribute(astroAttr, "");
+          wdim.appendChild(dM);
+          wdim.appendChild(document.createTextNode(" \u00d7 "));
+          var dH = el("span", "hw-norm-dim-dh");
+          dH.innerHTML = "d<sub>head</sub>";
+          if (astroAttr) dH.querySelector("sub").setAttribute(astroAttr, "");
+          wdim.appendChild(dH);
+          wmat.appendChild(wdim);
+          qkvRow.appendChild(wmat);
+        });
+        s35Extras.appendChild(qkvRow);
+
+        // Fade in QKV row after layout has settled
+        setTimeout(function () {
+          qkvRow.classList.add("visible");
+        }, 600);
       }
 
       function renderStep6() {
@@ -15216,6 +15844,880 @@ const sections = [
         return layout;
       }
 
+      // =====================================================================
+      // Steps 8–10 persistent-layer volatile builders
+      // The input matrix (s810InWrap + s810InCols + s810InputColEls) persists;
+      // only the weight matrix, arrow, output, and equation are rebuilt here.
+      // =====================================================================
+
+      function buildS810Step8Volatile() {
+        var myId = ++s810BuildId; // for cancelling stale animation callbacks
+
+        // --- Clear volatile content from s810Main (keep first 2: inWrap + dot op) ---
+        while (s810Main.children.length > 2) {
+          s810Main.removeChild(s810Main.lastChild);
+        }
+        // --- Clear equation / transpose rows from s810Layout (keep s810Main only) ---
+        while (s810Layout.children.length > 1) {
+          s810Layout.removeChild(s810Layout.lastChild);
+        }
+        // --- Reset input column states ---
+        s810InputColEls.forEach(function (col) {
+          col.classList.remove(
+            "hw-q8-highlight",
+            "hw-q8-persistent",
+            "hw-v9-highlight",
+            "hw-k10-highlight",
+          );
+        });
+
+        var tokens = s810Tokens;
+
+        // W_Q weight values (same as Step 7)
+        var qW = [
+          [" 0.21", " 0.45", "-0.13"],
+          ["-0.38", " 0.17", " 0.62"],
+          [" 0.55", "-0.29", " 0.08"],
+          ["-0.14", " 0.71", "-0.46"],
+        ];
+
+        // Q output values (projected: X_norm * W_Q)
+        var qValues = [
+          [".42", ".18", ".73", "-.31", ".56", "-.24", ".48", ".42"],
+          ["-.19", ".55", "-.08", ".41", "-.33", ".62", "-.27", "-.19"],
+          [".31", "-.12", ".54", "-.22", ".28", "-.45", ".37", ".31"],
+        ];
+
+        // --- W_Q weight matrix (column pills, blue, slides up) ---
+        var wqWrap = el("div", "hw-q8-mat-wrap hw-q8-wq-wrap");
+        var wqLabel = el("div", "hw-q8-mat-label hw-q8-label-wq");
+        wqLabel.innerHTML = "W<sub>Q</sub>";
+        if (astroAttr)
+          wqLabel.querySelectorAll("sub").forEach(function (s) {
+            s.setAttribute(astroAttr, "");
+          });
+        wqWrap.appendChild(wqLabel);
+
+        var wqCols = el("div", "hw-q8-cols");
+        for (var ci = 0; ci < 3; ci++) {
+          var wCol = el("div", "hw-q8-col hw-q8-wq-col");
+          wCol.appendChild(el("div", "hw-q8-cell hw-q8-wq-cell", qW[0][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-q8-wq-cell", qW[1][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-q8-dots hw-q8-wq-dots", "\u22EF"));
+          wCol.appendChild(el("div", "hw-q8-cell hw-q8-wq-cell", qW[2][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-q8-wq-cell", qW[3][ci]));
+          wqCols.appendChild(wCol);
+        }
+        wqWrap.appendChild(wqCols);
+
+        var wqDim = el("div", "hw-q8-dim-label");
+        wqDim.innerHTML = "d<sub>model</sub> \u00d7 d<sub>head</sub>";
+        if (astroAttr)
+          wqDim.querySelectorAll("sub").forEach(function (s) {
+            s.setAttribute(astroAttr, "");
+          });
+        wqWrap.appendChild(wqDim);
+        s810Main.appendChild(wqWrap);
+
+        // --- Arrow ---
+        s810Main.appendChild(el("div", "hw-q8-op", "\u2192"));
+
+        // --- Q output matrix (column pills, blue, starts empty) ---
+        var outWrap = el("div", "hw-q8-mat-wrap hw-q8-out-wrap");
+        outWrap.appendChild(el("div", "hw-q8-mat-label hw-q8-label-q", "Q"));
+
+        var outTokenRow = el("div", "hw-q8-token-labels");
+        tokens.forEach(function (tok) {
+          outTokenRow.appendChild(el("div", "hw-q8-token-label hw-q8-out-token-label", tok));
+        });
+        outWrap.appendChild(outTokenRow);
+
+        var outCols = el("div", "hw-q8-cols");
+        var outputColEls = [];
+        tokens.forEach(function (tok, c) {
+          var col = el("div", "hw-q8-col hw-q8-out-col");
+          col.appendChild(el("div", "hw-q8-cell hw-q8-out-cell", qValues[0][c]));
+          col.appendChild(el("div", "hw-q8-cell hw-q8-dots hw-q8-out-dots", "\u22EF"));
+          col.appendChild(el("div", "hw-q8-cell hw-q8-out-cell", qValues[2][c]));
+          outCols.appendChild(col);
+          outputColEls.push(col);
+        });
+        outWrap.appendChild(outCols);
+
+        var outDim = el("div", "hw-q8-dim-label");
+        outDim.innerHTML = "T \u00d7 d<sub>head</sub>";
+        if (astroAttr)
+          outDim.querySelectorAll("sub").forEach(function (s) {
+            s.setAttribute(astroAttr, "");
+          });
+        outWrap.appendChild(outDim);
+        s810Main.appendChild(outWrap);
+
+        // === Equation row ===
+        var eqRow = el("div", "hw-q8-equation");
+        eqRow.appendChild(el("span", "hw-q8-eq-q", "Q"));
+        eqRow.appendChild(document.createTextNode(" = "));
+        eqRow.appendChild(el("span", "hw-q8-eq-norm", "X\u0302"));
+        eqRow.appendChild(document.createTextNode(" \u00b7 "));
+        var eqWq = el("span", "hw-q8-eq-wq");
+        eqWq.innerHTML = "W<sub>Q</sub>";
+        if (astroAttr) eqWq.querySelector("sub").setAttribute(astroAttr, "");
+        eqRow.appendChild(eqWq);
+        eqRow.appendChild(
+          el("span", "hw-q8-eq-dim", "  (T\u00d7d_model) \u00b7 (d_model\u00d7d_head) = T\u00d7d_head"),
+        );
+        s810Layout.appendChild(eqRow);
+
+        // === Animation sequence ===
+        // Phase 1 (400ms): W_Q slides up into position
+        setTimeout(function () {
+          if (s810BuildId !== myId) return;
+          wqWrap.classList.add("visible");
+        }, 400);
+
+        // Phase 2 (800ms): Q output frame appears (empty, transparent values)
+        setTimeout(function () {
+          if (s810BuildId !== myId) return;
+          outWrap.classList.add("visible");
+        }, 800);
+
+        // flyCol helper — appends to s810Layout for absolute positioning
+        function flyCol(srcCol, dur) {
+          if (s810BuildId !== myId) return;
+          var lRect = s810Layout.getBoundingClientRect();
+          var sRect = srcCol.getBoundingClientRect();
+          var wRect = wqCols.getBoundingClientRect();
+
+          var fly = srcCol.cloneNode(true);
+          fly.classList.add("hw-q8-fly-col");
+          fly.style.position = "absolute";
+          fly.style.left = sRect.left - lRect.left + "px";
+          fly.style.top = sRect.top - lRect.top + "px";
+          fly.style.width = sRect.width + "px";
+          fly.style.transition =
+            "transform " + dur + "ms ease-in-out, opacity " + dur + "ms ease";
+          s810Layout.appendChild(fly);
+
+          var dx = wRect.left + wRect.width / 2 - sRect.width / 2 - sRect.left;
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              fly.style.transform = "translateX(" + dx + "px) scale(0.8)";
+              fly.style.opacity = "0.2";
+            });
+          });
+
+          setTimeout(function () {
+            if (fly.parentNode) fly.remove();
+          }, dur + 80);
+        }
+
+        // Phase 3: Per-token column animation
+        // Tokens 0–2: detailed animation with flying column copy (500ms each)
+        // Tokens 3–7: rapid cascade (60ms each)
+        var catCol = 2;
+        var detailedCount = 3;
+        var detailedGap = 500;
+        var cascadeGap = 60;
+        var baseDelay = 1100;
+
+        tokens.forEach(function (tok, i) {
+          var delay =
+            i < detailedCount
+              ? baseDelay + i * detailedGap
+              : baseDelay + detailedCount * detailedGap + (i - detailedCount) * cascadeGap;
+
+          setTimeout(function () {
+            if (s810BuildId !== myId) return;
+            s810InputColEls[i].classList.add("hw-q8-highlight");
+
+            if (i < detailedCount) {
+              flyCol(s810InputColEls[i], 250);
+
+              setTimeout(function () {
+                if (s810BuildId !== myId) return;
+                wqWrap.classList.add("flash");
+                setTimeout(function () {
+                  wqWrap.classList.remove("flash");
+                }, 200);
+              }, 250);
+
+              setTimeout(function () {
+                if (s810BuildId !== myId) return;
+                outputColEls[i].classList.add("hw-q8-filled");
+              }, 350);
+
+              setTimeout(function () {
+                if (s810BuildId !== myId) return;
+                if (i === catCol) {
+                  s810InputColEls[i].classList.remove("hw-q8-highlight");
+                  s810InputColEls[i].classList.add("hw-q8-persistent");
+                } else {
+                  s810InputColEls[i].classList.remove("hw-q8-highlight");
+                }
+              }, 450);
+            } else {
+              wqWrap.classList.add("flash");
+              setTimeout(function () {
+                wqWrap.classList.remove("flash");
+              }, 40);
+
+              setTimeout(function () {
+                if (s810BuildId !== myId) return;
+                outputColEls[i].classList.add("hw-q8-filled");
+              }, 30);
+
+              setTimeout(function () {
+                if (s810BuildId !== myId) return;
+                s810InputColEls[i].classList.remove("hw-q8-highlight");
+              }, 50);
+            }
+          }, delay);
+        });
+
+        // Phase 4: Equation appears after all animations complete
+        var eqDelay =
+          baseDelay +
+          detailedCount * detailedGap +
+          (tokens.length - detailedCount) * cascadeGap +
+          300;
+        setTimeout(function () {
+          if (s810BuildId !== myId) return;
+          eqRow.classList.add("visible");
+        }, eqDelay);
+      }
+
+      function buildS810Step9Volatile() {
+        var myId = ++s810BuildId;
+
+        // --- Clear volatile content from s810Main (keep first 2: inWrap + dot op) ---
+        while (s810Main.children.length > 2) {
+          s810Main.removeChild(s810Main.lastChild);
+        }
+        // --- Clear equation / transpose rows from s810Layout ---
+        while (s810Layout.children.length > 1) {
+          s810Layout.removeChild(s810Layout.lastChild);
+        }
+        // --- Reset input column states ---
+        s810InputColEls.forEach(function (col) {
+          col.classList.remove(
+            "hw-q8-highlight",
+            "hw-q8-persistent",
+            "hw-v9-highlight",
+            "hw-k10-highlight",
+          );
+        });
+
+        var tokens = s810Tokens;
+
+        // W_V weight values (same as Step 7)
+        var vW = [
+          ["-0.27", " 0.51", " 0.38"],
+          [" 0.63", "-0.34", " 0.15"],
+          [" 0.11", " 0.42", "-0.56"],
+          ["-0.48", " 0.26", " 0.69"],
+        ];
+
+        // V output values (projected through W_V)
+        var vValues = [
+          [".58", "-.34", ".91", ".17", "-.62", ".44", "-.28", ".58"],
+          ["-.21", ".76", "-.45", ".63", ".38", "-.55", ".82", "-.21"],
+          [".35", ".12", "-.67", "-.41", ".73", ".29", "-.14", ".35"],
+        ];
+
+        // Q output values (from Step 8, for the ghost card)
+        var qValues = [
+          [".42", ".18", ".73", "-.31", ".56", "-.24", ".48", ".42"],
+          ["-.19", ".55", "-.08", ".41", "-.33", ".62", "-.27", "-.19"],
+          [".31", "-.12", ".54", "-.22", ".28", "-.45", ".37", ".31"],
+        ];
+
+        // --- W_V weight matrix (column pills, pink, slides up) ---
+        var wvWrap = el("div", "hw-q8-mat-wrap hw-v9-wv-wrap");
+        var wvLabel = el("div", "hw-q8-mat-label hw-v9-label-wv");
+        wvLabel.innerHTML = "W<sub>V</sub>";
+        if (astroAttr)
+          wvLabel.querySelectorAll("sub").forEach(function (s) {
+            s.setAttribute(astroAttr, "");
+          });
+        wvWrap.appendChild(wvLabel);
+
+        var wvCols = el("div", "hw-q8-cols");
+        for (var ci = 0; ci < 3; ci++) {
+          var wCol = el("div", "hw-q8-col hw-v9-wv-col");
+          wCol.appendChild(el("div", "hw-q8-cell hw-v9-wv-cell", vW[0][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-v9-wv-cell", vW[1][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-q8-dots hw-v9-wv-dots", "\u22EF"));
+          wCol.appendChild(el("div", "hw-q8-cell hw-v9-wv-cell", vW[2][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-v9-wv-cell", vW[3][ci]));
+          wvCols.appendChild(wCol);
+        }
+        wvWrap.appendChild(wvCols);
+
+        var wvDim = el("div", "hw-q8-dim-label");
+        wvDim.innerHTML = "d<sub>model</sub> \u00d7 d<sub>head</sub>";
+        if (astroAttr)
+          wvDim.querySelectorAll("sub").forEach(function (s) {
+            s.setAttribute(astroAttr, "");
+          });
+        wvWrap.appendChild(wvDim);
+        s810Main.appendChild(wvWrap);
+
+        // --- Arrow ---
+        s810Main.appendChild(el("div", "hw-q8-op", "\u2192"));
+
+        // --- Stacked output area: Q ghost behind, V output in front ---
+        var stackArea = el("div", "hw-v9-stack-area");
+
+        // Q ghost (dimmed, behind) — shows completed Q from Step 8
+        var qGhost = el("div", "hw-v9-q-ghost");
+        qGhost.appendChild(el("div", "hw-q8-mat-label hw-v9-q-ghost-label", "Q"));
+        var qGhostTokenRow = el("div", "hw-q8-token-labels");
+        tokens.forEach(function (tok) {
+          qGhostTokenRow.appendChild(
+            el("div", "hw-q8-token-label hw-v9-q-ghost-token-label", tok),
+          );
+        });
+        qGhost.appendChild(qGhostTokenRow);
+        var qGhostCols = el("div", "hw-q8-cols");
+        tokens.forEach(function (tok, c) {
+          var col = el("div", "hw-q8-col hw-v9-q-ghost-col");
+          col.appendChild(el("div", "hw-q8-cell hw-v9-q-ghost-cell", qValues[0][c]));
+          col.appendChild(el("div", "hw-q8-cell hw-q8-dots hw-v9-q-ghost-dots", "\u22EF"));
+          col.appendChild(el("div", "hw-q8-cell hw-v9-q-ghost-cell", qValues[2][c]));
+          qGhostCols.appendChild(col);
+        });
+        qGhost.appendChild(qGhostCols);
+        var qGhostDim = el("div", "hw-q8-dim-label");
+        qGhostDim.innerHTML = "T \u00d7 d<sub>head</sub>";
+        if (astroAttr)
+          qGhostDim.querySelectorAll("sub").forEach(function (s) {
+            s.setAttribute(astroAttr, "");
+          });
+        qGhost.appendChild(qGhostDim);
+        stackArea.appendChild(qGhost);
+
+        // V output matrix (pink, front of stack, starts empty)
+        var outWrap = el("div", "hw-q8-mat-wrap hw-v9-out-wrap");
+        outWrap.appendChild(el("div", "hw-q8-mat-label hw-v9-label-v", "V"));
+
+        var outTokenRow = el("div", "hw-q8-token-labels");
+        tokens.forEach(function (tok) {
+          outTokenRow.appendChild(el("div", "hw-q8-token-label hw-v9-out-token-label", tok));
+        });
+        outWrap.appendChild(outTokenRow);
+
+        var outCols = el("div", "hw-q8-cols");
+        var outputColEls = [];
+        tokens.forEach(function (tok, c) {
+          var col = el("div", "hw-q8-col hw-v9-out-col");
+          col.appendChild(el("div", "hw-q8-cell hw-v9-out-cell", vValues[0][c]));
+          col.appendChild(el("div", "hw-q8-cell hw-q8-dots hw-v9-out-dots", "\u22EF"));
+          col.appendChild(el("div", "hw-q8-cell hw-v9-out-cell", vValues[2][c]));
+          outCols.appendChild(col);
+          outputColEls.push(col);
+        });
+        outWrap.appendChild(outCols);
+
+        var outDim = el("div", "hw-q8-dim-label");
+        outDim.innerHTML = "T \u00d7 d<sub>head</sub>";
+        if (astroAttr)
+          outDim.querySelectorAll("sub").forEach(function (s) {
+            s.setAttribute(astroAttr, "");
+          });
+        outWrap.appendChild(outDim);
+        stackArea.appendChild(outWrap);
+
+        s810Main.appendChild(stackArea);
+
+        // === Equation row ===
+        var eqRow = el("div", "hw-v9-equation");
+        eqRow.appendChild(el("span", "hw-v9-eq-v", "V"));
+        eqRow.appendChild(document.createTextNode(" = "));
+        eqRow.appendChild(el("span", "hw-v9-eq-norm", "X\u0302"));
+        eqRow.appendChild(document.createTextNode(" \u00b7 "));
+        var eqWv = el("span", "hw-v9-eq-wv");
+        eqWv.innerHTML = "W<sub>V</sub>";
+        if (astroAttr) eqWv.querySelector("sub").setAttribute(astroAttr, "");
+        eqRow.appendChild(eqWv);
+        eqRow.appendChild(
+          el(
+            "span",
+            "hw-v9-eq-dim",
+            "  (T\u00d7d_model) \u00b7 (d_model\u00d7d_head) = T\u00d7d_head",
+          ),
+        );
+        s810Layout.appendChild(eqRow);
+
+        // === Animation sequence ===
+        // Phase 1 (400ms): W_V slides up into position
+        setTimeout(function () {
+          if (s810BuildId !== myId) return;
+          wvWrap.classList.add("visible");
+        }, 400);
+
+        // Phase 2 (800ms): Q ghost appears + V output frame appears
+        setTimeout(function () {
+          if (s810BuildId !== myId) return;
+          qGhost.classList.add("visible");
+          outWrap.classList.add("visible");
+        }, 800);
+
+        // flyCol helper — appends to s810Layout for absolute positioning
+        function flyCol(srcCol, dur) {
+          if (s810BuildId !== myId) return;
+          var lRect = s810Layout.getBoundingClientRect();
+          var sRect = srcCol.getBoundingClientRect();
+          var wRect = wvCols.getBoundingClientRect();
+
+          var fly = srcCol.cloneNode(true);
+          fly.classList.add("hw-q8-fly-col");
+          fly.style.position = "absolute";
+          fly.style.left = sRect.left - lRect.left + "px";
+          fly.style.top = sRect.top - lRect.top + "px";
+          fly.style.width = sRect.width + "px";
+          fly.style.transition =
+            "transform " + dur + "ms ease-in-out, opacity " + dur + "ms ease";
+          s810Layout.appendChild(fly);
+
+          var dx = wRect.left + wRect.width / 2 - sRect.width / 2 - sRect.left;
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              fly.style.transform = "translateX(" + dx + "px) scale(0.8)";
+              fly.style.opacity = "0.2";
+            });
+          });
+
+          setTimeout(function () {
+            if (fly.parentNode) fly.remove();
+          }, dur + 80);
+        }
+
+        // Phase 3: Per-token column animation
+        var detailedCount = 3;
+        var detailedGap = 500;
+        var cascadeGap = 60;
+        var baseDelay = 1100;
+
+        tokens.forEach(function (tok, i) {
+          var delay =
+            i < detailedCount
+              ? baseDelay + i * detailedGap
+              : baseDelay + detailedCount * detailedGap + (i - detailedCount) * cascadeGap;
+
+          setTimeout(function () {
+            if (s810BuildId !== myId) return;
+            s810InputColEls[i].classList.add("hw-v9-highlight");
+
+            if (i < detailedCount) {
+              flyCol(s810InputColEls[i], 250);
+
+              setTimeout(function () {
+                if (s810BuildId !== myId) return;
+                wvWrap.classList.add("flash");
+                setTimeout(function () {
+                  wvWrap.classList.remove("flash");
+                }, 200);
+              }, 250);
+
+              setTimeout(function () {
+                if (s810BuildId !== myId) return;
+                outputColEls[i].classList.add("hw-v9-filled");
+              }, 350);
+
+              setTimeout(function () {
+                if (s810BuildId !== myId) return;
+                s810InputColEls[i].classList.remove("hw-v9-highlight");
+              }, 450);
+            } else {
+              wvWrap.classList.add("flash");
+              setTimeout(function () {
+                wvWrap.classList.remove("flash");
+              }, 40);
+
+              setTimeout(function () {
+                if (s810BuildId !== myId) return;
+                outputColEls[i].classList.add("hw-v9-filled");
+              }, 30);
+
+              setTimeout(function () {
+                if (s810BuildId !== myId) return;
+                s810InputColEls[i].classList.remove("hw-v9-highlight");
+              }, 50);
+            }
+          }, delay);
+        });
+
+        // Phase 4: Equation appears after all animations complete
+        var eqDelay =
+          baseDelay +
+          detailedCount * detailedGap +
+          (tokens.length - detailedCount) * cascadeGap +
+          300;
+        setTimeout(function () {
+          if (s810BuildId !== myId) return;
+          eqRow.classList.add("visible");
+        }, eqDelay);
+      }
+
+      function buildS810Step10Volatile(instant) {
+        var myId = ++s810BuildId;
+
+        // --- Clear volatile content from s810Main (keep first 2: inWrap + dot op) ---
+        while (s810Main.children.length > 2) {
+          s810Main.removeChild(s810Main.lastChild);
+        }
+        // --- Clear equation / transpose rows from s810Layout ---
+        while (s810Layout.children.length > 1) {
+          s810Layout.removeChild(s810Layout.lastChild);
+        }
+        // --- Reset input column states ---
+        s810InputColEls.forEach(function (col) {
+          col.classList.remove(
+            "hw-q8-highlight",
+            "hw-q8-persistent",
+            "hw-v9-highlight",
+            "hw-k10-highlight",
+          );
+        });
+
+        var tokens = s810Tokens;
+
+        // W_K weight values (from Step 7)
+        var kW = [
+          [" 0.33", "-0.58", " 0.19"],
+          [" 0.67", " 0.12", "-0.41"],
+          ["-0.22", " 0.48", " 0.35"],
+          [" 0.44", "-0.16", " 0.73"],
+        ];
+
+        // K output values (projected through W_K)
+        var kValues = [
+          [".33", "-.61", ".82", ".14", "-.47", ".58", "-.22", ".33"],
+          ["-.52", ".39", "-.71", ".55", ".28", "-.63", ".44", "-.52"],
+          [".18", "-.44", ".36", "-.29", ".65", ".11", "-.53", ".18"],
+        ];
+
+        // --- W_K weight matrix (column pills, orange, slides up) ---
+        var wkWrap = el("div", "hw-q8-mat-wrap hw-k10-wk-wrap");
+        var wkLabel = el("div", "hw-q8-mat-label hw-k10-label-wk");
+        wkLabel.innerHTML = "W<sub>K</sub>";
+        if (astroAttr)
+          wkLabel.querySelectorAll("sub").forEach(function (s) {
+            s.setAttribute(astroAttr, "");
+          });
+        wkWrap.appendChild(wkLabel);
+
+        var wkCols = el("div", "hw-q8-cols");
+        for (var ci = 0; ci < 3; ci++) {
+          var wCol = el("div", "hw-q8-col hw-k10-wk-col");
+          wCol.appendChild(el("div", "hw-q8-cell hw-k10-wk-cell", kW[0][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-k10-wk-cell", kW[1][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-q8-dots hw-k10-wk-dots", "\u22EF"));
+          wCol.appendChild(el("div", "hw-q8-cell hw-k10-wk-cell", kW[2][ci]));
+          wCol.appendChild(el("div", "hw-q8-cell hw-k10-wk-cell", kW[3][ci]));
+          wkCols.appendChild(wCol);
+        }
+        wkWrap.appendChild(wkCols);
+
+        var wkDim = el("div", "hw-q8-dim-label");
+        wkDim.innerHTML = "d<sub>model</sub> \u00d7 d<sub>head</sub>";
+        if (astroAttr)
+          wkDim.querySelectorAll("sub").forEach(function (s) {
+            s.setAttribute(astroAttr, "");
+          });
+        wkWrap.appendChild(wkDim);
+        s810Main.appendChild(wkWrap);
+
+        // --- Arrow ---
+        s810Main.appendChild(el("div", "hw-q8-op", "\u2192"));
+
+        // --- K output matrix (column pills, orange, starts empty) ---
+        var outWrap = el("div", "hw-q8-mat-wrap hw-k10-out-wrap");
+        outWrap.appendChild(el("div", "hw-q8-mat-label hw-k10-label-k", "K"));
+
+        var outTokenRow = el("div", "hw-q8-token-labels");
+        tokens.forEach(function (tok) {
+          outTokenRow.appendChild(
+            el("div", "hw-q8-token-label hw-k10-out-token-label", tok),
+          );
+        });
+        outWrap.appendChild(outTokenRow);
+
+        var outCols = el("div", "hw-q8-cols");
+        var outputColEls = [];
+        tokens.forEach(function (tok, c) {
+          var col = el("div", "hw-q8-col hw-k10-out-col");
+          col.appendChild(el("div", "hw-q8-cell hw-k10-out-cell", kValues[0][c]));
+          col.appendChild(el("div", "hw-q8-cell hw-q8-dots hw-k10-out-dots", "\u22EF"));
+          col.appendChild(el("div", "hw-q8-cell hw-k10-out-cell", kValues[2][c]));
+          outCols.appendChild(col);
+          outputColEls.push(col);
+        });
+        outWrap.appendChild(outCols);
+
+        var outDim = el("div", "hw-q8-dim-label");
+        outDim.innerHTML = "T \u00d7 d<sub>head</sub>";
+        if (astroAttr)
+          outDim.querySelectorAll("sub").forEach(function (s) {
+            s.setAttribute(astroAttr, "");
+          });
+        outWrap.appendChild(outDim);
+        s810Main.appendChild(outWrap);
+
+        // === Equation row ===
+        var eqRow = el("div", "hw-k10-equation");
+        eqRow.appendChild(el("span", "hw-k10-eq-k", "K"));
+        eqRow.appendChild(document.createTextNode(" = "));
+        eqRow.appendChild(el("span", "hw-k10-eq-norm", "X\u0302"));
+        eqRow.appendChild(document.createTextNode(" \u00b7 "));
+        var eqWk = el("span", "hw-k10-eq-wk");
+        eqWk.innerHTML = "W<sub>K</sub>";
+        if (astroAttr) eqWk.querySelector("sub").setAttribute(astroAttr, "");
+        eqRow.appendChild(eqWk);
+        eqRow.appendChild(
+          el(
+            "span",
+            "hw-k10-eq-dim",
+            "  (T\u00d7d_model) \u00b7 (d_model\u00d7d_head) = T\u00d7d_head",
+          ),
+        );
+        s810Layout.appendChild(eqRow);
+
+        // === Transpose section ===
+        var transposeSection = el("div", "hw-k10-transpose");
+
+        transposeSection.appendChild(el("div", "hw-k10-transpose-arrow", "\u2193"));
+        var tLabel = el("div", "hw-k10-transpose-label");
+        tLabel.innerHTML = "Transpose: rows \u2194 columns";
+        transposeSection.appendChild(tLabel);
+
+        // K^T visualization (persistent element — shared with step 11)
+        buildKtInnerStep10();
+        transposeSection.appendChild(s1011KtWrap);
+        s810Layout.appendChild(transposeSection);
+
+        // === Instant mode: show final state immediately (used for backward 11→10 transition) ===
+        if (instant) {
+          wkWrap.classList.add("visible");
+          outputColEls.forEach(function (col) {
+            col.classList.add("hw-k10-filled");
+          });
+          eqRow.classList.add("visible");
+          transposeSection.classList.add("visible");
+          // Note: s1011KtWrap is inside transposeSection; FLIP in showStep() handles its animation
+          return;
+        }
+
+        // === Animation sequence ===
+        // Phase 1 (400ms): W_K slides up into position
+        setTimeout(function () {
+          if (s810BuildId !== myId) return;
+          wkWrap.classList.add("visible");
+        }, 400);
+
+        // Phase 2 (800ms): K output frame appears
+        setTimeout(function () {
+          if (s810BuildId !== myId) return;
+          outWrap.classList.add("visible");
+        }, 800);
+
+        // flyCol helper — appends to s810Layout for absolute positioning
+        function flyCol(srcCol, dur) {
+          if (s810BuildId !== myId) return;
+          var lRect = s810Layout.getBoundingClientRect();
+          var sRect = srcCol.getBoundingClientRect();
+          var wRect = wkCols.getBoundingClientRect();
+
+          var fly = srcCol.cloneNode(true);
+          fly.classList.add("hw-q8-fly-col");
+          fly.style.position = "absolute";
+          fly.style.left = sRect.left - lRect.left + "px";
+          fly.style.top = sRect.top - lRect.top + "px";
+          fly.style.width = sRect.width + "px";
+          fly.style.transition =
+            "transform " + dur + "ms ease-in-out, opacity " + dur + "ms ease";
+          s810Layout.appendChild(fly);
+
+          var dx = wRect.left + wRect.width / 2 - sRect.width / 2 - sRect.left;
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              fly.style.transform = "translateX(" + dx + "px) scale(0.8)";
+              fly.style.opacity = "0.2";
+            });
+          });
+
+          setTimeout(function () {
+            if (fly.parentNode) fly.remove();
+          }, dur + 80);
+        }
+
+        // Phase 3: Per-token column animation
+        var detailedCount = 3;
+        var detailedGap = 500;
+        var cascadeGap = 60;
+        var baseDelay = 1100;
+
+        tokens.forEach(function (tok, i) {
+          var delay =
+            i < detailedCount
+              ? baseDelay + i * detailedGap
+              : baseDelay + detailedCount * detailedGap + (i - detailedCount) * cascadeGap;
+
+          setTimeout(function () {
+            if (s810BuildId !== myId) return;
+            s810InputColEls[i].classList.add("hw-k10-highlight");
+
+            if (i < detailedCount) {
+              flyCol(s810InputColEls[i], 250);
+
+              setTimeout(function () {
+                if (s810BuildId !== myId) return;
+                wkWrap.classList.add("flash");
+                setTimeout(function () {
+                  wkWrap.classList.remove("flash");
+                }, 200);
+              }, 250);
+
+              setTimeout(function () {
+                if (s810BuildId !== myId) return;
+                outputColEls[i].classList.add("hw-k10-filled");
+              }, 350);
+
+              setTimeout(function () {
+                if (s810BuildId !== myId) return;
+                s810InputColEls[i].classList.remove("hw-k10-highlight");
+              }, 450);
+            } else {
+              wkWrap.classList.add("flash");
+              setTimeout(function () {
+                wkWrap.classList.remove("flash");
+              }, 40);
+
+              setTimeout(function () {
+                if (s810BuildId !== myId) return;
+                outputColEls[i].classList.add("hw-k10-filled");
+              }, 30);
+
+              setTimeout(function () {
+                if (s810BuildId !== myId) return;
+                s810InputColEls[i].classList.remove("hw-k10-highlight");
+              }, 50);
+            }
+          }, delay);
+        });
+
+        // Phase 4: Equation appears after all animations complete
+        var eqDelay =
+          baseDelay +
+          detailedCount * detailedGap +
+          (tokens.length - detailedCount) * cascadeGap +
+          300;
+        setTimeout(function () {
+          if (s810BuildId !== myId) return;
+          eqRow.classList.add("visible");
+        }, eqDelay);
+
+        // Phase 5: Transpose section + K^T flip-in CSS animation (skipped during FLIP transition)
+        setTimeout(function () {
+          if (s810BuildId !== myId) return;
+          transposeSection.classList.add("visible");
+          s1011KtWrap.classList.add("flip-in");
+        }, eqDelay + 600);
+      }
+
+      // Build K^T inner content for step 10 (3 d_head column pills, token row labels on left)
+      function buildKtInnerStep10() {
+        var tokens = s810Tokens;
+        s1011KtWrap.innerHTML = "";
+        s1011KtWrap.style.transition = "";
+        s1011KtWrap.style.transform = "";
+        s1011KtWrap.className = "hw-k10-kt-wrap";
+        if (astroAttr) s1011KtWrap.setAttribute(astroAttr, "");
+
+        var ktLabel = el("div", "hw-k10-kt-label");
+        ktLabel.innerHTML = "K<sup>T</sup>";
+        if (astroAttr) ktLabel.querySelector("sup").setAttribute(astroAttr, "");
+        s1011KtWrap.appendChild(ktLabel);
+
+        var ktBody = el("div", "hw-k10-kt-body");
+
+        var ktRowLabels = el("div", "hw-k10-kt-row-labels");
+        ktRowLabels.appendChild(el("div", "hw-k10-kt-row-label", tokens[0]));
+        ktRowLabels.appendChild(el("div", "hw-k10-kt-row-label", tokens[1]));
+        ktRowLabels.appendChild(el("div", "hw-k10-kt-row-label dots-label", "\u22EE"));
+        ktRowLabels.appendChild(el("div", "hw-k10-kt-row-label", tokens[tokens.length - 2]));
+        ktRowLabels.appendChild(el("div", "hw-k10-kt-row-label", tokens[tokens.length - 1]));
+        ktBody.appendChild(ktRowLabels);
+
+        var ktCols = el("div", "hw-k10-kt-cols");
+        for (var d = 0; d < 3; d++) {
+          var ktCol = el("div", "hw-k10-kt-col");
+          ktCol.appendChild(el("div", "hw-k10-kt-cell", kValues1011[d][0]));
+          ktCol.appendChild(el("div", "hw-k10-kt-cell", kValues1011[d][1]));
+          ktCol.appendChild(el("div", "hw-k10-kt-dots-cell", "\u22EF"));
+          ktCol.appendChild(el("div", "hw-k10-kt-cell", kValues1011[d][6]));
+          ktCol.appendChild(el("div", "hw-k10-kt-cell", kValues1011[d][7]));
+          ktCols.appendChild(ktCol);
+        }
+        ktBody.appendChild(ktCols);
+        s1011KtWrap.appendChild(ktBody);
+
+        var ktDim = el("div", "hw-k10-kt-dim");
+        ktDim.innerHTML = "d<sub>head</sub> \u00d7 T";
+        if (astroAttr)
+          ktDim.querySelectorAll("sub").forEach(function (s) {
+            s.setAttribute(astroAttr, "");
+          });
+        s1011KtWrap.appendChild(ktDim);
+      }
+
+      // Build K^T inner content for step 11 (8 token column pills, d_head rows per column)
+      function buildKtInnerStep11() {
+        var tokens = s810Tokens;
+        s1011KtWrap.innerHTML = "";
+        s1011KtWrap.style.transition = "";
+        s1011KtWrap.style.transform = "";
+        s1011KtDimCancel = null;
+        s1011KtWrap.className = "hw-qkt-kt-wrap";
+        if (astroAttr) s1011KtWrap.setAttribute(astroAttr, "");
+
+        var ktLabel = el("div", "hw-qkt-kt-label");
+        ktLabel.innerHTML = "K<sup>T</sup>";
+        if (astroAttr) ktLabel.querySelector("sup").setAttribute(astroAttr, "");
+        s1011KtWrap.appendChild(ktLabel);
+
+        var ktTokenLabels = el("div", "hw-qkt-kt-token-labels");
+        tokens.forEach(function (tok) {
+          ktTokenLabels.appendChild(el("div", "hw-qkt-kt-token-label", tok));
+        });
+        s1011KtWrap.appendChild(ktTokenLabels);
+
+        var ktCols = el("div", "hw-qkt-kt-cols");
+        tokens.forEach(function (tok, t) {
+          var ktCol = el("div", "hw-qkt-kt-col");
+          for (var dd = 0; dd < 3; dd++) {
+            ktCol.appendChild(el("div", "hw-qkt-kt-cell", kValues1011[dd][t]));
+          }
+          ktCols.appendChild(ktCol);
+        });
+        s1011KtWrap.appendChild(ktCols);
+
+        var ktDim = el("div", "hw-qkt-kt-dim");
+        var ktDimD = el("span", "hw-qkt-dim-cancel");
+        ktDimD.innerHTML = "d<sub>head</sub>";
+        if (astroAttr) ktDimD.querySelector("sub").setAttribute(astroAttr, "");
+        var ktDimX = document.createTextNode(" \u00d7 ");
+        var ktDimT = el("span", "");
+        ktDimT.textContent = "T";
+        ktDimT.style.color = "hsl(30 80% 50%)";
+        ktDim.appendChild(ktDimD);
+        ktDim.appendChild(ktDimX);
+        ktDim.appendChild(ktDimT);
+        s1011KtWrap.appendChild(ktDim);
+
+        s1011KtDimCancel = ktDimD;
+      }
+
       function renderStep11() {
         var layout = el("div", "hw-qkt-layout");
         var tokens = ["The", "fat", "cat", "sat", "quiet", "ly", "on", "the"];
@@ -15228,24 +16730,9 @@ const sections = [
           [".81", "-.15", ".63", "-.42", ".28", ".37", "-.71", ".81"],
         ];
 
-        // K^T values (d_head=3 dimensions, T=8 tokens)
-        var ktValues = [
-          [".33", "-.61", ".82", ".14", "-.47", ".58", "-.22", ".33"],
-          ["-.52", ".39", "-.71", ".55", ".28", "-.63", ".44", "-.52"],
-          [".18", "-.44", ".36", "-.29", ".65", ".11", "-.53", ".18"],
-        ];
+        // K^T values come from kValues1011 (shared persistent data)
 
-        // Attention score matrix (T \u00d7 T)
-        var scoreValues = [
-          ["2.1", ".30", ".80", ".10", "-.20", ".10", ".20", "1.8"],
-          [".20", "1.6", "1.3", ".20", ".00", "-.10", ".10", ".20"],
-          [".40", ".90", "2.0", ".60", ".10", ".10", "-.10", ".30"],
-          [".10", ".20", "1.1", "1.8", ".50", ".20", ".10", ".10"],
-          ["-.10", ".00", ".10", "1.2", "1.9", "1.5", ".00", "-.10"],
-          [".00", "-.10", ".10", ".80", "1.4", "1.7", ".00", ".00"],
-          [".30", ".00", "-.10", ".10", ".00", ".00", "2.0", ".50"],
-          ["1.6", ".10", ".30", ".00", "-.10", ".00", ".60", "2.2"],
-        ];
+        // Attention score matrix is stored in s1112ScoreValues (module-level persistent data)
 
         // === Top area: Q (tall) \u00b7 K^T (wide) ===
         var multRow = el("div", "hw-qkt-mult-row");
@@ -15319,45 +16806,9 @@ const sections = [
         // --- Multiply sign ---
         multRow.appendChild(el("div", "hw-qkt-times", "\u00b7"));
 
-        // --- K^T matrix as wide column pills (d_head rows \u00d7 T cols) ---
-        var ktWrap = el("div", "hw-qkt-kt-wrap");
-        var ktLabel = el("div", "hw-qkt-kt-label");
-        ktLabel.innerHTML = "K<sup>T</sup>";
-        if (astroAttr) ktLabel.querySelector("sup").setAttribute(astroAttr, "");
-        ktWrap.appendChild(ktLabel);
-
-        // Token column labels on top
-        var ktTokenLabels = el("div", "hw-qkt-kt-token-labels");
-        tokens.forEach(function (tok) {
-          ktTokenLabels.appendChild(el("div", "hw-qkt-kt-token-label", tok));
-        });
-        ktWrap.appendChild(ktTokenLabels);
-
-        // 8 token column pills, each with 3 d_head cells (all visible, no truncation)
-        var ktCols = el("div", "hw-qkt-kt-cols");
-        tokens.forEach(function (tok, t) {
-          var ktCol = el("div", "hw-qkt-kt-col");
-          for (var dd = 0; dd < 3; dd++) {
-            ktCol.appendChild(el("div", "hw-qkt-kt-cell", ktValues[dd][t]));
-          }
-          ktCols.appendChild(ktCol);
-        });
-        ktWrap.appendChild(ktCols);
-
-        // K^T dimension label with cancelable d_head
-        var ktDim = el("div", "hw-qkt-kt-dim");
-        var ktDimD = el("span", "hw-qkt-dim-cancel");
-        ktDimD.innerHTML = "d<sub>head</sub>";
-        if (astroAttr) ktDimD.querySelector("sub").setAttribute(astroAttr, "");
-        var ktDimX = document.createTextNode(" \u00d7 ");
-        var ktDimT = el("span", "");
-        ktDimT.textContent = "T";
-        ktDimT.style.color = "hsl(30 80% 50%)";
-        ktDim.appendChild(ktDimD);
-        ktDim.appendChild(ktDimX);
-        ktDim.appendChild(ktDimT);
-        ktWrap.appendChild(ktDim);
-        multRow.appendChild(ktWrap);
+        // --- K^T matrix (persistent element — shared with step 10, rebuilt for step 11 layout) ---
+        buildKtInnerStep11();
+        multRow.appendChild(s1011KtWrap);
 
         layout.appendChild(multRow);
 
@@ -15365,58 +16816,43 @@ const sections = [
         var downArrow = el("div", "hw-qkt-down-arrow", "\u2193 =");
         layout.appendChild(downArrow);
 
-        // === Result T\u00d7T attention matrix ===
+        // === Result T×T attention matrix (persistent element shared with step 12) ===
         var resultWrap = el("div", "hw-qkt-result-wrap");
         resultWrap.appendChild(el("div", "hw-qkt-result-title", "Attention Scores"));
 
-        // K axis label (top)
+        // K axis label (top, above the persistent grid)
         resultWrap.appendChild(el("div", "hw-qkt-axis-label-k", "keys \u2192"));
 
-        // Column labels (key tokens \u2014 orange tint)
-        var colLabels = el("div", "hw-qkt-result-col-labels");
-        colLabels.style.gridTemplateColumns = "repeat(" + T + ", 1fr)";
-        colLabels.style.marginLeft = "28px";
-        tokens.forEach(function (tok) {
-          colLabels.appendChild(el("div", "hw-qkt-result-col-label", tok));
-        });
-        resultWrap.appendChild(colLabels);
+        // Flex row: Q axis label (vertical, left) + persistent grid
+        var resultInner = el("div", "");
+        resultInner.style.display = "flex";
+        resultInner.style.gap = "3px";
+        resultInner.style.alignItems = "flex-start";
+        resultInner.appendChild(el("div", "hw-qkt-axis-label-q", "queries"));
 
-        // Grid area: row labels + matrix
-        var gridArea = el("div", "hw-qkt-result-grid-area");
+        // Build (or reuse) the persistent grid in mode-11
+        buildS1112Grid();
+        s1112GridEl.className = "hw-s1112-grid hw-s1112-at-11";
+        if (astroAttr) s1112GridEl.setAttribute(astroAttr, "");
 
-        // Left side: Q axis label + row labels
-        var leftSide = el("div", "");
-        leftSide.style.display = "flex";
-        leftSide.style.gap = "1px";
-        leftSide.style.alignItems = "flex-start";
+        if (s1112Instant) {
+          // Backward from step 12: apply mode-11 styles instantly (FLIP provides the visual)
+          applyS1112Mode11Styles();
+        } else {
+          // Forward into step 11: start cells faint, fill row-by-row
+          for (var fi = 0; fi < 8; fi++) {
+            for (var fj = 0; fj < 8; fj++) {
+              var initCell = s1112Cells[fi][fj];
+              initCell.textContent = s1112ScoreValues[fi][fj];
+              initCell.style.background = "hsl(280 55% 55% / 0.02)";
+              initCell.style.color = "hsl(280 55% 55% / 0.1)";
+              initCell.style.fontWeight = "";
+            }
+          }
+        }
 
-        var qAxisLabel = el("div", "hw-qkt-axis-label-q", "queries");
-        leftSide.appendChild(qAxisLabel);
-
-        var rowLabels = el("div", "hw-qkt-result-row-labels");
-        rowLabels.style.gridTemplateRows = "repeat(" + T + ", 1fr)";
-        tokens.forEach(function (tok) {
-          rowLabels.appendChild(el("div", "hw-qkt-result-row-label", tok));
-        });
-        leftSide.appendChild(rowLabels);
-        gridArea.appendChild(leftSide);
-
-        // The T \u00d7 T matrix (values start transparent, fill row-by-row)
-        var resultGrid = el("div", "hw-qkt-result-grid");
-        resultGrid.style.gridTemplateColumns = "repeat(" + T + ", 1fr)";
-        var resultCells = [];
-        scoreValues.forEach(function (row, r) {
-          var rowCells = [];
-          row.forEach(function (val, c) {
-            var cell = el("div", "hw-qkt-result-cell", val);
-            if (r === c) cell.classList.add("hw-qkt-diag");
-            resultGrid.appendChild(cell);
-            rowCells.push(cell);
-          });
-          resultCells.push(rowCells);
-        });
-        gridArea.appendChild(resultGrid);
-        resultWrap.appendChild(gridArea);
+        resultInner.appendChild(s1112GridEl);
+        resultWrap.appendChild(resultInner);
 
         // Result dimension label
         var resultDim = el("div", "hw-qkt-result-dim");
@@ -15433,6 +16869,9 @@ const sections = [
         resultWrap.appendChild(resultDim);
 
         layout.appendChild(resultWrap);
+
+        // Row-by-row fill uses the persistent s1112Cells array
+        var resultCells = s1112Cells;
 
         // === Shape equation with strikethroughs ===
         var eqRow = el("div", "hw-qkt-equation");
@@ -15469,7 +16908,7 @@ const sections = [
         // Phase 1 (800ms): d_head dimensions get strikethrough
         setTimeout(function () {
           qDimD.classList.add("active");
-          ktDimD.classList.add("active");
+          if (s1011KtDimCancel) s1011KtDimCancel.classList.add("active");
         }, 800);
 
         // Phase 2 (1200ms): Down arrow + result frame appears
@@ -15478,7 +16917,7 @@ const sections = [
           resultWrap.classList.add("visible");
         }, 1200);
 
-        // Phase 3 (1600ms+): Row-by-row fill animation
+        // Phase 3 (1600ms+): Row-by-row fill animation (skipped when coming from step 12)
         // Rows 0-1: detailed with Q highlight (visible top rows)
         // Rows 2-5: cascade (hidden behind dots)
         // Rows 6-7: detailed with Q highlight (visible bottom rows)
@@ -15486,82 +16925,81 @@ const sections = [
         var detailedGap = 350;
         var cascadeGap = 60;
 
-        for (var r = 0; r < T; r++) {
-          (function (row) {
-            var delay;
-            var isDetailed = row < 2 || row >= T - 2;
-            if (row < 2) {
-              delay = rowBaseDelay + row * detailedGap;
-            } else if (row < T - 2) {
-              delay = rowBaseDelay + 2 * detailedGap + (row - 2) * cascadeGap;
-            } else {
-              delay =
-                rowBaseDelay +
-                2 * detailedGap +
-                (T - 4) * cascadeGap +
-                (row - (T - 2)) * detailedGap;
-            }
-
-            setTimeout(function () {
-              // Highlight Q row cells if visible
-              if (qCellsByRow[row] && isDetailed) {
-                qCellsByRow[row].forEach(function (c) {
-                  c.classList.add("row-highlight");
-                });
+        if (!s1112Instant) {
+          for (var r = 0; r < T; r++) {
+            (function (row) {
+              var delay;
+              var isDetailed = row < 2 || row >= T - 2;
+              if (row < 2) {
+                delay = rowBaseDelay + row * detailedGap;
+              } else if (row < T - 2) {
+                delay = rowBaseDelay + 2 * detailedGap + (row - 2) * cascadeGap;
+              } else {
+                delay =
+                  rowBaseDelay +
+                  2 * detailedGap +
+                  (T - 4) * cascadeGap +
+                  (row - (T - 2)) * detailedGap;
               }
 
-              // Fill result row
-              setTimeout(
-                function () {
-                  resultCells[row].forEach(function (c) {
-                    c.classList.add("hw-qkt-filled");
-                  });
-                },
-                isDetailed ? 150 : 20,
-              );
-
-              // Remove Q highlight
-              if (qCellsByRow[row] && isDetailed) {
-                setTimeout(function () {
+              setTimeout(function () {
+                // Highlight Q row cells if visible
+                if (qCellsByRow[row] && isDetailed) {
                   qCellsByRow[row].forEach(function (c) {
-                    c.classList.remove("row-highlight");
+                    c.classList.add("row-highlight");
                   });
-                }, 280);
-              }
-            }, delay);
-          })(r);
+                }
+
+                // Fill result row with inline mode-11 styles (via persistent cells)
+                setTimeout(
+                  function () {
+                    resultCells[row].forEach(function (c, col) {
+                      var isDiag = row === col;
+                      if (isDiag) {
+                        c.style.background = "hsl(280 55% 55% / 0.14)";
+                        c.style.color = "hsl(280 55% 55% / 0.9)";
+                        c.style.fontWeight = "600";
+                      } else {
+                        c.style.background = "hsl(280 55% 55% / 0.06)";
+                        c.style.color = "hsl(280 55% 55% / 0.75)";
+                        c.style.fontWeight = "";
+                      }
+                    });
+                  },
+                  isDetailed ? 150 : 20,
+                );
+
+                // Remove Q highlight
+                if (qCellsByRow[row] && isDetailed) {
+                  setTimeout(function () {
+                    qCellsByRow[row].forEach(function (c) {
+                      c.classList.remove("row-highlight");
+                    });
+                  }, 280);
+                }
+              }, delay);
+            })(r);
+          }
         }
 
-        // Phase 4: Equation appears after all row animations
-        var eqDelay = rowBaseDelay + 2 * detailedGap + (T - 4) * cascadeGap + 2 * detailedGap + 300;
+        // Phase 4: Equation + Phase 5: Callout
+        // When coming backward from step 12 (s1112Instant), skip row fill → show equation quickly
+        var eqDelay = s1112Instant
+          ? 400
+          : rowBaseDelay + 2 * detailedGap + (T - 4) * cascadeGap + 2 * detailedGap + 300;
         setTimeout(function () {
           eqRow.classList.add("visible");
         }, eqDelay);
 
-        // Phase 5: O(n\u00b2) callout
         setTimeout(function () {
           callout.classList.add("visible");
-        }, eqDelay + 400);
+        }, eqDelay + (s1112Instant ? 200 : 400));
 
         return layout;
       }
 
       function renderStep12() {
         var layout = el("div", "hw-hm12-layout");
-        var tokens = ["The", "fat", "cat", "sat", "quiet", "ly", "on", "the"];
-        var T = tokens.length;
-
-        // Softmax-normalized attention weights (from Step 11 scores, each row sums to 1)
-        var attnWeights = [
-          [0.26, 0.09, 0.12, 0.08, 0.07, 0.08, 0.09, 0.22],
-          [0.1, 0.23, 0.19, 0.1, 0.09, 0.09, 0.1, 0.1],
-          [0.11, 0.14, 0.27, 0.12, 0.09, 0.09, 0.08, 0.1],
-          [0.09, 0.1, 0.16, 0.25, 0.12, 0.1, 0.09, 0.09],
-          [0.08, 0.08, 0.09, 0.16, 0.24, 0.19, 0.08, 0.08],
-          [0.09, 0.08, 0.09, 0.14, 0.2, 0.23, 0.09, 0.09],
-          [0.11, 0.09, 0.09, 0.1, 0.09, 0.09, 0.3, 0.12],
-          [0.2, 0.08, 0.09, 0.08, 0.07, 0.08, 0.11, 0.28],
-        ];
 
         // === Softmax explanation banner ===
         var softmaxBanner = el("div", "hw-hm12-softmax");
@@ -15576,79 +17014,26 @@ const sections = [
         softmaxBanner.appendChild(softmaxText);
         layout.appendChild(softmaxBanner);
 
-        // === Heatmap container ===
+        // === Heatmap container (axis labels surround the persistent grid) ===
         var heatWrap = el("div", "hw-hm12-wrap");
-
-        // Query axis label (vertical, left)
         heatWrap.appendChild(el("div", "hw-hm12-axis-query", "query"));
 
         var inner = el("div", "hw-hm12-inner");
-
-        // Key axis label (horizontal, top)
         inner.appendChild(el("div", "hw-hm12-axis-key", "key"));
 
-        // Grid: corner + col labels + (row label + cells) per row
-        var grid = el("div", "hw-hm12-grid");
+        // Switch persistent grid to mode-12 and apply heatmap colors
+        buildS1112Grid();
+        s1112GridEl.className = "hw-s1112-grid hw-s1112-at-12";
+        if (astroAttr) s1112GridEl.setAttribute(astroAttr, "");
+        applyS1112Mode12Styles();
 
-        var allCells = [];
-        var allRowLabels = [];
-        var allColLabels = [];
-
-        // Row 0: corner + column labels (key tokens, orange)
-        grid.appendChild(el("div", "hw-hm12-corner"));
-        tokens.forEach(function (tok) {
-          var colLabel = el("div", "hw-hm12-col-label", tok);
-          grid.appendChild(colLabel);
-          allColLabels.push(colLabel);
-        });
-
-        // Data rows
-        for (var ri = 0; ri < T; ri++) {
-          // Row label (query token, blue)
-          var rowLabel = el("div", "hw-hm12-row-label", tokens[ri]);
-          rowLabel.dataset.row = String(ri);
-          grid.appendChild(rowLabel);
-          allRowLabels.push(rowLabel);
-
-          for (var ci = 0; ci < T; ci++) {
-            var weight = attnWeights[ri][ci];
-            var cell = el("div", "hw-hm12-cell", weight.toFixed(2));
-            cell.dataset.row = String(ri);
-            cell.dataset.col = String(ci);
-
-            // Amber color with opacity proportional to weight
-            var alpha = 0.06 + weight * 2.5;
-            if (alpha > 1) alpha = 1;
-            cell.style.background = "hsl(35 90% 55% / " + alpha.toFixed(2) + ")";
-
-            // Text color: dark on strong, light on weak
-            if (weight > 0.2) {
-              cell.style.color = "hsl(35 20% 15%)";
-            } else {
-              cell.style.color = "hsl(var(--theme-text) / 0.65)";
-            }
-
-            // Row hover: highlight full row
-            (function (row) {
-              cell.addEventListener("mouseenter", function () {
-                highlightRow(row);
-              });
-            })(ri);
-            cell.addEventListener("mouseleave", clearHighlight);
-
-            grid.appendChild(cell);
-            allCells.push(cell);
-          }
-        }
-
-        inner.appendChild(grid);
+        inner.appendChild(s1112GridEl);
         heatWrap.appendChild(inner);
         layout.appendChild(heatWrap);
 
-        // === Tooltip ===
-        var tooltipEl = el("div", "hw-hm12-tooltip");
-        tokens.forEach(function () {}); // placeholder
-        layout.appendChild(tooltipEl);
+        // === Tooltip (module-level ref so hover handlers can update it) ===
+        s1112TooltipEl = el("div", "hw-hm12-tooltip");
+        layout.appendChild(s1112TooltipEl);
 
         // === Legend ===
         var legend = el("div", "hw-hm12-legend");
@@ -15660,84 +17045,105 @@ const sections = [
           el("div", "hw-hm12-legend-caption", "Attention weight (darker = stronger)"),
         );
 
-        // === Interaction handlers ===
-        function highlightRow(row) {
-          allRowLabels.forEach(function (label, i) {
-            if (i === row) {
-              label.classList.add("highlight");
-              label.classList.remove("dimmed");
-            } else {
-              label.classList.remove("highlight");
-              label.classList.add("dimmed");
-            }
-          });
-          allColLabels.forEach(function (label) {
-            label.classList.remove("highlight", "dimmed");
-          });
-          allCells.forEach(function (c) {
-            var cr = parseInt(c.dataset.row);
-            if (cr === row) {
-              c.classList.add("row-active");
-              c.classList.remove("dimmed");
-            } else {
-              c.classList.remove("row-active");
-              c.classList.add("dimmed");
-            }
-          });
-
-          // Show row summary in tooltip
-          var maxW = 0,
-            maxIdx = 0;
-          attnWeights[row].forEach(function (w, i) {
-            if (w > maxW) {
-              maxW = w;
-              maxIdx = i;
-            }
-          });
-          tooltipEl.textContent =
-            "\u201c" +
-            tokens[row] +
-            "\u201d attends most to \u201c" +
-            tokens[maxIdx] +
-            "\u201d (" +
-            maxW.toFixed(2) +
-            ")";
-          tooltipEl.classList.add("visible");
-        }
-
-        function clearHighlight() {
-          allRowLabels.forEach(function (label) {
-            label.classList.remove("highlight", "dimmed");
-          });
-          allColLabels.forEach(function (label) {
-            label.classList.remove("highlight", "dimmed");
-          });
-          allCells.forEach(function (c) {
-            c.classList.remove("dimmed", "row-active");
-          });
-          tooltipEl.classList.remove("visible");
-        }
-
         // === Animation sequence ===
-        // Phase 1 (400ms): softmax banner appears
-        setTimeout(function () {
-          softmaxBanner.classList.add("visible");
-        }, 400);
+        // Phase 1: softmax banner appears (immediate on FLIP, delayed otherwise)
+        setTimeout(
+          function () {
+            softmaxBanner.classList.add("visible");
+          },
+          400,
+        );
 
-        // Phase 2 (900ms): heatmap zooms in
-        setTimeout(function () {
-          heatWrap.classList.add("visible");
-        }, 900);
+        // Phase 2: heatmap wrap visible (only needed for non-FLIP entries)
+        // On FLIP transition the grid is already in view; for other entries fade it in
+        heatWrap.classList.add("visible"); // make wrapper visible immediately (grid animates via FLIP)
 
-        // Phase 3 (1400ms): legend appears
+        // Phase 3: legend appears
         setTimeout(function () {
           legend.classList.add("visible");
-        }, 1400);
+        }, 900);
 
         return layout;
       }
 
-      function renderStep13() {
+      // === Builder for the persistent green output matrix (steps 13→14) ===
+      // Called once; subsequent calls are no-ops. Creates s1314OutWrap with label,
+      // 3 green column pills (hw-av13-out-* classes), and T×d_head dimension label.
+      function buildS1314OutWrap() {
+        if (s1314OutWrap) return; // already built — reuse
+
+        var d_head = 3;
+        var visibleRows = [0, 1, -1, 6, 7]; // -1 = dots row
+        var outData = [
+          [" .37", "-.04", " .12"],
+          [" .22", " .03", "-.14"],
+          [" .41", "-.10", "-.22"],
+          [" .18", " .19", "-.18"],
+          ["-.08", " .30", " .24"],
+          [" .04", " .16", " .18"],
+          ["-.06", " .52", "-.01"],
+          [" .35", "-.06", " .15"],
+        ];
+
+        s1314OutWrap = el("div", "hw-av13-mat-wrap");
+        if (astroAttr) s1314OutWrap.setAttribute(astroAttr, "");
+
+        // Label — text changes between "Output" (s13) and "Attn(x)" (s14)
+        s1314OutLabelEl = el("div", "hw-av13-mat-label out-color", "Output");
+        s1314OutWrap.appendChild(s1314OutLabelEl);
+
+        // Spacer row (matches step-13 column-label alignment)
+        var outColLabels = el("div", "hw-av13-token-labels");
+        for (var ci = 0; ci < d_head; ci++) {
+          var lbl = el("div", "hw-av13-token-label", "");
+          lbl.style.width = "32px";
+          outColLabels.appendChild(lbl);
+        }
+        s1314OutWrap.appendChild(outColLabels);
+
+        // 3 green column pills
+        var outBody = el("div", "hw-av13-out-body");
+        for (var ci = 0; ci < d_head; ci++) {
+          var col = el("div", "hw-av13-out-col");
+          visibleRows.forEach(function (ri) {
+            if (ri === -1) {
+              col.appendChild(el("div", "hw-av13-out-cell dots-cell", "\u22EF"));
+            } else {
+              col.appendChild(el("div", "hw-av13-out-cell", outData[ri][ci]));
+            }
+          });
+          outBody.appendChild(col);
+        }
+        s1314OutWrap.appendChild(outBody);
+
+        // Dimension label: T × d_head
+        var outDim = el("div", "hw-av13-dim-label");
+        var outDimT = el("span", "", "T");
+        outDimT.style.color = "hsl(145 55% 42%)";
+        var outDimX = document.createTextNode(" \u00d7 ");
+        var outDimD = el("span", "");
+        outDimD.innerHTML = "d<sub>head</sub>";
+        if (astroAttr) outDimD.querySelector("sub").setAttribute(astroAttr, "");
+        outDimD.style.color = "hsl(145 55% 42%)";
+        outDim.appendChild(outDimT);
+        outDim.appendChild(outDimX);
+        outDim.appendChild(outDimD);
+        s1314OutWrap.appendChild(outDim);
+      }
+
+      // instant=true when coming backward from step 14 — s1314OutWrap is already visible,
+      // so skip the slide-in animation and insert it directly into the mult row.
+      function renderStep13(instant) {
+        // Ensure persistent green output wrapper exists
+        buildS1314OutWrap();
+
+        // Reset label for step 13 context
+        s1314OutLabelEl.textContent = "Output";
+
+        // Reset any lingering FLIP transform from showStep animation
+        s1314OutWrap.style.transform = "";
+        s1314OutWrap.style.transition = "";
+
         var layout = el("div", "hw-av13-layout");
         var tokens = ["The", "fat", "cat", "sat", "quiet", "ly", "on", "the"];
         var T = tokens.length; // 8
@@ -15905,48 +17311,20 @@ const sections = [
         // --- Equals sign ---
         multRow.appendChild(el("div", "hw-av13-op", "="));
 
-        // --- Output matrix (green, T\u00d7d_head \u2014 same shape as V) ---
-        var outWrap = el("div", "hw-av13-mat-wrap hw-av13-out-wrap");
-        outWrap.appendChild(el("div", "hw-av13-mat-label out-color", "Output"));
-
-        // Spacer for alignment
-        var outColLabels = el("div", "hw-av13-token-labels");
-        for (var ci = 0; ci < d_head; ci++) {
-          var lbl = el("div", "hw-av13-token-label", "");
-          lbl.style.width = "32px";
-          outColLabels.appendChild(lbl);
+        // --- Output matrix: use persistent s1314OutWrap (carries forward into step 14) ---
+        // Visibility: if instant (backward from step 14), show immediately; otherwise animate in.
+        if (instant) {
+          // Coming backward from step 14 — wrapper already visible, no fade-in needed
+          s1314OutWrap.style.opacity = "1";
+          s1314OutWrap.style.transform = "";
+          s1314OutWrap.style.transition = "";
+        } else {
+          // Fresh entry (forward from step 12) — start hidden, animate in at 1600ms
+          s1314OutWrap.style.opacity = "0";
+          s1314OutWrap.style.transform = "translateX(8px)";
+          s1314OutWrap.style.transition = "opacity 0.5s ease, transform 0.5s ease";
         }
-        outWrap.appendChild(outColLabels);
-
-        // 3 column pills
-        var outBody = el("div", "hw-av13-out-body");
-        for (var ci = 0; ci < d_head; ci++) {
-          var col = el("div", "hw-av13-out-col");
-          visibleRows.forEach(function (ri) {
-            if (ri === -1) {
-              col.appendChild(el("div", "hw-av13-out-cell dots-cell", "\u22EF"));
-            } else {
-              col.appendChild(el("div", "hw-av13-out-cell", outData[ri][ci]));
-            }
-          });
-          outBody.appendChild(col);
-        }
-        outWrap.appendChild(outBody);
-
-        // Dimension label: T \u00d7 d_head
-        var outDim = el("div", "hw-av13-dim-label");
-        var outDimT = el("span", "", "T");
-        outDimT.style.color = "hsl(145 55% 42%)";
-        var outDimX = document.createTextNode(" \u00d7 ");
-        var outDimD = el("span", "");
-        outDimD.innerHTML = "d<sub>head</sub>";
-        if (astroAttr) outDimD.querySelector("sub").setAttribute(astroAttr, "");
-        outDimD.style.color = "hsl(145 55% 42%)";
-        outDim.appendChild(outDimT);
-        outDim.appendChild(outDimX);
-        outDim.appendChild(outDimD);
-        outWrap.appendChild(outDim);
-        multRow.appendChild(outWrap);
+        multRow.appendChild(s1314OutWrap);
 
         layout.appendChild(multRow);
 
@@ -15974,10 +17352,14 @@ const sections = [
           vDimT.classList.add("active");
         }, 1000);
 
-        // Phase 3 (1600ms): output matrix slides in
-        setTimeout(function () {
-          outWrap.classList.add("visible");
-        }, 1600);
+        // Phase 3 (1600ms): output matrix slides in (only for fresh entry, not instant)
+        if (!instant) {
+          s1314OutTimeout = setTimeout(function () {
+            s1314OutTimeout = null;
+            s1314OutWrap.style.opacity = "1";
+            s1314OutWrap.style.transform = "";
+          }, 1600);
+        }
 
         // Phase 4 (2200ms): equation appears
         setTimeout(function () {
@@ -15988,6 +17370,17 @@ const sections = [
       }
 
       function renderStep14() {
+        // Ensure persistent green output wrapper exists
+        buildS1314OutWrap();
+
+        // Update label for step 14 context (text transition, no DOM replacement)
+        s1314OutLabelEl.textContent = "Attn(x)";
+
+        // Ensure wrapper is fully visible (no opacity/transform leftover from step 13)
+        s1314OutWrap.style.opacity = "1";
+        s1314OutWrap.style.transform = "";
+        s1314OutWrap.style.transition = "";
+
         var layout = el("div", "hw-ho14-layout");
         var tokens = ["The", "fat", "cat", "sat", "quiet", "ly", "on", "the"];
         var d_head = 3;
@@ -16005,18 +17398,6 @@ const sections = [
           [" .12", " .39", "-.23", " .48", " .65", "-.31", " .17", " .12"],
           ["-.57", " .14", " .38", "-.33", " .21", " .47", "-.19", "-.57"],
           [" .44", "-.52", " .16", " .35", "-.68", " .09", " .53", " .44"],
-        ];
-
-        // Attention output (green \u2014 from Step 13)
-        var attnData = [
-          [" .37", "-.04", " .12"],
-          [" .22", " .03", "-.14"],
-          [" .41", "-.10", "-.22"],
-          [" .18", " .19", "-.18"],
-          ["-.08", " .30", " .24"],
-          [" .04", " .16", " .18"],
-          ["-.06", " .52", "-.01"],
-          [" .35", "-.06", " .15"],
         ];
 
         // Head output = Input + Attn (element-wise, gold)
@@ -16077,41 +17458,10 @@ const sections = [
         var plus = el("div", "hw-ho14-op", "+");
         flowRow.appendChild(plus);
 
-        // --- Attention output (green, column pills, d_head wide) ---
-        var attnWrap = el("div", "hw-ho14-mat-wrap");
-        attnWrap.appendChild(el("div", "hw-ho14-mat-label hw-ho14-label-attn", "Attn(x)"));
-
-        // Spacer for alignment
-        var attnTokens = el("div", "hw-ho14-token-labels");
-        for (var ci = 0; ci < d_head; ci++) {
-          var lbl = el("div", "hw-ho14-token-label", "");
-          attnTokens.appendChild(lbl);
-        }
-        attnWrap.appendChild(attnTokens);
-
-        // 3 column pills (d_head)
-        var attnBody = el("div", "hw-ho14-attn-body");
-        for (var ci = 0; ci < d_head; ci++) {
-          var col = el("div", "hw-ho14-attn-col");
-          visibleRows.forEach(function (ri) {
-            if (ri === -1) {
-              col.appendChild(el("div", "hw-ho14-attn-cell dots-cell", "\u22EF"));
-            } else {
-              col.appendChild(el("div", "hw-ho14-attn-cell", attnData[ri][ci]));
-            }
-          });
-          attnBody.appendChild(col);
-        }
-        attnWrap.appendChild(attnBody);
-
-        var attnDim = el("div", "hw-ho14-dim-label");
-        var attnDimSpan = el("span", "");
-        attnDimSpan.innerHTML = "T \u00d7 d<sub>head</sub>";
-        if (astroAttr) attnDimSpan.querySelector("sub").setAttribute(astroAttr, "");
-        attnDimSpan.style.color = "hsl(145 55% 42%)";
-        attnDim.appendChild(attnDimSpan);
-        attnWrap.appendChild(attnDim);
-        flowRow.appendChild(attnWrap);
+        // --- Attention output: use persistent s1314OutWrap (carried forward from step 13) ---
+        // The wrapper already has its content (green column pills, "Attn(x)" label, T×d_head dim).
+        // Just insert it into the flow row — FLIP animation in showStep() handles the transition.
+        flowRow.appendChild(s1314OutWrap);
 
         // --- Equals sign ---
         flowRow.appendChild(el("div", "hw-ho14-op", "="));
@@ -16218,39 +17568,164 @@ const sections = [
           clearTimeout(mergeTimeout);
           mergeTimeout = null;
         }
+        if (nameTimeout) {
+          clearTimeout(nameTimeout);
+          nameTimeout = null;
+        }
+        if (s1314OutTimeout) {
+          clearTimeout(s1314OutTimeout);
+          s1314OutTimeout = null;
+        }
+
+        var fromStep = prevStep;
+        prevStep = step;
+
+        // === K^T FLIP: detect and prepare for 10↔11 transitions ===
+        // The K^T wrapper element persists across these steps; we FLIP-animate its movement.
+        var doKtFlip = (fromStep === 10 && step === 11) || (fromStep === 11 && step === 10);
+        var ktFirstRect = null;
+        if (doKtFlip && s1011KtWrap && s1011KtWrap.parentNode) {
+          ktFirstRect = s1011KtWrap.getBoundingClientRect();
+          s1011KtWrap.remove(); // Detach before any DOM changes (survives innerHTML = "")
+        }
+
+        // === s1112 FLIP: detect and prepare for 11↔12 transitions ===
+        // The persistent scores/heatmap grid zooms between step 11 (small, purple) and
+        // step 12 (full-size, amber) via a FLIP scale + translate animation.
+        var doS1112Flip = (fromStep === 11 && step === 12) || (fromStep === 12 && step === 11);
+        var s1112FirstRect = null;
+        if (doS1112Flip && s1112GridEl && s1112GridEl.parentNode) {
+          s1112FirstRect = s1112GridEl.getBoundingClientRect();
+          s1112GridEl.remove(); // Detach before DOM rebuild (keeps element alive)
+        }
+        // s1112Instant: coming backward from step 12 → skip row-fill animation, apply mode-11 styles now
+        s1112Instant = fromStep === 12 && step === 11;
+
+        // === s1314 FLIP: detect and prepare for 13↔14 transitions ===
+        // The persistent green output matrix moves from step 13's '= Output' position
+        // to step 14's 'Attn(x)' position (or back) via a FLIP translate animation.
+        var doS1314Flip = (fromStep === 13 && step === 14) || (fromStep === 14 && step === 13);
+        var s1314FirstRect = null;
+        if (doS1314Flip && s1314OutWrap && s1314OutWrap.parentNode) {
+          // Ensure fully visible before capturing position (may still be fading in)
+          s1314OutWrap.style.opacity = "1";
+          s1314OutWrap.style.transform = "";
+          s1314OutWrap.style.transition = "none";
+          s1314FirstRect = s1314OutWrap.getBoundingClientRect();
+          s1314OutWrap.remove(); // Detach before DOM rebuild (element survives)
+        }
 
         // === FLIP: Capture current token-chip positions ===
+        // Skip FLIP for within-persistent-layer transitions (steps 3-7 or 8-10);
+        // CSS gap / volatile-swap handles animation within those ranges.
+        var bothPersistent =
+          (fromStep >= 3 && fromStep <= 7 && step >= 3 && step <= 7) ||
+          (fromStep >= 8 && fromStep <= 10 && step >= 8 && step <= 10);
         var oldChips = viz.querySelectorAll(
           ".hw-s35-chip, .hw-tok-chip, .hw-tok-morph-word, .hw-bb-sentence-text",
         );
         var firstRects = [];
-        var doFlip = oldChips.length >= 1;
+        var doFlip = !bothPersistent && oldChips.length >= 1;
         if (doFlip) {
           oldChips.forEach(function (t) {
             firstRects.push(t.getBoundingClientRect());
           });
         }
 
-        if (step >= 3 && step <= 5) {
-          // Steps 3-5: column-based persistent layer
+        if (step >= 3 && step <= 7) {
+          // Steps 3-7: column-based persistent layer
           var needsInsert = !s35Layout.parentNode || s35Layout.parentNode !== viz;
           if (needsInsert) {
             viz.innerHTML = "";
             viz.appendChild(s35Layout);
           }
-          s35Layout.className = "hw-s35-layout hw-s35-at-" + step;
+
+          // Track which state we're coming from
+          var wasAtStep6 = s35Layout.classList.contains("hw-s35-at-6");
+          var wasAtStep7 = s35Layout.classList.contains("hw-s35-at-7");
+
+          // === FLIP: capture matrix position before layout changes (step 6↔7) ===
+          var needsMatrixFlip = (step === 7 && fromStep === 6) || (step === 6 && wasAtStep7);
+          var matrixFlipRect = null;
+          if (needsMatrixFlip) {
+            matrixFlipRect = s35Body.getBoundingClientRect();
+          }
+
+          if (step === 7) {
+            // Step 7: normalized matrix (purple) — keep consolidated matrix state
+            s35Layout.className = "hw-s35-layout hw-s35-merged hw-s35-at-6 hw-s35-at-7";
+          } else if (step === 6) {
+            // Step 6: green pills consolidated into matrix
+            s35Layout.className = "hw-s35-layout hw-s35-merged hw-s35-at-6";
+          } else {
+            s35Layout.className = "hw-s35-layout hw-s35-at-" + step;
+          }
           if (astroAttr) s35Layout.setAttribute(astroAttr, "");
+
+          // Update cell values for step 6↔7 transitions
+          if (step === 7) {
+            // Forward 6→7: swap to normalized values with flash animation
+            s35GreenCells.forEach(function (cells, ti) {
+              cells.forEach(function (cell, ri) {
+                cell.textContent = s35NormVals[ri][ti];
+                cell.classList.add("hw-s35-flash");
+                (function (c) {
+                  setTimeout(function () {
+                    c.classList.remove("hw-s35-flash");
+                  }, 550);
+                })(cell);
+              });
+            });
+          } else if (wasAtStep7) {
+            // Backward from step 7: restore combined values (no flash)
+            s35GreenCells.forEach(function (cells, ti) {
+              cells.forEach(function (cell, ri) {
+                cell.textContent = s35CombinedVals[ti][ri];
+              });
+            });
+          }
+
           s35Extras.innerHTML = "";
           if (step === 3) buildS35Step3Extras();
           else if (step === 4) buildS35Step4Extras();
           else if (step === 5) {
             buildS35Step5Extras();
-            mergeTimeout = setTimeout(function () {
+            if (wasAtStep6) {
+              // Coming backward from step 6 — restore merged immediately
+              // so columns spread apart while green pills stay visible
               s35Layout.classList.add("hw-s35-merged");
-            }, 500);
+            } else {
+              mergeTimeout = setTimeout(function () {
+                s35Layout.classList.add("hw-s35-merged");
+              }, 500);
+            }
+          } else if (step === 6) {
+            buildS35Step6Extras();
+          } else if (step === 7) {
+            buildS35Step7Extras();
           }
 
-          // === FLIP: Animate s35 chip positions ===
+          // === FLIP: Animate matrix vertical position for step 6↔7 ===
+          if (needsMatrixFlip && matrixFlipRect) {
+            void s35Layout.offsetHeight; // force reflow
+            var newMatrixRect = s35Body.getBoundingClientRect();
+            var matDy = matrixFlipRect.top - newMatrixRect.top;
+            if (Math.abs(matDy) > 0.5) {
+              s35Body.style.transition = "none";
+              s35Body.style.transform = "translateY(" + matDy + "px)";
+              requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                  s35Body.style.transition = "transform 0.4s ease";
+                  s35Body.style.transform = "";
+                  setTimeout(function () {
+                    s35Body.style.transition = "";
+                  }, 450);
+                });
+              });
+            }
+          }
+
+          // === FLIP: Animate s35 chip positions (boundary transitions only) ===
           if (doFlip) {
             var newChips = s35Columns.querySelectorAll(".hw-s35-chip");
             if (newChips.length === 8 && firstRects.length >= 8) {
@@ -16275,29 +17750,33 @@ const sections = [
               });
             }
           }
+        } else if (step >= 8 && step <= 10) {
+          // Steps 8–10: input matrix X̂ is persistent; only volatile content rebuilds
+          var needsInsert810 = !s810Layout.parentNode || s810Layout.parentNode !== viz;
+          if (needsInsert810) {
+            viz.innerHTML = "";
+            viz.appendChild(s810Layout);
+          }
+
+          if (step === 8) buildS810Step8Volatile();
+          else if (step === 9) buildS810Step9Volatile();
+          // instant=true when coming backward from step 11: show fully-built layout immediately
+          // so s1011KtWrap is visible in the transposeSection when the FLIP animation runs
+          else if (step === 10) buildS810Step10Volatile(fromStep === 11);
         } else {
-          // Steps 1-2, 6-14: full rebuild
+          // Steps 1-2, 11-14: full rebuild
           viz.innerHTML = "";
           if (step === 1) {
             viz.appendChild(renderStep1());
           } else if (step === 2) {
             viz.appendChild(renderStep2());
-          } else if (step === 6) {
-            viz.appendChild(renderStep6());
-          } else if (step === 7) {
-            viz.appendChild(renderStep7());
-          } else if (step === 8) {
-            viz.appendChild(renderStep8());
-          } else if (step === 9) {
-            viz.appendChild(renderStep9());
-          } else if (step === 10) {
-            viz.appendChild(renderStep10());
           } else if (step === 11) {
             viz.appendChild(renderStep11());
           } else if (step === 12) {
             viz.appendChild(renderStep12());
           } else if (step === 13) {
-            viz.appendChild(renderStep13());
+            // instant=true when backward from step 14: output wrapper already visible, skip slide-in
+            viz.appendChild(renderStep13(fromStep === 14));
           } else if (step === 14) {
             viz.appendChild(renderStep14());
           }
@@ -16305,6 +17784,91 @@ const sections = [
 
         updateAnnotation(step);
         updateButtons();
+
+        // === K^T FLIP: animate to new position after dispatch ===
+        // s1011KtWrap is now in its new position (inside step 11 multRow or step 10 transposeSection).
+        // Apply inverse transform and animate to identity so it appears to slide from old position.
+        if (doKtFlip && ktFirstRect && s1011KtWrap && s1011KtWrap.parentNode) {
+          void viz.offsetHeight; // force reflow so getBoundingClientRect is accurate
+          var ktLastRect = s1011KtWrap.getBoundingClientRect();
+          var ktDx = ktFirstRect.left - ktLastRect.left;
+          var ktDy = ktFirstRect.top - ktLastRect.top;
+          if (Math.abs(ktDx) > 0.5 || Math.abs(ktDy) > 0.5) {
+            s1011KtWrap.style.transition = "none";
+            s1011KtWrap.style.transform =
+              "translate(" + ktDx + "px, " + ktDy + "px)";
+            requestAnimationFrame(function () {
+              requestAnimationFrame(function () {
+                s1011KtWrap.style.transition = "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
+                s1011KtWrap.style.transform = "";
+                setTimeout(function () {
+                  s1011KtWrap.style.transition = "";
+                }, 550);
+              });
+            });
+          }
+        }
+
+        // === s1112 FLIP: animate scores grid from step-11 result position to step-12 heatmap (or back) ===
+        // The grid element is now in its new position (mode-11 inside result section, or mode-12 as heatmap).
+        // Apply inverse scale+translate so it appears to start at the old position/size, then animate to identity.
+        if (doS1112Flip && s1112FirstRect && s1112GridEl && s1112GridEl.parentNode) {
+          void viz.offsetHeight; // force reflow — measures new position accurately
+          var gridLastRect = s1112GridEl.getBoundingClientRect();
+          var gridDx = s1112FirstRect.left - gridLastRect.left;
+          var gridDy = s1112FirstRect.top - gridLastRect.top;
+          var gridSX = s1112FirstRect.width / (gridLastRect.width || 1);
+          var gridSY = s1112FirstRect.height / (gridLastRect.height || 1);
+          var needsS1112Flip =
+            Math.abs(gridDx) > 0.5 ||
+            Math.abs(gridDy) > 0.5 ||
+            Math.abs(gridSX - 1) > 0.01 ||
+            Math.abs(gridSY - 1) > 0.01;
+          if (needsS1112Flip) {
+            // No transition — snap to old position/size immediately
+            s1112GridEl.style.transition = "none";
+            s1112GridEl.style.transformOrigin = "top left";
+            s1112GridEl.style.transform =
+              "translate(" + gridDx + "px, " + gridDy + "px) scale(" + gridSX + ", " + gridSY + ")";
+            requestAnimationFrame(function () {
+              requestAnimationFrame(function () {
+                // Animate back to natural position/size
+                s1112GridEl.style.transition = "transform 0.65s cubic-bezier(0.4, 0, 0.2, 1)";
+                s1112GridEl.style.transform = "";
+                setTimeout(function () {
+                  s1112GridEl.style.transition = "";
+                  s1112GridEl.style.transformOrigin = "";
+                }, 700);
+              });
+            });
+          }
+        }
+
+        // === s1314 FLIP: animate output matrix from step-13 '= Output' position
+        // to step-14 'Attn(x)' position (or back), so the user perceives it as the same
+        // green matrix carrying forward into the residual addition context.
+        if (doS1314Flip && s1314FirstRect && s1314OutWrap && s1314OutWrap.parentNode) {
+          void viz.offsetHeight; // force reflow — measures new position accurately
+          var s1314LastRect = s1314OutWrap.getBoundingClientRect();
+          var s1314Dx = s1314FirstRect.left - s1314LastRect.left;
+          var s1314Dy = s1314FirstRect.top - s1314LastRect.top;
+          if (Math.abs(s1314Dx) > 0.5 || Math.abs(s1314Dy) > 0.5) {
+            // Snap to old position (no transition)
+            s1314OutWrap.style.transition = "none";
+            s1314OutWrap.style.transform =
+              "translate(" + s1314Dx + "px, " + s1314Dy + "px)";
+            requestAnimationFrame(function () {
+              requestAnimationFrame(function () {
+                // Animate to natural (new) position
+                s1314OutWrap.style.transition = "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
+                s1314OutWrap.style.transform = "";
+                setTimeout(function () {
+                  s1314OutWrap.style.transition = "";
+                }, 550);
+              });
+            });
+          }
+        }
       }
 
       function stepForward() {
