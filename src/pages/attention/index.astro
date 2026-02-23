@@ -24,13 +24,15 @@ import PageLayout from "@/layouts/Base.astro";
           <div class="attn-ann-body" id="attn-ann-body"></div>
         </div>
         <div class="attn-controls" id="attn-controls">
-          <button class="attn-btn attn-btn-back" id="attn-back" disabled>
-            <span class="attn-btn-arrow">&larr;</span> Back
-          </button>
           <span class="attn-step-counter" id="attn-counter">Step 1 / 14</span>
-          <button class="attn-btn attn-btn-next" id="attn-next">
-            Next <span class="attn-btn-arrow">&rarr;</span>
-          </button>
+          <div class="attn-btn-row">
+            <button class="attn-btn attn-btn-back" id="attn-back" disabled>
+              <span class="attn-btn-arrow">&larr;</span> Back
+            </button>
+            <button class="attn-btn attn-btn-next" id="attn-next">
+              Next <span class="attn-btn-arrow">&rarr;</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -143,10 +145,17 @@ import PageLayout from "@/layouts/Base.astro";
 
   .attn-controls {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 0.35rem;
     user-select: none;
     flex-shrink: 0;
+  }
+
+  .attn-btn-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .attn-btn {
@@ -439,7 +448,7 @@ import PageLayout from "@/layouts/Base.astro";
   :global(.attn-head-card) {
     border-radius: 12px;
     border: 1px solid hsl(280 60% 70% / 0.4);
-    background: #fff;
+    background: hsl(260 15% 22%);
     pointer-events: none;
   }
   :global([data-theme="light"] .attn-head-card) {
@@ -665,12 +674,12 @@ document.addEventListener("DOMContentLoaded", function () {
     { // Step 3
       title: "Token Embeddings",
       body: "<p>Each token looks up a learned vector from the embedding table. These 1024-dimensional vectors place similar tokens near each other in a high-dimensional space.</p><p>\u22EF indicates the hundreds of values we can't show.</p><button class=\"attn-detail-toggle\" data-detail=\"step3\">Learn more \u25B8</button><div class=\"attn-detail-content\" id=\"detail-step3\">Embeddings are learned during training \u2014 one vector per token in the vocabulary. At inference time, this is simply a lookup table indexed by token ID.</div>",
-      dims: "Each vector: d<sub>model</sub> = 1024"
+      dims: "Each vector: d<sub>model</sub>&nbsp;= 1024"
     },
     { // Step 4
       title: "Positional Encoding",
       body: "<p>Attention has no built-in sense of word order. Positional encodings (gold) give the model information about where each token sits in the sequence.</p>",
-      dims: "Each position vector: d<sub>model</sub> = 1024"
+      dims: "Each position vector: d<sub>model</sub>&nbsp;= 1024"
     },
     { // Step 5
       title: "Combine: Emb + Pos",
@@ -684,37 +693,37 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     { // Step 7
       title: "Weight Matrices",
-      body: "<p>Three learned matrices project X into different roles: <i>W</i><sub>Q</sub> (queries), <i>W</i><sub>K</sub> (keys), and <i>W</i><sub>V</sub> (values). Notice the shape: each is [d<sub>model</sub> \u00D7 d<sub>head</sub>] \u2014 they compress the 1024-dimensional input down to 256 dimensions per head.</p>",
+      body: "<p>Three learned matrices project X into different roles: <i>W</i><sub>Q</sub> (queries), <i>W</i><sub>K</sub> (keys), and <i>W</i><sub>V</sub> (values). Notice the shape: each is [d<sub>model</sub> \u00D7 d<sub>head</sub>] \u2014 they compress the 1024-dimensional input down to 256 dimensions per head.</p><button class=\"attn-detail-toggle\" data-detail=\"step7\">Why three separate matrices? \u25B8</button><div class=\"attn-detail-content\" id=\"detail-step7\">Three separate projections let the model build <em>directed</em> relationships. If queries and keys shared a single matrix, the attention pattern would be symmetric \u2014 token A attending to B would force B to attend equally to A. Language doesn't work that way: a verb needs its object, but the object doesn't necessarily need the verb.</div>",
       dims: "<i>W</i><sub>Q</sub>, <i>W</i><sub>K</sub>, <i>W</i><sub>V</sub>: [1024 \u00D7 256]"
     },
     { // Step 8
       title: "The d_head Dimension",
-      body: "<p>The full d<sub>model</sub> = 1024 is split across 4 parallel attention heads, each working with d<sub>head</sub> = 256 dimensions. This diagram follows one head's computation; all 4 run simultaneously on different slices.</p>",
+      body: "<p>The full d<sub>model</sub>&nbsp;= 1024 is split across 4 parallel attention heads, each working with d<sub>head</sub>&nbsp;= 256 dimensions. Each head independently computes its own attention output \u2014 a [T \u00D7 256] matrix. Afterward, the 4 outputs are concatenated back into a single [T \u00D7 1024] matrix, recovering the original d<sub>model</sub> width.</p><p style=\"margin-top:0.5em\">This diagram follows Head 1's computation. All 4 heads run simultaneously on different learned projections.</p>",
       dims: "d<sub>model</sub> (1024) \u00F7 n<sub>heads</sub> (4) = d<sub>head</sub> (256)"
     },
     { // Step 9
       title: "Query Matrix",
-      body: "<p>X \u00B7 <i>W</i><sub>Q</sub> = Q. Each row of Q is a token asking \"what should I attend to?\" Watch the columns fill as the projection maps 1024 dimensions down to 256.</p>",
+      body: "<p>X \u00B7 <i>W</i><sub>Q</sub> = Q. Each row of Q becomes a token's <em>question</em> \u2014 \u201Cwhat information do I need?\u201D Q vectors form the <b>rows</b> of the attention matrix, so each query determines what its token pays attention to.</p><p>Think of it as a recruiter's checklist \u2014 the query encodes what this token is searching for in other tokens.</p>",
       dims: "X[8\u00D71024] \u00B7 <i>W</i><sub>Q</sub>[1024\u00D7256] = Q[8\u00D7256]"
     },
-    { // Step 10
-      title: "Value Matrix",
-      body: "<p>X \u00B7 <i>W</i><sub>V</sub> = V. Each row of V carries the token's content \u2014 \"what information do I contribute if attended to?\" Same projection, different learned weights.</p>",
-      dims: "X[8\u00D71024] \u00B7 <i>W</i><sub>V</sub>[1024\u00D7256] = V[8\u00D7256]"
-    },
-    { // Step 11
+    { // Step 10 — Keys + Transpose (was step 11)
       title: "Keys + Transpose",
-      body: "<p>X \u00B7 <i>W</i><sub>K</sub> = K, then K is transposed to K\u1D40. Transposing flips [T \u00D7 d<sub>head</sub>] to [d<sub>head</sub> \u00D7 T], setting up the dot products: each entry (i, j) of Q \u00B7 K\u1D40 will be the dot product of token i's query with token j's key.</p>",
+      body: "<p>X \u00B7 <i>W</i><sub>K</sub> = K, then K is transposed to K<sup>T</sup>. Each row of K is a token's <em>advertisement</em> \u2014 \u201Chere's what I contain.\u201D K vectors form the <b>columns</b> of the attention matrix, making them what gets searched against.</p><p>Transposing flips [T \u00D7 d<sub>head</sub>] to [d<sub>head</sub> \u00D7 T] so the dot product Q \u00B7 K<sup>T</sup> compares every query against every key.</p>",
       dims: "K[8\u00D7256] \u2192 K\u1D40[256\u00D78]"
     },
+    { // Step 11 — Value Matrix (was step 10)
+      title: "Value Matrix",
+      body: "<p>X \u00B7 <i>W</i><sub>V</sub> = V. Each row of V carries the token's <em>payload</em> \u2014 the actual information it contributes if attended to. Same matrix shape, different learned weights.</p><p>If Q is the recruiter's checklist and K is the applicant's name tag, V is the r\u00E9sum\u00E9 \u2014 the content that gets delivered once a match is found.</p>",
+      dims: "X[8\u00D71024] \u00B7 <i>W</i><sub>V</sub>[1024\u00D7256] = V[8\u00D7256]"
+    },
     { // Step 12
-      title: "Q \u00B7 K\u1D40 Scores",
-      body: "<p>The matrix product Q \u00B7 K\u1D40 gives a T \u00D7 T score matrix. Entry (i, j) measures how much token i wants to attend to token j. Scores are divided by \u221Ad<sub>head</sub> = 16 to prevent large values from saturating the softmax.</p>",
+      title: "Attention Scores",
+      body: "<p>Q \u00B7 K<sup>T</sup> produces a T \u00D7 T <em>attention matrix</em> \u2014 the heart of the mechanism. Each cell (i, j) is the dot product of token i's query with token j's key: how well does what token i is looking for match what token j advertises?</p><p>Scores are divided by \u221Ad<sub>head</sub> = 16 to keep values moderate before softmax.</p><button class=\"attn-detail-toggle\" data-detail=\"step12\">Why this matters \u25B8</button><div class=\"attn-detail-content\" id=\"detail-step12\">This matrix is where the model decides relationships between words. Row i shows which tokens are relevant to updating token i's meaning. During training, Q and K are pressured to develop a matching protocol \u2014 if they don't, the dot products stay noisy and the model can't minimize its loss. This is why Q and K specialize into distinct \u201Cseeker\u201D and \u201Cdescriptor\u201D roles despite starting as identical random weights.</div>",
       dims: "Scores: [8 \u00D7 8], scaled by \u00F7\u221A256 = 16"
     },
     { // Step 13
       title: "Softmax + Value Weighting",
-      body: "<p>Softmax turns each row of raw scores into a probability distribution (rows sum to 1). Multiplying by V produces the output: each row is a weighted blend of value vectors, with weights determined by attention.</p><p>Hover over cells to see which tokens attend to which.</p>",
+      body: "<p>Softmax converts each row of raw scores into a probability distribution (rows sum to 1). This is the <em>attention pattern</em> \u2014 it shows exactly how much each token focuses on every other token.</p><p>Multiplying by V produces the output: each row becomes a weighted blend of value vectors, mixing information from the tokens that scored highest.</p>",
       dims: "Attn[8\u00D78] \u00B7 V[8\u00D7256] = Output[8\u00D7256]"
     },
     { // Step 14
@@ -955,28 +964,36 @@ document.addEventListener("DOMContentLoaded", function () {
     vCells = makeMatCells("v", T, D_HEAD, { ellipsisCol: Math.floor(D_HEAD / 2) });
 
     qLabel = el("div", "attn-el attn-math-label", "Q");
+    qLabel.id = "attn-q-label";
     qLabel.style.color = "var(--attn-blue)";
     viz.appendChild(qLabel);
     kLabel = el("div", "attn-el attn-math-label", "K");
+    kLabel.id = "attn-k-label";
     kLabel.style.color = "var(--attn-orange)";
     viz.appendChild(kLabel);
     vLabel = el("div", "attn-el attn-math-label", "V");
+    vLabel.id = "attn-v-label";
     vLabel.style.color = "var(--attn-rose)";
     viz.appendChild(vLabel);
 
     qBracket = el("div", "attn-el attn-bracket");
+    qBracket.id = "attn-q-bracket";
     viz.appendChild(qBracket);
     kBracket = el("div", "attn-el attn-bracket");
+    kBracket.id = "attn-k-bracket";
     viz.appendChild(kBracket);
     vBracket = el("div", "attn-el attn-bracket");
+    vBracket.id = "attn-v-bracket";
     viz.appendChild(vBracket);
 
     // K^T cells (D_HEAD x T)
     ktCells = makeMatCells("kt", D_HEAD, T, { ellipsisRow: Math.floor(D_HEAD / 2) });
     ktLabel = el("div", "attn-el attn-math-label", "K\u1D40");
+    ktLabel.id = "attn-kt-label";
     ktLabel.style.color = "var(--attn-orange)";
     viz.appendChild(ktLabel);
     ktBracket = el("div", "attn-el attn-bracket");
+    ktBracket.id = "attn-kt-bracket";
     viz.appendChild(ktBracket);
 
     // Score cells (TxT)
@@ -992,9 +1009,11 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
     scoreLabel = el("div", "attn-el attn-math-label", "Scores");
+    scoreLabel.id = "attn-score-label";
     scoreLabel.style.color = "var(--attn-text-muted)";
     viz.appendChild(scoreLabel);
     scoreBracket = el("div", "attn-el attn-bracket");
+    scoreBracket.id = "attn-score-bracket";
     viz.appendChild(scoreBracket);
 
     // Attention weight cells (TxT)
@@ -1012,33 +1031,41 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
     attnLabel = el("div", "attn-el attn-math-label", "Attention");
+    attnLabel.id = "attn-attn-label";
     attnLabel.style.color = "var(--attn-text-muted)";
     viz.appendChild(attnLabel);
     attnBracket = el("div", "attn-el attn-bracket");
+    attnBracket.id = "attn-attn-bracket";
     viz.appendChild(attnBracket);
 
     // Output cells (T x D_HEAD)
     outCells = makeMatCells("out", T, D_HEAD, { ellipsisCol: Math.floor(D_HEAD / 2) });
     outLabel = el("div", "attn-el attn-math-label", "Output");
+    outLabel.id = "attn-out-label";
     outLabel.style.color = "var(--attn-head-gold)";
     viz.appendChild(outLabel);
     outBracket = el("div", "attn-el attn-bracket");
+    outBracket.id = "attn-out-bracket";
     viz.appendChild(outBracket);
 
     // Input matrix copy for step 12
     inputCells2 = makeMatCells("in2", T, D_MODEL);
     inputLabel2 = el("div", "attn-el attn-math-label", "X");
+    inputLabel2.id = "attn-input2-label";
     inputLabel2.style.color = "var(--attn-green)";
     viz.appendChild(inputLabel2);
     inputBracket2 = el("div", "attn-el attn-bracket");
+    inputBracket2.id = "attn-input2-bracket";
     viz.appendChild(inputBracket2);
 
     // Head output cells (T x D_MODEL)
     headCells = makeMatCells("head", T, D_MODEL);
     headLabel = el("div", "attn-el attn-math-label", "Head Out");
+    headLabel.id = "attn-head-label";
     headLabel.style.color = "var(--attn-head-gold)";
     viz.appendChild(headLabel);
     headBracket = el("div", "attn-el attn-bracket");
+    headBracket.id = "attn-head-bracket";
     viz.appendChild(headBracket);
 
     // Operator symbols (+, ×, =, →)
@@ -1068,13 +1095,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // d_model axis label
     dModelLabel = el("div", "attn-el attn-dmodel-label", "");
-    dModelLabel.innerHTML = "d<sub>model</sub> = 1024";
+    dModelLabel.innerHTML = "d<sub>model</sub>&nbsp;= 1024";
     dModelLabel.id = "attn-dmodel-label";
     viz.appendChild(dModelLabel);
 
     // d_head axis label (same style, used on weight matrices)
     dHeadLabel = el("div", "attn-el attn-dhead-label", "");
-    dHeadLabel.innerHTML = "d<sub>head</sub> = 256";
+    dHeadLabel.innerHTML = "d<sub>head</sub>&nbsp;= 256";
     dHeadLabel.id = "attn-dhead-label";
     viz.appendChild(dHeadLabel);
 
@@ -1855,7 +1882,7 @@ document.addEventListener("DOMContentLoaded", function () {
     layoutWeightMat(wvCells, wvBracket, wvLabel, wStartX + (wMatW + wSpacing) * 2, "v", "<i>W</i><sub>V</sub>");
 
     // d_model vertical label on left side of weight matrices (matching input matrix label style)
-    dimLabels[1].innerHTML = "d<sub>model</sub> = 1024";
+    dimLabels[1].innerHTML = "d<sub>model</sub>&nbsp;= 1024";
     dimLabels[1].style.writingMode = "vertical-rl";
     dimLabels[1].style.transform = "rotate(180deg)";
     dimLabels[1].style.fontSize = "";
@@ -1878,27 +1905,34 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function computeStep8() {
+    // Force step 9's Q-token labels to fade out instead of sliding
+    // to unrelated step 8 positions (when navigating backward 9→8)
+    // Indices 0-2 and 4-8 are Q-token labels in step 9; harmless if already hidden
+    [0, 1, 2, 4, 5, 6, 7, 8].forEach(function (i) { miscLabels[i].style.opacity = "0"; });
+
     var state = {};
     hideAll(state);
 
-    // Reuse step 7 layout geometry for continuity
+    // Reuse step 7 layout geometry, shifted left to make room for output bar
     var gap = CELL_GAP;
     var inputW = T * (CELL_W + gap) - gap;
     var inputH = D_MODEL * (CELL_H + gap) - gap;
 
     var wCellW = 28;
-    var wCellH = 16;
+    var wCellH = 14;
     var wGap = 2;
     var wMatW = D_HEAD * (wCellW + wGap) - wGap;
     var wMatH = D_MODEL * (wCellH + wGap) - wGap;
     var wLabelH = 24;
-    var midGap = 40;
+    var midGap = 26;
     var wSpacing = 50;
 
-    // Vertical centering (same as step 7)
+    // Vertical centering
     var totalH = CHIP_H + 6 + inputH + midGap + wLabelH + wMatH;
-    var startY = Math.max(10, (H - totalH) / 2);
-    var inputX = (W - inputW) / 2;
+    var startY = Math.max(6, (H - totalH) / 2);
+    // Shift content left to leave room for output bar on right
+    var outputBarSpace = 80;
+    var inputX = (W - outputBarSpace - inputW) / 2;
     var inputY = startY + CHIP_H + 6;
 
     // Input matrix (full opacity, same as step 7)
@@ -1939,9 +1973,9 @@ document.addEventListener("DOMContentLoaded", function () {
     miscLabels[3].style.fontWeight = "700";
     miscLabels[3].style.color = "var(--attn-purple)";
 
-    // Weight matrices (same positions as step 7)
+    // Weight matrices (centered in same content area as input)
     var wTotalW = wMatW * 3 + wSpacing * 2;
-    var wStartX = (W - wTotalW) / 2;
+    var wStartX = (W - outputBarSpace - wTotalW) / 2;
     var wY = inputY + inputH + midGap + wLabelH;
 
     function layoutWeightMat8(cells, bracket, label, startX, colorType, labelText) {
@@ -1979,7 +2013,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // d_model vertical label on left side of weight matrices (same as step 7)
-    dimLabels[1].innerHTML = "d<sub>model</sub> = 1024";
+    dimLabels[1].innerHTML = "d<sub>model</sub>&nbsp;= 1024";
     dimLabels[1].style.writingMode = "vertical-rl";
     dimLabels[1].style.transform = "rotate(180deg)";
     dimLabels[1].style.fontSize = "";
@@ -1999,20 +2033,19 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // ── Attention head card stack ──
-    var cardPad = 16;
+    var cardPad = 14;
     var cardLeft = Math.min(inputX, wStartX, state[dimLabels[1].id].x) - cardPad;
-    var cardTop = (inputY - CHIP_H - 24) - cardPad;  // above "X (normalized)" label
+    var cardTop = (inputY - CHIP_H - 24) - cardPad;
+    var cardRightPad = cardPad + 20; // extra breathing room on right
     var cardRight = Math.max(
-      inputX + inputW + 12 + 20,              // right edge of dModelLabel
-      wStartX + wTotalW                         // right edge of weight matrices
-    ) + cardPad;
-    var cardBottom = wY + wMatH + 10 + 18 + cardPad;  // below d_head label
+      inputX + inputW + 12 + 20,
+      wStartX + wTotalW
+    ) + cardRightPad;
+    var cardBottom = wY + wMatH + 10 + 18 + cardPad; // below d_head label
     var cardW = cardRight - cardLeft;
     var cardH = cardBottom - cardTop;
 
-    var cardOffsets = [0, 5, 10, 15];
-    // Stack: card 0 (top, z-index -1) through card 3 (bottom, z-index -4)
-    // All opaque white so each card fully occludes the ones behind it
+    var cardOffsets = [0, 4, 8, 12];
     for (var ci = 0; ci < 4; ci++) {
       headCards[ci].style.zIndex = -(ci + 1);
       state[headCards[ci].id] = {
@@ -2035,6 +2068,161 @@ document.addEventListener("DOMContentLoaded", function () {
       opacity: 0.85
     };
 
+    // ── Output bar: 4 vertical segments that merge into one cohesive pill ──
+    var barX = cardRight + 24;
+    var barW = 36;
+    var segGapInit = 4; // initial gap (doubled whitespace)
+    var segH = Math.round(cardH * 0.14);
+    var barTotalH = segH * 4 + segGapInit * 3;
+    var barTopY = Math.round(cardTop + (cardH - barTotalH) / 2);
+
+    // All purple — descending lightness to differentiate heads without implying Q/K/V
+    var headColors = [
+      { bg: isDark() ? "hsl(270,45%,42%,0.75)" : "hsl(270,55%,72%)", border: "hsl(270,50%,55%,0.7)" },
+      { bg: isDark() ? "hsl(275,40%,36%,0.55)" : "hsl(275,45%,79%)", border: "hsl(275,40%,50%,0.5)" },
+      { bg: isDark() ? "hsl(280,35%,30%,0.45)" : "hsl(280,38%,84%)", border: "hsl(280,35%,45%,0.4)" },
+      { bg: isDark() ? "hsl(285,30%,26%,0.35)" : "hsl(285,32%,88%)", border: "hsl(285,30%,42%,0.3)" }
+    ];
+
+    // Sample numbers for each head segment (single-column vector look)
+    var segNums = [
+      " 0.42\n−0.15\n 0.73\n   ⋮\n−0.18",
+      " 0.71\n 0.08\n−0.46\n   ⋮\n−0.33",
+      "−0.09\n 0.62\n 0.11\n   ⋮\n 0.54",
+      " 0.27\n−0.84\n 0.39\n   ⋮\n−0.61"
+    ];
+
+    // Start fully rounded; merge animation transitions to cohesive shape
+    for (var si = 0; si < 4; si++) {
+      embPills[si].style.borderRadius = "6px";
+      embPills[si].textContent = "";
+      embPills[si].style.whiteSpace = "pre";
+      embPills[si].style.display = "flex";
+      embPills[si].style.alignItems = "center";
+      embPills[si].style.justifyContent = "center";
+      embPills[si].style.fontFamily = "var(--attn-mono)";
+      embPills[si].style.fontSize = "0.5rem";
+      embPills[si].style.lineHeight = "1.2";
+      embPills[si].style.color = isDark() ? "hsl(270,50%,72%,0.85)" : "hsl(270,50%,25%,0.75)";
+      embPills[si].textContent = segNums[si];
+      state[embPills[si].id] = {
+        x: barX,
+        y: barTopY + si * (segH + segGapInit),
+        w: barW, h: segH,
+        opacity: si === 0 ? 0.9 : 0.6,
+        bg: headColors[si].bg,
+        borderColor: headColors[si].border
+      };
+    }
+
+    // Head labels to the right of each segment
+    var headNames = ["H1", "H2", "H3", "H4"];
+    for (var hi = 0; hi < 4; hi++) {
+      miscLabels[5 + hi].textContent = headNames[hi];
+      miscLabels[5 + hi].style.fontSize = "0.5rem";
+      miscLabels[5 + hi].style.fontWeight = "700";
+      miscLabels[5 + hi].style.color = "var(--attn-purple)";
+      state[miscLabels[5 + hi].id] = {
+        x: barX + barW + 6,
+        y: barTopY + hi * (segH + segGapInit) + segH / 2 - 6,
+        opacity: 0.85
+      };
+    }
+
+    // "Output" title above bar
+    miscLabels[9].textContent = "Output";
+    miscLabels[9].style.fontSize = "0.6rem";
+    miscLabels[9].style.fontWeight = "700";
+    miscLabels[9].style.fontStyle = "normal";
+    miscLabels[9].style.fontFamily = "var(--attn-sans)";
+    miscLabels[9].style.color = "var(--attn-text-muted)";
+    state[miscLabels[9].id] = {
+      x: barX + barW / 2 - 16, y: barTopY - 18,
+      opacity: 0.7
+    };
+
+    // Square bracket on right of output bar (spans full height)
+    var mergedBarH = segH * 4;
+    miscLabels[11].textContent = "";
+    miscLabels[11].style.borderTop = "1.5px solid var(--attn-text-muted)";
+    miscLabels[11].style.borderRight = "1.5px solid var(--attn-text-muted)";
+    miscLabels[11].style.borderBottom = "1.5px solid var(--attn-text-muted)";
+    miscLabels[11].style.borderLeft = "none";
+    miscLabels[11].style.width = "6px";
+    miscLabels[11].style.height = barTotalH + "px";
+    state[miscLabels[11].id] = {
+      x: barX + barW + 24, y: barTopY,
+      opacity: 0.45
+    };
+
+    // d_model label — vertical, to the right of the bracket
+    miscLabels[10].innerHTML = "d<sub>model</sub>";
+    miscLabels[10].style.fontSize = "0.5rem";
+    miscLabels[10].style.fontWeight = "600";
+    miscLabels[10].style.fontStyle = "italic";
+    miscLabels[10].style.fontFamily = "var(--attn-mono)";
+    miscLabels[10].style.color = "var(--attn-text-muted)";
+    miscLabels[10].style.writingMode = "vertical-rl";
+    miscLabels[10].style.transform = "rotate(180deg)";
+    state[miscLabels[10].id] = {
+      x: barX + barW + 36, y: barTopY + barTotalH / 2 - 20,
+      opacity: 0.6
+    };
+
+    // Arrow from card to output bar
+    arrowEls[0].style.fontSize = "0.85rem";
+    arrowEls[0].style.color = "var(--attn-text-muted)";
+    state[arrowEls[0].id] = {
+      x: cardRight + 8, y: barTopY + barTotalH / 2 - 7,
+      opacity: 0.4
+    };
+
+    // After 1s delay, animate segments merging together (close gaps)
+    if (!reducedMotion) {
+      var mergeTargets = [];
+      var labelTargets = [];
+      for (var mi = 0; mi < 4; mi++) {
+        mergeTargets.push({ el: embPills[mi], y: barTopY + mi * segH });
+        labelTargets.push({ el: miscLabels[5 + mi], y: barTopY + mi * segH + segH / 2 - 6 });
+      }
+      var mergeTl = gsap.timeline({ delay: 1 });
+      // Merged border-radius: only top of H1 and bottom of H4 rounded
+      var mergedRadii = ["6px 6px 0 0", "0", "0", "0 0 6px 6px"];
+      // Move segments to close gaps + transition border-radius
+      for (var mi = 0; mi < 4; mi++) {
+        mergeTl.to(mergeTargets[mi].el, {
+          top: mergeTargets[mi].y + "px",
+          borderRadius: mergedRadii[mi],
+          duration: 0.5,
+          ease: "power2.inOut"
+        }, 0);
+        mergeTl.to(labelTargets[mi].el, {
+          top: labelTargets[mi].y + "px",
+          duration: 0.5,
+          ease: "power2.inOut"
+        }, 0);
+      }
+      // Shrink bracket to merged height
+      mergeTl.to(miscLabels[11], {
+        height: mergedBarH + "px",
+        duration: 0.5,
+        ease: "power2.inOut"
+      }, 0);
+      // Move d_model label to center of merged bar
+      mergeTl.to(miscLabels[10], {
+        top: (barTopY + mergedBarH / 2 - 20) + "px",
+        duration: 0.5,
+        ease: "power2.inOut"
+      }, 0);
+      // Move arrow to center of merged bar
+      mergeTl.to(arrowEls[0], {
+        top: (barTopY + mergedBarH / 2 - 7) + "px",
+        duration: 0.5,
+        ease: "power2.inOut"
+      }, 0);
+      subAnimTimeline = mergeTl;
+    }
+
     return state;
   }
 
@@ -2043,26 +2231,30 @@ document.addEventListener("DOMContentLoaded", function () {
   // Helper: layout for matrix multiplication steps (X · W = Result)
   function matMulLayout(state, resultCells, resultBracket, resultLabel, weightCells, weightBracket, weightLabel, colorType, labelText, wColorType, wLabelText, showInput) {
     var gap = CELL_GAP;
-    var rMatW = D_HEAD * (CELL_W + gap) - gap;
-    var rMatH = T * (CELL_H + gap) - gap;
 
     // Input X (left), Weight (center), Result (right)
     var inputW = T * (CELL_W + gap) - gap;
     var inputH = D_MODEL * (CELL_H + gap) - gap;
-    var wCellW = 20;
-    var wCellH = 14;
-    var wGap = 2;
+    var wCellW = 28;
+    var wCellH = CELL_H;  // same row height as X so d_model dimension matches visually
+    var wGap = gap;
     var wMatW = D_HEAD * (wCellW + wGap) - wGap;
-    var wMatH = D_MODEL * (wCellH + wGap) - wGap;
+    var wMatH = D_MODEL * (wCellH + wGap) - wGap; // equals inputH
 
-    var spacing = 28;
-    var totalW = (showInput ? inputW + spacing : 0) + wMatW + spacing + rMatW;
+    // Result matrix: scale cell height so T rows match d_model height
+    var rCellH = Math.round((inputH + gap) / T - gap);
+    var rMatW = D_HEAD * (CELL_W + gap) - gap;
+    var rMatH = T * (rCellH + gap) - gap;
+
+    var dotSpacing = 56;  // gap between X and W (where · sits)
+    var eqSpacing = 56;   // gap between W and result (where = sits)
+    var totalW = (showInput ? inputW + dotSpacing : 0) + wMatW + eqSpacing + rMatW;
     var startX = (W - totalW) / 2;
     var centerY = H / 2;
 
     var xOff = startX;
 
-    // Input X (compact, faded)
+    // Input X (full opacity, matching step 8 style)
     if (showInput) {
       var pc = cellColors("purple");
       var iY = centerY - inputH / 2;
@@ -2072,27 +2264,35 @@ document.addEventListener("DOMContentLoaded", function () {
             x: xOff + t * (CELL_W + gap),
             y: iY + d * (CELL_H + gap),
             w: CELL_W, h: CELL_H,
-            opacity: 0.3, bg: pc.bg, color: pc.text
+            opacity: 1, bg: pc.bg, color: pc.text
           };
         }
       }
       state[matBracket.id] = {
-        x: xOff - 4, y: iY - 4,
-        w: inputW + 8, h: inputH + 8,
-        opacity: 0.3, borderColor: "var(--attn-purple)"
+        x: xOff - 6, y: iY - 4,
+        w: inputW + 12, h: inputH + 8,
+        opacity: 1, borderColor: "var(--attn-purple)"
       };
-      state[miscLabels[0].id] = { x: xOff + inputW / 2 - 4, y: iY - 18, opacity: 0.3 };
+      // X label (larger, matching step 8 style)
+      state[miscLabels[0].id] = { x: xOff + inputW / 2 - 4, y: iY - 22, opacity: 1 };
       miscLabels[0].textContent = "X";
-      miscLabels[0].style.fontSize = "0.7rem";
+      miscLabels[0].style.fontSize = "0.85rem";
       miscLabels[0].style.fontWeight = "700";
       miscLabels[0].style.color = "var(--attn-purple)";
 
-      // × operator
-      state[opSymbols[0].id] = {
-        x: xOff + inputW + spacing / 2 - 6, y: centerY - 10,
-        opacity: 0.5
+      // d_model vertical label (left side of X, to avoid conflicting with · operator)
+      state[dModelLabel.id] = {
+        x: xOff - 28, y: iY + inputH / 2 - 30,
+        w: 20, h: 60, opacity: 0.6
       };
-      xOff += inputW + spacing;
+
+      // · operator (center dot for matrix multiplication)
+      opSymbols[0].textContent = "\u00B7";
+      state[opSymbols[0].id] = {
+        x: xOff + inputW + dotSpacing / 2 - 3, y: centerY - 10,
+        opacity: 0.7
+      };
+      xOff += inputW + dotSpacing;
     }
 
     // Weight matrix
@@ -2105,7 +2305,7 @@ document.addEventListener("DOMContentLoaded", function () {
           y: wY + r * (wCellH + wGap),
           w: wCellW, h: wCellH,
           opacity: 1, bg: wc.bg, color: wc.text,
-          fontSize: "0.45rem"
+          fontSize: "0.5rem"
         };
       }
     }
@@ -2115,25 +2315,32 @@ document.addEventListener("DOMContentLoaded", function () {
       opacity: 1,
       borderColor: wColorType === "q" ? "var(--attn-blue)" : wColorType === "k" ? "var(--attn-orange)" : "var(--attn-rose)"
     };
-    state[weightLabel.id] = { x: xOff + wMatW / 2 - 12, y: wY - 18, opacity: 1 };
+    state[weightLabel.id] = { x: xOff + wMatW / 2 - 12, y: wY - 22, opacity: 1 };
     weightLabel.innerHTML = wLabelText;
+    weightLabel.style.fontFamily = "Georgia, 'Times New Roman', serif";
+
+    // d_head horizontal label below weight matrix
+    state[dHeadLabel.id] = {
+      x: xOff, y: wY + wMatH + 10,
+      opacity: 0.6
+    };
 
     // = operator
     state[opSymbols[2].id] = {
-      x: xOff + wMatW + spacing / 2 - 4, y: centerY - 10,
+      x: xOff + wMatW + eqSpacing / 2 - 5, y: centerY - 10,
       opacity: 0.7
     };
-    xOff += wMatW + spacing;
+    xOff += wMatW + eqSpacing;
 
-    // Result matrix
+    // Result matrix (cell height scaled so T rows match d_model height)
     var rY = centerY - rMatH / 2;
     var rc = cellColors(colorType);
     for (var r = 0; r < T; r++) {
       for (var c = 0; c < D_HEAD; c++) {
         state[resultCells[r][c].id] = {
           x: xOff + c * (CELL_W + gap),
-          y: rY + r * (CELL_H + gap),
-          w: CELL_W, h: CELL_H,
+          y: rY + r * (rCellH + gap),
+          w: CELL_W, h: rCellH,
           opacity: 1, bg: rc.bg, color: rc.text
         };
       }
@@ -2146,6 +2353,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     state[resultLabel.id] = { x: xOff + rMatW / 2 - 6, y: rY - 22, opacity: 1 };
     resultLabel.textContent = labelText;
+    resultLabel.style.fontFamily = "Georgia, 'Times New Roman', serif";
 
     return { resultX: xOff, resultY: rY, rMatW: rMatW, rMatH: rMatH };
   }
@@ -2180,45 +2388,263 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function computeStep9() {
+    // Force step 8's head-card labels to fade out instead of sliding
+    // to unrelated step 9 positions (indices 4-11 change purpose entirely)
+    for (var fi = 4; fi <= 11; fi++) miscLabels[fi].style.opacity = "0";
+
     var state = {};
     hideAll(state);
-    var info = matMulLayout(state, qCells, qBracket, qLabel, wqCells, wqBracket, wqLabel, "q", "Q", "q", "<i>W</i><sub>Q</sub>", true);
-
-    // Dimension annotation
-    state[dimLabels[0].id] = { x: info.resultX - 6, y: info.resultY + info.rMatH + 10, opacity: 0.6 };
-    dimLabels[0].innerHTML = "[T \u00D7 d<sub>head</sub>]";
-
-    return state;
-  }
-
-  // Post-animation: column fill for step 9
-  postAnimFns[9] = function () {
-    subAnimTimeline = animateColumnFill(qCells, D_HEAD);
-  };
-
-  function computeStep10() {
-    var state = {};
-    hideAll(state);
-    var info = matMulLayout(state, vCells, vBracket, vLabel, wvCells, wvBracket, wvLabel, "v", "V", "v", "<i>W</i><sub>V</sub>", true);
-
-    // Show Q faded in background
     var gap = CELL_GAP;
-    var qMatW = D_HEAD * (CELL_W + gap) - gap;
-    state[qLabel.id] = { x: W - qMatW - 20, y: 16, opacity: 0.2 };
-    qLabel.textContent = "Q";
 
-    // Dimension annotation
-    state[dimLabels[0].id] = { x: info.resultX - 6, y: info.resultY + info.rMatH + 10, opacity: 0.6 };
-    dimLabels[0].innerHTML = "[T \u00D7 d<sub>head</sub>]";
+    // ── X matrix (left): T cols × D_MODEL rows ──
+    var inputW = T * (CELL_W + gap) - gap;
+    var inputH = D_MODEL * (CELL_H + gap) - gap;
+
+    // ── W_Q standard orientation: D_MODEL rows × D_HEAD cols ──
+    // Same as steps 8 and 11 — [d_model × d_head]
+    var wCellW = 28;
+    var wGap = gap;
+    var wCellH = CELL_H;
+    var wMatW = D_HEAD * (wCellW + wGap) - wGap;
+    var wMatH = D_MODEL * (wCellH + wGap) - wGap;
+
+    // ── Q transposed: T cols × D_HEAD rows ──
+    var qCellH = CELL_H;
+    var qMatW = T * (CELL_W + gap) - gap;
+    var qMatH = D_HEAD * (qCellH + gap) - gap;
+
+    var dotSpacing = 56;
+    var eqSpacing = 56;
+    var totalW = inputW + dotSpacing + wMatW + eqSpacing + qMatW;
+    var startX = (W - totalW) / 2;
+    var centerY = H / 2;
+    var xOff = startX;
+
+    // ── X matrix cells ──
+    var pc = cellColors("purple");
+    var iY = centerY - inputH / 2;
+    for (var t = 0; t < T; t++) {
+      for (var d = 0; d < D_MODEL; d++) {
+        state[combCells[t][d].id] = {
+          x: xOff + t * (CELL_W + gap),
+          y: iY + d * (CELL_H + gap),
+          w: CELL_W, h: CELL_H,
+          opacity: 1, bg: pc.bg, color: pc.text
+        };
+      }
+    }
+    state[matBracket.id] = {
+      x: xOff - 6, y: iY - 4,
+      w: inputW + 12, h: inputH + 8,
+      opacity: 1, borderColor: "var(--attn-purple)"
+    };
+
+    // Token labels above X (tokenEls, compact style matching Q labels)
+    for (var t = 0; t < T; t++) {
+      state[tokenEls[t].id] = {
+        x: xOff + t * (CELL_W + gap) + (CELL_W - CHIP_W) / 2, y: iY - 20,
+        w: CHIP_W, h: 16,
+        opacity: 0.5,
+        bg: "transparent", color: resolveTextColor(),
+        fontSize: "0.6rem",
+        borderRadius: "0px",
+        padding: "0px"
+      };
+    }
+
+    // "X" title above token labels — uses miscLabels[3] to slide from
+    // step 8's "X (normalized)" label (same element, same concept)
+    state[miscLabels[3].id] = { x: xOff + inputW / 2 - 4, y: iY - 38, opacity: 1 };
+    miscLabels[3].textContent = "X";
+    miscLabels[3].style.fontSize = "0.85rem";
+    miscLabels[3].style.fontWeight = "700";
+    miscLabels[3].style.color = "var(--attn-purple)";
+
+    // d_model vertical label (left side of X)
+    state[dModelLabel.id] = {
+      x: xOff - 28, y: iY + inputH / 2 - 30,
+      w: 20, h: 60, opacity: 0.6
+    };
+
+    // · operator
+    opSymbols[0].textContent = "\u00B7";
+    state[opSymbols[0].id] = {
+      x: xOff + inputW + dotSpacing / 2 - 3, y: centerY - 10,
+      opacity: 0.7
+    };
+    xOff += inputW + dotSpacing;
+
+    // ── W_Q matrix (standard): row=d_model, col=d_head ──
+    // No ellipsis text changes needed — matches creation orientation
+    var wY = centerY - wMatH / 2;
+    var wc = cellColors("q");
+    for (var d = 0; d < D_MODEL; d++) {
+      for (var h = 0; h < D_HEAD; h++) {
+        state[wqCells[d][h].id] = {
+          x: xOff + h * (wCellW + wGap),
+          y: wY + d * (wCellH + wGap),
+          w: wCellW, h: wCellH,
+          opacity: 1, bg: wc.bg, color: wc.text,
+          fontSize: "0.5rem"
+        };
+      }
+    }
+    state[wqBracket.id] = {
+      x: xOff - 4, y: wY - 4,
+      w: wMatW + 8, h: wMatH + 8,
+      opacity: 1, borderColor: "var(--attn-blue)"
+    };
+    state[wqLabel.id] = { x: xOff + wMatW / 2 - 12, y: wY - 22, opacity: 1 };
+    wqLabel.innerHTML = "<i>W</i><sub>Q</sub>";
+    wqLabel.style.fontFamily = "Georgia, 'Times New Roman', serif";
+
+    // d_head horizontal label below W_Q
+    state[dHeadLabel.id] = {
+      x: xOff, y: wY + wMatH + 10,
+      opacity: 0.6
+    };
+
+    // = operator
+    state[opSymbols[2].id] = {
+      x: xOff + wMatW + eqSpacing / 2 - 5, y: centerY - 10,
+      opacity: 0.7
+    };
+    xOff += wMatW + eqSpacing;
+
+    // ── Q matrix (transposed): col=token, row=d_head ──
+    var qY = centerY - qMatH / 2;
+    var qc = cellColors("q");
+    for (var t = 0; t < T; t++) {
+      for (var h = 0; h < D_HEAD; h++) {
+        // In original creation: row=t, col=h
+        // ellipsisRow=6 (t=6 → ⋮), ellipsisCol=2 (h=2 → ⋯), intersection → ⋱
+        // For transposed view: t becomes column, h becomes row
+        // h=2 should show ⋮ (row ellipsis for d_head), t=6 should NOT be column ellipsis
+        if (t === 6 && h === 2) qCells[t][h].textContent = "\u22EE"; // just row ellipsis (all tokens visible)
+        else if (h === 2) qCells[t][h].textContent = "\u22EE"; // ⋮ (row ellipsis for d_head)
+        else if (t === 6) qCells[t][h].textContent = (Math.random() * 2 - 1).toFixed(2); // data, not ⋮
+
+        state[qCells[t][h].id] = {
+          x: xOff + t * (CELL_W + gap),
+          y: qY + h * (qCellH + gap),
+          w: CELL_W, h: qCellH,
+          opacity: 1, bg: qc.bg, color: qc.text
+        };
+      }
+    }
+    state[qBracket.id] = {
+      x: xOff - 6, y: qY - 4,
+      w: qMatW + 12, h: qMatH + 8,
+      opacity: 1, borderColor: "var(--attn-blue)"
+    };
+
+    // Token labels above Q — avoids miscLabels[3] (used for X title above)
+    // Index mapping: [0,1,2, 8, 4,5,6,7] so token 3 uses freed miscLabels[8]
+    var qLabelIdx = [0, 1, 2, 8, 4, 5, 6, 7];
+    for (var t = 0; t < T; t++) {
+      var lbl = miscLabels[qLabelIdx[t]];
+      lbl.textContent = TOKENS[t].text;
+      lbl.style.fontSize = "0.6rem";
+      lbl.style.fontWeight = "";
+      lbl.style.color = resolveTextColor();
+      state[lbl.id] = {
+        x: xOff + t * (CELL_W + gap) + CELL_W / 2 - 16,
+        y: qY - 22,
+        opacity: 0.5
+      };
+    }
+
+    // "Q" title above Q token labels
+    state[qLabel.id] = { x: xOff + qMatW / 2 - 6, y: qY - 40, opacity: 1 };
+    qLabel.textContent = "Q";
+    qLabel.style.fontFamily = "Georgia, 'Times New Roman', serif";
+
+    // d_head vertical label (right side of Q)
+    dimLabels[0].innerHTML = "d<sub>head</sub>&nbsp;= 256";
+    dimLabels[0].style.writingMode = "vertical-rl";
+    dimLabels[0].style.transform = "rotate(180deg)";
+    dimLabels[0].style.fontStyle = "italic";
+    dimLabels[0].style.fontFamily = "var(--attn-mono)";
+    dimLabels[0].style.color = "var(--attn-text-muted)";
+    state[dimLabels[0].id] = {
+      x: xOff + qMatW + 12, y: qY + qMatH / 2 - 30,
+      w: 20, h: 60, opacity: 0.6
+    };
 
     return state;
   }
 
-  postAnimFns[10] = function () {
-    subAnimTimeline = animateColumnFill(vCells, D_HEAD);
+  // Post-animation: per-token, column-by-column dot product for step 9
+  postAnimFns[9] = function () {
+    if (reducedMotion) return;
+    var tl = gsap.timeline();
+    subAnimTimeline = tl;
+
+    // Initially hide all Q cells
+    for (var t = 0; t < T; t++) {
+      for (var h = 0; h < D_HEAD; h++) {
+        qCells[t][h].style.opacity = "0";
+      }
+    }
+
+    // Highlight colors
+    var highlightPurple = "hsl(270, 50%, 55%, 0.35)";
+    var highlightBlue = "hsl(210, 65%, 55%, 0.35)";
+    var pc = cellColors("purple");
+    var wc = cellColors("q");
+
+    // For each token, highlight X column then sweep W_Q columns
+    // X column t (d_model values) · W_Q column h (d_model values) → Q[t][h]
+    for (var t = 0; t < T; t++) {
+      (function (t) {
+        // Collect X column elements (combCells[t][0..D_MODEL-1])
+        var xColEls = [];
+        for (var d = 0; d < D_MODEL; d++) xColEls.push(combCells[t][d]);
+
+        // Highlight X column
+        tl.to(xColEls, {
+          backgroundColor: highlightPurple,
+          duration: 0.08
+        });
+
+        // For each d_head column in W_Q
+        for (var h = 0; h < D_HEAD; h++) {
+          (function (h) {
+            // Collect W_Q column h elements (wqCells[0..D_MODEL-1][h])
+            var wqColEls = [];
+            for (var d = 0; d < D_MODEL; d++) wqColEls.push(wqCells[d][h]);
+
+            // Flash W_Q column highlight
+            tl.to(wqColEls, {
+              backgroundColor: highlightBlue,
+              duration: 0.06
+            });
+
+            // Fade in Q cell
+            tl.to(qCells[t][h], {
+              opacity: 1,
+              duration: 0.08
+            }, ">");
+
+            // De-highlight W_Q column
+            tl.to(wqColEls, {
+              backgroundColor: wc.bg,
+              duration: 0.06
+            }, ">");
+          })(h);
+        }
+
+        // De-highlight X column
+        tl.to(xColEls, {
+          backgroundColor: pc.bg,
+          duration: 0.08
+        });
+      })(t);
+    }
   };
 
-  function computeStep11(goingForward) {
+  function computeStep10(goingForward) {
+    // Step 10: Keys + Transpose (K^T) — Q faded as context
     var state = {};
     hideAll(state);
 
@@ -2235,7 +2661,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var qY = (H - qMatH) / 2;
     var ktY = (H - ktMatH) / 2;
 
-    // Q
+    // Q (faded as context — computed in step 9)
     var qc = cellColors("q");
     for (var r = 0; r < T; r++) {
       for (var c = 0; c < D_HEAD; c++) {
@@ -2243,16 +2669,16 @@ document.addEventListener("DOMContentLoaded", function () {
           x: startX + c * (CELL_W + gap),
           y: qY + r * (CELL_H + gap),
           w: CELL_W, h: CELL_H,
-          opacity: 1, bg: qc.bg, color: qc.text
+          opacity: 0.25, bg: qc.bg, color: qc.text
         };
       }
     }
     state[qBracket.id] = {
       x: startX - 6, y: qY - 4,
       w: qMatW + 12, h: qMatH + 8,
-      opacity: 1, borderColor: "var(--attn-blue)"
+      opacity: 0.25, borderColor: "var(--attn-blue)"
     };
-    state[qLabel.id] = { x: startX + qMatW / 2 - 6, y: qY - 24, opacity: 1 };
+    state[qLabel.id] = { x: startX + qMatW / 2 - 6, y: qY - 24, opacity: 0.25 };
     qLabel.textContent = "Q";
 
     // × operator
@@ -2287,18 +2713,39 @@ document.addEventListener("DOMContentLoaded", function () {
     state[dimLabels[1].id] = { x: ktStartX - 6, y: ktY + ktMatH + 10, opacity: 0.6 };
     dimLabels[1].innerHTML = "[d<sub>head</sub> \u00D7 T]";
 
-    // V faded at bottom
-    state[vLabel.id] = { x: W - 80, y: H - 50, opacity: 0.3 };
-    vLabel.textContent = "V";
+    return state;
+  }
+
+  // Post-animation for step 10: column-by-column K computation then transpose
+  postAnimFns[10] = function () {
+    subAnimTimeline = animateColumnFill(ktCells, T);
+  };
+
+  function computeStep11() {
+    // Step 11: Value Matrix — Q and K^T faded as context
+    var state = {};
+    hideAll(state);
+    var info = matMulLayout(state, vCells, vBracket, vLabel, wvCells, wvBracket, wvLabel, "v", "V", "v", "<i>W</i><sub>V</sub>", true);
+
+    // Show Q faded in background
+    var gap = CELL_GAP;
+    var qMatW = D_HEAD * (CELL_W + gap) - gap;
+    state[qLabel.id] = { x: W - qMatW - 20, y: 16, opacity: 0.2 };
+    qLabel.textContent = "Q";
+
+    // Show K^T faded in background
+    var ktMatW = T * (CELL_W + gap) - gap;
+    state[ktLabel.id] = { x: W - ktMatW - 20, y: 40, opacity: 0.2 };
+
+    // Dimension annotation
+    state[dimLabels[0].id] = { x: info.resultX - 6, y: info.resultY + info.rMatH + 10, opacity: 0.6 };
+    dimLabels[0].innerHTML = "[T \u00D7 d<sub>head</sub>]";
 
     return state;
   }
 
-  // Post-animation for step 11: column-by-column K computation then transpose
   postAnimFns[11] = function () {
-    // First show K cells filling in, then swap to K^T positions
-    // For simplicity, animate K^T cells appearing column by column
-    subAnimTimeline = animateColumnFill(ktCells, T);
+    subAnimTimeline = animateColumnFill(vCells, D_HEAD);
   };
 
   function computeStep12() {
@@ -2332,7 +2779,7 @@ document.addEventListener("DOMContentLoaded", function () {
     state[scoreLabel.id] = { x: matX + matW / 2 - 32, y: matY - 26, opacity: 1 };
     scoreLabel.textContent = "Q \u00B7 K\u1D40 / \u221A256";
 
-    // Token labels along top
+    // Token labels along top (columns = keys)
     for (var i = 0; i < T && i < 8; i++) {
       state[miscLabels[i].id] = {
         x: matX + i * (CELL_W + gap) + CELL_W / 2 - 12,
@@ -2345,7 +2792,32 @@ document.addEventListener("DOMContentLoaded", function () {
       miscLabels[i].style.color = "var(--attn-text-muted)";
     }
 
-    // "÷√d_head" annotation
+    // Token labels along left side (rows = queries)
+    for (var i = 0; i < T && i < 8; i++) {
+      state[miscLabels[8 + i].id] = {
+        x: matX - 40,
+        y: matY + i * (CELL_H + gap) + CELL_H / 2 - 6,
+        opacity: 0.5
+      };
+      miscLabels[8 + i].textContent = TOKENS[i].text;
+      miscLabels[8 + i].style.fontSize = "0.5rem";
+      miscLabels[8 + i].style.fontWeight = "500";
+      miscLabels[8 + i].style.textAlign = "right";
+      miscLabels[8 + i].style.color = "var(--attn-text-muted)";
+    }
+
+    // Axis indicators: "Q \u2192" for rows, "K \u2193" for columns
+    state[dimLabels[1].id] = { x: matX - 40, y: matY - 26, opacity: 0.45 };
+    dimLabels[1].innerHTML = "Q \u2192";
+    dimLabels[1].style.fontSize = "0.6rem";
+    dimLabels[1].style.color = "var(--attn-blue)";
+
+    state[dimLabels[2].id] = { x: matX - 14, y: matY - 26, opacity: 0.45 };
+    dimLabels[2].innerHTML = "K \u2193";
+    dimLabels[2].style.fontSize = "0.6rem";
+    dimLabels[2].style.color = "var(--attn-orange)";
+
+    // "\u00F7\u221Ad_head" annotation
     state[dimLabels[0].id] = { x: matX + matW + 12, y: matY + matH / 2 - 8, opacity: 0.6 };
     dimLabels[0].innerHTML = "\u00F7 \u221Ad<sub>head</sub>";
 
@@ -2808,12 +3280,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // Wire up detail toggles
     var toggles = annBody.querySelectorAll(".attn-detail-toggle");
     toggles.forEach(function (btn) {
+      var closedText = btn.textContent; // preserve original label
       btn.addEventListener("click", function () {
         var detailId = "detail-" + btn.getAttribute("data-detail");
         var content = document.getElementById(detailId);
         if (content) {
           var isOpen = content.classList.toggle("open");
-          btn.textContent = isOpen ? "Less \u25BE" : "Learn more \u25B8";
+          btn.textContent = isOpen ? "Less \u25BE" : closedText;
         }
       });
     });
@@ -2844,14 +3317,36 @@ document.addEventListener("DOMContentLoaded", function () {
     miscLabels.forEach(function (lb) {
       lb.style.fontSize = "";
       lb.style.fontWeight = "";
+      lb.style.fontStyle = "";
+      lb.style.fontFamily = "";
       lb.style.color = "";
       lb.className = "attn-el attn-label"; // reset any extra classes
       lb.innerHTML = ""; // clear any HTML legend content
     });
-    // Clear any pill borders from step 4 dual-column layout
+    // Clear any pill borders/radius/content from step 4 and step 8
     for (var bi = 0; bi < T; bi++) {
       embPills[bi].style.borderRight = "";
+      embPills[bi].style.borderRadius = "";
+      embPills[bi].style.whiteSpace = "";
+      embPills[bi].style.display = "";
+      embPills[bi].style.alignItems = "";
+      embPills[bi].style.justifyContent = "";
+      embPills[bi].style.fontFamily = "";
+      embPills[bi].style.fontSize = "";
+      embPills[bi].style.lineHeight = "";
+      embPills[bi].style.color = "";
+      embPills[bi].textContent = "";
     }
+    // Clear d_model label vertical orientation from step 8
+    miscLabels[10].style.writingMode = "";
+    miscLabels[10].style.transform = "";
+    // Clear bracket styles from step 8
+    miscLabels[11].style.borderTop = "";
+    miscLabels[11].style.borderRight = "";
+    miscLabels[11].style.borderBottom = "";
+    miscLabels[11].style.borderLeft = "";
+    miscLabels[11].style.width = "";
+    miscLabels[11].style.height = "";
     // Only reset cell font sizes when entering step 4 (not when leaving it,
     // which would cause a visible font-size jump before the fade-out animation)
     if (n <= 4) {
@@ -2875,6 +3370,16 @@ document.addEventListener("DOMContentLoaded", function () {
     arrowEls.forEach(function (a) {
       a.textContent = "\u2192";
     });
+
+    // Restore qCells ellipsis text after step 9's transposed view
+    // qCells[T][D_HEAD]: ellipsisRow=6, ellipsisCol=2
+    for (var qt = 0; qt < T; qt++) {
+      for (var qh = 0; qh < D_HEAD; qh++) {
+        if (qt === 6 && qh === 2) qCells[qt][qh].textContent = "\u22F1";
+        else if (qt === 6) qCells[qt][qh].textContent = "\u22EE";
+        else if (qh === 2) qCells[qt][qh].textContent = "\u22EF";
+      }
+    }
 
     // Clear token inline style overrides from steps 1-2 when entering steps 3-5
     // (these match CSS class defaults, so no visual flash).
