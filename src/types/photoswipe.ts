@@ -1,5 +1,5 @@
 // Import PhotoSwipe's own types
-import type { PreparedPhotoSwipeOptions } from 'photoswipe';
+import type { PreparedPhotoSwipeOptions } from "photoswipe";
 
 export interface PhotoSwipeItem {
   element?: Element;
@@ -24,7 +24,7 @@ export interface PhotoSwipeUIElementOptions {
   name: string;
   order: number;
   isButton: boolean;
-  appendTo: 'wrapper' | 'root' | 'bar';
+  appendTo: "wrapper" | "root" | "bar";
   html?: string;
   onInit: (el: HTMLElement, pswp: any) => void;
 }

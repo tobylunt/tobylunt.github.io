@@ -23,7 +23,7 @@ const videoSrc = `/assets/img/${src}`;
 //   const hours = Math.floor(seconds / 3600);
 //   const minutes = Math.floor((seconds % 3600) / 60);
 //   const remainingSeconds = Math.floor(seconds % 60);
-  
+
 //   if (hours > 0) {
 //     return `${hours}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
 //   }
@@ -41,23 +41,21 @@ const videoSrc = `/assets/img/${src}`;
 //   }
 //   return `${size.toFixed(2)} ${units[unitIndex]}`;
 // };
-
 ---
 
 <div class="video-container">
-  <video 
-    class="w-full max-w-[720px] mx-auto video-player" 
-    controls 
+  <video
+    class="video-player mx-auto w-full max-w-[720px]"
+    controls
     height={height}
     preload="metadata"
-    width={width}>
-    <source src={videoSrc} type="video/mp4">
+    width={width}
+  >
+    <source src={videoSrc} type="video/mp4" />
     <p>Your browser doesn't support HTML5 video.</p>
   </video>
 
-  {comment && (
-    <p class="video-comment">{comment}</p>
-  )}
+  {comment && <p class="video-comment">{comment}</p>}
 </div>
 
 <style>

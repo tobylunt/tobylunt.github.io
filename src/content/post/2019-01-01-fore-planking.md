@@ -29,6 +29,7 @@ over the winter months. So replacing these parts was going to have to
 happen regardless of whether we replaced the forefoot.
 
 ## Scarfing
+
 ![Scarf](@/assets/img/IMG_2668.jpg "scarf")
 
 The fix was to scarf new lengths of mahogany to replace the damaged
@@ -37,17 +38,18 @@ with a router jig built to meet this specification. You ease off the
 plank fasteners far enough back to spring the plank end, fit the
 router jig over the end, clamp it down with a wooden wedge inside to keep
 the target plank firmly against the jig, and go to town with your
-router.   
+router.
 
 ![Router](@/assets/img/IMG_2677.jpg "router")
 ![Router](@/assets/img/IMG_2678.jpg "router")
 ![Router jig](@/assets/img/IMG_2680.jpg "router jig")
 
 ## Installation
+
 Once the scarf is cut into the old plank, the new piece must be
 shaped, scarfed to match, and glued to the old plank. This can be a
 pretty fiddly process, even when spiling to get the shape as accurate
-as possible.   
+as possible.
 
 ![Install](@/assets/img/IMG_2670.jpg "install")
 
@@ -115,4 +117,5 @@ and will significantly strengthen the forward section of the boat.
 ![Template](@/assets/img/IMG_2693.jpg "template")
 
 ## See you next time!
+
 ![Stern](@/assets/img/IMG_2689.jpg "stern")

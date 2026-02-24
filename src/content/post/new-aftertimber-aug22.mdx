@@ -5,64 +5,66 @@ publishDate: "2024-11-17"
 tags: ["ariadne"]
 draft: false
 ---
-import { Image } from 'astro:assets';
-import BlogVideo from '@/components/BlogVideo.astro';
-import CaptionedImage from '@/components/CaptionedImage.astro';
 
-import img_df9e4fd_294c_4702_b032_3a12894749a2 from '@/assets/img/new-aftertimber-aug22/img_df9e4fd_294c_4702_b032_3a12894749a2.jpeg';
-import img_fc356_6146_4a4f_ad57_bfd897931213 from '@/assets/img/new-aftertimber-aug22/img_fc356_6146_4a4f_ad57_bfd897931213.jpeg';
-import img_b1_4b69_af29_cc94b202d9e4 from '@/assets/img/new-aftertimber-aug22/img_b1_4b69_af29_cc94b202d9e4.jpeg';
-import img_ca_4b85_49f4_a48d_620058b28a0d from '@/assets/img/new-aftertimber-aug22/img_ca_4b85_49f4_a48d_620058b28a0d.jpeg';
-import img_dcff45_30ad_4a37_8872_2631953766c3 from '@/assets/img/new-aftertimber-aug22/img_dcff45_30ad_4a37_8872_2631953766c3.jpeg';
-import img_bdbb2_62e1_452f_bb00_d6dc3a95a35d from '@/assets/img/new-aftertimber-aug22/img_bdbb2_62e1_452f_bb00_d6dc3a95a35d.jpeg';
-import img_f9b2243_5268_425c_a6a1_738657e03d14 from '@/assets/img/new-aftertimber-aug22/img_f9b2243_5268_425c_a6a1_738657e03d14.jpeg';
-import img_2455 from '@/assets/img/new-aftertimber-aug22/img_2455.jpeg';
-import img_2456 from '@/assets/img/new-aftertimber-aug22/img_2456.jpeg';
-import img_2457 from '@/assets/img/new-aftertimber-aug22/img_2457.jpeg';
-import img_2726 from '@/assets/img/new-aftertimber-aug22/img_2726.jpeg';
-import img_2727 from '@/assets/img/new-aftertimber-aug22/img_2727.jpeg';
-import img_2731 from '@/assets/img/new-aftertimber-aug22/img_2731.jpeg';
-import img_2732 from '@/assets/img/new-aftertimber-aug22/img_2732.jpeg';
-import img_2733 from '@/assets/img/new-aftertimber-aug22/img_2733.jpeg';
-import img_2734 from '@/assets/img/new-aftertimber-aug22/img_2734.jpeg';
-import img_2735 from '@/assets/img/new-aftertimber-aug22/img_2735.jpeg';
-import img_2736 from '@/assets/img/new-aftertimber-aug22/img_2736.jpeg';
-import img_2739 from '@/assets/img/new-aftertimber-aug22/img_2739.jpeg';
-import img_2740 from '@/assets/img/new-aftertimber-aug22/img_2740.jpeg';
-import img_2741 from '@/assets/img/new-aftertimber-aug22/img_2741.jpeg';
-import img_2742 from '@/assets/img/new-aftertimber-aug22/img_2742.jpeg';
-import img_2743 from '@/assets/img/new-aftertimber-aug22/img_2743.jpeg';
-import img_2765 from '@/assets/img/new-aftertimber-aug22/img_2765.jpeg';
-import img_2767 from '@/assets/img/new-aftertimber-aug22/img_2767.jpeg';
-import img_2768 from '@/assets/img/new-aftertimber-aug22/img_2768.jpeg';
-import img_2772 from '@/assets/img/new-aftertimber-aug22/img_2772.jpeg';
-import img_2773 from '@/assets/img/new-aftertimber-aug22/img_2773.jpeg';
-import img_2774 from '@/assets/img/new-aftertimber-aug22/img_2774.jpeg';
-import img_2775 from '@/assets/img/new-aftertimber-aug22/img_2775.jpeg';
-import img_2779 from '@/assets/img/new-aftertimber-aug22/img_2779.jpeg';
-import img_2780 from '@/assets/img/new-aftertimber-aug22/img_2780.jpeg';
-import img_2781 from '@/assets/img/new-aftertimber-aug22/img_2781.jpeg';
-import img_2782 from '@/assets/img/new-aftertimber-aug22/img_2782.jpeg';
-import img_2783 from '@/assets/img/new-aftertimber-aug22/img_2783.jpeg';
-import img_2785 from '@/assets/img/new-aftertimber-aug22/img_2785.jpeg';
-import img_2794 from '@/assets/img/new-aftertimber-aug22/img_2794.jpeg';
-import img_2795 from '@/assets/img/new-aftertimber-aug22/img_2795.jpeg';
-import img_2797 from '@/assets/img/new-aftertimber-aug22/img_2797.jpeg';
-import img_2798 from '@/assets/img/new-aftertimber-aug22/img_2798.jpeg';
-import img_2800 from '@/assets/img/new-aftertimber-aug22/img_2800.jpeg';
-import img_2801 from '@/assets/img/new-aftertimber-aug22/img_2801.jpeg';
-import img_2809 from '@/assets/img/new-aftertimber-aug22/img_2809.jpeg';
-import img_2810 from '@/assets/img/new-aftertimber-aug22/img_2810.jpeg';
-import img_3127 from '@/assets/img/new-aftertimber-aug22/img_3127.jpeg';
-import img_4933 from '@/assets/img/new-aftertimber-aug22/img_4933.jpeg';
-import img_4943 from '@/assets/img/new-aftertimber-aug22/img_4943.jpeg';
-import img_4945 from '@/assets/img/new-aftertimber-aug22/img_4945.jpeg';
-import img_4950 from '@/assets/img/new-aftertimber-aug22/img_4950.jpeg';
-import img_4964 from '@/assets/img/new-aftertimber-aug22/img_4964.jpeg';
-import img_figure_6_1a from '@/assets/img/new-aftertimber-aug22/img_figure_6_1a.jpeg';
-import forefoot_rabbet_comparison from '@/assets/img/forefoot_rabbet_comparison.png';
+import { Image } from "astro:assets";
+import BlogVideo from "@/components/BlogVideo.astro";
+import CaptionedImage from "@/components/CaptionedImage.astro";
+
+import img_df9e4fd_294c_4702_b032_3a12894749a2 from "@/assets/img/new-aftertimber-aug22/img_df9e4fd_294c_4702_b032_3a12894749a2.jpeg";
+import img_fc356_6146_4a4f_ad57_bfd897931213 from "@/assets/img/new-aftertimber-aug22/img_fc356_6146_4a4f_ad57_bfd897931213.jpeg";
+import img_b1_4b69_af29_cc94b202d9e4 from "@/assets/img/new-aftertimber-aug22/img_b1_4b69_af29_cc94b202d9e4.jpeg";
+import img_ca_4b85_49f4_a48d_620058b28a0d from "@/assets/img/new-aftertimber-aug22/img_ca_4b85_49f4_a48d_620058b28a0d.jpeg";
+import img_dcff45_30ad_4a37_8872_2631953766c3 from "@/assets/img/new-aftertimber-aug22/img_dcff45_30ad_4a37_8872_2631953766c3.jpeg";
+import img_bdbb2_62e1_452f_bb00_d6dc3a95a35d from "@/assets/img/new-aftertimber-aug22/img_bdbb2_62e1_452f_bb00_d6dc3a95a35d.jpeg";
+import img_f9b2243_5268_425c_a6a1_738657e03d14 from "@/assets/img/new-aftertimber-aug22/img_f9b2243_5268_425c_a6a1_738657e03d14.jpeg";
+import img_2455 from "@/assets/img/new-aftertimber-aug22/img_2455.jpeg";
+import img_2456 from "@/assets/img/new-aftertimber-aug22/img_2456.jpeg";
+import img_2457 from "@/assets/img/new-aftertimber-aug22/img_2457.jpeg";
+import img_2726 from "@/assets/img/new-aftertimber-aug22/img_2726.jpeg";
+import img_2727 from "@/assets/img/new-aftertimber-aug22/img_2727.jpeg";
+import img_2731 from "@/assets/img/new-aftertimber-aug22/img_2731.jpeg";
+import img_2732 from "@/assets/img/new-aftertimber-aug22/img_2732.jpeg";
+import img_2733 from "@/assets/img/new-aftertimber-aug22/img_2733.jpeg";
+import img_2734 from "@/assets/img/new-aftertimber-aug22/img_2734.jpeg";
+import img_2735 from "@/assets/img/new-aftertimber-aug22/img_2735.jpeg";
+import img_2736 from "@/assets/img/new-aftertimber-aug22/img_2736.jpeg";
+import img_2739 from "@/assets/img/new-aftertimber-aug22/img_2739.jpeg";
+import img_2740 from "@/assets/img/new-aftertimber-aug22/img_2740.jpeg";
+import img_2741 from "@/assets/img/new-aftertimber-aug22/img_2741.jpeg";
+import img_2742 from "@/assets/img/new-aftertimber-aug22/img_2742.jpeg";
+import img_2743 from "@/assets/img/new-aftertimber-aug22/img_2743.jpeg";
+import img_2765 from "@/assets/img/new-aftertimber-aug22/img_2765.jpeg";
+import img_2767 from "@/assets/img/new-aftertimber-aug22/img_2767.jpeg";
+import img_2768 from "@/assets/img/new-aftertimber-aug22/img_2768.jpeg";
+import img_2772 from "@/assets/img/new-aftertimber-aug22/img_2772.jpeg";
+import img_2773 from "@/assets/img/new-aftertimber-aug22/img_2773.jpeg";
+import img_2774 from "@/assets/img/new-aftertimber-aug22/img_2774.jpeg";
+import img_2775 from "@/assets/img/new-aftertimber-aug22/img_2775.jpeg";
+import img_2779 from "@/assets/img/new-aftertimber-aug22/img_2779.jpeg";
+import img_2780 from "@/assets/img/new-aftertimber-aug22/img_2780.jpeg";
+import img_2781 from "@/assets/img/new-aftertimber-aug22/img_2781.jpeg";
+import img_2782 from "@/assets/img/new-aftertimber-aug22/img_2782.jpeg";
+import img_2783 from "@/assets/img/new-aftertimber-aug22/img_2783.jpeg";
+import img_2785 from "@/assets/img/new-aftertimber-aug22/img_2785.jpeg";
+import img_2794 from "@/assets/img/new-aftertimber-aug22/img_2794.jpeg";
+import img_2795 from "@/assets/img/new-aftertimber-aug22/img_2795.jpeg";
+import img_2797 from "@/assets/img/new-aftertimber-aug22/img_2797.jpeg";
+import img_2798 from "@/assets/img/new-aftertimber-aug22/img_2798.jpeg";
+import img_2800 from "@/assets/img/new-aftertimber-aug22/img_2800.jpeg";
+import img_2801 from "@/assets/img/new-aftertimber-aug22/img_2801.jpeg";
+import img_2809 from "@/assets/img/new-aftertimber-aug22/img_2809.jpeg";
+import img_2810 from "@/assets/img/new-aftertimber-aug22/img_2810.jpeg";
+import img_3127 from "@/assets/img/new-aftertimber-aug22/img_3127.jpeg";
+import img_4933 from "@/assets/img/new-aftertimber-aug22/img_4933.jpeg";
+import img_4943 from "@/assets/img/new-aftertimber-aug22/img_4943.jpeg";
+import img_4945 from "@/assets/img/new-aftertimber-aug22/img_4945.jpeg";
+import img_4950 from "@/assets/img/new-aftertimber-aug22/img_4950.jpeg";
+import img_4964 from "@/assets/img/new-aftertimber-aug22/img_4964.jpeg";
+import img_figure_6_1a from "@/assets/img/new-aftertimber-aug22/img_figure_6_1a.jpeg";
+import forefoot_rabbet_comparison from "@/assets/img/forefoot_rabbet_comparison.png";
 
 The biggest issue with restoring a wooden boat is managing mission creep. Like working on an old house, it's difficult to avoid the following pattern:
+
 1. Identify a problem.
 2. Begin some form of demolition to address the problem.
 3. Discover something else that needs attention.
@@ -71,7 +73,7 @@ The biggest issue with restoring a wooden boat is managing mission creep. Like w
 
 This pattern is remedied in a similar way to managing a greenfield software development project. Even if you don't have a complete understanding of the problems you might encounter, you can still (a) categorize and proactively estimate the uncertainty and severity of classes of issues you may face, and (b) stay focused on your ultimate objective when you're deciding whether to expand your scope.
 
-We had already suspected that there was some damage to an essential section of backbone timber that supports the long aft overhang and secures the rudder post. We discovered more problems as we repaired some planking in that area. Having done a replacement of a similar amount of centerline timber up forward, we were reticent to do it again - but decided that a rock-solid backbone was a top objective of our restoration and chose to proceed. Despite the fact that it would probably push our launch date back a year, given how infrequently we're able to work on Ariadne. 
+We had already suspected that there was some damage to an essential section of backbone timber that supports the long aft overhang and secures the rudder post. We discovered more problems as we repaired some planking in that area. Having done a replacement of a similar amount of centerline timber up forward, we were reticent to do it again - but decided that a rock-solid backbone was a top objective of our restoration and chose to proceed. Despite the fact that it would probably push our launch date back a year, given how infrequently we're able to work on Ariadne.
 
 Having come through the other side, I can say that it was the right choice. The old piece was in worse shape than we knew, and the replacement was very satisfying to shape and install.
 
@@ -91,7 +93,7 @@ The first step was to remove the old aftertimber. Unlike the forefoot up forward
   caption="The aftertimber (red) is oriented such that the forward end overlaps (blue) the sternpost and keel timbers by about 3', preventing it from being removed from the bottom. Image credit: skills.woodenboat.com"
 />
 
-Before removing this section of timber, we had to construct a temporary support structure to keep the boat true to her shape. This was made by creating external "reverse floor timbers" that tie the port and starboard frames and planking together, just like regular floor timbers do. We then tied the reverse floors together with a beam of three 2x10s we screwed together. We just kind of made this up, but it worked very well. 
+Before removing this section of timber, we had to construct a temporary support structure to keep the boat true to her shape. This was made by creating external "reverse floor timbers" that tie the port and starboard frames and planking together, just like regular floor timbers do. We then tied the reverse floors together with a beam of three 2x10s we screwed together. We just kind of made this up, but it worked very well.
 
 <CaptionedImage
   src={img_2455}
@@ -119,7 +121,6 @@ After the beam was in place, cutting away and removing the old aftertimber was s
   caption={`Out with the old. You may notice that the frame heels aren't long enough to notch or "box" into the centerline timber. Early on, we decided not to box the frames in. This is a longer discussion than an image caption can handle.`}
 />
 
-
 ## Measuring and marking
 
 Removing the old piece without damaging it allowed us to use it as a template for cutting the new piece. This is not always possible, but it's a great way to ensure a correct fit. We then used G-flex epoxy to laminate a blank of new oak with the right dimensions. Then we could transfer template marks to the new blank and begin removing material to reveal the correct shape.
@@ -146,7 +147,6 @@ Everything got much easier once we realized we could rip the old piece in half a
   caption="Much easier to transfer the Y-dimensions directly to the blank after ripping the old piece in half. Actually cutting it in half was a little dicey given all of the metal fasteners."
 />
 
-
 ## Roughing out
 
 After capturing the shape in the X and Y dimensions, the next step was to remove material up to the lines. Woodworking is the execution of kindergarten skills to a very high level - if your line is correct and you don't cut beyond it, you will be fine.
@@ -167,7 +167,7 @@ The most difficult part of the roughing out stage was to cut the rabbets. The cr
 
 We decided to cut the bulk of the rabbets with a router, freehand to the line. This technique takes some guts and a steady hand - you go as close to the line as you dare, and try not to think about how many hours you already have invested in the piece you're mangling at 20,000 RPM.
 
-After the machine work, you slowly finesse the piece exactly to your line with a sharp rabbet plane. 
+After the machine work, you slowly finesse the piece exactly to your line with a sharp rabbet plane.
 
 <CaptionedImage
   src={forefoot_rabbet_comparison}
@@ -183,7 +183,10 @@ After the machine work, you slowly finesse the piece exactly to your line with a
 
 <BlogVideo src="new-aftertimber-aug22/img_2766.mp4" comment="YOLO." />
 
-<BlogVideo src="new-aftertimber-aug22/img_a_d3f8_4178_9e8f_65c5267b86b1.mp4" comment="Final approach to the line is done carefully with a sharp rabbet plane after the bulk of the waste was removed by the router." />
+<BlogVideo
+  src="new-aftertimber-aug22/img_a_d3f8_4178_9e8f_65c5267b86b1.mp4"
+  comment="Final approach to the line is done carefully with a sharp rabbet plane after the bulk of the waste was removed by the router."
+/>
 
 After roughing out the shape of the piece, we brought it out for a side-by-side comparison to the old aftertimber. At this point, it really feels like a major upgrade for the boat. We're confident that we made the right decision to undertake the work.
 
@@ -193,11 +196,7 @@ After roughing out the shape of the piece, we brought it out for a side-by-side 
   caption="Pretty happy with the shape of the new piece after roughing it out and comparing it to the old one."
 />
 
-<CaptionedImage
-  src={img_4950}
-  alt="Side by side"
-  caption="The new piece is MUCH heavier."
-/>
+<CaptionedImage src={img_4950} alt="Side by side" caption="The new piece is MUCH heavier." />
 
 ## Fitting
 
@@ -211,7 +210,10 @@ The most difficult part of fitting the new part was cutting the scarf joint in t
 
 In about 3" of thickness, a 12:1 scarf runs three feet. Pushing a plane one-handed lying prone across white oak speedbumps with rivets and the occasional bolt sticking out... definitely type-2 fun. It was difficult to keep the surface perfectly flat and square to the sides, but that was the goal. Our thickened G-Flex epoxy is somewhat gap-filling but you really want to keep the mating surfaces as close to perfect as possible.
 
-<BlogVideo src="new-aftertimber-aug22/img_4941.mp4" comment="Notice how I'm planing in the incorrect direction relative to the grain - but it protects the feather edge nearest to my body. I can get away with it because my blade is very sharp. Not gonna lie, this part sucked." />
+<BlogVideo
+  src="new-aftertimber-aug22/img_4941.mp4"
+  comment="Notice how I'm planing in the incorrect direction relative to the grain - but it protects the feather edge nearest to my body. I can get away with it because my blade is very sharp. Not gonna lie, this part sucked."
+/>
 
 <CaptionedImage
   src={img_4943}
@@ -241,7 +243,7 @@ At this point, we test fit the new piece _before_ cutting the mating scarf joint
 
 ## Final installation
 
-The final steps before permanently installing the new piece were to prime with red lead the section of the timber that would remain under the waterline, and varnish the rest. I think we did five coats. 
+The final steps before permanently installing the new piece were to prime with red lead the section of the timber that would remain under the waterline, and varnish the rest. I think we did five coats.
 
 <CaptionedImage
   src={img_2794}

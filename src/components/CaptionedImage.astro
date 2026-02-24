@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image } from "astro:assets";
 
 interface Props {
   src: ImageMetadata;
@@ -9,15 +9,16 @@ interface Props {
 }
 
 const { src, alt, caption, class: className = "my-4" } = Astro.props;
-
 ---
 
 <figure class="image-container">
-  <a href={src.src}
-     data-pswp="true"
-     data-width={src.width}
-     data-height={src.height}
-     data-caption={caption}>
+  <a
+    href={src.src}
+    data-pswp="true"
+    data-width={src.width}
+    data-height={src.height}
+    data-caption={caption}
+  >
     <Image
       src={src}
       alt={alt}
@@ -51,4 +52,4 @@ const { src, alt, caption, class: className = "my-4" } = Astro.props;
     cursor: pointer;
     display: block;
   }
-</style> 
+</style>

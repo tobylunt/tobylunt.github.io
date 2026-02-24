@@ -1,0 +1,872 @@
+=== Attention Head Figure — Project Initialized — 2026-02-18 ===
+- Created features.json with 13 features for the attention head walkthrough figure
+- This replaces the existing 04e section with a much more detailed stepped visualization
+- Features cover: scaffold, tokenization, embeddings, positional encodings, layer norm,
+  Q/K/V projections, transpose, QK^T multiplication, attention × V, residual stream
+- Reference: attention-head-figure.md in repo root contains the original design notes
+- Branch: feature/transformers-harness
+- Next: Feature #1 — scaffold the new figure container with back/forward/reset controls
+
+=== Feature #1 Complete — 2026-02-18 ===
+- Replaced old 04e section (7-step SVG matrix walkthrough) with new 12-step attention head scaffold
+- HTML: new container with back/forward/reset controls, div-based viz area, annotation panel
+- CSS: updated styles for div-based viz (removed SVG-specific styles), added disabled button styling
+- JS: new 12-step system (1-indexed), back/forward/reset logic, lazy-init pattern preserved
+- All 12 steps have placeholder text and annotation data ready for per-step visualizations
+- Verified: buttons disable correctly at boundaries, build passes, dark/light themes look clean
+- Commit: 2db7a89
+- Next: Feature #2 — Step 1 loading state: input text, black box, predicted output
+
+=== Feature #2 Complete — 2026-02-18 ===
+- Implemented Step 1 "The Black Box" visualization in the 04e head walkthrough
+- Layout: input tokens (The/fat/cat/sat/quietly/on/the) → arrow → dark "Transformer ?" box → arrow → green "mat" prediction chip
+- CSS: flexbox layout with INPUT/PREDICTION labels, fixed dark box color (hsl(220 15% 12%)) for both themes
+- Mobile: responsive via existing scroll wrapper + smaller box/token sizing at 480px breakpoint
+- Fixed dark theme bug: box used hsl(var(--theme-text) / 0.88) which resolved to light in dark mode; replaced with fixed color
+- showStep() now dispatches to renderStep1() for step 1, placeholder for steps 2–12
+- Verified: forward/back navigation correctly re-renders step 1, build passes, both themes clean
+- Commit: b84586e
+- Next: Feature #3 — Step 2 tokenization: animate separation of words into tokens
+
+=== Feature #3 Complete — 2026-02-18 ===
+- Implemented Step 2 "Tokenize" visualization in the 04e head walkthrough
+- Layout: original sentence text → down arrow → color-coded token chips → token count
+- Tokens: The, fat, cat, sat, quiet, ly, on, the (8 tokens from 7 words)
+- Color coding matches section 03: blue (.hw-tok-whole) for whole words, amber (.hw-tok-sub) for subword pieces
+- "quietly" splits into "quiet" + "ly" with amber styling and a "← quietly" bracket label beneath
+- Staggered CSS animation (hw-chip-in) with per-token delay for visual separation effect
+- Fixed STEP_DATA shape annotation: corrected token count from 9 to 8
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: c6a5310
+- Next: Feature #4 — Step 3 vector embeddings: animate token expansion into embedding vectors
+
+=== Feature #4 Complete — 2026-02-18 ===
+- Implemented Step 3 "Token Embeddings" visualization in the 04e head walkthrough
+- Layout: token chips at top → down arrows → blue embedding vector columns (4 sample values + ⋮ truncation per token)
+- 8 columns (one per token), each with staggered CSS animation (hw-col-expand) for visual cascade effect
+- Dimension label: "8 tokens × d_model dimensions" with color-coded spans
+- Transitory sidenote: dismissable info box explaining embeddings are learned lookup parameters (30k–100k+ vocab entries), simple table lookup at inference
+- Sidenote uses × close button with hw-hidden class toggle; resets to visible on step re-render
+- CSS: hw-embed-* classes for layout, grid, cells, arrows; responsive at 480px breakpoint
+- Verified: both dark and light themes clean, mobile responsive (scroll wrapper handles overflow), build passes
+- Commit: d2130d5
+- Next: Feature #5 — Step 4 positional embeddings: add second column per token
+
+=== Feature #5 Complete — 2026-02-18 ===
+- Implemented Step 4 "Positional Embeddings" visualization in the 04e head walkthrough
+- Layout: token chips at top → down arrows → paired columns per token (blue = token embedding, yellow = positional embedding)
+- Blue bars (hw-pos-bar-tok): shrunk from Step 3's numeric columns to compact bars with "emb" label and ⋮ truncation
+- Yellow bars (hw-pos-bar-pos): animate in after blue bars with staggered delay, "pos" label and ⋮ truncation
+- Legend below columns: color swatches with "Token embedding" and "Positional embedding" labels
+- Dimension label: "8 tokens × 2 embeddings × d_model dimensions each"
+- CSS: hw-pos-* classes for layout, bars (28px wide, 90px min-height), legend, responsive at 480px breakpoint
+- Sizing: 492px total width fits within 520px viz container without overflow
+- Verified: forward/back navigation correctly renders step 4, build passes, both dark and light themes clean
+- Commit: 0c87fa7
+- Next: Feature #6 — Step 5 combine embeddings: additive merge animation (blue + yellow → green)
+
+=== Feature #6 Complete — 2026-02-18 ===
+- Implemented Step 5 "Combine Embeddings" visualization in the 04e head walkthrough
+- Layout: token chips at top → down arrows → blue+yellow bar pairs with "+" signs → animated merge into green bars
+- Animation: after 600ms delay, each token group merges with staggered 80ms per-token delay via CSS transitions
+- Blue (emb) + yellow (pos) bars transition to width:0/opacity:0 while green merged bar expands to 36px
+- Equation row: color-coded "token emb + pos emb = combined" formula
+- Dimension label: "8 tokens × d_model dimensions"
+- Dismissable sidenote: explains that addition is the standard approach, alternatives (concatenation, learned gating) exist, but addition provides maximal flexibility for the model to learn weighting
+- CSS: hw-combine-* classes with transition-based merge animation (no keyframes needed for the merge), responsive at 480px breakpoint
+- Fixed: initially placed renderStep5 in the wrong script block (QKV pipeline instead of head-walk); moved to correct lazy-init scope
+- Verified: forward/back navigation correctly renders step 5, reset works, build passes, both dark and light themes clean
+- Commit: 8cc8b53
+- Next: Feature #7 — Step 6 layer norm and QKV weight matrix prep
+
+=== Feature #7 Complete — 2026-02-18 ===
+- Implemented Step 6 "Layer Norm + QKV Weights" visualization in the 04e head walkthrough
+- Layout: phase label at top → token labels → 8×5 matrix grid (4 numeric rows + dots row) → dimension label → down arrow → 3 QKV weight cards
+- Animation sequence: (1) matrix appears immediately with green-tinted combined embedding values, (2) at 600ms values swap to normalized (purple tint) with flash animation, phase label updates to "Layer Norm", (3) at 1400ms QKV weight matrices fade in with translateY transition, phase label updates to "Normalized → QKV Projections"
+- Matrix: CSS grid with 8 columns, monospace font, values transition from green (combined) to purple (normalized) via class toggle
+- QKV weight cards: W_Q (blue, hsl 210), W_K (orange, hsl 30), W_V (pink, hsl 340) — each shows d_model × d_head dimensions with color-coded subscripts
+- CSS: hw-norm-* classes for layout, matrix cells, normalization flash keyframe, weight cards; responsive at 480px breakpoint
+- Astro scoping: all dynamically created elements use el() helper with astroAttr; innerHTML subscript elements also get the attribute
+- Verified: forward/back navigation correctly renders step 6, reset works, build passes, both dark and light themes clean
+- Commit: 10ac579
+- Next: Feature #8 — Step 7 Q projection: highlight column, animate through weights, stage output
+
+=== Feature #8 Complete — 2026-02-18 ===
+- Implemented Step 7 "Query Projection" visualization in the 04e head walkthrough
+- Layout: horizontal flow — normalized input matrix (X̂) → dot product (·) → W_Q weight card → arrow (➜) → Q output matrix
+- Input matrix: 8 columns × 4 data rows + dots row, purple-tinted (normalized), "cat" column (index 2) highlighted in blue
+- W_Q weight card: blue-themed (hsl 210), 48×48px box with d_model × d_head dimension label
+- Q output matrix: 8 columns × 3 data rows + dots row, blue-tinted (hsl 210), T × d_head dimensions
+- Animation sequence: (1) matrix + W_Q shown immediately with "cat" column highlighted, (2) at 600ms pulse animation on highlighted column, (3) at 1200ms Q output fades in from right, (4) at 1800ms equation row appears
+- Equation: color-coded "Q = X̂ · W_Q (T×d_model) · (d_model×d_head) = T×d_head"
+- Compact cell sizing: 22px min-width, 0.42rem font to fit entire layout within 520px viz container
+- CSS: hw-qproj-* classes for layout, matrices, highlights, pulse animation, output staging; responsive at 480px (stacks vertically)
+- Astro scoping: all dynamic elements use el() helper with astroAttr; innerHTML subscripts also get attribute
+- Verified: forward/back/reset navigation works, build passes, both dark and light themes clean
+- Commit: b0eebe8
+- Next: Feature #9 — Step 8 V projection: same animation pattern for values
+
+=== Feature #9 Complete — 2026-02-18 ===
+- Implemented Step 8 "Value Projection" visualization in the 04e head walkthrough
+- Layout: horizontal flow — normalized input matrix (X̂) → dot product (·) → W_V weight card → arrow (➜) → V output matrix
+- Input matrix: 8 columns × 4 data rows + dots row, purple-tinted (normalized), "cat" column (index 2) highlighted in pink
+- W_V weight card: pink-themed (hsl 340 65% 55%), 48×48px box with d_model × d_head dimension label
+- V output matrix: 8 columns × 3 data rows + dots row, pink-tinted (hsl 340), T × d_head dimensions
+- Animation sequence: (1) matrix + W_V shown immediately with "cat" column highlighted in pink, (2) at 600ms pulse animation on highlighted column, (3) at 1200ms V output fades in from right, (4) at 1800ms equation row appears, (5) at 2400ms staging area with Q and V boxes appears
+- Staging area: side-by-side Q (blue, from Step 7) and V (pink, new) compact boxes showing both projections are ready
+- Equation: color-coded "V = X̂ · W_V (T×d_model) · (d_model×d_head) = T×d_head"
+- CSS: hw-vproj-* classes for layout, V-specific colors; reused hw-qproj-* classes for shared input matrix with v-highlighted variant
+- Astro scoping: all dynamic elements use el() helper with astroAttr
+- Initially placed renderStep8 in wrong script block (QKV pipeline); moved to correct head-walk lazy-init scope
+- Verified: forward/back/reset navigation works, build passes, both dark and light themes clean
+- Commit: ca7b431
+- Next: Feature #10 — Step 9 K projection with transpose: careful visualization of dimension flip
+
+=== Feature #10 Complete — 2026-02-18 ===
+- Implemented Step 9 "Key Projection + Transpose" visualization in the 04e head walkthrough
+- Layout: two-part design — projection flow on top, transpose visualization below
+- Top row: horizontal flow — normalized input matrix (X̂) → dot product (·) → W_K weight card → arrow (➜) → K output matrix
+- Input matrix: 8 columns × 4 data rows + dots row, purple-tinted (normalized), "cat" column (index 2) highlighted in orange
+- W_K weight card: orange-themed (hsl 30 80% 50%), 48×48px box with d_model × d_head dimension label
+- K output matrix: 8 columns × 3 data rows + dots row, orange-tinted, T × d_head dimensions
+- Transpose section: down arrow → "Transpose: rows ↔ columns" label → K^T matrix with flip-in CSS animation
+- K^T transposed matrix: same values displayed with d_head × T dimension label (swapped from T × d_head)
+- Token labels appear above the transposed matrix as column headers, emphasizing the conceptual axis swap
+- Staging area: three side-by-side boxes — Q (blue, T×d, Step 7), K^T (orange, d×T, new), V (pink, T×d, Step 8)
+- Animation sequence: (1) matrix + W_K with highlighted column, (2) 600ms pulse, (3) 1200ms K output, (4) 1800ms equation, (5) 2400ms transpose section with flip animation, (6) 3200ms staging area
+- Equation: color-coded "K = X̂ · W_K  (T×d_model) · (d_model×d_head) = T×d_head"
+- CSS: hw-kproj-* classes for layout, K-specific orange colors; reused hw-qproj-* classes for shared input matrix with k-highlighted variant
+- Astro scoping: all dynamic elements use el() helper with astroAttr
+- Verified: forward/back/reset navigation works, build passes, both dark and light themes clean
+- Commit: 2b6c7b1
+- Next: Feature #11 — Step 10 QK^T matrix multiplication: T×T attention matrix
+
+=== Feature #11 Complete — 2026-02-18 ===
+- Implemented Step 10 "QK^T — Attention Scores" visualization in the 04e head walkthrough
+- Layout: horizontal flow — Q matrix (blue, T×d_head) · K^T matrix (orange, d_head×T) = T×T attention scores matrix (purple)
+- Q matrix: 8 columns × 3 data rows + dots row, blue-tinted, compact cell sizing (18px min-width, 0.38rem font)
+- K^T matrix: 8 columns × 3 data rows + dots row, orange-tinted, matching compact sizing
+- Result matrix: 8×8 T×T grid (purple), with diagonal cells highlighted (self-attention scores brighter)
+- Token labels: row labels (blue, "queries" axis label) on left, column labels (orange, "keys →" label) on top
+- d_head dimension cancel: animated strikethrough (line-through with red decoration) appears at 800ms on both Q and K^T dimension labels
+- Shape equation: color-coded "Q · K^T  (T×d) · (d×T) = T×T" with strikethrough on inner d dimensions
+- O(n²) callout: warning-styled box with "This is O(n²) in sequence length — every token attends to every other token"
+- Animation sequence: (1) Q + K^T shown immediately, (2) 800ms d_head strikethrough, (3) 1400ms result matrix fades in, (4) 2000ms equation, (5) 2600ms callout
+- CSS: hw-qkt-* classes for layout, matrices, result grid, equation, callout, cancel animation; responsive at 480px breakpoint
+- Astro scoping: all dynamic elements use el() helper with astroAttr; innerHTML sub/sup elements also get attribute
+- Verified: forward/back/reset navigation works, build passes, both dark and light themes clean
+- Commit: f0769da
+- Next: Feature #12 — Step 11 Attention × V: restore dimensions to T × d_head
+
+=== Feature #12 Complete — 2026-02-18 ===
+- Implemented Step 11 "Attention × V" visualization in the 04e head walkthrough
+- Layout: horizontal flow — Attention matrix (purple, T×T) · V matrix (pink, T×d_head) = Output matrix (green, T×d_head)
+- Attention matrix: 8 columns × 4 data rows + dots row, purple-tinted (same scores from Step 10)
+- V matrix: 8 columns × 3 data rows + dots row, pink-tinted (same V values from Step 8)
+- Output matrix: 8 columns × 3 data rows + dots row, green-tinted (hsl 145), with token column labels above
+- T inner dimensions cancel: animated strikethrough (line-through with red decoration) appears at 800ms on both Attention and V dimension labels
+- Shape equation: color-coded "Attn · V  (T×T) · (T×d) = T×d" with strikethrough on inner T dimensions
+- Animation sequence: (1) Attn + V shown immediately, (2) 800ms T strikethrough, (3) 1400ms output matrix fades in, (4) 2000ms equation
+- CSS: hw-attnv-* classes for layout, matrices, output grid, equation, cancel animation; responsive at 480px breakpoint
+- Astro scoping: all dynamic elements use el() helper with astroAttr; innerHTML sub elements also get attribute
+- Verified: forward/back/reset navigation works, build passes, both dark and light themes clean
+- Commit: 95dceec
+- Next: Feature #13 — Step 12 Residual stream: outputs fed forward
+
+=== Feature #13 Tracking Update — 2026-02-18 ===
+- Feature #13 (Step 12 — Residual Stream) was already implemented in commit ee91bb2
+- This session verified the implementation via Playwright smoke-test:
+  - Step 12 shows: Input(x) + Attn(x) = Enriched output with additive "+" operator visual
+  - Pipeline flow indicator shows: Feed-Forward Network → + residual → Next Layer
+  - Annotation explains residual connections and shows formula Output = Input + Attention(Input)
+  - All 12 steps navigate correctly (forward/back/reset)
+  - Both dark and light themes render cleanly with no issues
+- Updated features.json: set passes to true for feature #13
+- ALL 13 FEATURES ARE NOW COMPLETE — the attention head walkthrough figure is finished
+- Next steps: all features pass; the figure is ready for review and polish
+
+=== Round 2 Planning Session — 2026-02-18 ===
+- All 13 original features complete. Reviewed implementation against attention-head-figure.md spec.
+- Combined review notes with user's edit notes (attention-head-figure-edits.md) into new features.json with 16 features.
+- Key changes for round 2:
+  - Step count increases from 12 to 14 (old step 6 splits into 2; new attention heatmap step inserted after QK^T)
+  - New step mapping: 1 Black Box, 2 Tokenize, 3 Embeddings, 4 Positional, 5 Combine, 6 Embeddings Matrix (NEW), 7 Layer Norm+QKV, 8 Q Proj, 9 V Proj, 10 K+Transpose, 11 QK^T, 12 Attention Heatmap (NEW, from 04c), 13 Attn×V, 14 Output
+  - Cross-cutting theme: VISUAL CONTINUITY — animate transitions between steps, don't wipe and redraw elements
+  - Annotations move from right panel inside the card to sidenotes gutter (frees horizontal space)
+  - Matrices use column pills (unified rounded rectangles), ellipsis in middle row (pandas-style)
+  - Proportional matrix sizing throughout
+  - Softmax explanation added (fills pedagogical gap between scores and weights)
+  - Interactive heatmap moves from section 04c into the walkthrough as step 12
+- Reference docs: attention-head-figure.md (original spec), attention-head-figure-edits.md (user's edit notes)
+- features.json has been overwritten with the 16 new features (all passes: false)
+- Next: Feature #1 — Move annotation panel to sidenotes gutter
+
+=== Round 2 Feature #1 Complete — 2026-02-18 ===
+- Moved annotation panel from inside the figure card (right column) to the sidenotes gutter
+- HTML: removed annotation from head-walk-body grid, added #hw-gutter-ann to .sidenote-gutter aside
+- HTML: kept .head-walk-ann-mobile inside the card below viz for mobile fallback
+- CSS: changed .head-walk-body from two-column grid (1fr 280px) to single-column (display: block)
+- CSS: .hw-gutter-ann uses absolute positioning in the sidenote gutter, styled to match existing sidenote aesthetics
+- CSS: .head-walk-ann-mobile hidden on desktop (>=1280px), shown on mobile with top border
+- JS: updateAnnotation() now updates both mobile and gutter annotation elements
+- JS: positionGutterAnn() calculates figure card top relative to gutter and positions annotation alongside
+- JS: resize/load event listeners keep gutter annotation positioned correctly
+- Removed old 640px media query that handled the previous mobile stacking
+- Verified: all 12 steps navigate correctly, annotations update in gutter on each step
+- Verified: dark and light themes both clean, mobile fallback works at 375px width
+- Build passes (pnpm build)
+- Next: Feature #2 — Renumber steps from 12 to 14 and update infrastructure
+
+=== Round 2 Feature #2 Complete — 2026-02-18 ===
+- Renumbered steps from 12 to 14 and updated all infrastructure
+- Step mapping: old step 6 splits into new 6 (Embeddings Matrix placeholder) + 7 (Layer Norm + QKV)
+- New step 12 (Attention Heatmap placeholder) inserted after QK^T scores (step 11)
+- Full new mapping: 1 Black Box, 2 Tokenize, 3 Embeddings, 4 Positional, 5 Combine, 6 Embeddings Matrix (NEW), 7 Layer Norm+QKV, 8 Q Proj, 9 V Proj, 10 K+Transpose, 11 QK^T, 12 Attention Heatmap (NEW), 13 Attn×V, 14 Output
+- Changes: TOTAL_STEPS 12→14, STEP_DATA 14 entries, HTML counter, showStep dispatch 14 branches
+- Renamed renderStep function definitions: 6→7, 7→8, 8→9, 9→10, 10→11, 11→13, 12→14
+- Added placeholder renderStep6() and renderStep12() with centered title+description text
+- All existing visualizations render correctly at their new step numbers
+- Forward/back/reset navigation works across all 14 steps, buttons disable correctly at boundaries
+- Gutter annotations update correctly for all 14 steps including new placeholder entries
+- Build passes (pnpm build), both dark and light themes verified clean
+- Commit: 83e134e
+- Next: Feature #3 — Step 1 redesign: horizontal sentence with black box
+
+=== Round 2 Feature #3 Complete — 2026-02-18 ===
+- Redesigned Step 1 "The Black Box" from vertical word chips to horizontal sentence layout
+- Sentence: "The fat cat sat quietly on the ___" with dashed underline blank indicating incomplete input
+- Down arrow connects sentence to pipeline row: Transformer black box -> arrow -> "mat" prediction chip
+- Removed "Input -> [Transformer] -> Output" from STEP_DATA shape (now empty string)
+- Removed old CSS: .hw-bb-input, .hw-bb-input-label, .hw-bb-token, .hw-bb-output-label
+- Added new CSS: .hw-bb-sentence (flex wrap, monospace), .hw-bb-blank (dashed border), .hw-bb-arrow-down, .hw-bb-pipe (horizontal flex row)
+- Visual continuity: sentence text in Step 1 matches the same sentence shown in Step 2, enabling smooth forward transition
+- Forward/back navigation works cleanly between Steps 1 and 2
+- Verified: light theme, dark theme, mobile (375px) all render correctly
+- Build passes (pnpm build)
+- Commit: 6324077
+- Next: Feature #4 — Step 2 redesign: animate text into tokens with visual continuity
+
+=== Round 2 Feature #4 Complete — 2026-02-18 ===
+- Redesigned Step 2 "Tokenize" with word-to-chip morphing animation
+- Layout: single flex row of word spans that start as sentence text and transition into colored token chips
+- Words initially appear at 1.05rem monospace with no border/background (matching Step 1's sentence)
+- CSS transitions morph each word into a chip: font shrinks to 0.82rem, padding/border/background appear
+- Staggered delays (--morph-delay custom property, 80ms increments) create left-to-right cascade
+- "quietly" split: two adjacent spans ("quiet" + "ly") in an inline-flex wrapper with gap:0 → gap:2px
+- Split bracket label ("← quietly") fades in below the sub-token pair
+- Token count ("8 tokens") appears after morph completes (opacity transition with 0.9s delay)
+- Double requestAnimationFrame pattern triggers the morph class toggle after initial paint
+- Removed old Step 2 CSS: .hw-tok-sentence, .hw-tok-arrow-down, .hw-tok-chips-row, .hw-tok-split-group, .hw-tok-split-bracket
+- Kept shared CSS: .hw-tok-chip, .hw-tok-whole, .hw-tok-sub (used by Steps 3+), hw-chip-in, hw-fade-in keyframes
+- Forward/back navigation clean: Step 2→1 re-renders Step 1 cleanly, Step 2→3 renders Step 3 correctly
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: 8fdc589
+- Next: Feature #5 — Step 3 redesign: column pills with visual continuity
+
+=== Round 2 Feature #5 Complete — 2026-02-18 ===
+- Redesigned Step 3 "Token Embeddings" from separate cells to unified column pills
+- Column pills: single rounded rectangle per token (border-radius: 6px, blue border/tint)
+- Internal layout: 2 top values → horizontal ⋯ ellipsis (pandas-style middle truncation) → 2 bottom values
+- Row separators via border-top on each value; middle dots row has dashed borders and lighter background
+- d_model y-axis label: rotated text on left side of columns (writing-mode: vertical-lr, rotated 180°)
+- Removed old "8 tokens × d_model dimensions" bottom label
+- Embedding sidenote now permanent (removed × close button and hw-hidden dismiss logic)
+- Wider chip/arrow/column spacing (6px gap) to accommodate pill widths
+- Animation: pills expand via scaleY(0→1) with staggered delays (hw-pill-expand keyframe)
+- Preserved @keyframes hw-col-expand which Step 4+ bars depend on (initially removed, caught in testing)
+- Removed old CSS: .hw-embed-col, .hw-embed-cell, .hw-embed-dots (separate cell classes), .hw-embed-dim-label/dim-t/dim-d, .hw-embed-sn-close
+- Added new CSS: .hw-embed-pill, .hw-embed-pill-val, .hw-embed-pill-dots, .hw-embed-body, .hw-embed-yaxis, @keyframes hw-pill-expand
+- Forward/back navigation works: Step 2→3, 3→4, 3→2, reset all clean
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: 0d7a369
+- Next: Feature #6 — Step 4 redesign: positional embeddings with visual continuity
+
+=== Round 2 Feature #6 Complete — 2026-02-19 ===
+- Redesigned Step 4 "Positional Embeddings" with column-based layout for visual continuity from Step 3
+- Layout: per-token columns (chip + arrow + pill pair) using CSS grid for perfect vertical alignment
+- Blue pills start at Step 3 full size (48px) with visible numbers, then morph: shrink to 24px with de-emphasized numbers
+- Yellow positional pills expand from width 0 to 24px beside each blue pill with staggered CSS transition delays
+- CSS custom property --i per column enables staggered transition-delay (calc(base + var(--i) * 0.06s))
+- Double requestAnimationFrame pattern triggers morph class toggle after initial paint
+- Reuses hw-embed-pill-val and hw-embed-pill-dots classes from Step 3 for blue pill internals
+- New CSS classes: hw-pos4-layout, hw-pos4-body, hw-pos4-columns, hw-pos4-col, hw-pos4-pair, hw-pos4-blue, hw-pos4-yellow, hw-pos4-yval, hw-pos4-ydots, hw-pos4-legend
+- Removed old dimension label ("8 tokens x 2 embeddings x d_model dimensions each")
+- d_model y-axis label preserved (reuses hw-embed-yaxis class from Step 3)
+- Legend preserved with hw-pos-legend-swatch classes
+- Forward/back/reset navigation works cleanly between Steps 3, 4, and 5
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: ffdb5ac
+- Next: Feature #7 — Step 5 redesign: per-token merge animation with alignment
+
+=== Round 2 Feature #7 Complete — 2026-02-19 ===
+- Redesigned Step 5 "Combine Embeddings" with per-token merge animation and visual continuity from Step 4
+- Layout: reuses hw-pos4-col column structure (chip → arrow → pair) for perfect vertical alignment
+- Initial state: blue pills (24px) + "+" signs + yellow pills (24px) matching Step 4's morphed end state
+- Same vector data as Step 4 (sampleVecs, posVecs) ensures visual consistency of pill internals
+- Merge animation: 500ms delay, then CSS transitions with staggered per-token delays (--i * 0.06s)
+- Blue and yellow pills → width:0/opacity:0; green pill → width:36px/opacity:1, centered under each token
+- Green pill values show actual combined vectors (sampleVec[i] + posVec[i])
+- d_model y-axis label preserved from Step 4 (reuses hw-embed-yaxis class)
+- Equation row: "token emb + pos emb = combined" with color-coded spans
+- Sidenote: permanent (no close button), explains addition vs. concatenation/gating
+- Dimension label ("8 tokens × d_model") removed per feature spec
+- New CSS: hw-merge5-* classes (layout, pair, blue, yellow, green, bval, bdots, yval, ydots, gval, gdots, merged state)
+- Removed old CSS: hw-combine-layout/chips/arrow-row/cols-row/token-group/bar/bar-merged and merged state classes
+- Kept CSS: hw-combine-equation, hw-combine-eq-*, hw-combine-sidenote, hw-combine-sn-text (still used by JS)
+- Forward/back/reset navigation works cleanly between Steps 4, 5, and 6
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: c9395c2
+- Next: Feature #8 — New Step 6: embeddings matrix formation (split from old step 6)
+
+=== Round 2 Feature #8 Complete — 2026-02-19 ===
+- Implemented Step 6 "Embeddings Matrix" visualization in the 04e head walkthrough
+- Layout: d_model y-axis label + wrapper (token labels row + matrix columns) + dimension label + matrix name
+- Initial state: 8 separate green column pills (matching Step 5's merged green pills) with 5px gaps, individual rounded borders
+- Consolidation animation: at 400ms, CSS transitions close gaps to 1px, outer matrix border appears, column pill corners square off
+- Each column contains 5 cells: 2 top values, horizontal dots (pandas-style middle truncation), 2 bottom values
+- Values match Step 7's initValues (combined embeddings) for visual continuity into Step 7
+- Token labels above columns in a separate flex row with matching gap transitions for perfect alignment
+- Labels and columns use matching transparent borders to maintain alignment during gap transitions
+- Matrix name label "This is X — the input matrix to the attention mechanism" fades in after consolidation
+- Dimension label: "8 tokens × d_model dimensions" (reuses hw-norm-dim-label/dim-t/dim-d classes from Step 7)
+- CSS: hw-mat6-* classes (layout, body, wrapper, token-row, token-label, cols, col, cell, dots, name), consolidated state classes
+- Responsive at 480px breakpoint (smaller cells and labels)
+- Astro scoping: all dynamic elements use el() helper with astroAttr; innerHTML sub/strong elements also get attribute
+- Forward/back/reset navigation works cleanly between Steps 5, 6, and 7
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: f095db3
+- Next: Feature #9 — New Step 7: layer norm + QKV weights (split from old step 6)
+
+=== Round 2 Feature #9 Complete — 2026-02-19 ===
+- Redesigned Step 7 "Layer Norm + QKV Weights" with column pill matrix structure matching Step 6
+- Input matrix: uses hw-norm7-* classes with column pill layout (8 columns, 5 cells each: 2 top + dots + 2 bottom)
+- Initial state: green-tinted cells with same values as Step 6's consolidated matrix (visual continuity)
+- Normalization animation: at 600ms, values swap to normalized (purple tint) with flash animation, phase label updates
+- QKV weight matrices redesigned from small 56px boxes to full column pill matrices:
+  - W_Q (blue, hsl 210): 3 columns (d_head) × 5 rows with sample weight values
+  - W_K (orange, hsl 30): 3 columns × 5 rows with sample weight values
+  - W_V (pink, hsl 340): 3 columns × 5 rows with sample weight values
+  - Each uses same cell sizing, font, and ellipsis placement as the input matrix
+  - d_model × d_head dimension labels below each weight matrix
+- Visual match between input matrix and weight matrices makes multiplication compatibility intuitive
+- d_model y-axis label preserved from Step 6 (reuses hw-embed-yaxis class)
+- Animation sequence: (1) green matrix appears immediately, (2) 600ms normalization flash, (3) 1400ms QKV weight matrices fade in
+- CSS: new hw-norm7-* classes for input matrix, hw-wmat-* classes for weight matrices; removed old hw-norm-matrix/weight-box classes
+- Astro scoping: all dynamic elements use el() helper with astroAttr; innerHTML sub elements also get attribute
+- Forward/back/reset navigation works cleanly between Steps 6, 7, and 8
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: 0e7234a
+- Next: Feature #10 — Step 8 redesign: Q projection with per-token animation
+
+=== Round 2 Feature #10 Tracking Update — 2026-02-19 ===
+- Feature #10 (Step 8 — Q Projection with per-token animation) was already implemented in commit 286e499
+- This session verified the implementation via Playwright smoke-test:
+  - Step 8 shows: X̂ (normalized) input matrix → · → W_Q weight matrix → → → Q output matrix
+  - Input matrix: 8 column pills (purple/normalized) with token labels, "cat" column gets persistent blue highlight
+  - W_Q: 3 column pills (blue, d_model × d_head) slides up into position at 400ms
+  - Q output: starts invisible, frame appears at 800ms, per-token column fill animation (first 3 detailed with flying column copy + W_Q flash, remaining 5 rapid cascade)
+  - Equation row: Q = X̂ · W_Q with dimension annotation
+  - Gutter annotation: "Step 8: Query Projection" with explanation of query vectors
+  - Forward/back navigation works cleanly between Steps 7, 8, and 9
+  - Both dark and light themes render cleanly with no issues
+- Updated features.json: set passes to true for feature #10
+- Build passes (pnpm build)
+- Commit: 286e499 (code), tracking update in this session
+- Next: Feature #11 — Step 9 redesign: V projection with stacked card effect
+
+=== Round 2 Feature #11 Complete — 2026-02-19 ===
+- Redesigned Step 9 "Value Projection" with column pill layout and stacked card effect
+- Layout: horizontal flow — X̂ (normalized, purple columns) · W_V (pink columns) → [stacked: Q ghost + V output]
+- W_V weight matrix: 3 pink column pills with sample weight values from Step 7, slides up at 400ms
+- Q ghost card: dimmed Q output (opacity 0.4, scale 0.95, offset -4px) from Step 8 appears behind V at 800ms
+- V output matrix: 8 pink column pills with per-token fill animation (first 3 detailed with flying column copy + W_V flash, remaining 5 rapid cascade), starts at 1100ms
+- Stacked card effect: Q ghost at z-index 1 (position: absolute, behind), V output at z-index 2 (front)
+- Equation row: V = X̂ · W_V with dimension annotation
+- Gutter annotation: "Step 9: Value Projection" with "what information do I carry?" text
+- Replaced old hw-vproj-* CSS (grid-based layout, small weight box, staging area) with new hw-v9-* CSS (column pills, stacked card)
+- Reuses hw-q8-* classes for shared patterns (mat-wrap, cols, col, cell, dots, op, dim-label, fly-col)
+- Fixed scope bug: initial Python replacement placed renderStep9 in wrong <script> block (QKV pipeline instead of head walkthrough); moved to correct scope
+- Removed old duplicate renderStep9 from QKV pipeline script block
+- Forward/back/reset navigation works cleanly between Steps 8, 9, and 10
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: 1bf665c
+- Next: Feature #12 — Step 10 redesign: K projection with animated transpose
+
+=== Round 2 Feature #12 Complete — 2026-02-19 ===
+- Redesigned Step 10 "Key Projection + Transpose" with column pill layout and K^T transpose visualization
+- Layout: horizontal flow — X̂ (normalized, purple columns) · W_K (orange columns) → K output (orange columns)
+- W_K weight matrix: 3 orange column pills with weight values from Step 7, slides up at 400ms
+- K output matrix: 8 orange column pills with per-token fill animation (first 3 detailed with flying column copy + W_K flash, remaining 5 rapid cascade), starts at 1100ms
+- Equation row: K = X̂ · W_K with dimension annotation
+- Transpose section: down arrow + "Transpose: rows ↔ columns" label + K^T visualization
+- K^T shows 3 d_head column pills with 4 visible token rows (2 top + dots + 2 bottom), token labels as row labels on left
+- K^T appears with flip-in animation (rotateY 90° → 0°) for visual emphasis on the transpose operation
+- Dimension labels change: K output shows "T × d_head", K^T shows "d_head × T"
+- Replaced old hw-kproj-* CSS (grid-based layout, small weight box, staging area) with new hw-k10-* CSS (column pills, transpose section)
+- Reuses hw-q8-* classes for shared patterns (mat-wrap, cols, col, cell, dots, op, dim-label, fly-col)
+- CSS includes responsive layout (stacks vertically on mobile) and dark mode adjustments
+- Forward/back/reset navigation works cleanly between Steps 9, 10, and 11
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: 1a23854
+- Next: Feature #13 — Step 11 redesign: QK^T with correct matrix sizes
+
+=== Round 2 Feature #13 Complete — 2026-02-19 ===
+- Redesigned Step 11 "QK^T Attention Scores" with proportionally-sized matrices
+- Q matrix now shown as TALL column pills (3 d_head columns × 5 visible token rows with ⋯ truncation) with token row labels on left — visually emphasizes T×d_head shape
+- K^T matrix shown as WIDE column pills (8 token columns × 3 d_head cells each, all visible, no truncation needed) — visually emphasizes d_head×T shape
+- Proportional contrast: Q is tall/narrow, K^T is short/wide — makes matrix multiplication shape intuitive
+- Row-by-row dot product animation: rows 0-1 detailed (Q row cells highlight blue, then result row fills), rows 2-5 rapid cascade (hidden behind Q dots), rows 6-7 detailed again (visible bottom Q rows)
+- T×T result matrix (8×8, purple) appears below with "↓ =" arrow, fills row-by-row with diagonal highlighting
+- d_head dimension cancellation: strikethrough animation on both Q and K^T dimension labels at 800ms
+- Kept O(n²) callout and shape equation with d strikethrough
+- All elements use column pill pattern with proper Astro scoping (el() helper)
+- Forward/back/reset navigation works cleanly between Steps 10, 11, and 12
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: 4c93562
+- Next: Feature #14 — New Step 12: interactive attention heatmap (from section 04c)
+
+=== Round 2 Feature #14 Complete — 2026-02-19 ===
+- Implemented Step 12 "Attention Heatmap" — interactive heatmap replacing the placeholder
+- Softmax explanation banner: σ icon + "Raw scores passed through softmax — each row now sums to 1"
+- 8×8 interactive heatmap with amber color scale (opacity proportional to weight)
+- Hover interaction: row highlight (other rows dimmed), tooltip showing "X attends most to Y (weight)"
+- Attention weights computed via softmax from updated Step 11 score values
+- Updated Step 11 score values to produce more pedagogically interesting patterns:
+  - Strong diagonal (self-attention dominant: 0.23-0.30)
+  - Meaningful cross-attention: fat→cat (adj→noun), quiet↔ly, The↔the (same word)
+- Legend with amber gradient bar (0 to 1)
+- Zoom-in animation: softmax banner at 400ms, heatmap scales in at 900ms, legend at 1400ms
+- Removed old section 04c heatmap (HTML + JS) — now lives in walkthrough Step 12
+- Left orphaned attn-heatmap-* CSS in place (harmless, would be complex to remove cleanly)
+- Both dark and light themes verified clean via Playwright
+- Forward/back/reset navigation works between Steps 11, 12, and 13
+- Build passes (pnpm build)
+- Commit: ca7e2cd
+- Next: Feature #15 — Step 13 redesign: Attention × V with clearer dimensions
+
+=== Round 2 Feature #15 Complete — 2026-02-19 ===
+- Redesigned Step 13 "Attention × V" with proportionally-sized column pill matrices
+- Layout: horizontal flow — Attention (amber, T×T square) · V (pink, T×d_head tall-narrow) = Output (green, T×d_head tall-narrow)
+- Attention matrix: 8 column pills (one per key token) with 5 visible rows (0,1,⋯,6,7), cell tinting proportional to weight values, token row/column labels
+- V matrix: 3 column pills (one per d_head dimension) with 5 visible rows — proportionally much narrower than Attention
+- Output matrix: 3 column pills matching V shape, slides in at 1600ms with translateX animation
+- Softmax context banner: σ icon + "Using softmax-normalized weights from Step 12 (rows sum to 1)" at top, fades in at 400ms
+- T dimension strikethrough animation at 1000ms on both Attention's second T and V's first T
+- Shape equation: Attn · V  (T×T̶) · (T̶×d) = T×d with color-coded labels
+- Changed Attention matrix color from purple (hsl 280) to amber (hsl 40) to match the heatmap from Step 12
+- Used actual softmax-normalized attention weights from Step 12 for consistency
+- V data transposed from column-major (Step 9 format) to row-major for T×d_head display
+- Output values are approximate weighted blends of V vectors
+- CSS: new hw-av13-* classes replacing old hw-attnv-* classes
+- Updated STEP_DATA annotation to mention softmax-normalized weights and inner T dimension cancellation
+- Forward/back/reset navigation works cleanly between Steps 12, 13, and 14
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: de978a2
+- Next: Feature #16 — Step 14 redesign: attention head output (clearer ending)
+
+=== Round 2 Feature #16 Complete — 2026-02-19 ===
+- Redesigned Step 14 "Head Output" — final step of the walkthrough with clearer framing
+- Reframed from "Residual Connection" to "Head Output" — accessible primary label
+- Title banner: "HEAD OUTPUT" in gold, replacing the old "RESIDUAL CONNECTION"
+- Layout: Input (x) (purple, 8 column pills, d_model rows) + Attn(x) (green, 3 column pills, d_head) = Head Output (gold, 8 column pills, d_model rows)
+- All three matrices use column pill pattern with 5 visible rows (0, 1, ⋯, 6, 7)
+- Equation: x + Attention(x) = head output (color-coded)
+- Completion badge: "✓ One attention head complete" — green pill with scale-in animation at 2200ms
+- Feed-forward preview: non-interactive (pointer-events:none, user-select:none), dashed borders, rendered at 45% opacity — clearly not clickable
+- Preview shows: Feed-Forward Network → + residual → Next Layer … (all dashed style)
+- Animation sequence: plus pulses gold (600ms), output slides in (1200ms), equation (1800ms), badge (2200ms), FFN preview (2800ms)
+- Updated STEP_DATA annotation: "Step 14: Head Output" with accessible explanation
+- CSS: new hw-ho14-* classes replacing old hw-residual-* classes
+- Forward/back/reset navigation works cleanly between Steps 13, 14, and Reset
+- Both dark and light themes verified clean via Playwright
+- Build passes (pnpm build)
+- Commit: 82e1e5f
+- This is the FINAL feature in round 2 features.json — all 16 features now pass!
+
+---
+
+## Session — Feature #17: Object continuity for steps 3-5
+
+### What was completed
+- Implemented persistent DOM layer for steps 3-5 of the head walkthrough
+- Token chips, arrows, blue/yellow/green embedding pills are created once and persist across steps 3-5
+- CSS transitions animate between states when parent class changes (hw-s35-at-3, hw-s35-at-4, hw-s35-at-5)
+- Step 3: Full-height blue pills with visible values
+- Step 4: Shorter blue pills (dimmed values) + yellow positional pills appear alongside
+- Step 5: Blue + yellow pills collapse, green merged pills expand (hw-s35-merged class added after 500ms delay)
+- FLIP animation on token chip positions at boundary transitions (step 2→3, 5→6)
+- Step-specific volatile content (sidenotes, legends, equations) rebuilt each step in hw-s35-extras div
+- Responsive mobile layout at 480px breakpoint
+- Both dark and light themes verified clean
+- Forward (3→4→5), backward (5→4→3), boundary (2→3, 5→6, 6→5), and reset all work correctly
+
+### Architecture decisions
+- Steps 1-2 remain full rebuild (no persistent layer) — to be addressed in a future feature
+- Steps 6-14 remain full rebuild
+- Only steps 3-5 use the persistent layer pattern
+
+### Technical notes
+- Previous session's steps 1-3 persistent layer work was lost (never committed before git revert)
+- showStep() now has a 3-path dispatch: steps 3-5 use persistent layer, steps 1-2 and 6-14 use full rebuild
+- mergeTimeout cleared on every step change to prevent stale merge animations
+- Build passes (pnpm build)
+
+### Next session
+- Feature #18: next failing feature in features.json
+
+=== Feature #18: Object continuity for steps 5→6: green columns consolidate into matrix -- passed -- 2026-02-19 15:42 ===
+Completed successfully in 2766s
+- Commit: 60d62baca402
+- Session: 64629471-c2ce-4bab-9cc8-2575c10f07c9
+
+
+=== Feature #19: Object continuity for steps 6→7: matrix normalization -- passed -- 2026-02-19 16:12 ===
+Completed successfully in 1810s
+- Commit: 60d62baca402
+- Session: fbbeea28-e921-46bb-8b0c-d54f2481ab12
+
+
+=== Feature #20: Object continuity for steps 8–10: input matrix across Q/V/K projections -- passed -- 2026-02-19 18:17 ===
+Completed successfully in 7223s
+- Commit: 60d62baca402
+- Session: 10a0c637-1d68-42d4-9c09-4760ab392555
+
+
+=== Feature #21: Object continuity for steps 10→11: K^T persists into QK^T -- passed -- 2026-02-19 18:46 ===
+Completed successfully in 1753s
+- Commit: 60d62baca402
+- Session: 42ee9be4-d2e3-4055-9624-be74ae8f8434
+
+
+=== Feature #22: Object continuity for steps 11→12: scores matrix zooms into heatmap -- passed -- 2026-02-19 19:13 ===
+Completed successfully in 1605s
+- Commit: 60d62baca402
+- Session: 513ce460-dc33-4d4a-a810-ae8b92702bca
+
+
+=== Feature #23: Object continuity for steps 13→14: attention output carries forward -- passed -- 2026-02-19 20:01 ===
+Completed successfully in 2879s
+- Commit: 60d62baca402
+- Session: ff9612fd-2a38-47ee-aa06-4961d8a2a7e5
+
+
+=== Cross-layer transition polish — 2026-02-20 ===
+
+Context: User reported "items are still jumping around between steps" despite working
+within-step animations. The 6↔7 transition looked decent (CSS transitions within
+persistent layer), but all other cross-layer boundaries had instant teleportation.
+
+Work done across 3 sessions:
+1. Implemented universal token-text FLIP animation (commit 39c7765):
+   - Added data-tok-idx="0"-"7" to all token text elements across all persistent layers
+   - Unified FLIP code at end of showStep() matches old→new by token index
+   - Handles translate + scale for size differences between layers
+   - Replaced per-block chip FLIP code with single universal FLIP
+
+2. Debugged FLIP timing via MutationObserver diagnostics:
+   - FLIP transforms were being applied correctly but visually imperceptible
+   - Root cause: 6px token labels animating while everything else teleports instantly
+   - The eye can't track tiny animated text amid massive instant layout changes
+
+3. Added cross-layer opacity fade (commit 285a476):
+   - At persistent layer boundaries (2↔3, 7↔8), viz dims to opacity 0 instantly
+   - Fades in over 0.3s via CSS transition, masking the instant DOM swap
+   - Token FLIP runs simultaneously, providing subtle continuity
+   - Skipped when K^T, grid, or output FLIPs already anchor the transition
+   - Fixed token FLIP to use double rAF + getComputedStyle force (matching other FLIPs)
+
+Key architecture decisions:
+- Opacity dim only fires when doFlip && !doKtFlip && !doS1112Flip && !doS1314Flip
+- This prevents hiding the dedicated element FLIPs that already work well
+- All double rAFs fire in the same frames, ensuring consistent animation start
+
+Verified: All 14 steps forward and backward render correctly, opacity always 1 after
+cleanup, no stale inline styles.
+
+Next session: User should test visually to confirm the fade+FLIP feels smooth enough.
+Consider extending to within-step transitions if needed.
+
+=== GSAP Flip Rewrite — Session 1 (steps 1-7) — 2026-02-20 ===
+
+User requested full GSAP Flip rewrite to replace the persistent DOM layer architecture.
+The old system (s12, s35, s810 persistent layers) caused visual "teleportation" at layer
+boundaries. GSAP Flip enables full-rebuild-per-step with automatic cross-step animation
+via data-flip-id matching.
+
+Completed:
+1. Added GSAP 3.14.2 + Flip plugin (pnpm install, bundled Astro script exposing
+   window.__gsap / window.__Flip — CDN UMD failed due to Chrome's read-only window.window)
+2. Created 7 pure render functions (renderStep1-7) + 2 helpers (flipBuildSentence,
+   flipBuildColumns). Each returns a complete DOM subtree with data-flip-id attributes.
+3. Rewrote showStep() with hybrid dispatch:
+   - Steps 1-7: GSAP Flip path (capture → clear → rebuild → Flip.from → early return)
+   - Steps 8-14: Old persistent layer path preserved exactly
+   - 7↔8 boundary: crossfade (opacity dim + fade-in)
+4. Deleted dead code from old s12/s35 persistent layers:
+   - Removed s12Layout/s12Sentence/s12WordEls/s12Extras DOM construction (~30 lines)
+   - Removed s35Layout/s35Body/s35Columns/s35Extras DOM construction (~65 lines)
+   - Removed s35GreenCells, mergeTimeout, nameTimeout, s35Step7Timeout variables
+   - Removed 7 builder functions (buildS12Step1Extras through buildS35Step7Extras, ~195 lines)
+   - Removed dead timeout cleanup in showStep()
+   - Kept all data arrays (s12Words, s35Tokens, s35Types, etc.) still used by render functions
+
+Net: 195 insertions, 486 deletions = ~291 lines removed.
+
+WIP commit: 99402cb (GSAP infra + render functions)
+Final commit: (this session)
+
+Verified: All 14 steps render correctly forward and backward. 7↔8 boundary crossfade
+works both directions. Reset button works. No JS errors.
+
+Next session (Session 2): Convert steps 8-14 to GSAP Flip, delete s810 persistent layer
+and all remaining manual FLIP code, CSS cleanup.
+
+=== Session 2: GSAP Flip rewrite for steps 8-14 ===
+
+Completed the GSAP Flip rewrite for ALL 14 steps. The entire head walkthrough now uses
+full-rebuild-per-step with GSAP Flip for cross-step animations. No more persistent DOM layers.
+
+Changes:
+1. Created flipBuildInputMatrix() helper and renderStep8/9/10 pure functions.
+   Each builds complete DOM with data-flip-id="tok-N" on token labels.
+   Animation cascades attached as layout._runEffects closures.
+2. Created flipBuildGrid(mode) helper — builds fresh 8×8 grid with data-flip-id
+   on cells (score-rNcM), row labels (row-label-N), col labels (col-label-N).
+   Updates module-level s1112Cells/RowLabelEls/ColLabelEls for hover handler compat.
+3. Created flipBuildOutputMatrix(label) helper — builds green output matrix with
+   data-flip-id="output-wrap" for GSAP matching between steps 13 and 14.
+4. Refactored renderStep11 to build K^T inline with data-flip-id="kt-wrap" (matches
+   step 10's K^T) instead of using persistent s1011KtWrap. Accepts fromStep parameter
+   to control row-fill animation (skip when backward from step 12).
+5. Refactored renderStep12 to use flipBuildGrid("12") instead of persistent s1112GridEl.
+6. Refactored renderStep13 to use flipBuildOutputMatrix("Output") instead of persistent
+   s1314OutWrap. Accepts fromStep to control slide-in animation.
+7. Refactored renderStep14 to use flipBuildOutputMatrix("Attn(x)").
+8. Extended showStep() GSAP Flip path from steps 1-10 to ALL 14 steps.
+   Deleted entire old persistent-layer dispatch path (~260 lines):
+   - K^T FLIP detection and animation
+   - s1112 grid FLIP detection and animation
+   - s1314 output FLIP detection and animation
+   - Universal token-text FLIP
+   - Cross-layer fade logic
+   - Old steps 8-10 dispatch via s810Layout
+9. Deleted dead code:
+   - s1011KtWrap, s1011KtDimCancel, s1011KtInstant variables
+   - s1112GridEl, s1112Instant variables
+   - s1314OutWrap, s1314OutLabelEl, s1314OutTimeout variables
+   - buildS1112Grid(), applyS1112Mode11Styles(), applyS1112Mode12Styles()
+   - buildKtInnerStep10(), buildKtInnerStep11()
+   - buildS1314OutWrap()
+   - s1314OutTimeout cleanup in showStep()
+
+Net: 773 insertions, 684 deletions (mostly restructuring into pure functions + helper extraction).
+
+Remaining dead code (harmless, can clean up later):
+- s810Layout persistent layer construction and buildS810Step8/9/10Volatile functions
+  (steps 8-10 now use GSAP renderStep8/9/10, so these never execute)
+
+Commit: (this session)
+
+Verified: All 14 steps render correctly forward and backward. Step 12 hover interactivity
+works (tooltip shows correct attention info). Reset button works. No JS errors.
+
+Next session: Delete remaining s810 dead code, CSS transition cleanup, performance tuning.
+
+=== ACTIVE BUG: Token card transitions between steps 2↔3 ===
+Tokens disappear then reappear with a drop-down animation instead of smoothly
+translating position. This means GSAP Flip is NOT matching elements between steps.
+Root cause: likely mismatched data-flip-id values between renderStep2() and renderStep3().
+Need to check what flip IDs are on token elements in each step's render function.
+
+Key architecture context for next session:
+- All 14 steps now use GSAP Flip via showStep() at ~line 15750
+- renderStep1-7 are in the "GSAP Flip render functions (steps 1-7)" section (~line 14720+)
+- renderStep8-10 use flipBuildInputMatrix() helper (~line 15090+)
+- renderStep11-14 use flipBuildGrid() and flipBuildOutputMatrix() helpers
+- flipBuildGrid/flipBuildOutputMatrix helpers are at ~line 15090
+- showStep() captures Flip.getState("[data-flip-id]"), rebuilds viz, calls Flip.from()
+- The onEnter/onLeave handlers do opacity+scale fade — this is what causes the "drop-down" appearance for unmatched elements
+- Commit: f89bdd2 on branch feature/transformers-harness
+- Dev server running on port 4322
+- s810 persistent layer code (buildS810Step8/9/10Volatile) is still in file but dead code
+
+=== Round 4 Features Added — 2026-02-20 ===
+- Added features 24-31 to features.json (visual continuity / smooth transitions)
+- These address 8 step transitions with continuity breaks identified in video analysis
+- Root cause: GSAP Flip animates position/scale of matched elements, but full DOM rebuild
+  means CSS-driven transitions (color, opacity, width) fire instantly in final state
+- Fix strategy: post-Flip GSAP tweens + staggered entrance animations within existing Flip architecture
+- Feature 24: Step 1↔2 — black box fade + token separation color tween
+- Feature 25: Step 2↔3 — tokens persist into columns with staggered entrance
+- Feature 26: Step 3↔4↔5 — embedding transitions (pill width, merge crossfade)
+- Feature 27: Step 5↔6 — column consolidation gap animation
+- Feature 28: Step 6↔7 — green→purple color tween + QKV entrance
+- Feature 29: Step 7↔8 — layout reorganization with input-matrix and wq-matrix flip IDs
+- Feature 30: Step 8↔9↔10 — projection carousel with weight/output matrix tracking
+- Feature 31: Step 10→11 — K^T persistence into QK^T multiplication
+- Next: Implement feature 24 (first feature with passes: false)
+
+=== Feature #24 Complete — 2026-02-20 ===
+- Implemented smooth Step 1↔2 transition — black box fade + token chip background tween
+- Added data-flip-id to black box extras (bb-arrow-down, bb-pipe) in renderStep1() so
+  GSAP Flip's onLeave animates them out with fade+scale instead of instant vanish
+- Added data-flip-id (s2-count) to "8 tokens" label in renderStep2() for proper onEnter
+- Added post-Flip GSAP tweens in showStep() for the 1↔2 boundary:
+  - 1→2: gsap.from() tweens token backgrounds/borders from transparent to colored with stagger
+  - 2→1: gsap.from() tweens token backgrounds/borders from colored to transparent
+  - gsap.killTweensOf() at start of each transition to handle rapid clicking
+- Verified: forward (1→2), backward (2→1), rapid clicking, both dark and light themes
+- Pre-existing build errors (window.__gsap, window.__Flip TS types) — not caused by this change
+- Commit: 02f8e84
+- Next: Feature #25 — Smooth Step 2↔3 tokens persist into columns
+
+=== Feature #25 Complete — 2026-02-20 ===
+- Implemented smooth Step 2↔3 transition — staggered column entrance animation
+- Added post-Flip override in showStep() for 2→3 boundary:
+  - Kills default onEnter tweens on arrows, blue pills, yaxis
+  - Arrows: staggered fade-in (0.25s, stagger 0.03)
+  - Blue pills: scaleY grow from 0 with transformOrigin 'top center' (0.4s, stagger 0.04, delayed 0.2s after arrows)
+  - Y-axis label: fade-in delayed 0.25s
+  - Sidenote: set to opacity:0 then fade-in after columns complete (delay 0.55s)
+- Also clears GSAP inline styles on CSS-hidden yellow/green/plus elements to prevent
+  onEnter from interfering with their CSS-driven visibility in later steps
+- For 3→2 backward: default Flip onLeave handles adequately, just clear hidden element styles
+- Verified: 2→3 forward, 3→2 backward, 4→3 backward (no custom animation), rapid clicking,
+  steps 4 and 5 unaffected, both dark and light themes
+- Build: 0 errors
+- Commit: f64e912
+- Next: Feature #26 — Smooth Step 3↔4↔5 embedding transitions
+
+=== Feature #26 Complete — 2026-02-20 ===
+- Implemented smooth Step 3↔4↔5 transitions — all four boundary directions
+- Added post-Flip GSAP tweens in showStep() for:
+  - 3→4: Yellow pills fade-in with staggered opacity/borderColor/backgroundColor tween (0.4s, stagger 0.03, delay 0.15). Blue pill values (bval/bdots) dim via gsap.from opacity:1→0.15. Legend delayed fade-in (delay 0.45s). Kills default Flip tweens on yellows, clears inline styles on hidden greens/pluses.
+  - 4→3: Yellow pills fade-out via gsap.from with visible yellow colors→CSS hidden state (0.35s). Embedding sidenote delayed fade-in (delay 0.4s). Clears hidden greens/pluses.
+  - 4→5: Blue+yellow fade-out via gsap.from opacity:1→CSS 0 (0.4s). Green pills fade-in from opacity:0/transparent (0.45s, stagger 0.03, delay 0.2). Equation delayed (0.55s), sidenote delayed (0.65s). Kills all pill tweens first.
+  - 5→4: Green pills fade-out via gsap.from visible green state→CSS 0 (0.4s). Yellow pills fade-in from transparent (0.4s, delay 0.15). Legend delayed (0.45s). Clears pluses inline styles.
+- Verified: all four transitions (3→4, 4→3, 4→5, 5→4), rapid clicking through 3↔4↔5 with no stacking artifacts, steps 6-7 unaffected (no regressions), both dark and light themes
+- Build: 0 errors
+- Commit: 9db0ed9
+- Next: Feature #27 — Smooth Step 5↔6 column consolidation
+
+=== Feature #27 Complete — 2026-02-20 ===
+- Implemented smooth Step 5↔6 transitions — column consolidation into matrix
+- Added data-flip-id="columns-wrap" to the .hw-s35-columns container in flipBuildColumns()
+  so Flip can match it across step transitions
+- Added post-Flip GSAP tweens in showStep() for:
+  - 5→6: Columns container animates gap (6px→1px), border (transparent→visible),
+    background (transparent→tinted), border-radius (0→4px), padding (0→2px) over 500ms.
+    Arrows fade out (opacity 1→0, maxHeight shrinks). Green pills animate border-radius
+    (6px→0) and border-color (visible→transparent). Dimension label + "This is X" text
+    enter with delayed fade-in + slide-up (y:10→0).
+  - 6→5: Reverse — container gap expands (1px→6px), border fades, background clears.
+    Arrows fade back in. Green pills regain rounded shape. Equation + sidenote delayed fade-in.
+- Verified: 5→6 forward, 6→5 backward, rapid clicking 5↔6→7, step 7 unaffected,
+  both dark and light themes
+- Build: 0 errors
+- Commit: 050fb9f
+- Next: Feature #28 — Smooth Step 6↔7 green→purple color tween + QKV entrance
+
+=== Feature #28 Complete — 2026-02-20 ===
+- Implemented smooth Step 6↔7 transitions — green→purple color tween + QKV entrance
+- Added post-Flip GSAP tweens in showStep() for:
+  - 6→7: Columns border tweens green→purple (0.5s). Green pill containers tween
+    borderColor/backgroundColor from green to purple. Cell values (.hw-s35-gval) tween
+    color/background/borderColor from green to purple. Dots (.hw-s35-gdots) tween similarly.
+    Arrow fades in with slide-up (delay 0.35s). QKV weight matrices enter with staggered
+    slide-up per card (W_Q first, W_K, W_V — stagger 0.1s, delay 0.45s).
+  - 7→6: Reverse color tween purple→green on all elements. Dimension label fades in
+    (delay 0.3s). "This is X" text slides up (delay 0.45s). No QKV (not in step 6 DOM).
+- Cell value text changes (combined→normalized) happen instantly on DOM rebuild; the color
+  tween masks this transition so it's not jarring
+- Verified: 6→7 forward, 7→6 backward, rapid clicking 6↔7→8, step 8 unaffected,
+  both dark and light themes
+- Build: 0 errors
+- Commit: 88e0b3f
+- Next: Feature #29 — Smooth Step 7↔8 layout reorganization
+
+=== Feature #29 Complete — 2026-02-20 ===
+- Implemented smooth Step 7↔8 transitions — the biggest layout reorganization in the walkthrough
+- Step 7→8 goes from vertical columns (normalized matrix + QKV below) to horizontal multiplication
+  layout (input matrix left + W_Q + Q output right)
+- Added data-flip-id="input-matrix" to both flipBuildColumns() body (step 7) and
+  flipBuildInputMatrix() wrap (step 8) so the matrix container FLIPs from center to left
+- Added data-flip-id="wq-matrix" to step 7's W_Q card (conditionally in QKV loop where cls==="q")
+  and step 8's wqWrap so W_Q FLIPs from the QKV row into the multiplication area
+- Added post-Flip GSAP tweens in showStep() for:
+  - 7→8: W_Q immediately visible (Flip matched from step 7), operator symbols fade-in with
+    stagger (0.3s, stagger 0.15), Q output slides in from right (opacity:0, x:30 → visible,
+    delay 0.5s) with hw-q8-filled class on output columns and hw-q8-persistent on input columns,
+    equation delayed fade-in (delay 0.8s)
+  - 8→7: Arrow fades in with slide-up (delay 0.3s), W_Q inline styles cleared (already Flip
+    matched), W_K and W_V stagger entrance with slide-up (0.4s, stagger 0.1, delay 0.35s),
+    dimension label delayed fade-in (delay 0.25s)
+- Skipped _runEffects() cascade for 7→8 transition (conditional check in showStep) since
+  post-Flip tweens handle the entrance animations instead
+- Fixed Q output columns showing empty cells by manually adding hw-q8-filled class in post-Flip
+  tween block (the _runEffects cascade normally adds this but was skipped)
+- Verified: 7→8 forward (matrix slides left, W_Q FLIPs, Q output slides in), 8→7 backward
+  (matrix returns to center, W_K/W_V stagger in), rapid clicking 7↔8→9, both dark and light themes
+- Build: 0 errors
+- Commit: e682a0a
+- Next: Feature #30 — Smooth Step 8↔9↔10 projection carousel
+
+=== Feature #30: Smooth Step 8↔9↔10 — projection carousel — 2026-02-20 ===
+- Added `data-flip-id="weight-matrix"` to weight wraps in steps 7, 8, 9, 10 (renamed from
+  wq-matrix) so GSAP Flip matches the weight matrix across all projection steps
+- Added `data-flip-id="output-matrix"` to Q output wrap (step 8) and V output wrap (step 9)
+  for Flip matching between output matrices
+- Added 4 post-Flip tween blocks for 8↔9 and 9↔10 boundaries:
+  - 8→9: Weight columns tween blue→pink, output cells tween blue→pink via gsap.fromTo(),
+    Q ghost delayed fade-in, operators/equation fade
+  - 9→8: Reverse pink→blue tweens, operators/equation fade
+  - 9→10: Weight tween pink→orange, K output slide-in with hw-k10-filled, transpose section
+    staggered entrance
+  - 10→9: Weight tween orange→pink, V output slide-in with hw-v9-filled, Q ghost entrance
+- Extended _runEffects() skip gate to cover all adjacent 8↔9↔10 transitions
+- Fixed pre-existing cascade bugs: renderStep9._runEffects used hw-q8-filled instead of
+  hw-v9-filled (V output values were invisible); renderStep10._runEffects used hw-q8-filled
+  instead of hw-k10-filled (K output values invisible)
+- Fixed gsap.from() → gsap.fromTo() for output cell color tweens: gsap.from() reads the
+  current computed color as endpoint, but output cells have color:transparent by default,
+  so tween endpoint was transparent. gsap.fromTo() with explicit start/end + clearProps fixes this
+- Verified: 8→9 forward, 9→10 forward, 10→9 backward, 9→8 backward, rapid clicking 8↔9↔10,
+  step 11 no regression, both dark and light themes
+- Build: 0 errors
+- Commit: 2027b7d
+- Next: Feature #31 — Smooth Step 10↔11 boundary — K^T persistence
+
+=== Feature #31: Smooth Step 10↔11 — K^T persistence into QK^T — 2026-02-20 ===
+- Both step 10 and step 11 already had matching data-flip-id="kt-wrap" on K^T containers,
+  so GSAP Flip handles the position/scale animation of K^T between steps
+- Added post-Flip tweens for 10→11 boundary:
+  - K^T: clearProps on Flip-matched element to avoid stale inline styles
+  - Q matrix: gsap slide-in from left (opacity 0→1, x -30→0, delay 0.3s)
+  - Multiply sign (·): delayed fade-in (delay 0.5s)
+  - Down arrow, result grid, equation, callout: handled by renderStep11's internal setTimeout
+    animation sequence (phases 1-5 at 800ms, 1200ms, 1600ms+)
+- Added post-Flip tweens for 11→10 boundary:
+  - K^T: clearProps on Flip-matched element
+  - W_K weight matrix: Flip-matched via "weight-matrix", slide-in from right (delay 0.2s)
+  - K output: slide-in from right with hw-k10-filled class (delay 0.35s)
+  - Transpose section: slide-up entrance (delay 0.5s)
+  - Operators: staggered fade-in (delay 0.15s + 0.1s per operator)
+  - Equation: delayed fade-in (delay 0.55s)
+  - Input columns: marked hw-q8-persistent
+- Extended _runEffects skip gate to cover 10↔11 transitions
+- Verified: 10→11 forward, 11→10 backward, rapid clicking 10↔11, step 12 no regression,
+  both dark and light themes
+- Build: 0 errors
+- Commit: a54c8b4
+- Next: All features 24-31 complete. Visual continuity pass is done.

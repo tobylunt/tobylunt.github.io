@@ -49,4 +49,3 @@ water. Anyone is welcome to come help with the woodworking, or come
 for a ride when she's back in action.
 
 ![Ariadne](@/assets/img/ariadne-2.png "Ariadne")
-
