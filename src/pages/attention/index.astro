@@ -653,6 +653,16 @@ document.addEventListener("DOMContentLoaded", function () {
     [-0.28, 0.96, 0.48, 0.66, 0.75, "...", -0.28],
     [0.66, 0.75, -1.24, 1.00, -0.01, "...", 0.66]
   ];
+  var NORM_VALS = [
+    [-0.99,  1.15,  1.43, -0.62,  0.14, "...", -1.11],
+    [-0.12,  0.38, -1.44,  1.23, -1.09, "...",  1.03],
+    [ 1.75, -1.01,  0.25,  0.37, -1.31, "...", -0.06],
+    [ 0.79, -0.13,  0.45, -2.05, -0.03, "...",  0.97],
+    [-1.72,  0.07, -0.48,  0.07,  0.46, "...",  1.61],
+    [-0.08,  0.04, -0.92,  0.02,  2.00, "...", -1.07],
+    [-0.98,  1.85, -0.71, -0.73,  0.74, "...", -0.18],
+    [ 0.07,  0.83, -1.56,  1.31, -1.01, "...",  0.36]
+  ];
 
   // Attention score matrix (T x T) — higher values where tokens attend more
   var ATTN_SCORES = [
@@ -866,6 +876,31 @@ document.addEventListener("DOMContentLoaded", function () {
   var headCards = [];
   // Blank/prompt indicator
   var blankEl;
+
+  // ═══ LAYERNORM CELL CONTENT HELPERS ═══
+  var combCellsNormalized = false;
+
+  function setCombCellsNormalized() {
+    for (var t = 0; t < T; t++) {
+      for (var d = 0; d < D_MODEL; d++) {
+        var val = NORM_VALS[t][d];
+        combCells[t][d].textContent = val === "..." ? "\u22EE" : val.toFixed(2);
+      }
+    }
+    combCellsNormalized = true;
+  }
+
+  function setCombCellsCombined() {
+    for (var t = 0; t < T; t++) {
+      for (var d = 0; d < D_MODEL; d++) {
+        var eVal = EMB_VALS[t][d];
+        var pVal = POS_VALS[t][d];
+        var sum = (typeof eVal === "number" && typeof pVal === "number") ? (eVal + pVal) : "...";
+        combCells[t][d].textContent = sum === "..." ? "\u22EE" : sum.toFixed(2);
+      }
+    }
+    combCellsNormalized = false;
+  }
 
   // ═══ SEQUENCE / SUB-ANIMATION INFRASTRUCTURE ═══
   var sequenceId = 0;
@@ -1863,7 +1898,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     return { sequence: [
       { state: phase1, delay: 250 },
-      { state: phase2, delay: 0 }
+      { state: phase2, delay: 0, onStart: setCombCellsNormalized }
     ]};
   }
 
@@ -3740,7 +3775,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Highlight X column
         tl.to(xColEls, {
           backgroundColor: highlightPurple,
-          duration: 0.08
+          duration: 0.04
         });
 
         // For each d_head column in W_V
@@ -3752,19 +3787,19 @@ document.addEventListener("DOMContentLoaded", function () {
             // Flash W_V column highlight
             tl.to(wvColEls, {
               backgroundColor: highlightRose,
-              duration: 0.06
+              duration: 0.03
             });
 
             // Fade in V cell
             tl.to(vCells[t][h], {
               opacity: 1,
-              duration: 0.08
+              duration: 0.04
             }, ">");
 
             // De-highlight W_V column
             tl.to(wvColEls, {
               backgroundColor: wc.bg,
-              duration: 0.06
+              duration: 0.03
             }, ">");
           })(h);
         }
@@ -3772,7 +3807,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // De-highlight X column
         tl.to(xColEls, {
           backgroundColor: pc.bg,
-          duration: 0.08
+          duration: 0.04
         });
       })(t);
     }
@@ -4543,7 +4578,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function applyStateSequence(phases, animate) {
     var mySeqId = ++sequenceId;
     if (!animate || reducedMotion || phases.length === 0) {
-      // Instant: apply last phase
+      // Instant: run all onStart callbacks, then apply last phase
+      phases.forEach(function (p) { if (p.onStart) p.onStart(); });
       var last = phases[phases.length - 1];
       return applyState(last.state, false);
     }
@@ -4551,6 +4587,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function runPhase() {
       if (sequenceId !== mySeqId) return Promise.resolve(); // cancelled
       var phase = phases[idx];
+      if (phase.onStart) phase.onStart();
       return applyState(phase.state, true).then(function () {
         idx++;
         if (idx < phases.length && sequenceId === mySeqId) {
@@ -4751,6 +4788,13 @@ document.addEventListener("DOMContentLoaded", function () {
         e.style.padding = "";
       });
     }
+
+    // Ensure combCells show correct values for the target step.
+    // Skip the normalize guard for step 6 going forward — the onStart
+    // callback on phase 2 handles that so phase 1 keeps combined values.
+    if (n >= 7 && !combCellsNormalized) { setCombCellsNormalized(); }
+    if (n === 6 && !goingForward && !combCellsNormalized) { setCombCellsNormalized(); }
+    if (n <= 5 && combCellsNormalized)  { setCombCellsCombined(); }
 
     currentStep = n;
     updateAnnotation(n);
