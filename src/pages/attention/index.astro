@@ -1573,7 +1573,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (mode === "dual") {
       // Two side-by-side columns per token sharing a center border
-      var dualCW = Math.max(28, Math.round(CELL_W * 0.75));
+      var dualCW = Math.max(28, Math.round(CELL_W * 0.85));
       var colGap = 0; // flush — visual border provided by pill styling
       var pairW = dualCW * 2 + colGap;
       // Spread tokens wider to make room for the two columns per token.
@@ -1620,6 +1620,13 @@ document.addEventListener("DOMContentLoaded", function () {
     state[dModelLabel.id] = {
       x: lastColX + 12, y: lay.cellStartY + lay.vecH / 2 - 30,
       w: 20, h: 60, opacity: 0.6
+    };
+
+    // Bracket around embedding columns
+    state[matBracket.id] = {
+      x: firstColX - 6, y: lay.cellStartY - 4,
+      w: (lastColX - firstColX) + 12, h: lay.vecH + 8,
+      opacity: 1, borderColor: "var(--attn-blue)"
     };
 
     return state;
@@ -1687,28 +1694,30 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // Legend — left of columns, vertically centered (matches step 5 label position)
+    // Legend — left of columns, vertically centered
     var dark = isDark();
     var embSwatch = dark ? "hsl(210,45%,40%)" : "hsl(210,55%,70%)";
     var posSwatch = dark ? "hsl(42,60%,40%)" : "hsl(42,75%,65%)";
     var firstPairX = lay.positions[0] + (lay.itemW - pairW) / 2;
-    var legendX = firstPairX - 85;
+    var legendX = firstPairX - 105;
     var legendCenterY = lay.cellStartY + (D_MODEL * (CELL_H + CELL_GAP) - CELL_GAP) / 2;
-    miscLabels[0].innerHTML = '<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:' + embSwatch + ';vertical-align:middle;margin-right:5px"></span>Embedding';
-    miscLabels[0].style.fontSize = "0.65rem";
+    miscLabels[0].innerHTML = '<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:' + embSwatch + ';vertical-align:middle;margin-right:3px"></span>Emb <span style="opacity:0.5;margin:0 2px">+</span> <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:' + posSwatch + ';vertical-align:middle;margin-right:3px"></span>Pos';
+    miscLabels[0].style.fontSize = "0.7rem";
     miscLabels[0].style.color = "var(--attn-text-muted)";
-    state[miscLabels[0].id] = { x: legendX, y: legendCenterY - 12, opacity: 0.7 };
-
-    miscLabels[1].innerHTML = '<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:' + posSwatch + ';vertical-align:middle;margin-right:5px"></span>Position';
-    miscLabels[1].style.fontSize = "0.65rem";
-    miscLabels[1].style.color = "var(--attn-text-muted)";
-    state[miscLabels[1].id] = { x: legendX, y: legendCenterY + 6, opacity: 0.7 };
+    state[miscLabels[0].id] = { x: legendX, y: legendCenterY - 6, opacity: 0.7 };
 
     // d_model label persists
     var lastPairEnd = lay.positions[T - 1] + (lay.itemW - pairW) / 2 + pairW;
     state[dModelLabel.id] = {
       x: lastPairEnd + 12, y: lay.cellStartY + lay.vecH / 2 - 30,
       w: 20, h: 60, opacity: 0.6
+    };
+
+    // Bracket around dual-column grid
+    state[matBracket.id] = {
+      x: firstPairX - 6, y: lay.cellStartY - 4,
+      w: (lastPairEnd - firstPairX) + 12, h: lay.vecH + 8,
+      opacity: 1, borderColor: "var(--attn-blue)"
     };
 
     return state;
@@ -1747,19 +1756,38 @@ document.addEventListener("DOMContentLoaded", function () {
       w: 20, h: 60, opacity: 0.6
     };
 
+    // Green bracket around combined columns
+    finalState[matBracket.id] = {
+      x: firstColX - 6, y: lay.cellStartY - 4,
+      w: (lastColX - firstColX) + 12, h: lay.vecH + 8,
+      opacity: 1, borderColor: "var(--attn-green)"
+    };
+
     // Going backward: show final green state
     if (!goingForward) {
       return finalState;
     }
 
     // Going forward: single smooth merge animation
-    // 1. Instantly hide cell numbers
+    // 1. Instantly hide cell numbers and show "+" operator
     for (var t = 0; t < T; t++) {
       for (var d = 0; d < D_MODEL; d++) {
         embCells[t][d].style.opacity = "0";
         posCells[t][d].style.opacity = "0";
       }
     }
+    // Position "+" centered between the dual-column groups
+    var dualLay = sharedTokenLayout("dual");
+    var dualPairW = dualLay.cellW * 2;
+    var dualCenterX = (dualLay.positions[0] + (dualLay.itemW - dualPairW) / 2 +
+                       dualLay.positions[T - 1] + (dualLay.itemW - dualPairW) / 2 + dualPairW) / 2;
+    opSymbols[3].textContent = "+";
+    opSymbols[3].style.fontSize = "1.4rem";
+    opSymbols[3].style.color = "var(--attn-text-muted)";
+    applyTargetInstant(opSymbols[3], {
+      x: dualCenterX - 12, y: lay.cellStartY + colH / 2 - 12,
+      opacity: 0.7
+    });
 
     // 2. Single state: pills slide inward turning green, combCells fade in on top
     var state = {};
@@ -1800,6 +1828,8 @@ document.addEventListener("DOMContentLoaded", function () {
     state[miscLabels[2].id] = finalState[miscLabels[2].id];
     // d_model label persists
     state[dModelLabel.id] = finalState[dModelLabel.id];
+    // Green bracket (same as final state)
+    state[matBracket.id] = finalState[matBracket.id];
 
     return state;
   }
