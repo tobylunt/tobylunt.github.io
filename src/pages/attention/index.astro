@@ -772,7 +772,7 @@ document.addEventListener("DOMContentLoaded", function () {
          },
          { // Step 18 — Residual Stream
              title: "Residual Stream",
-           body: "<p>The concatenated multi-head output is added back to the original input <i>X</i> via a residual connection — this ensures information flows even if the heads learn nothing useful.</p><p>This produces the final <i>[T × d<sub>model</sub>]</i> output of the attention layer, ready for the feed-forward network that follows.</p>",
+           body: "<p>The concatenated multi-head output is added back to the original input <i>X</i> via a residual connection: <i>output = X + MHA(X)</i>. This is the <em>residual stream</em> — a running sum that every layer reads from and writes to.</p><p>The residual stream is what makes deep transformers trainable. Each attention layer (and each feed-forward layer) adds a small update to the stream rather than replacing it entirely. This means gradients flow cleanly back through the network during training, and earlier layers' representations are preserved rather than overwritten. Without residual connections, transformers deeper than a few layers fail to train.</p><p>This produces the final <i>[T × d<sub>model</sub>]</i> output of the attention layer, ready for the feed-forward network that follows. In a full transformer, this pattern — attention block, add to stream, feed-forward block, add to stream — repeats for every layer.</p>",
            dims: "X[8×1024] + MHA(X)[8×1024] → [8×1024]"
          }
      ];
