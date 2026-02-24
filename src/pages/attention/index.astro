@@ -138,7 +138,7 @@ import PageLayout from "@/layouts/Base.astro";
     background: var(--attn-surface-2);
     padding: 1.25rem 1.75rem;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 1.75rem;
   }
@@ -150,6 +150,7 @@ import PageLayout from "@/layouts/Base.astro";
     gap: 0.35rem;
     user-select: none;
     flex-shrink: 0;
+    padding-top: 0.15rem;
   }
 
   .attn-btn-row {
@@ -199,7 +200,7 @@ import PageLayout from "@/layouts/Base.astro";
   /* ═══ ANNOTATION PANEL ═══ */
   .attn-annotation {
     display: flex;
-    align-items: baseline;
+    align-items: flex-start;
     gap: 1.5rem;
     flex: 1;
     min-width: 0;
@@ -231,7 +232,8 @@ import PageLayout from "@/layouts/Base.astro";
   .attn-ann-dims {
     margin-top: 0.4rem;
     font-family: var(--attn-mono);
-    font-size: 0.8rem;
+    font-size: 0.7rem;
+    font-style: italic;
     color: var(--attn-text-muted);
     opacity: 0.8;
   }
@@ -773,7 +775,7 @@ document.addEventListener("DOMContentLoaded", function () {
     { // Step 12 — Attention Scores
       title: "Attention Scores",
       body: "<p>Now we combine Q and K. Each cell (i,\u2009j) in the score matrix is the dot product of token i's query with token j's key: how well does what token i seeks match what token j advertises?</p><p>Scores are divided by \u221Ad<sub>head</sub> = 16 to keep gradients stable before softmax.</p><button class=\"attn-detail-toggle\" data-detail=\"step12\">Why this matters \u25B8</button><div class=\"attn-detail-content\" id=\"detail-step12\">This matrix is where the model decides relationships between words. Row i shows which tokens are relevant to updating token i's meaning. During training, Q and K are pressured to develop a matching protocol \u2014 if they don't, the dot products stay noisy and the model can't minimize its loss. This is why Q and K specialize into distinct \u201Cseeker\u201D and \u201Cdescriptor\u201D roles despite starting as identical random weights.</div>",
-      dims: "Q[8\u00D7256] \u00B7 K<sup>T</sup>[256\u00D78] = Scores[8\u00D78], scaled by \u00F7\u221A256"
+      dims: "Q[8\u00D7256] \u00B7 K<sup>T</sup>[256\u00D78] = Scores[8\u00D78]<br>scaled by \u00F7\u221A256"
     },
     { // Step 13 — Mask + Softmax
       title: "Mask + Softmax",
