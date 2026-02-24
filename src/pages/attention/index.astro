@@ -3195,6 +3195,7 @@ document.addEventListener("DOMContentLoaded", function () {
       miscLabels[8 + i].style.fontSize = "0.5rem";
       miscLabels[8 + i].style.fontWeight = "500";
       miscLabels[8 + i].style.textAlign = "right";
+      miscLabels[8 + i].style.width = "";
       miscLabels[8 + i].style.color = "var(--attn-text-muted)";
     }
 
@@ -3225,7 +3226,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var matH = T * (CELL_H + gap) - gap;
     var matX = (W - matW) / 2;
     // Push matrix down to make room for title + subtitle + keys label + token labels
-    var matY = (H - matH) / 2 + 30;
+    var matY = (H - matH) / 2 + 36;
 
     for (var r = 0; r < T; r++) {
       for (var c = 0; c < T; c++) {
@@ -3246,13 +3247,13 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // "Attention Scores" title centered above matrix
-    state[scoreLabel.id] = { x: matX + matW / 2 - 60, y: matY - 76, opacity: 1 };
+    state[scoreLabel.id] = { x: matX + matW / 2 - 60, y: matY - 82, opacity: 1 };
     scoreLabel.textContent = "Attention Scores";
     scoreLabel.style.fontSize = "1rem";
     scoreLabel.style.fontWeight = "600";
 
     // "Q · K^T / √d_head" subtitle below title
-    state[dimLabels[0].id] = { x: matX + matW / 2 - 46, y: matY - 58, opacity: 0.5 };
+    state[dimLabels[0].id] = { x: matX + matW / 2 - 46, y: matY - 64, opacity: 0.5 };
     dimLabels[0].innerHTML = "Q \u00B7 K<sup>T</sup> / \u221Ad<sub>head</sub>";
     dimLabels[0].style.fontSize = "0.7rem";
     dimLabels[0].style.writingMode = "";
@@ -3261,7 +3262,7 @@ document.addEventListener("DOMContentLoaded", function () {
     dimLabels[0].style.color = "var(--attn-text-muted)";
 
     // "Keys \u2192" indicator left-aligned with matrix, above column token labels
-    state[dimLabels[2].id] = { x: matX, y: matY - 36, opacity: 1 };
+    state[dimLabels[2].id] = { x: matX, y: matY - 42, opacity: 1 };
     dimLabels[2].innerHTML = "Keys \u2192";
     dimLabels[2].style.fontSize = "0.6rem";
     dimLabels[2].style.color = "var(--attn-orange)";
@@ -3270,7 +3271,7 @@ document.addEventListener("DOMContentLoaded", function () {
     for (var i = 0; i < T && i < 8; i++) {
       state[miscLabels[i].id] = {
         x: matX + i * (CELL_W + gap) + CELL_W / 2 - 12,
-        y: matY - 20,
+        y: matY - 26,
         opacity: 0.5
       };
       miscLabels[i].textContent = TOKENS[i].text;
@@ -3280,15 +3281,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // "Queries \u2193" indicator to the left of row token labels
-    state[dimLabels[1].id] = { x: matX - 95, y: matY - 14, opacity: 1 };
+    var rowLabelW = 36;
+    state[dimLabels[1].id] = { x: matX - rowLabelW - 18 - 30, y: matY - 14, opacity: 1 };
     dimLabels[1].innerHTML = "Queries \u2193";
     dimLabels[1].style.fontSize = "0.6rem";
     dimLabels[1].style.color = "var(--attn-blue)";
 
-    // Token labels along left side (rows = queries)
+    // Token labels along left side (rows = queries) — right-justified
     for (var i = 0; i < T && i < 8; i++) {
+      miscLabels[8 + i].style.width = rowLabelW + "px";
       state[miscLabels[8 + i].id] = {
-        x: matX - 40,
+        x: matX - rowLabelW - 18,
         y: matY + i * (CELL_H + gap) + CELL_H / 2 - 6,
         opacity: 0.5
       };
@@ -3318,7 +3321,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var matW = T * (cellW + gap) - gap;
     var matH = T * (cellH + gap) - gap;
     var matX = (W - matW) / 2;
-    var matY = (H - matH) / 2 + 30; // same offset as step 12
+    var matY = (H - matH) / 2 + 36; // same offset as step 12
 
     // Heatmap cells (same grid positions as scoreCells in step 12)
     for (var r = 0; r < T; r++) {
@@ -3346,13 +3349,13 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // Title: "Attention Weights" — same position as scoreLabel in step 12
-    state[attnLabel.id] = { x: matX + matW / 2 - 60, y: matY - 76, opacity: 1 };
+    state[attnLabel.id] = { x: matX + matW / 2 - 60, y: matY - 82, opacity: 1 };
     attnLabel.textContent = "Attention Weights";
     attnLabel.style.fontSize = "1rem";
     attnLabel.style.fontWeight = "600";
 
     // Subtitle: "mask + softmax(scores)" — same position as step 12's subtitle
-    state[dimLabels[0].id] = { x: matX + matW / 2 - 46, y: matY - 58, opacity: 0.5 };
+    state[dimLabels[0].id] = { x: matX + matW / 2 - 46, y: matY - 64, opacity: 0.5 };
     dimLabels[0].textContent = "mask + softmax(scores)";
     dimLabels[0].style.fontStyle = "italic";
     dimLabels[0].style.fontSize = "0.7rem";
@@ -3361,13 +3364,14 @@ document.addEventListener("DOMContentLoaded", function () {
     dimLabels[0].style.transform = "";
 
     // "Keys →" — same position as step 12
-    state[dimLabels[2].id] = { x: matX, y: matY - 36, opacity: 1 };
+    state[dimLabels[2].id] = { x: matX, y: matY - 42, opacity: 1 };
     dimLabels[2].innerHTML = "Keys \u2192";
     dimLabels[2].style.fontSize = "0.6rem";
     dimLabels[2].style.color = "var(--attn-orange)";
 
     // "Queries ↓" — same position as step 12
-    state[dimLabels[1].id] = { x: matX - 95, y: matY - 14, opacity: 1 };
+    var rowLabelW = 36;
+    state[dimLabels[1].id] = { x: matX - rowLabelW - 18 - 30, y: matY - 14, opacity: 1 };
     dimLabels[1].innerHTML = "Queries \u2193";
     dimLabels[1].style.fontSize = "0.6rem";
     dimLabels[1].style.color = "var(--attn-blue)";
@@ -3376,7 +3380,7 @@ document.addEventListener("DOMContentLoaded", function () {
     for (var i = 0; i < T; i++) {
       state[miscLabels[i].id] = {
         x: matX + i * (cellW + gap) + cellW / 2 - 12,
-        y: matY - 20,
+        y: matY - 26,
         opacity: 0.5
       };
       miscLabels[i].textContent = TOKENS[i].text;
@@ -3387,8 +3391,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Row token labels — same as step 12
     for (var i = 0; i < T; i++) {
+      miscLabels[8 + i].style.width = rowLabelW + "px";
       state[miscLabels[8 + i].id] = {
-        x: matX - 40,
+        x: matX - rowLabelW - 18,
         y: matY + i * (cellH + gap) + cellH / 2 - 6,
         opacity: 0.5
       };
