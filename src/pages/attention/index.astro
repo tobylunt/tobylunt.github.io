@@ -3253,12 +3253,13 @@ document.addEventListener("DOMContentLoaded", function () {
     scoreLabel.style.fontWeight = "600";
 
     // "Q · K^T / √d_head" subtitle below title
-    state[dimLabels[0].id] = { x: matX + matW / 2 - 46, y: matY - 64, opacity: 0.5 };
+    state[dimLabels[0].id] = { x: matX, y: matY - 64, w: matW, opacity: 0.5 };
     dimLabels[0].innerHTML = "Q \u00B7 K<sup>T</sup> / \u221Ad<sub>head</sub>";
     dimLabels[0].style.fontSize = "0.7rem";
     dimLabels[0].style.writingMode = "";
     dimLabels[0].style.transform = "";
     dimLabels[0].style.fontStyle = "italic";
+    dimLabels[0].style.textAlign = "center";
     dimLabels[0].style.color = "var(--attn-text-muted)";
 
     // "Keys \u2192" indicator left-aligned with matrix, above column token labels
@@ -3355,10 +3356,11 @@ document.addEventListener("DOMContentLoaded", function () {
     attnLabel.style.fontWeight = "600";
 
     // Subtitle: "mask + softmax(scores)" — same position as step 12's subtitle
-    state[dimLabels[0].id] = { x: matX + matW / 2 - 46, y: matY - 64, opacity: 0.5 };
+    state[dimLabels[0].id] = { x: matX, y: matY - 64, w: matW, opacity: 0.5 };
     dimLabels[0].textContent = "mask + softmax(scores)";
     dimLabels[0].style.fontStyle = "italic";
     dimLabels[0].style.fontSize = "0.7rem";
+    dimLabels[0].style.textAlign = "center";
     dimLabels[0].style.color = "var(--attn-text-muted)";
     dimLabels[0].style.writingMode = "";
     dimLabels[0].style.transform = "";
