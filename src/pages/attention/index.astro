@@ -464,38 +464,6 @@ import PageLayout from "@/layouts/Base.astro";
     white-space: nowrap;
   }
 
-  /* ═══ COLLAPSIBLE DETAIL NOTES ═══ */
-  .attn-ann-body :global(.attn-detail-toggle) {
-    display: inline-block;
-    background: none;
-    border: none;
-    color: var(--attn-text-muted);
-    font-size: 0.72rem;
-    font-family: var(--attn-sans);
-    cursor: pointer;
-    padding: 0.15rem 0;
-    opacity: 0.7;
-    transition: opacity 0.15s;
-  }
-
-  .attn-ann-body :global(.attn-detail-toggle:hover) {
-    opacity: 1;
-  }
-
-  .attn-ann-body :global(.attn-detail-content) {
-    display: none;
-    margin-top: 0.3rem;
-    padding-left: 0.5rem;
-    border-left: 2px solid var(--attn-border);
-    font-size: 0.75rem;
-    color: var(--attn-text-muted);
-    line-height: 1.5;
-  }
-
-  .attn-ann-body :global(.attn-detail-content.open) {
-    display: block;
-  }
-
   /* ═══ HEATMAP HOVER ═══ */
   :global(.attn-cell-hover) {
     outline: 2px solid var(--attn-text);
@@ -729,7 +697,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     { // Step 3
       title: "Token Embeddings",
-      body: "<p>Each token looks up a learned vector from the embedding table. These 1024-dimensional vectors place similar tokens near each other in a high-dimensional space.</p><p>\u22EF indicates the hundreds of values we can't show.</p><button class=\"attn-detail-toggle\" data-detail=\"step3\">Learn more \u25B8</button><div class=\"attn-detail-content\" id=\"detail-step3\">Embeddings are learned during training \u2014 one vector per token in the vocabulary. At inference time, this is simply a lookup table indexed by token ID.</div>",
+      body: "<p>Each token looks up a learned vector from the embedding table. These 1024-dimensional vectors place similar tokens near each other in a high-dimensional space.</p><p>\u22EF indicates the hundreds of values we can't show.</p><p>Embeddings are learned during training \u2014 one vector per token in the vocabulary. At inference time, this is simply a lookup table indexed by token ID.</p>",
       dims: "Each vector: d<sub>model</sub>&nbsp;= 1024"
     },
     { // Step 4
@@ -739,7 +707,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     { // Step 5
       title: "Combine: Emb + Pos",
-      body: "<p>Embedding and positional vectors are summed element-wise. The resulting green vector carries both the token's meaning and its position.</p><button class=\"attn-detail-toggle\" data-detail=\"step5\">Learn more \u25B8</button><div class=\"attn-detail-content\" id=\"detail-step5\">Addition is the simplest combination method. Some architectures use concatenation or learned gating \u2014 the key idea is that the model can learn to weight both signals.</div>",
+      body: "<p>Embedding and positional vectors are summed element-wise. The resulting green vector carries both the token's meaning and its position.</p><p>Addition is the simplest combination method. Some architectures use concatenation or learned gating \u2014 the key idea is that the model can learn to weight both signals.</p>",
       dims: "emb[d<sub>model</sub>] + pos[d<sub>model</sub>] \u2192 combined[d<sub>model</sub>]"
     },
     { // Step 6
@@ -749,7 +717,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     { // Step 7
       title: "Weight Matrices",
-      body: "<p>Three learned matrices project <i>X</i> into different roles: <i>W</i><sub>Q</sub> (queries), <i>W</i><sub>K</sub> (keys), and <i>W</i><sub>V</sub> (values). Notice the shape: each is <i>[d<sub>model</sub> \u00D7 d<sub>head</sub>]</i> \u2014 they compress the 1024-dimensional input down to 256 dimensions per head.</p><button class=\"attn-detail-toggle\" data-detail=\"step7\">Why three separate matrices? \u25B8</button><div class=\"attn-detail-content\" id=\"detail-step7\">Three separate projections let the model build <em>directed</em> relationships. If queries and keys shared a single matrix, the attention pattern would be symmetric \u2014 token A attending to B would force B to attend equally to A. Language doesn't work that way: a verb needs its object, but the object doesn't necessarily need the verb.</div>",
+      body: "<p>Three learned matrices project <i>X</i> into different roles: <i>W</i><sub>Q</sub> (queries), <i>W</i><sub>K</sub> (keys), and <i>W</i><sub>V</sub> (values). Notice the shape: each is <i>[d<sub>model</sub> \u00D7 d<sub>head</sub>]</i> \u2014 they compress the 1024-dimensional input down to 256 dimensions per head.</p><p>Three separate projections let the model build <em>directed</em> relationships. If queries and keys shared a single matrix, the attention pattern would be symmetric \u2014 token A attending to B would force B to attend equally to A. Language doesn't work that way: a verb needs its object, but the object doesn't necessarily need the verb.</p>",
       dims: "<i>W</i><sub>Q</sub>, <i>W</i><sub>K</sub>, <i>W</i><sub>V</sub>: [1024 \u00D7 256]"
     },
     { // Step 8
@@ -774,12 +742,12 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     { // Step 12 — Attention Scores
       title: "Attention Scores",
-      body: "<p>Now we combine <i>Q</i> and <i>K</i>. Each cell (i,\u2009j) in the score matrix is the dot product of token i's query with token j's key: how well does what token i seeks match what token j advertises?</p><p>Scores are divided by \u221A<i>d</i><sub>head</sub> = 16 to keep gradients stable before softmax.</p><button class=\"attn-detail-toggle\" data-detail=\"step12\">Why this matters \u25B8</button><div class=\"attn-detail-content\" id=\"detail-step12\">This matrix is where the model decides relationships between words. Row i shows which tokens are relevant to updating token i's meaning. During training, <i>Q</i> and <i>K</i> are pressured to develop a matching protocol \u2014 if they don't, the dot products stay noisy and the model can't minimize its loss. This is why <i>Q</i> and <i>K</i> specialize into distinct \u201Cseeker\u201D and \u201Cdescriptor\u201D roles despite starting as identical random weights.</div>",
+      body: "<p>Now we combine <i>Q</i> and <i>K</i>. Each cell (i,\u2009j) in the score matrix is the dot product of token i's query with token j's key: how well does what token i seeks match what token j advertises?</p><p>Scores are divided by \u221A<i>d</i><sub>head</sub> = 16 to keep gradients stable before softmax.</p><p>This matrix is where the model decides relationships between words. Row i shows which tokens are relevant to updating token i's meaning. During training, <i>Q</i> and <i>K</i> are pressured to develop a matching protocol \u2014 if they don't, the dot products stay noisy and the model can't minimize its loss. This is why <i>Q</i> and <i>K</i> specialize into distinct \u201Cseeker\u201D and \u201Cdescriptor\u201D roles despite starting as identical random weights.</p>",
       dims: "Q[8\u00D7256] \u00B7 K<sup>T</sup>[256\u00D78] = Scores[8\u00D78]<br>scaled by \u00F7\u221A256"
     },
     { // Step 13 — Mask + Softmax
       title: "Mask + Softmax",
-      body: "<p>Before computing attention weights, a <em>causal mask</em> sets all future positions to \u2212\u221E. Each token can only attend to itself and past tokens \u2014 never to tokens that haven't been generated yet.</p><p>Softmax then converts each row into a probability distribution (rows sum to 1). The \u2212\u221E entries become exactly 0, while the remaining scores are rescaled into probabilities.</p><button class=\"attn-detail-toggle\" data-detail=\"step13\">Why mask before softmax? \u25B8</button><div class=\"attn-detail-content\" id=\"detail-step13\">The causal mask is essential for autoregressive generation: each token must predict the next word using only past context. But it also shapes <em>how</em> <i>Q</i> and <i>K</i> specialize during training. Because attention can only flow backward, queries learn to seek information from earlier tokens and keys learn to advertise what they contain \u2014 creating the directed seeker/descriptor roles that make attention so effective.</div>",
+      body: "<p>Before computing attention weights, a <em>causal mask</em> sets all future positions to \u2212\u221E. Each token can only attend to itself and past tokens \u2014 never to tokens that haven't been generated yet.</p><p>Softmax then converts each row into a probability distribution (rows sum to 1). The \u2212\u221E entries become exactly 0, while the remaining scores are rescaled into probabilities.</p><p>The causal mask is essential for autoregressive generation: each token must predict the next word using only past context. But it also shapes <em>how</em> <i>Q</i> and <i>K</i> specialize during training. Because attention can only flow backward, queries learn to seek information from earlier tokens and keys learn to advertise what they contain \u2014 creating the directed seeker/descriptor roles that make attention so effective.</p>",
       dims: "Scores[8\u00D78] \u2192 mask \u2192 softmax \u2192 Attn[8\u00D78]"
     },
     { // Step 14 — Multi-Head Patterns
@@ -4660,19 +4628,6 @@ document.addEventListener("DOMContentLoaded", function () {
     annDims.innerHTML = d.dims;
     counterEl.textContent = "Step " + step + " / " + TOTAL_STEPS;
 
-    // Wire up detail toggles
-    var toggles = annBody.querySelectorAll(".attn-detail-toggle");
-    toggles.forEach(function (btn) {
-      var closedText = btn.textContent; // preserve original label
-      btn.addEventListener("click", function () {
-        var detailId = "detail-" + btn.getAttribute("data-detail");
-        var content = document.getElementById(detailId);
-        if (content) {
-          var isOpen = content.classList.toggle("open");
-          btn.textContent = isOpen ? "Less \u25BE" : closedText;
-        }
-      });
-    });
   }
 
   function updateButtons() {
