@@ -683,99 +683,99 @@ document.addEventListener("DOMContentLoaded", function () {
     [0.05, 0.05, 0.50, 0.05, 0.05, 0.05, 0.10, 0.15]
   ];
 
-  // ═══ STEP ANNOTATION DATA ═══
-  var STEP_DATA = [
-    { // Step 1
-      title: "The Prediction Task",
-      body: "<p>A language model reads a sentence and predicts what comes next. Given the words so far, what word fills the blank?</p><p>The model must figure out which earlier words matter most for this prediction. That's what attention does.</p>",
-      dims: ""
-    },
-    { // Step 2
-      title: "Tokenization",
-      body: "<p>The sentence is split into <em>tokens</em> \u2014 the model's atomic units. Most words become a single token, but less common words like \"quietly\" are split into subword pieces.</p>",
-      dims: "T = 8 tokens"
-    },
-    { // Step 3
-      title: "Token Embeddings",
-      body: "<p>Each token looks up a learned vector from the embedding table. These 1024-dimensional vectors place similar tokens near each other in a high-dimensional space.</p><p>\u22EF indicates the hundreds of values we can't show.</p><p>Embeddings are learned during training \u2014 one vector per token in the vocabulary. At inference time, this is simply a lookup table indexed by token ID.</p>",
-      dims: "Each vector: d<sub>model</sub>&nbsp;= 1024"
-    },
-    { // Step 4
-      title: "Positional Encoding",
-      body: "<p>Attention has no built-in sense of word order. Positional encodings (gold) give the model information about where each token sits in the sequence.</p>",
-      dims: "Each position vector: d<sub>model</sub>&nbsp;= 1024"
-    },
-    { // Step 5
-      title: "Combine: Emb + Pos",
-      body: "<p>Embedding and positional vectors are summed element-wise. The resulting green vector carries both the token's meaning and its position.</p><p>Addition is the simplest combination method. Some architectures use concatenation or learned gating \u2014 the key idea is that the model can learn to weight both signals.</p>",
-      dims: "emb[d<sub>model</sub>] + pos[d<sub>model</sub>] \u2192 combined[d<sub>model</sub>]"
-    },
-    { // Step 6
-      title: "Input Matrix + LayerNorm",
-      body: "<p>The 8 token vectors stack into a matrix <i>X</i> with one row per token. Each row is then normalized (mean 0, variance 1) to stabilize training.</p><p>This normalized matrix is the input to the attention head.</p>",
-      dims: "X: [T \u00D7 d<sub>model</sub>] = [8 \u00D7 1024]"
-    },
-    { // Step 7
-      title: "Weight Matrices",
-      body: "<p>Three learned matrices project <i>X</i> into different roles: <i>W</i><sub>Q</sub> (queries), <i>W</i><sub>K</sub> (keys), and <i>W</i><sub>V</sub> (values). Notice the shape: each is <i>[d<sub>model</sub> \u00D7 d<sub>head</sub>]</i> \u2014 they compress the 1024-dimensional input down to 256 dimensions per head.</p><p>Three separate projections let the model build <em>directed</em> relationships. If queries and keys shared a single matrix, the attention pattern would be symmetric \u2014 token A attending to B would force B to attend equally to A. Language doesn't work that way: a verb needs its object, but the object doesn't necessarily need the verb.</p>",
-      dims: "<i>W</i><sub>Q</sub>, <i>W</i><sub>K</sub>, <i>W</i><sub>V</sub>: [1024 \u00D7 256]"
-    },
-    { // Step 8
-      title: "The d_head Dimension",
-      body: "<p>The full <i>d</i><sub>model</sub>&nbsp;= 1024 is split across 4 parallel attention heads, each working with <i>d</i><sub>head</sub>&nbsp;= 256 dimensions. Each head independently computes its own attention output \u2014 a <i>[T \u00D7 256]</i> matrix. Afterward, the 4 outputs are concatenated back into a single <i>[T \u00D7 1024]</i> matrix, recovering the original <i>d</i><sub>model</sub> width.</p><p style=\"margin-top:0.5em\">This diagram follows Head 1's computation. All 4 heads run simultaneously on different learned projections.</p>",
-      dims: "d<sub>model</sub> (1024) \u00F7 n<sub>heads</sub> (4) = d<sub>head</sub> (256)"
-    },
-    { // Step 9
-      title: "Query Matrix",
-      body: "<p><i>X \u00B7 W<sub>Q</sub> = Q</i>. Each row of <i>Q</i> becomes a token's <em>question</em> \u2014 \u201Cwhat information do I need?\u201D <i>Q</i> vectors form the <b>rows</b> of the attention matrix, so each query determines what its token pays attention to.</p><p>Think of it as a recruiter's checklist \u2014 the query encodes what this token is searching for in other tokens.</p>",
-      dims: "X[8\u00D71024] \u00B7 <i>W</i><sub>Q</sub>[1024\u00D7256] = Q[8\u00D7256]"
-    },
-    { // Step 10 — Key Matrix
-      title: "Key Matrix",
-      body: "<p><i>X \u00B7 W<sub>K</sub> = K</i>. Same multiplication, different learned weights. Each row of <i>K</i> is a token's <em>advertisement</em> \u2014 \u201Chere's what I contain.\u201D <i>K</i> vectors form the <b>columns</b> of the attention matrix, making them what gets searched against.</p><p>Notice <i>Q</i> is saved at the top-right \u2014 we'll need it soon when computing attention scores.</p>",
-      dims: "X[8\u00D71024] \u00B7 <i>W</i><sub>K</sub>[1024\u00D7256] = K[8\u00D7256]"
-    },
-    { // Step 11 — Q · K^T Setup
-      title: "Q \u00B7 K\u1D40 Setup",
-      body: "<p>To compute attention scores, we need <i>Q \u00B7 K\u1D40</i>. The key matrix <i>K</i> is <em>transposed</em> so its token dimension aligns for dot products: each query row in <i>Q</i> will be multiplied against each key column in <i>K\u1D40</i>.</p><p>The inner dimensions (<i>d</i><sub>head</sub> = 256) match, producing an <i>[8\u00D78]</i> score matrix \u2014 one score for every query-key pair.</p>",
-      dims: "Q[8\u00D7256] \u00B7 K<sup>T</sup>[256\u00D78]"
-    },
-    { // Step 12 — Attention Scores
-      title: "Attention Scores",
-      body: "<p>Now we combine <i>Q</i> and <i>K</i>. Each cell (i,\u2009j) in the score matrix is the dot product of token i's query with token j's key: how well does what token i seeks match what token j advertises?</p><p>Scores are divided by \u221A<i>d</i><sub>head</sub> = 16 to keep gradients stable before softmax.</p><p>This matrix is where the model decides relationships between words. Row i shows which tokens are relevant to updating token i's meaning. During training, <i>Q</i> and <i>K</i> are pressured to develop a matching protocol \u2014 if they don't, the dot products stay noisy and the model can't minimize its loss. This is why <i>Q</i> and <i>K</i> specialize into distinct \u201Cseeker\u201D and \u201Cdescriptor\u201D roles despite starting as identical random weights.</p>",
-      dims: "Q[8\u00D7256] \u00B7 K<sup>T</sup>[256\u00D78] = Scores[8\u00D78]<br>scaled by \u00F7\u221A256"
-    },
-    { // Step 13 — Mask + Softmax
-      title: "Mask + Softmax",
-      body: "<p>Before computing attention weights, a <em>causal mask</em> sets all future positions to \u2212\u221E. Each token can only attend to itself and past tokens \u2014 never to tokens that haven't been generated yet.</p><p>Softmax then converts each row into a probability distribution (rows sum to 1). The \u2212\u221E entries become exactly 0, while the remaining scores are rescaled into probabilities.</p><p>The causal mask is essential for autoregressive generation: each token must predict the next word using only past context. But it also shapes <em>how</em> <i>Q</i> and <i>K</i> specialize during training. Because attention can only flow backward, queries learn to seek information from earlier tokens and keys learn to advertise what they contain \u2014 creating the directed seeker/descriptor roles that make attention so effective.</p>",
-      dims: "Scores[8\u00D78] \u2192 mask \u2192 softmax \u2192 Attn[8\u00D78]"
-    },
-    { // Step 14 — Multi-Head Patterns
-      title: "Multi-Head Patterns",
-      body: "<p>Different heads learn different attention patterns. A <em>previous-token</em> head (left) attends to the immediately preceding token \u2014 useful for copying and induction. A <em>content</em> head (center) matches related words. A <em>syntactic</em> head (right) links nouns to their modifying adjectives.</p><p>Because each head has its own <i>W</i><sub>Q</sub>, <i>W</i><sub>K</sub>, <i>W</i><sub>V</sub>, they independently specialize. This is why transformers use multiple heads per layer.</p>",
-      dims: "4 heads \u00D7 [8 \u00D7 256] each"
-    },
-    { // Step 15 — Value Matrix
-      title: "Value Matrix",
-      body: "<p><i>X \u00B7 W<sub>V</sub> = V</i>. Each row of <i>V</i> carries the token's <em>payload</em> \u2014 the actual information it contributes if attended to. Same matrix shape, different learned weights.</p><p>If <i>Q</i> is the recruiter's checklist and <i>K</i> is the applicant's name tag, <i>V</i> is the r\u00E9sum\u00E9 \u2014 the content that gets delivered once a match is found.</p>",
-      dims: "X[8\u00D71024] \u00B7 <i>W</i><sub>V</sub>[1024\u00D7256] = V[8\u00D7256]"
-    },
-    { // Step 16 — Value Weighting
-      title: "Value Weighting",
-      body: "<p>The attention weights select how much each token contributes. Multiplying <i>Attn · V</i> produces one head’s output — a weighted blend of value vectors.</p><p>Each row of the output is a mixture of all value rows, weighted by that token’s attention distribution. <i>Row i = Σ(attn[i,j] · V[j])</i>.</p>",
-      dims: "Attn[8×8] · V[8×256] = Head₁[8×256]"
-    },
-    { // Step 17 — Head Concatenation
-      title: "Head Concatenation",
-      body: "<p>Each of the 4 attention heads independently computes a <i>[T × d<sub>head</sub>]</i> output using its own learned <i>W</i><sub>Q</sub>, <i>W</i><sub>K</sub>, <i>W</i><sub>V</sub>. These outputs are concatenated column-wise to restore the full <i>d</i><sub>model</sub> width.</p><p>This is why multi-head attention works: each head can specialize in different relationships (positional, syntactic, semantic) and their outputs combine into a richer representation.</p>",
-      dims: "4 × [8×256] → concat → [8×1024]"
-    },
-    { // Step 18 — Residual Stream
-      title: "Residual Stream",
-      body: "<p>The concatenated multi-head output is added back to the original input <i>X</i> via a residual connection — this ensures information flows even if the heads learn nothing useful.</p><p>This produces the final <i>[T × d<sub>model</sub>]</i> output of the attention layer, ready for the feed-forward network that follows.</p>",
-      dims: "X[8×1024] + MHA(X)[8×1024] → [8×1024]"
-    }
-  ];
+     // ═══ STEP ANNOTATION DATA ═══
+     var STEP_DATA = [
+         { // Step 1
+             title: "The Prediction Task",
+           body: "<p>A language model reads a sentence and predicts what comes next. Given the words so far, what word fills the blank?</p><p>The model must figure out which earlier words matter most for this prediction. That's what attention does.</p>",
+           dims: ""
+         },
+         { // Step 2
+             title: "Tokenization",
+           body: "<p>The sentence is split into <em>tokens</em> \u2014 the model's atomic units. Most words become a single token, but less common words like \"quietly\" are split into subword pieces.</p>",
+           dims: "T = 8 tokens"
+         },
+         { // Step 3
+             title: "Token Embeddings",
+           body: "<p>Each token looks up a learned vector from the embedding table. These 1024-dimensional vectors place similar tokens near each other in a high-dimensional space.</p><p>\u22EF indicates the hundreds of values we can't show.</p><p>Embeddings are learned during training \u2014 one vector per token in the vocabulary. At inference time, this is simply a lookup table indexed by token ID.</p>",
+           dims: "Each vector: d<sub>model</sub>&nbsp;= 1024"
+         },
+         { // Step 4
+             title: "Positional Encoding",
+           body: "<p>Attention has no built-in sense of word order. Positional encodings (gold) give the model information about where each token sits in the sequence.</p>",
+           dims: "Each position vector: d<sub>model</sub>&nbsp;= 1024"
+         },
+         { // Step 5
+             title: "Combine: Emb + Pos",
+           body: "<p>Embedding and positional vectors are summed element-wise. The resulting green vector carries both the token's meaning and its position.</p><p>Addition is the simplest combination method. Some architectures use concatenation or learned gating \u2014 the key idea is that the model can learn to weight both signals in a flexible manner, rather than baking in relative importance in ex ante in the model architecture.</p>",
+           dims: "emb[d<sub>model</sub>] + pos[d<sub>model</sub>] \u2192 combined[d<sub>model</sub>]"
+         },
+         { // Step 6
+             title: "Input Matrix + LayerNorm",
+           body: "<p>The 8 token vectors stack into a matrix <i>X</i> with one row per token. Each row is then normalized (mean 0, variance 1) to stabilize training.</p><p>This normalized matrix is the input to the attention head.</p>",
+           dims: "X: [T \u00D7 d<sub>model</sub>] = [8 \u00D7 1024]"
+         },
+         { // Step 7
+             title: "Weight Matrices",
+           body: "<p>Three learned matrices project <i>X</i> into different roles: <i>W</i><sub>Q</sub> (queries), <i>W</i><sub>K</sub> (keys), and <i>W</i><sub>V</sub> (values). Notice the shape: each is <i>[d<sub>model</sub> \u00D7 d<sub>head</sub>]</i> \u2014 they compress the 1024-dimensional input down to 256 dimensions per head.</p><p>Three separate projections let the model build <em>directed</em> relationships. If queries and keys shared a single matrix, the attention pattern would be symmetric \u2014 token A attending to B would force B to attend equally to A. Language doesn't work that way: a verb needs its object, but the object doesn't necessarily need the verb.</p>",
+           dims: "<i>W</i><sub>Q</sub>, <i>W</i><sub>K</sub>, <i>W</i><sub>V</sub>: [1024 \u00D7 256]"
+         },
+         { // Step 8
+             title: "The d_head Dimension",
+           body: "<p>These components constitute an individual attention head. In real transformers, the full <i>d</i><sub>model</sub>&nbsp; (1024 dimensions in this toy example) is split across many attention heads, but for this diagram, we'll show 4 heads each working with <i>d</i><sub>head</sub>&nbsp;= 256 dimensions. Each head independently computes its own attention output \u2014 a <i>[T \u00D7 256]</i> matrix. Afterward, the 4 outputs are concatenated back into a single <i>[T \u00D7 1024]</i> matrix, recovering the original <i>d</i><sub>model</sub> width.</p><p style=\"margin-top:0.5em\">This diagram follows Head 1's computation. All 4 heads run simultaneously on different learned projections and are concatenated to form the final output.</p>",
+           dims: "d<sub>model</sub> (1024) \u00F7 n<sub>heads</sub> (4) = d<sub>head</sub> (256)"
+         },
+         { // Step 9
+             title: "Query Matrix",
+           body: "<p>So what do we do with the query, key, and value weights? Dot products. Let's start with queries.</p><p><i>X \u00B7 W<sub>Q</sub> = Q</i>. Each row of <i>Q</i> becomes a token's <em>question</em> \u2014 \u201Cwhat information do I need?\u201D <i>Q</i> vectors form the <b>rows</b> of the attention matrix, so each query determines what its token pays attention to.</p><p>Think of it as if the query is encoding what this token is searching for in other tokens.</p>",
+           dims: "X[8\u00D71024] \u00B7 <i>W</i><sub>Q</sub>[1024\u00D7256] = Q[8\u00D7256]"
+         },
+         { // Step 10 — Key Matrix
+             title: "Key Matrix",
+           body: "<p><i>X \u00B7 W<sub>K</sub> = K</i>. Same multiplication, different learned weights. Each row of <i>K</i> is a token's <em>advertisement</em> \u2014 \u201Chere's what I contain.\u201D <i>K</i> vectors form the <b>columns</b> of the attention matrix, making them what gets searched against.</p><p>Notice <i>Q</i> is saved at the top-right \u2014 we'll need it soon when computing attention scores.</p>",
+           dims: "X[8\u00D71024] \u00B7 <i>W</i><sub>K</sub>[1024\u00D7256] = K[8\u00D7256]"
+         },
+         { // Step 11 — Q · K^T Setup
+             title: "Q \u00B7 K\u1D40 Setup",
+           body: "<p>To compute attention scores, we need <i>Q \u00B7 K\u1D40</i>. The key matrix <i>K</i> is <em>transposed</em> so its token dimension aligns for dot products: each query row in <i>Q</i> will be multiplied against each key column in <i>K\u1D40</i>.</p><p>The inner dimensions (<i>d</i><sub>head</sub> = 256) match, producing an <i>[8\u00D78]</i> score matrix \u2014 one score for every query-key pair \u2014 which will give us a nice matrix of which tokens <i>attend to</i> which others.</p>",
+           dims: "Q[8\u00D7256] \u00B7 K<sup>T</sup>[256\u00D78]"
+         },
+         { // Step 12 — Attention Scores
+             title: "Attention Scores",
+           body: "<p>Now we combine <i>Q</i> and <i>K</i>. Each cell (i,\u2009j) in the score matrix is the dot product of token i's query with token j's key: how well does what token i seeks match what token j advertises?</p><p>Scores are divided by \u221A<i>d</i><sub>head</sub> = 16 to keep gradients stable before softmax.</p><p>This matrix is where the model decides relationships between words. Row i shows which tokens are relevant to updating token i's meaning. During training, <i>Q</i> and <i>K</i> are pressured to develop a matching protocol \u2014 if they don't, the dot products stay noisy and the model can't minimize its loss. This is why <i>Q</i> and <i>K</i> specialize into distinct \u201Cseeker\u201D and \u201Cdescriptor\u201D roles despite starting as identical random weights.</p>",
+           dims: "Q[8\u00D7256] \u00B7 K<sup>T</sup>[256\u00D78] = Scores[8\u00D78]<br>scaled by \u00F7\u221A256"
+         },
+         { // Step 13 — Mask + Softmax
+             title: "Mask + Softmax",
+           body: "<p>Before computing attention weights, a <em>causal mask</em> sets all future positions to \u2212\u221E. Each token can only attend to itself and past tokens in the sequence \u2014 never to tokens that come after it in the sentence.</p><p>Softmax then converts each row into a probability distribution (rows sum to 1). The \u2212\u221E entries become exactly 0, while the remaining scores are rescaled into probabilities.</p><p>The causal mask is essential for autoregressive generation: each token must predict the next word using only past context. But it also shapes <em>how</em> <i>Q</i> and <i>K</i> specialize during training. Because attention can only flow backward, queries learn to seek information from earlier tokens and keys learn to advertise what they contain \u2014 creating the directed seeker/descriptor roles that make attention so effective.</p>",
+           dims: "Scores[8\u00D78] \u2192 mask \u2192 softmax \u2192 Attn[8\u00D78]"
+         },
+         { // Step 14 — Multi-Head Patterns
+             title: "Multi-Head Patterns",
+           body: "<p>Different heads learn different attention patterns. A <em>previous-token</em> head (left) attends to the immediately preceding token \u2014 useful for copying and induction. A <em>content</em> head (center) matches related words. A <em>syntactic</em> head (right) links nouns to their modifying adjectives.</p><p>Because each head has its own <i>W</i><sub>Q</sub>, <i>W</i><sub>K</sub>, <i>W</i><sub>V</sub>, they independently specialize. This is why transformers use many heads per layer. Not all attention heads are as easy to interpret as these!</p>",
+           dims: "4 heads \u00D7 [8 \u00D7 256] each"
+         },
+         { // Step 15 — Value Matrix
+             title: "Value Matrix",
+           body: "<p><i>X \u00B7 W<sub>V</sub> = V</i>. Each row of <i>V</i> carries the token's <em>payload</em> \u2014 the actual information it contributes if attended to. Same matrix shape, different learned weights.</p><p>If <i>Q</i> is the recruiter's checklist and <i>K</i> is the applicant's name tag, <i>V</i> is the r\u00E9sum\u00E9 \u2014 the content that gets delivered once a match is found.</p>",
+           dims: "X[8\u00D71024] \u00B7 <i>W</i><sub>V</sub>[1024\u00D7256] = V[8\u00D7256]"
+         },
+         { // Step 16 — Value Weighting
+             title: "Value Weighting",
+           body: "<p>The last step is to combine the attention weights and the value matrix (the token embeddings payload). The attention weights essentially select how much each token contributes. Multiplying <i>Attn · V</i> produces one head’s output — a weighted blend of value vectors.</p><p>Each row of the output is a mixture of all value rows, weighted by that token’s attention distribution. <i>Row i = Σ(attn[i,j] · V[j])</i>.</p>",
+           dims: "Attn[8×8] · V[8×256] = Head₁[8×256]"
+         },
+         { // Step 17 — Head Concatenation
+             title: "Head Concatenation",
+           body: "<p>Each of the 4 attention heads independently computes a <i>[T × d<sub>head</sub>]</i> output using its own learned <i>W</i><sub>Q</sub>, <i>W</i><sub>K</sub>, <i>W</i><sub>V</sub>. These outputs are concatenated column-wise to restore the full <i>d</i><sub>model</sub> width.</p><p>This is why multi-head attention works: each head can specialize in different relationships (positional, syntactic, semantic) and their outputs combine into a richer representation.</p>",
+           dims: "4 × [8×256] → concat → [8×1024]"
+         },
+         { // Step 18 — Residual Stream
+             title: "Residual Stream",
+           body: "<p>The concatenated multi-head output is added back to the original input <i>X</i> via a residual connection — this ensures information flows even if the heads learn nothing useful.</p><p>This produces the final <i>[T × d<sub>model</sub>]</i> output of the attention layer, ready for the feed-forward network that follows.</p>",
+           dims: "X[8×1024] + MHA(X)[8×1024] → [8×1024]"
+         }
+     ];
 
   var TOTAL_STEPS = 18;
   var currentStep = 1;
@@ -1033,7 +1033,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Q, K, V result matrices (T x D_HEAD)
     qCells = makeMatCells("q", T, D_HEAD, { ellipsisCol: Math.floor(D_HEAD / 2) });
     kCells = makeMatCells("k", T, D_HEAD, { ellipsisCol: Math.floor(D_HEAD / 2) });
-    vCells = makeMatCells("v", T, D_HEAD, { ellipsisCol: Math.floor(D_HEAD / 2) });
+    vCells = makeMatCells("v", T, D_HEAD, { ellipsisCol: Math.floor(D_HEAD / 2), ellipsisRow: -1 });
 
     qLabel = el("div", "attn-el attn-math-label", "Q");
     qLabel.id = "attn-q-label";
@@ -1133,7 +1133,7 @@ document.addEventListener("DOMContentLoaded", function () {
     viz.appendChild(altBracket);
 
     // Output cells (T x D_HEAD)
-    outCells = makeMatCells("out", T, D_HEAD, { ellipsisCol: Math.floor(D_HEAD / 2) });
+    outCells = makeMatCells("out", T, D_HEAD, { ellipsisCol: Math.floor(D_HEAD / 2), ellipsisRow: -1 });
     outLabel = el("div", "attn-el attn-math-label", "Output");
     outLabel.id = "attn-out-label";
     outLabel.style.color = "var(--attn-head-gold)";
@@ -3922,6 +3922,21 @@ document.addEventListener("DOMContentLoaded", function () {
     // Relabel "Output" → "Head₁"
     outLabel.innerHTML = "Head<sub>1</sub>";
     state[outLabel.id] = { x: oX + oMatW / 2 - 16, y: oY - 26, opacity: 1 };
+
+    // Token labels on right of Head₁ rows — miscLabels[34..41]
+    for (var t = 0; t < T; t++) {
+      var hlbl = miscLabels[34 + t];
+      hlbl.textContent = TOKENS[t].text;
+      hlbl.style.fontSize = "0.5rem";
+      hlbl.style.fontWeight = "500";
+      hlbl.style.textAlign = "left";
+      hlbl.style.color = "var(--attn-text-muted)";
+      state[hlbl.id] = {
+        x: oX + oMatW + 8,
+        y: oY + t * (CELL_H + gap) + CELL_H / 2 - 6,
+        opacity: 0.5
+      };
+    }
 
     // ── Dimension labels below each matrix ──
     var dimStyle = function (lb) {
