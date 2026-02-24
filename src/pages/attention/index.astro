@@ -722,7 +722,7 @@ document.addEventListener("DOMContentLoaded", function () {
          },
          { // Step 8
              title: "The d_head Dimension",
-           body: "<p>These components make up an individual attention head. In real transformers, the full <i>d</i><sub>model</sub> is split across many heads (Llama 3 uses 32\u2013128). For this diagram, we use 4 heads each working with <i>d</i><sub>head</sub>&nbsp;= 256 dimensions. Each head independently computes its own attention output \u2014 a <i>[T \u00D7 256]</i> matrix. Afterward, the 4 outputs are concatenated back into a single <i>[T \u00D7 1024]</i> matrix, recovering the original <i>d</i><sub>model</sub> width.</p><p style=\"margin-top:0.5em\">This diagram follows Head\u2009\u20091's computation. All 4 heads run simultaneously on different learned projections.</p>",
+           body: "<p>These components make up an individual attention head. In real transformers, the full <i>d</i><sub>model</sub> is split across many heads (Llama 3 uses 32\u2013128 depending on model size). For this diagram, we use 4 heads each working with <i>d</i><sub>head</sub>&nbsp;= 256 dimensions. Each head independently computes its own attention output \u2014 a <i>[T \u00D7 256]</i> matrix. Afterward, the 4 outputs are concatenated back into a single <i>[T \u00D7 1024]</i> matrix, recovering the original <i>d</i><sub>model</sub> width.</p><p style=\"margin-top:0.5em\">This diagram follows Head\u2009\u20091's computation. All 4 heads run simultaneously on different learned projections.</p>",
            dims: "d<sub>model</sub> (1024) \u00F7 n<sub>heads</sub> (4) = d<sub>head</sub> (256)"
          },
          { // Step 9
