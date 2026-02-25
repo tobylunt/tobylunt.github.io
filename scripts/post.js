@@ -193,7 +193,7 @@ function processVideos(files, sourceDir, slug, startCounter) {
     counter++;
   }
 
-  return { mediaUsage, count: files.length };
+  return { mediaUsage, count: counter - startCounter };
 }
 
 async function createPost(slug, sourceDir, imgDir) {
@@ -203,8 +203,8 @@ async function createPost(slug, sourceDir, imgDir) {
   console.log(`  Created image directory: ${imgDir}`);
 
   const allFiles = fs.readdirSync(sourceDir);
-  const imageFiles = allFiles.filter((f) => IMAGE_EXTS.includes(path.extname(f).toLowerCase()));
-  const videoFiles = allFiles.filter((f) => VIDEO_EXTS.includes(path.extname(f).toLowerCase()));
+  const imageFiles = allFiles.filter((f) => IMAGE_EXTS.includes(path.extname(f).toLowerCase())).sort();
+  const videoFiles = allFiles.filter((f) => VIDEO_EXTS.includes(path.extname(f).toLowerCase())).sort();
 
   if (imageFiles.length === 0 && videoFiles.length === 0) {
     console.warn("\n⚠️  No image or video files found in source directory");
@@ -216,41 +216,47 @@ async function createPost(slug, sourceDir, imgDir) {
   const postPath = path.join("src", "content", "post", `${slug}.mdx`);
   const postDate = new Date().toISOString().split("T")[0];
 
-  let content = `---
+  try {
+    let content = `---
 title: "${slug.replace(/-/g, " ")}"
 description: "This is a placeholder description that meets the minimum length requirement. Please replace with actual content."
 publishDate: "${postDate}"
 tags: ["ariadne"]
 draft: true
 ---
-import { Image } from 'astro:assets';
-import CaptionedImage from '../../components/CaptionedImage.astro';\n`;
+import CaptionedImage from '@/components/CaptionedImage.astro';\n`;
 
-  if (hasVideos) {
-    content += `import BlogVideo from '../../components/BlogVideo.astro';\n`;
+    if (hasVideos) {
+      content += `import BlogVideo from '@/components/BlogVideo.astro';\n`;
+    }
+
+    // Process images
+    const imgResult = await processImages(imageFiles, sourceDir, imgDir, slug, 1);
+    content += "\n" + imgResult.importStatements + imgResult.mediaUsage;
+
+    // Process videos
+    if (hasVideos) {
+      if (!checkFfmpeg()) process.exit(1);
+      const vidResult = processVideos(videoFiles, sourceDir, slug, 1);
+      content += vidResult.mediaUsage;
+      console.log(`  ✅ Processed ${vidResult.count} videos`);
+    }
+
+    fs.writeFileSync(postPath, content);
+    console.log(`  ✅ Created post: ${postPath}`);
+    console.log(`  ✅ Processed ${imgResult.count} images`);
+    console.log("\n🎉 Post created!");
+    console.log("\nNext steps:");
+    console.log("  1. Update the description (50-160 chars)");
+    console.log("  2. Add alt text for each image");
+    console.log("  3. Write your post content");
+    console.log("  4. Preview with: pnpm dev\n");
+  } catch (err) {
+    // Clean up partially-created artifacts
+    if (fs.existsSync(postPath)) fs.rmSync(postPath);
+    if (fs.existsSync(imgDir)) fs.rmSync(imgDir, { recursive: true });
+    throw err;
   }
-
-  // Process images
-  const imgResult = await processImages(imageFiles, sourceDir, imgDir, slug, 1);
-  content += "\n" + imgResult.importStatements + imgResult.mediaUsage;
-
-  // Process videos
-  if (hasVideos) {
-    if (!checkFfmpeg()) process.exit(1);
-    const vidResult = processVideos(videoFiles, sourceDir, slug, 1);
-    content += vidResult.mediaUsage;
-    console.log(`  ✅ Processed ${vidResult.count} videos`);
-  }
-
-  fs.writeFileSync(postPath, content);
-  console.log(`  ✅ Created post: ${postPath}`);
-  console.log(`  ✅ Processed ${imgResult.count} images`);
-  console.log("\n🎉 Post created!");
-  console.log("\nNext steps:");
-  console.log("  1. Update the description (50-160 chars)");
-  console.log("  2. Add alt text for each image");
-  console.log("  3. Write your post content");
-  console.log("  4. Preview with: pnpm dev\n");
 }
 
 async function updatePost(slug, sourceDir, imgDir, existingPostPath) {
@@ -268,7 +274,7 @@ async function updatePost(slug, sourceDir, imgDir, existingPostPath) {
     const ext = path.extname(f).toLowerCase();
     const targetFile = `${cleanName}${ext === ".heic" ? ".jpg" : ext}`;
     return !existingFiles.has(targetFile);
-  });
+  }).sort();
 
   const videoFiles = allFiles.filter((f) => {
     if (!VIDEO_EXTS.includes(path.extname(f).toLowerCase())) return false;
@@ -278,7 +284,7 @@ async function updatePost(slug, sourceDir, imgDir, existingPostPath) {
     const targetFile = `${cleanName}${ext === ".mov" ? ".mp4" : ext}`;
     const targetPath = path.join(videosDir, targetFile);
     return !fs.existsSync(targetPath);
-  });
+  }).sort();
 
   if (imageFiles.length === 0 && videoFiles.length === 0) {
     console.log("\n✅ No new files to add. Post is up to date.");
@@ -288,12 +294,14 @@ async function updatePost(slug, sourceDir, imgDir, existingPostPath) {
   console.log(`  Found ${imageFiles.length} new image(s) and ${videoFiles.length} new video(s)`);
 
   const { imageCount, videoCount } = getExistingCounts(existingPostPath);
-  let appendContent = "";
+  let newImportStatements = "";
+  let componentUsage = "";
 
   // Process new images
   if (imageFiles.length > 0) {
     const imgResult = await processImages(imageFiles, sourceDir, imgDir, slug, imageCount + 1);
-    appendContent += "\n" + imgResult.importStatements + imgResult.mediaUsage;
+    newImportStatements += imgResult.importStatements;
+    componentUsage += imgResult.mediaUsage;
     console.log(`  ✅ Added ${imgResult.count} new images`);
   }
 
@@ -304,23 +312,39 @@ async function updatePost(slug, sourceDir, imgDir, existingPostPath) {
     // Ensure BlogVideo import exists in post
     const postContent = fs.readFileSync(existingPostPath, "utf-8");
     if (!postContent.includes("BlogVideo")) {
-      const captionedImportLine = "import CaptionedImage from '../../components/CaptionedImage.astro';";
-      const blogVideoImport = `\nimport BlogVideo from '../../components/BlogVideo.astro';`;
-      const updatedContent = postContent.replace(
-        captionedImportLine,
-        captionedImportLine + blogVideoImport
-      );
-      fs.writeFileSync(existingPostPath, updatedContent);
+      newImportStatements += `import BlogVideo from '@/components/BlogVideo.astro';\n`;
     }
 
     const vidResult = processVideos(videoFiles, sourceDir, slug, videoCount + 1);
-    appendContent += vidResult.mediaUsage;
+    componentUsage += vidResult.mediaUsage;
     console.log(`  ✅ Added ${vidResult.count} new videos`);
   }
 
-  fs.appendFileSync(existingPostPath, appendContent);
+  // Insert new imports at the import block (not end of file)
+  const postContent = fs.readFileSync(existingPostPath, "utf-8");
+  const lines = postContent.split("\n");
+
+  // Find the last import line index
+  let lastImportIndex = -1;
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].startsWith("import ")) {
+      lastImportIndex = i;
+    }
+  }
+
+  // Insert new imports after the last import
+  if (lastImportIndex >= 0 && newImportStatements) {
+    lines.splice(lastImportIndex + 1, 0, ...newImportStatements.trimEnd().split("\n"));
+  }
+
+  // Write the modified content back + append component usage at end
+  fs.writeFileSync(existingPostPath, lines.join("\n"));
+  if (componentUsage) {
+    fs.appendFileSync(existingPostPath, "\n" + componentUsage);
+  }
+
   console.log("\n🎉 Post updated!");
-  console.log("  New content appended to end of file.");
+  console.log("  New imports inserted at import block, component usage appended to end of file.");
   console.log("  You may want to rearrange the new images within the post.\n");
 }
 
