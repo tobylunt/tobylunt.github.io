@@ -1,174 +1,448 @@
 ---
 title: "Cherry bench"
-description: "In which I install built-in cherry bench seating in my sun room."
-publishDate: "2024-12-24"
-tags: ["ariadne"]
+description: "In which I build built-in cherry bench seating for my sun room."
+publishDate: "2025-05-03"
+tags: ["woodworking"]
 draft: true
 ---
 
-import { Image } from "astro:assets";
-import CaptionedImage from "../../components/CaptionedImage.astro";
-import BlogVideo from "../../components/BlogVideo.astro";
+import CaptionedImage from '@/components/CaptionedImage.astro';
+import BlogVideo from '@/components/BlogVideo.astro';
 
-import img_b27401_06ca_4d6f_8d14_5386a2b34e6f from "@/assets/img/cherry-bench/img_b27401_06ca_4d6f_8d14_5386a2b34e6f.jpeg";
-import img_0018 from "@/assets/img/cherry-bench/img_0018.jpg";
-import img_1919 from "@/assets/img/cherry-bench/img_1919.jpeg";
-import img_1920 from "@/assets/img/cherry-bench/img_1920.jpeg";
-import img_1921 from "@/assets/img/cherry-bench/img_1921.jpeg";
-import img_1922 from "@/assets/img/cherry-bench/img_1922.jpeg";
-import img_1981 from "@/assets/img/cherry-bench/img_1981.jpeg";
-import img_1982 from "@/assets/img/cherry-bench/img_1982.jpeg";
-import img_1983 from "@/assets/img/cherry-bench/img_1983.jpeg";
-import img_1984 from "@/assets/img/cherry-bench/img_1984.jpeg";
-import img_1985 from "@/assets/img/cherry-bench/img_1985.jpeg";
-import img_1986 from "@/assets/img/cherry-bench/img_1986.jpeg";
-import img_1989 from "@/assets/img/cherry-bench/img_1989.jpeg";
-import img_1990 from "@/assets/img/cherry-bench/img_1990.jpeg";
-import img_1991 from "@/assets/img/cherry-bench/img_1991.jpeg";
-import img_2002 from "@/assets/img/cherry-bench/img_2002.jpeg";
-import img_2003 from "@/assets/img/cherry-bench/img_2003.jpeg";
-import img_2006 from "@/assets/img/cherry-bench/img_2006.jpeg";
-import img_2007 from "@/assets/img/cherry-bench/img_2007.jpeg";
-import img_2008 from "@/assets/img/cherry-bench/img_2008.jpeg";
-import img_2009 from "@/assets/img/cherry-bench/img_2009.jpeg";
-import img_2021 from "@/assets/img/cherry-bench/img_2021.jpeg";
-import img_2022 from "@/assets/img/cherry-bench/img_2022.jpeg";
-import img_2023 from "@/assets/img/cherry-bench/img_2023.jpeg";
-import img_2024 from "@/assets/img/cherry-bench/img_2024.jpeg";
-import img_2025 from "@/assets/img/cherry-bench/img_2025.jpeg";
-import img_2026 from "@/assets/img/cherry-bench/img_2026.jpeg";
-import img_2027 from "@/assets/img/cherry-bench/img_2027.jpeg";
-import img_2028 from "@/assets/img/cherry-bench/img_2028.jpeg";
-import img_2035 from "@/assets/img/cherry-bench/img_2035.jpeg";
-import img_2036 from "@/assets/img/cherry-bench/img_2036.jpeg";
-import img_2037 from "@/assets/img/cherry-bench/img_2037.jpeg";
-import img_2038 from "@/assets/img/cherry-bench/img_2038.jpeg";
-import img_2046 from "@/assets/img/cherry-bench/img_2046.jpeg";
-import img_2088 from "@/assets/img/cherry-bench/img_2088.jpeg";
-import img_2185 from "@/assets/img/cherry-bench/img_2185.jpeg";
-import img_2186 from "@/assets/img/cherry-bench/img_2186.jpeg";
-import img_2188 from "@/assets/img/cherry-bench/img_2188.jpeg";
-import img_2200 from "@/assets/img/cherry-bench/img_2200.jpeg";
-import img_2522 from "@/assets/img/cherry-bench/img_2522.jpg";
-import img_2528 from "@/assets/img/cherry-bench/img_2528.jpeg";
-import img_2529 from "@/assets/img/cherry-bench/img_2529.jpeg";
-import img_2717 from "@/assets/img/cherry-bench/img_2717.jpeg";
-import img_2736 from "@/assets/img/cherry-bench/img_2736.jpeg";
-import img_2749 from "@/assets/img/cherry-bench/img_2749.jpeg";
-import img_3163 from "@/assets/img/cherry-bench/img_3163.webp";
-import img_6578 from "@/assets/img/cherry-bench/img_6578.jpeg";
-import renderedimage from "@/assets/img/cherry-bench/renderedimage.jpeg";
-
-I had been wanting to work with cherry for a while, but somehow never really had, at least not on any meaningful project. In the US we are blessed with an abundant supply of domestic hardwoods - most notably walnut, oak, maple, and cherry. These woods are all delightful in their own way, each with their own strengths and weaknesses.
-
-I also have been gradually improving the usability of my house's small sun room. One of the missing pieces in the room was comfy seating. So I decided to build seating out of cherry.
+import img_b27401_06ca_4d6f_8d14_5386a2b34e6f from '@/assets/img/cherry-bench/img_b27401_06ca_4d6f_8d14_5386a2b34e6f.jpeg';
+import img_0018 from '@/assets/img/cherry-bench/img_0018.jpg';
+import img_1919 from '@/assets/img/cherry-bench/img_1919.jpeg';
+import img_1920 from '@/assets/img/cherry-bench/img_1920.jpeg';
+import img_1921 from '@/assets/img/cherry-bench/img_1921.jpeg';
+import img_1922 from '@/assets/img/cherry-bench/img_1922.jpeg';
+import img_1981 from '@/assets/img/cherry-bench/img_1981.jpeg';
+import img_1982 from '@/assets/img/cherry-bench/img_1982.jpeg';
+import img_1983 from '@/assets/img/cherry-bench/img_1983.jpeg';
+import img_1984 from '@/assets/img/cherry-bench/img_1984.jpeg';
+import img_1985 from '@/assets/img/cherry-bench/img_1985.jpeg';
+import img_1986 from '@/assets/img/cherry-bench/img_1986.jpeg';
+import img_1989 from '@/assets/img/cherry-bench/img_1989.jpeg';
+import img_1990 from '@/assets/img/cherry-bench/img_1990.jpeg';
+import img_1991 from '@/assets/img/cherry-bench/img_1991.jpeg';
+import img_2002 from '@/assets/img/cherry-bench/img_2002.jpeg';
+import img_2003 from '@/assets/img/cherry-bench/img_2003.jpeg';
+import img_2006 from '@/assets/img/cherry-bench/img_2006.jpeg';
+import img_2007 from '@/assets/img/cherry-bench/img_2007.jpeg';
+import img_2008 from '@/assets/img/cherry-bench/img_2008.jpeg';
+import img_2009 from '@/assets/img/cherry-bench/img_2009.jpeg';
+import img_2021 from '@/assets/img/cherry-bench/img_2021.jpeg';
+import img_2022 from '@/assets/img/cherry-bench/img_2022.jpeg';
+import img_2023 from '@/assets/img/cherry-bench/img_2023.jpeg';
+import img_2024 from '@/assets/img/cherry-bench/img_2024.jpeg';
+import img_2025 from '@/assets/img/cherry-bench/img_2025.jpeg';
+import img_2026 from '@/assets/img/cherry-bench/img_2026.jpeg';
+import img_2027 from '@/assets/img/cherry-bench/img_2027.jpeg';
+import img_2028 from '@/assets/img/cherry-bench/img_2028.jpeg';
+import img_2035 from '@/assets/img/cherry-bench/img_2035.jpeg';
+import img_2036 from '@/assets/img/cherry-bench/img_2036.jpeg';
+import img_2037 from '@/assets/img/cherry-bench/img_2037.jpeg';
+import img_2038 from '@/assets/img/cherry-bench/img_2038.jpeg';
+import img_2046 from '@/assets/img/cherry-bench/img_2046.jpeg';
+import img_2088 from '@/assets/img/cherry-bench/img_2088.jpeg';
+import img_2185 from '@/assets/img/cherry-bench/img_2185.jpeg';
+import img_2186 from '@/assets/img/cherry-bench/img_2186.jpeg';
+import img_2188 from '@/assets/img/cherry-bench/img_2188.jpeg';
+import img_2200 from '@/assets/img/cherry-bench/img_2200.jpeg';
+import img_2254 from '@/assets/img/cherry-bench/img_2254.jpeg';
+import img_2522 from '@/assets/img/cherry-bench/img_2522.jpg';
+import img_2528 from '@/assets/img/cherry-bench/img_2528.jpeg';
+import img_2529 from '@/assets/img/cherry-bench/img_2529.jpeg';
+import img_2717 from '@/assets/img/cherry-bench/img_2717.jpeg';
+import img_2736 from '@/assets/img/cherry-bench/img_2736.jpeg';
+import img_2749 from '@/assets/img/cherry-bench/img_2749.jpeg';
+import img_3163 from '@/assets/img/cherry-bench/img_3163.webp';
+import img_6578 from '@/assets/img/cherry-bench/img_6578.jpeg';
+import renderedimage from '@/assets/img/cherry-bench/renderedimage.jpeg';
+import img_3585 from '@/assets/img/cherry-bench/img_3585.jpeg';
+import img_3587 from '@/assets/img/cherry-bench/img_3587.jpeg';
+import img_3589 from '@/assets/img/cherry-bench/img_3589.jpeg';
+import img_3591 from '@/assets/img/cherry-bench/img_3591.jpeg';
+import img_3229 from '@/assets/img/cherry-bench/img_3229.jpeg';
+import img_3238 from '@/assets/img/cherry-bench/img_3238.jpeg';
 
 <CaptionedImage
-  src={renderedimage}
-  alt="Potato sketch"
-  caption="Before. The first sketch of what I wanted to build in the corner. It's a small space - I couldn't see how to get traditional funiture to fit well."
+    src={renderedimage}
+    alt="Hand sketch of cherry bench concept"
+    caption="Before. The first sketch of what I wanted to build in the corner."
 />
 
-SPACE FOR AFTER IMAGE Here
+<CaptionedImage
+    src={img_3585}
+    alt="Finished cherry bench with cushions and pillows"
+    caption="After."
+/>
 
-## Design thinking
+I had been wanting to work with cherry for a while but somehow never really had, at least not on any meaningful project. We're blessed in the US with an abundant supply of domestic hardwoods — walnut, oak, maple, and cherry being the big four — and I'd worked extensively with the first three. Cherry was the holdout.
 
-<CaptionedImage src={img_0018} alt="Image 2" caption="Image 2 - Description needed" />
+I'd also been gradually improving the usability of my house's small sun room. The room has knotty pine paneling, a brick fireplace, and an awkward corner that defeated every furniture arrangement I tried. Nothing fit well, and anything freestanding left dead space behind it. What the room needed was built-in seating — something that could wrap the corner and make use of every inch. So I decided to build it out of cherry.
 
-<CaptionedImage src={img_6578} alt="Image 47" caption="Image 47 - Description needed" />
+## Design
 
-<CaptionedImage src={img_3163} alt="Image 46" caption="Image 46 - Description needed" />
+The inspiration came from an unlikely place: the interior of a Concordia yawl. The Concordia 41 is arguably the most beautiful production sailboat ever built, and its interior joinery is famously considered. I'd spent some time aboard one and couldn't stop thinking about how the built-in settee berths worked — the proportions, the way the seating wraps around the cabin, the storage underneath. A sun room is not a sailboat, but the design problem is the same: make a small, irregular space comfortable and functional.
 
-<BlogVideo src="cherry-bench/img_1832.mp4" comment="Video 1 - Description needed" />
+<CaptionedImage
+    src={img_0018}
+    alt="Interior of a Concordia yawl"
+    caption="The interior of Katrina, a Concordia yawl. The built-in settee berths are a masterclass in using a small, irregular space. This was the starting point for the bench design."
+/>
+
+I built a quick 3D model in SketchUp to work out proportions and make sure the piece would actually fit the corner without overwhelming the room. Getting the scale right matters — a few inches in any direction is the difference between seating and a barricade.
+
+<CaptionedImage
+    src={img_6578}
+    alt="SketchUp 3D model of bench design"
+    caption="A SketchUp rendering to test proportions. The room is small enough that a few inches in any direction makes a real difference."
+/>
+
+<CaptionedImage
+    src={img_b27401_06ca_4d6f_8d14_5386a2b34e6f}
+    alt="Sun room before bench installation"
+    caption="The room before, mid-renovation. Recessed lighting going in, everything else still to come."
+/>
+
+I originally planned to also build an adjacent storage piece with a live-edge sliding door, inspired by Nakashima. In the end I decided the corner was already busy enough with just the bench, and dropped it.
+
+<CaptionedImage
+    src={img_3163}
+    alt="Nakashima-style cabinet with live edge sliding door"
+    caption="The Nakashima-inspired sliding door piece I considered building alongside the bench. Ultimately decided the room couldn't handle both."
+/>
+
+<BlogVideo
+    src="cherry-bench/img_1832.mp4"
+    comment="Cherry's chatoyance — that shifting, shimmering luster when light catches the figure at different angles. This is the quality that makes cherry worth the trouble."
+/>
 
 ## The curvy bits
 
-<CaptionedImage src={img_1919} alt="Image 3" caption="Image 3 - Description needed" />
+The bench arms are curved — not because curves are inherently better, but because the room geometry demanded it. A squared-off arm would have jutted into the walkway and made the whole thing feel like a wall.
 
-<CaptionedImage src={img_1920} alt="Image 4" caption="Image 4 - Description needed" />
+I laminated the curves from thin strips of cherry over a form, the same technique I've used for [boat frames](/posts/finishing-frames-may23/). Thin strips are coated with epoxy, stacked on the form, and clamped until cured. The result holds its shape with no internal stress and follows whatever curve the form dictates.
 
-<CaptionedImage src={img_1921} alt="Image 5" caption="Image 5 - Description needed" />
+<CaptionedImage
+    src={img_1919}
+    alt="Lamination clamp-up for curved cherry arm"
+    caption="A curved arm piece being glued up on its form. Thin strips of cherry are coated with epoxy and clamped under pressure until cured."
+/>
 
-<CaptionedImage src={img_1986} alt="Image 12" caption="Image 12 - Description needed" />
+{/* <CaptionedImage
+    src={img_1920}
+    alt="Lamination clamp-up, different angle"
+    caption="Another angle of the clamp-up."
+/> */}
 
-<CaptionedImage src={img_1989} alt="Image 13" caption="Image 13 - Description needed" />
+{/* <CaptionedImage
+    src={img_1921}
+    alt="Lamination clamp-up, third angle"
+    caption="Third angle of the same clamp-up."
+/> */}
 
-<CaptionedImage src={img_1990} alt="Image 14" caption="Image 14 - Description needed" />
+<CaptionedImage
+    src={img_1986}
+    alt="Curved arm piece on form with wedged through-tenon"
+    caption="A laminated arm after cleanup. The wedged through-tenon at the end is how the arm joins the case side."
+/>
 
-<CaptionedImage src={img_1991} alt="Image 15" caption="Image 15 - Description needed" />
+<CaptionedImage
+    src={img_1989}
+    alt="Stack of milled cherry arm profiles"
+    caption="Arm profiles milled and ready for finishing."
+/>
 
-## Panels and breadboards
+<CaptionedImage
+    src={img_1990}
+    alt="Cherry arm blanks on workbench"
+    caption="Arm blanks on the bench. The figure in the cherry is already starting to show, and it will only improve with a finish on it."
+/>
 
-<CaptionedImage src={img_1922} alt="Image 6" caption="Image 6 - Description needed" />
+{/* <CaptionedImage
+    src={img_1991}
+    alt="Cherry arm blanks, alternate angle"
+    caption="Arm blanks, alternate angle."
+/> */}
 
-<CaptionedImage src={img_1981} alt="Image 7" caption="Image 7 - Description needed" />
+## Case sides and drawer fronts
 
-<CaptionedImage src={img_1982} alt="Image 8" caption="Image 8 - Description needed" />
+The case sides are frame-and-panel construction — cherry stiles and rails capturing a solid cherry panel, with breadboard ends to keep the panel flat as it moves with seasonal humidity changes.
 
-<CaptionedImage src={img_1983} alt="Image 9" caption="Image 9 - Description needed" />
+The drawer fronts were cut directly out of the case side panels — one continuous piece of wood, sawn into sections. This means the grain flows unbroken from the case side across the drawer fronts, which is the kind of detail that's subtle until you notice it, and then you can't unsee it.
 
-<CaptionedImage src={img_1984} alt="Image 10" caption="Image 10 - Description needed" />
+The trade-off is structural. Cutting the drawer fronts out of the panel leaves the remaining case side with sections of short grain — the wood fibers run across the narrow remaining sections rather than along them, making those spots fragile. These areas needed reinforcement from behind. It's the sort of compromise that comes with chasing a specific visual effect: worth it, but not free.
 
-<CaptionedImage src={img_2002} alt="Image 16" caption="Image 16 - Description needed" />
+{/* <CaptionedImage
+    src={img_1922}
+    alt="Hand tools on workbench"
+    caption="Tools of the trade."
+/> */}
 
-<CaptionedImage src={img_2003} alt="Image 17" caption="Image 17 - Description needed" />
+<CaptionedImage
+    src={img_2002}
+    alt="Case side with drawer front cutout in workbench vise"
+    caption="A case side in the vise with the drawer front sections cut out. The grain will read as continuous when the drawer fronts are reinstalled on their slides."
+/>
 
-<CaptionedImage src={img_2006} alt="Image 18" caption="Image 18 - Description needed" />
+{/* <CaptionedImage
+    src={img_2003}
+    alt="Case side with drawer front cutout, alternate angle"
+    caption="Alternate angle of the case side."
+/> */}
 
-<CaptionedImage src={img_2007} alt="Image 19" caption="Image 19 - Description needed" />
+<CaptionedImage
+    src={img_2006}
+    alt="Case side frame showing through-tenon mortises"
+    caption="The case side frame on the workbench. Through-tenon mortises and drawbore peg holes are visible — this is the structural skeleton that the cherry panel slides into."
+/>
 
-<CaptionedImage src={img_2008} alt="Image 20" caption="Image 20 - Description needed" />
+<CaptionedImage
+    src={img_2007}
+    alt="Case side panel on workbench showing mortises and drawbore holes"
+    caption="A case side panel lying flat on the bench. The through-tenon mortises are the rectangular openings; the round holes at each joint are for the drawbore pegs."
+/>
 
-<CaptionedImage src={img_2009} alt="Image 21" caption="Image 21 - Description needed" />
+<CaptionedImage
+    src={img_2008}
+    alt="Close-up of cherry figure"
+    caption="Cherry figure up close. The chatoyance is visible even in raw, unfinished wood."
+/>
+
+<CaptionedImage
+    src={img_2009}
+    alt="Case side panel with breadboard end"
+    caption="The back face of a completed case side. The breadboard end captures the solid panel and keeps it flat."
+/>
+
+<CaptionedImage
+    src={img_1981}
+    alt="Case side being test-fit in the sun room"
+    caption="Test-fitting a case side in the room. Scribing to the walls and floor comes later — this is just checking proportions and clearances."
+/>
+
+{/* <CaptionedImage
+    src={img_1982}
+    alt="Case side test fit, progression"
+    caption="Further along in the test fit."
+/> */}
+
+{/* <CaptionedImage
+    src={img_1983}
+    alt="Case side test fit progression"
+    caption="Test fit progression."
+/> */}
+
+{/* <CaptionedImage
+    src={img_1984}
+    alt="Case side test fit progression"
+    caption="Test fit progression."
+/> */}
+
+{/* <CaptionedImage
+    src={img_1985}
+    alt="Case side test fit progression"
+    caption="Test fit progression."
+/> */}
 
 ## Assembly and storage
 
-<CaptionedImage src={img_2021} alt="Image 22" caption="Image 22 - Description needed" />
+Assembly is where the joinery either works or it doesn't. I used wedged through-tenons and drawbored pegs throughout — both are self-locking joints. Once the wedges are driven and the pegs set, the structure is under mechanical tension and locked permanently. There's no going back, but there's also nothing to fail. No glue to creep, no hardware to loosen.
 
-<CaptionedImage src={img_2022} alt="Image 23" caption="Image 23 - Description needed" />
+<CaptionedImage
+    src={img_2021}
+    alt="Cherry bench case assembled in the sun room"
+    caption="The case assembled in the room for the first time. The bar clamp is temporary — once the through-tenon wedges are driven, the structure holds itself together."
+/>
 
-<CaptionedImage src={img_2023} alt="Image 24" caption="Image 24 - Description needed" />
+{/* <CaptionedImage
+    src={img_2022}
+    alt="Case assembled, alternate view"
+    caption="Alternate view of the assembled case."
+/> */}
 
-<CaptionedImage src={img_2024} alt="Image 25" caption="Image 25 - Description needed" />
+{/* <CaptionedImage
+    src={img_2023}
+    alt="Case assembled, wider angle"
+    caption="Wider angle of the assembled case."
+/> */}
 
-<CaptionedImage src={img_2025} alt="Image 26" caption="Image 26 - Description needed" />
+<CaptionedImage
+    src={img_2035}
+    alt="Close-up of wedged through-tenon and drawbore pegs at corner joint"
+    caption="The joinery up close. The wedged through-tenons and drawbore pegs are visible at each corner — the wedges spread the tenon inside the mortise, the pegs pull the joint tight through offset holes. Both are permanent and mechanical."
+/>
 
-<CaptionedImage src={img_2026} alt="Image 27" caption="Image 27 - Description needed" />
+<CaptionedImage
+    src={img_2036}
+    alt="Wedged through-tenon detail on case side"
+    caption="A wedged through-tenon on the case side. The cherry figure is starting to come alive with finish on it."
+/>
 
-<CaptionedImage src={img_2027} alt="Image 28" caption="Image 28 - Description needed" />
+{/* <CaptionedImage
+    src={img_2037}
+    alt="Assembly with side panels"
+    caption="Assembly with side panels."
+/> */}
 
-<CaptionedImage src={img_2028} alt="Image 29" caption="Image 29 - Description needed" />
+{/* <CaptionedImage
+    src={img_2038}
+    alt="Assembly with side panels, alternate angle"
+    caption="Assembly, alternate angle."
+/> */}
 
-<CaptionedImage src={img_2035} alt="Image 30" caption="Image 30 - Description needed" />
+The drawer fronts are half-blind dovetailed at the front and through-dovetailed at the back, mounted on Blum soft-close undermount slides. It's a funny combination — hand-cut dovetails meeting German precision hardware — but the slides are genuinely excellent and the soft close is worth it for something you'll use every day.
 
-<CaptionedImage src={img_2036} alt="Image 31" caption="Image 31 - Description needed" />
+<CaptionedImage
+    src={img_3238}
+    alt="Close-up of half-blind dovetail tails cut in cherry drawer front"
+    caption="Half-blind dovetail tails cut into a cherry drawer front, waiting to be test-fit to the maple side."
+/>
 
-<CaptionedImage src={img_2037} alt="Image 32" caption="Image 32 - Description needed" />
+<CaptionedImage
+    src={img_3229}
+    alt="Half-blind dovetail joint test-fit with cherry front and maple side"
+    caption="A drawer corner test-fit. The cherry drawer front meets the maple side with half-blind dovetails — the joint is invisible from the front of the drawer."
+/>
 
-<CaptionedImage src={img_2038} alt="Image 33" caption="Image 33 - Description needed" />
+<CaptionedImage
+    src={img_2024}
+    alt="Bench installed with foam and side panel"
+    caption="Checking the fit with foam in place. The long side panel extends to the wall, and the heating vent is visible in the lower right."
+/>
 
-<CaptionedImage src={img_2185} alt="Image 36" caption="Image 36 - Description needed" />
+{/* <CaptionedImage
+    src={img_2025}
+    alt="Bench fit check, alternate angle"
+    caption="Fit check, alternate angle."
+/> */}
 
-<CaptionedImage src={img_2186} alt="Image 37" caption="Image 37 - Description needed" />
+{/* <CaptionedImage
+    src={img_2026}
+    alt="Bench fit check, third angle"
+    caption="Fit check, third angle."
+/> */}
 
-<CaptionedImage src={img_2188} alt="Image 38" caption="Image 38 - Description needed" />
+<CaptionedImage
+    src={img_2027}
+    alt="Bench interior framing with cross supports, overhead view"
+    caption="Looking down at the interior framing. The cross supports create separate storage compartments and provide structural rigidity for the seat."
+/>
 
-<CaptionedImage src={img_2200} alt="Image 39" caption="Image 39 - Description needed" />
+{/* <CaptionedImage
+    src={img_2028}
+    alt="Interior framing, wider view"
+    caption="Interior framing, wider view."
+/> */}
+
+<CaptionedImage
+    src={img_2185}
+    alt="Storage compartments viewed from above"
+    caption="The storage compartments from above, mid-installation. Plenty of room under the seat for blankets, pillows, and whatever else accumulates in a sun room."
+/>
+
+{/* <CaptionedImage
+    src={img_2186}
+    alt="Under-bench detail with bracket and electrical"
+    caption="Under-bench bracket and electrical routing."
+/> */}
+
+<CaptionedImage
+    src={img_2188}
+    alt="Heating vent with cherry louvers routed into side panel"
+    caption="The heating vent, routed directly through the cherry side panel with turned cherry louvers. The room's baseboard heating runs along this wall, and blocking it wasn't an option."
+/>
+
+<CaptionedImage
+    src={img_2200}
+    alt="Hinged seat access panel with brass hardware"
+    caption="The seat lifts on brass hinges to access the storage below."
+/>
 
 ## Cushions
 
-<CaptionedImage src={img_2046} alt="Image 34" caption="Image 34 - Description needed" />
+I made the cushions from scratch, which I hadn't done before. The process: buy foam in two firmnesses, laminate them together (firm on the bottom, soft on top), wrap each block in dacron batting, then sew a cover and zip it over the foam. The dacron softens the edges and keeps the foam from grabbing at the fabric.
 
-<CaptionedImage src={img_2088} alt="Image 35" caption="Image 35 - Description needed" />
+<CaptionedImage
+    src={img_2046}
+    alt="Fabric samples spread on table"
+    caption="Choosing fabric. This decision took longer than I'd like to admit."
+/>
 
-<CaptionedImage src={img_2522} alt="Image 40" caption="Image 40 - Description needed" />
+<CaptionedImage
+    src={img_2254}
+    alt="Fabric swatch close-up"
+    caption="The winner."
+/>
 
-<CaptionedImage src={img_2528} alt="Image 41" caption="Image 41 - Description needed" />
+<CaptionedImage
+    src={img_2088}
+    alt="Bench installed with raw foam cushions"
+    caption="The bench with raw foam in place, before the cushion covers were made. The heating vent is visible in the side panel."
+/>
 
-<CaptionedImage src={img_2529} alt="Image 42" caption="Image 42 - Description needed" />
+<CaptionedImage
+    src={img_2528}
+    alt="Foam block wrapped in dacron batting"
+    caption="Foam lamination wrapped in dacron batting. The dacron rounds the edges and prevents the foam from sticking to the inside of the cover."
+/>
 
-<CaptionedImage src={img_2717} alt="Image 43" caption="Image 43 - Description needed" />
+{/* <CaptionedImage
+    src={img_2529}
+    alt="Dacron-wrapped foam, alternate angle"
+    caption="Dacron-wrapped foam, alternate angle."
+/> */}
 
-<CaptionedImage src={img_2736} alt="Image 44" caption="Image 44 - Description needed" />
+<CaptionedImage
+    src={img_2522}
+    alt="Cushion cover being sewn on sewing machine"
+    caption="Sewing the covers. Each cushion is a simple box with a zipper along the back edge."
+/>
 
-<CaptionedImage src={img_2749} alt="Image 45" caption="Image 45 - Description needed" />
+<CaptionedImage
+    src={img_2717}
+    alt="Finished cushion on bench with cat"
+    caption="First cushion in place. Quality control approved."
+/>
+
+{/* <CaptionedImage
+    src={img_2736}
+    alt="Bench with partially finished cushions"
+    caption="Bench with cushions, work in progress."
+/> */}
+
+<CaptionedImage
+    src={img_2749}
+    alt="Bench with all cushions installed, overhead view"
+    caption="All cushions in place. The two-firmness foam lamination turned out well — firm enough to sit on for hours, soft enough on top to be comfortable."
+/>
+
+## The finished product
+
+<CaptionedImage
+    src={img_3585}
+    alt="Finished cherry bench, wide angle"
+    caption="The finished bench. The cherry has already started to darken — it will continue deepening to a rich reddish-brown over the next few years."
+/>
+
+<CaptionedImage
+    src={img_3587}
+    alt="Drawer fronts showing continuous grain and wedged through-tenons"
+    caption="The drawer fronts, cut from the case side panel. The grain reads as one continuous surface from case side through each drawer face. Wedged through-tenons are visible at each joint."
+/>
+
+<CaptionedImage
+    src={img_3589}
+    alt="Bench from perspective angle showing drawer fronts"
+    caption="Three drawers on the front face. The continuous grain across the case side and drawer fronts is most visible from this angle."
+/>
+
+<CaptionedImage
+    src={img_3591}
+    alt="Drawers pulled open showing half-blind dovetails and maple interior"
+    caption="Drawers open. Half-blind dovetails at the front, through dovetails at the back, maple sides and bottom. Blum soft-close undermount slides."
+/>
+
+Cherry is not the easiest wood to work — it burns on the table saw, chatters under a router, and any sanding scratch you miss will announce itself the moment finish goes on. But the payoff is a surface that no other domestic hardwood can match. The chatoyance, the warmth of the color, the way it deepens with age. A year from now this bench will look better than it does today, and a decade from now better still. That's the deal with cherry — you build it, and then time finishes the job.
+

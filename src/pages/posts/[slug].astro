@@ -6,10 +6,12 @@ import PostLayout from "@/layouts/BlogPost.astro";
 
 export const getStaticPaths = (async () => {
   const blogEntries = await getAllPosts();
-  return blogEntries.map((entry) => ({
-    params: { slug: entry.slug },
-    props: { entry },
-  }));
+  return blogEntries
+    .filter((entry) => !entry.data.externalUrl)
+    .map((entry) => ({
+      params: { slug: entry.slug },
+      props: { entry },
+    }));
 }) satisfies GetStaticPaths;
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
