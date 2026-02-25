@@ -29,11 +29,8 @@
 
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
 import heicConvert from "heic-convert";
 import { spawnSync } from "child_process";
-
-const __filename = fileURLToPath(import.meta.url);
 
 const IMAGE_EXTS = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".heic"];
 const VIDEO_EXTS = [".mp4", ".webm", ".mov"];
@@ -50,15 +47,14 @@ function cleanFileName(fileName) {
 }
 
 function checkFfmpeg() {
-  try {
-    spawnSync("ffmpeg", ["-version"]);
-    return true;
-  } catch (error) {
+  const result = spawnSync("ffmpeg", ["-version"]);
+  if (result.error) {
     console.error("\n❌ Error: ffmpeg is not installed");
     console.log("\nPlease install ffmpeg to enable video conversion:");
     console.log("  brew install ffmpeg");
     return false;
   }
+  return true;
 }
 
 /**
@@ -348,7 +344,7 @@ if (!sourceDir) {
   console.error("\n❌ Folder not found on Desktop");
   console.log(`\nLooked for:`);
   console.log(`  ~/Desktop/${folderName}/`);
-  if (folderName !== `${folderName}-photos`) {
+  if (!folderName.endsWith('-photos')) {
     console.log(`  ~/Desktop/${folderName}-photos/`);
   }
   console.log("\nPlease check the folder name and try again.\n");
@@ -361,8 +357,11 @@ console.log(`  Slug:   ${slug}`);
 const imgDir = path.join("src", "assets", "img", slug);
 const existingPost = findExistingPost(slug);
 
-if (existingPost) {
-  updatePost(slug, sourceDir, imgDir, existingPost);
-} else {
-  createPost(slug, sourceDir, imgDir);
-}
+const run = existingPost
+  ? updatePost(slug, sourceDir, imgDir, existingPost)
+  : createPost(slug, sourceDir, imgDir);
+
+run.catch((error) => {
+  console.error("\n❌ Error:", error.message);
+  process.exit(1);
+});
