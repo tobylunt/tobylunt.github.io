@@ -11,6 +11,7 @@
     "format": "prettier -w --cache . && prettier -w --cache **/*.astro",
     "check": "astro check",
     "new-post": "node scripts/new-post.js",
+    "post": "node scripts/post.js",
     "cleanup-post": "node scripts/cleanup-post.js"
   },
   "dependencies": {
