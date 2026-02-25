@@ -1,22 +1,242 @@
 ---
 import type { MarkdownHeading } from "astro";
 
-import { generateToc } from "src/utils/generateToc";
-
-import TOCHeading from "./TOCHeading.astro";
-
 interface Props {
-  headings: MarkdownHeading[];
+	headings: MarkdownHeading[];
 }
 
 const { headings } = Astro.props;
-
-const toc = generateToc(headings);
+const filtered = headings.filter(({ depth }) => depth >= 2 && depth <= 4);
 ---
 
 <aside class="sticky top-20 order-1 -ms-52 hidden basis-64 lg:block">
-  <h2 class="font-semibold">Table of Contents</h2>
-  <ul class="mt-4 text-xs">
-    {toc.map((heading) => <TOCHeading heading={heading} />)}
-  </ul>
+	<nav aria-label="Table of contents">
+		<ul class="toc-timeline">
+			{
+				filtered.map(({ depth, slug, text }) => (
+					<li>
+						<a
+							href={`#${slug}`}
+							class:list={["toc-dot-link", { "toc-sub": depth > 2 }]}
+							data-section={slug}
+							aria-label={`Scroll to section: ${text}`}
+						>
+							<span class="toc-dot" />
+							<span class="toc-label">{text}</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
 </aside>
+
+<style>
+	.toc-timeline {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		position: relative;
+	}
+
+	/* vertical connecting line */
+	.toc-timeline::before {
+		content: "";
+		position: absolute;
+		left: 4px;
+		top: 14px;
+		bottom: 14px;
+		width: 1.5px;
+		background: hsl(var(--theme-text) / 0.1);
+		border-radius: 1px;
+	}
+
+	.toc-dot-link {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 7px 0;
+		text-decoration: none;
+		color: hsl(var(--theme-text) / 0.25);
+		transition: color 0.2s ease;
+		cursor: pointer;
+	}
+
+	.toc-dot-link:hover {
+		color: hsl(var(--theme-text) / 0.55);
+	}
+
+	.toc-dot-link.read {
+		color: hsl(var(--theme-text) / 0.35);
+	}
+
+	.toc-dot-link.active {
+		color: hsl(var(--theme-text) / 0.85);
+	}
+
+	/* dot */
+	.toc-dot {
+		flex-shrink: 0;
+		width: 9px;
+		height: 9px;
+		border-radius: 50%;
+		background: hsl(var(--theme-bg) / 1);
+		border: 1.5px solid hsl(var(--theme-text) / 0.18);
+		position: relative;
+		z-index: 1;
+		transition:
+			background 0.25s ease,
+			border-color 0.25s ease,
+			transform 0.25s ease,
+			box-shadow 0.25s ease;
+	}
+
+	.toc-dot-link.read .toc-dot {
+		background: hsl(var(--theme-text) / 0.25);
+		border-color: hsl(var(--theme-text) / 0.25);
+		transform: scale(0.7);
+	}
+
+	.toc-dot-link.active .toc-dot {
+		background: hsl(var(--theme-accent) / 1);
+		border-color: hsl(var(--theme-accent) / 1);
+		transform: scale(1.1);
+		box-shadow: 0 0 0 3px hsl(var(--theme-accent) / 0.15);
+	}
+
+	.toc-dot-link:hover .toc-dot {
+		border-color: hsl(var(--theme-text) / 0.35);
+	}
+
+	/* label */
+	.toc-label {
+		font-size: 0.7rem;
+		font-weight: 500;
+		letter-spacing: 0.01em;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		opacity: 0;
+		transform: translateX(-4px);
+		transition:
+			opacity 0.15s ease,
+			transform 0.15s ease;
+	}
+
+	.toc-dot-link.active .toc-label {
+		opacity: 1;
+		transform: translateX(0);
+		color: hsl(var(--theme-accent) / 1);
+		font-weight: 600;
+	}
+
+	/* reveal all labels on sidebar hover */
+	nav:hover .toc-label {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	/* sub-headings indent */
+	.toc-sub {
+		padding-left: 12px;
+	}
+
+	.toc-sub .toc-label {
+		font-size: 0.625rem;
+	}
+</style>
+
+<script>
+	function initToc() {
+		const tocLinks = document.querySelectorAll<HTMLAnchorElement>(".toc-dot-link");
+		if (!tocLinks.length) return;
+
+		const sectionIds = Array.from(tocLinks).map((link) => link.dataset.section!);
+		let activeId: string | null = null;
+		let scrollingTo: string | null = null;
+
+		function setActive(id: string) {
+			if (id === activeId) return;
+			activeId = id;
+			const activeIdx = sectionIds.indexOf(id);
+
+			tocLinks.forEach((link) => {
+				const sectionId = link.dataset.section!;
+				const idx = sectionIds.indexOf(sectionId);
+				link.classList.remove("active", "read");
+				if (sectionId === id) {
+					link.classList.add("active");
+				} else if (activeIdx >= 0 && idx < activeIdx) {
+					link.classList.add("read");
+				}
+			});
+		}
+
+		// Find the topmost section that has scrolled past the detection line
+		function getActiveFromScroll(): string | null {
+			const offset = window.innerHeight * 0.2;
+			let best: string | null = null;
+			for (const id of sectionIds) {
+				const el = document.getElementById(id);
+				if (el && el.getBoundingClientRect().top <= offset) {
+					best = id;
+				}
+			}
+			return best;
+		}
+
+		// Scroll listener as primary tracking method
+		let ticking = false;
+		function onScroll() {
+			if (ticking) return;
+			ticking = true;
+			requestAnimationFrame(() => {
+				ticking = false;
+				// If we're programmatically scrolling to a target, keep that active
+				// until we arrive (within 2px)
+				if (scrollingTo) {
+					const target = document.getElementById(scrollingTo);
+					if (target) {
+						const dist = Math.abs(target.getBoundingClientRect().top);
+						if (dist < 2) {
+							scrollingTo = null;
+						} else {
+							setActive(scrollingTo);
+							return;
+						}
+					} else {
+						scrollingTo = null;
+					}
+				}
+				const id = getActiveFromScroll();
+				if (id) setActive(id);
+			});
+		}
+
+		window.addEventListener("scroll", onScroll, { passive: true });
+		// Set initial state
+		const initial = getActiveFromScroll();
+		if (initial) setActive(initial);
+
+		// Smooth scroll on click — immediately set active, then scroll
+		tocLinks.forEach((link) => {
+			link.addEventListener("click", (e) => {
+				e.preventDefault();
+				const href = link.getAttribute("href");
+				const targetId = href ? href.slice(1) : null;
+				if (!targetId) return;
+				const target = document.getElementById(targetId);
+				if (target) {
+					scrollingTo = targetId;
+					setActive(targetId);
+					target.scrollIntoView({ behavior: "smooth", block: "start" });
+				}
+			});
+		});
+	}
+
+	initToc();
+	document.addEventListener("astro:after-swap", initToc);
+</script>

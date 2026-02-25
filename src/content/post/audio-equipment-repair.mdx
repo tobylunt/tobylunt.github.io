@@ -1,8 +1,8 @@
 ---
-title: "audio equipment repair"
-description: "This is a placeholder description that meets the minimum length requirement. Please replace with actual content."
+title: "Tracing a weak signal"
+description: "Debugging a vintage Proton D940 receiver with barely audible output — and finding errors in the service manual along the way."
 publishDate: "2025-01-18"
-tags: ["ariadne"]
+tags: ["electronics"]
 draft: true
 ---
 import CaptionedImage from '@/components/CaptionedImage.astro';
@@ -15,52 +15,64 @@ import img_3207 from '@/assets/img/audio-equipment-repair/img_3207.jpeg';
 import img_3208 from '@/assets/img/audio-equipment-repair/img_3208.jpeg';
 import img_3209 from '@/assets/img/audio-equipment-repair/img_3209.jpeg';
 
-<CaptionedImage
-    src={vr601}
-    alt="Image 1"
-    caption="Image 1 - Description needed"
-/>
+The receiver works — technically. Tune to a station, turn the volume all the way up, and you can just barely make out audio. The signal is there. It's just vanishingly quiet, as though someone turned the gain down to almost nothing somewhere deep in the amplification chain and forgot to turn it back up.
 
+This is a Proton D940, an early-80s stereo FM/AM receiver from a Taiwanese company that punched well above its weight class. Forty watts per channel into eight ohms doesn't sound like much, but the D940 has Proton's DPD (Dynamic Power on Demand) circuit, which can deliver dynamic peaks up to 380 watts into two ohms. It also features Schotz noise reduction on the FM tuner, an anti-clipping circuit, and an active volume control that actually changes the preamp's gain structure rather than just attenuating the signal with a pot. It's a serious piece of engineering for its era, and it deserved better than the shelf we found it on.
 
-<CaptionedImage
-    src={vr602}
-    alt="Image 2"
-    caption="Image 2 - Description needed"
-/>
-
-
-
-<CaptionedImage
-    src={img_3205}
-    alt="Image 3"
-    caption="Image 3 - Description needed"
-/>
-
-
-<CaptionedImage
-    src={img_3206}
-    alt="Image 4"
-    caption="Image 4 - Description needed"
-/>
-
+## The patient
 
 <CaptionedImage
     src={img_3207}
-    alt="Image 5"
-    caption="Image 5 - Description needed"
+    alt="Proton D940 receiver opened up, top-down view"
+    caption="Top down into the chassis. The tuner board sits stacked on top of the main PCB. Heatsink fins are visible at left, with the large filter capacitors immediately beside them. The transformer is further left, out of frame. Everything looks clean — no burned components, no bulging caps, no signs of previous repair attempts."
 />
-
 
 <CaptionedImage
     src={img_3208}
-    alt="Image 6"
-    caption="Image 6 - Description needed"
+    alt="Proton D940 power supply section"
+    caption="The power supply section. The large transformer, heatsink fins for the output transistors, and the filter capacitors that feed the DPD circuit. Power rails checked out fine — this wasn't a supply problem."
 />
 
+<CaptionedImage
+    src={img_3206}
+    alt="Interior of receiver showing main PCB and rear panel"
+    caption="The main board. Signal enters from the rear panel jacks, gets routed through source selection, tone controls, and the active volume circuit, then passes to the power amplifier. The D940 has a pre-out/main-in loop that lets you break this chain — useful for diagnostics."
+/>
+
+## Tracing the signal
+
+The approach is straightforward: inject a known signal at the input, then follow it through the circuit with a multimeter, stage by stage, until you find where it drops off. The service manual provides a list of maintenance test points — designated locations on the PCB where you're supposed to be able to measure expected voltages and signal levels.
 
 <CaptionedImage
     src={img_3209}
-    alt="Image 7"
-    caption="Image 7 - Description needed"
+    alt="Workbench with receiver and test equipment"
+    caption="The operating theater. Service manual open, multimeter connected, probing our way through the signal path one test point at a time."
 />
 
+<CaptionedImage
+    src={img_3205}
+    alt="Close-up of PCB showing tuner section"
+    caption="Close-up of the tuner board. The Toshiba TC9157AP is the PLL frequency synthesizer that handles station tuning. The tuner section was working fine — signals were coming through. The problem was further downstream in the amplifier chain."
+/>
+
+We worked through the maintenance test points one by one. The problem led us to the power amplifier section and its bias adjustment trimpots — VR601 for the left channel, VR602 for the right. These set the quiescent current of the output stage. When they're misadjusted, the amplifier's operating point shifts and output can drop dramatically.
+
+## An error in the manual
+
+Here's where it got interesting. When we went to check the resistor values around VR602 against the service manual's schematic, the numbers didn't match what was on the board. After some confusion and cross-referencing, we realized the service manual itself had errors.
+
+<CaptionedImage
+    src={vr602}
+    alt="Annotated schematic showing VR602 and mislabeled R626"
+    caption="The right channel power amp section from the service manual. VR602 is our target trimpot. The resistor labeled R626 in the schematic should actually be R636 — a misprint that sends you looking for the wrong component on the board."
+/>
+
+<CaptionedImage
+    src={vr601}
+    alt="Annotated schematic showing VR601 and mislabeled R625"
+    caption="The left channel mirror. VR601 is the matching trimpot, and R625 should be R635. Same error, same pattern — the schematic's numbering is off by ten in both channels. R625 even includes a resistance value, which makes the error more misleading: you find a resistor with that value and assume you're in the right place."
+/>
+
+The left and right channels in a stereo amplifier are mirror images of each other, with component numbering offset by a consistent amount. In this case the schematic used the wrong series for two resistors — R625/R626 instead of R635/R636. It's a small error, but when you're tracing a signal path and your map is wrong, you can lose a lot of time measuring the right thing in the wrong place.
+
+We adjusted both trimpots to bring the bias current back into spec, double-checked the DC offset at the speaker outputs, and put it back together. The receiver works — properly this time, not just technically.
