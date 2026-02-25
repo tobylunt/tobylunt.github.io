@@ -23,3 +23,10 @@ pnpm-debug.log*
 *.pem
 .cache
 .astro
+
+# tool configs
+.claude/
+.mcp.json
+.orchestrator/
+.playwright-mcp/
+orchestrator.toml
