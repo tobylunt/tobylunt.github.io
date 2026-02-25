@@ -1,12 +1,23 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "tailwindcss/theme" theme(reference);
+
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  --color-accent: hsl(var(--theme-accent));
+  --color-accent-2: hsl(var(--theme-accent-2));
+  --color-bgColor: hsl(var(--theme-bg));
+  --color-link: hsl(var(--theme-link));
+  --color-quote: hsl(var(--theme-quote));
+  --color-textColor: hsl(var(--theme-text));
+}
 
 @layer base {
   :root,
   :root[data-theme="light"] {
     color-scheme: light;
-    /* https://tailwindcss.com/docs/customizing-colors#using-css-variables */
     --theme-bg: 0deg 0% 98%;
     --theme-link: 172deg 18% 41%;
     --theme-text: 203deg 11% 15%;
@@ -50,6 +61,85 @@
 @font-face {
   font-family: "Berkeley Mono";
   src: url("/fonts/berkeley-mono/BerkeleyMonoVariable-Regular.woff2") format("woff2-variations");
-  font-weight: 100 900; /* This tells browsers the available weight range */
+  font-weight: 100 900;
   font-display: swap;
+}
+
+/* Typography prose customizations (migrated from tailwind.config.ts) */
+.prose {
+  a {
+    @apply underline underline-offset-2;
+    &:hover {
+      @apply decoration-link decoration-2;
+    }
+  }
+  blockquote {
+    border-left-width: 0;
+  }
+  code {
+    border: 1px dotted #666;
+    border-radius: 2px;
+  }
+  hr {
+    border-top-style: dashed;
+  }
+  strong {
+    font-weight: 700;
+  }
+  sup a {
+    @apply bg-none;
+    &::before { content: "["; }
+    &::after { content: "]"; }
+    &:hover {
+      @apply text-link no-underline bg-none;
+    }
+  }
+  sup {
+    @apply ms-0.5;
+  }
+  tbody tr {
+    border-bottom-width: 0;
+  }
+  tfoot {
+    border-top: 1px dashed #666;
+  }
+  thead {
+    border-bottom-width: 0;
+  }
+  thead th {
+    border-bottom: 1px dashed #666;
+    font-weight: 700;
+  }
+}
+
+.prose-cactus {
+  --tw-prose-body: var(--color-textColor);
+  --tw-prose-bold: var(--color-textColor);
+  --tw-prose-bullets: var(--color-textColor);
+  --tw-prose-code: var(--color-textColor);
+  --tw-prose-headings: var(--color-accent-2);
+  --tw-prose-hr: 0.5px dashed #666;
+  --tw-prose-links: var(--color-textColor);
+  --tw-prose-quotes: var(--color-quote);
+  --tw-prose-th-borders: #666;
+}
+
+.prose-sm code {
+  font-size: var(--text-sm);
+  font-weight: 400;
+}
+
+@utility cactus-link {
+  @apply underline underline-offset-2;
+  &:hover {
+    @apply decoration-link decoration-2;
+  }
+}
+
+@utility title {
+  @apply text-2xl font-semibold text-accent-2;
+}
+
+@utility perspective-1000 {
+  perspective: 1000px;
 }

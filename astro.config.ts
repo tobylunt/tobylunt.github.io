@@ -1,12 +1,12 @@
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
 import fs from "fs";
 import rehypeExternalLinks from "rehype-external-links";
-import remarkUnwrapImages from "remark-unwrap-images";
+import rehypeUnwrapImages from "rehype-unwrap-images";
 
 import { expressiveCodeOptions } from "./src/site.config";
 import { remarkReadingTime } from "./src/utils/remark-reading-time";
@@ -20,9 +20,6 @@ export default defineConfig({
   integrations: [
     expressiveCode(expressiveCodeOptions),
     icon(),
-    tailwind({
-      applyBaseStyles: false,
-    }),
     sitemap(),
     mdx(),
   ],
@@ -35,8 +32,9 @@ export default defineConfig({
           target: "_blank",
         },
       ],
+      rehypeUnwrapImages,
     ],
-    remarkPlugins: [remarkUnwrapImages, remarkReadingTime],
+    remarkPlugins: [remarkReadingTime],
     remarkRehype: {
       footnoteLabelProperties: {
         className: [""],
@@ -50,7 +48,7 @@ export default defineConfig({
     optimizeDeps: {
       exclude: ["@resvg/resvg-js"],
     },
-    plugins: [rawFonts([".ttf", ".woff"])],
+    plugins: [tailwindcss(), rawFonts([".ttf", ".woff"])],
     ssr: {
       noExternal: ["three"],
     },
