@@ -72,6 +72,10 @@ const filtered = headings.filter(({ depth }) => depth >= 2 && depth <= 4);
 		color: hsl(var(--theme-text) / 0.35);
 	}
 
+	.toc-dot-link.read:hover {
+		color: hsl(var(--theme-text) / 0.55);
+	}
+
 	.toc-dot-link.active {
 		color: hsl(var(--theme-text) / 0.85);
 	}
@@ -138,13 +142,71 @@ const filtered = headings.filter(({ depth }) => depth >= 2 && depth <= 4);
 		transform: translateX(0);
 	}
 
-	/* sub-headings indent */
-	.toc-sub {
-		padding-left: 12px;
+	/* sub-headings: keep dot hidden in read state (overrides .toc-dot-link.read) */
+	.toc-sub.read .toc-dot {
+		transform: scale(0);
 	}
 
+	/* sub-headings: dot offset right with a stub back to the timeline */
 	.toc-sub .toc-label {
 		font-size: 0.625rem;
+	}
+
+	.toc-sub .toc-dot {
+		width: 6px;
+		height: 6px;
+		border: none;
+		background: hsl(var(--theme-text) / 0.18);
+		margin-left: 10px;
+		transform: scale(0);
+		transform-origin: left center;
+		transition:
+			background 0.25s ease,
+			transform 0.15s ease 0.1s,
+			box-shadow 0.25s ease;
+	}
+
+	/* horizontal stub connecting sub-dot back to the vertical timeline */
+	.toc-sub .toc-dot::before {
+		content: "";
+		position: absolute;
+		right: 100%;
+		top: 50%;
+		transform: translateY(-50%) scaleX(0);
+		transform-origin: left;
+		width: 5px;
+		height: 1.5px;
+		background: hsl(var(--theme-text) / 0.1);
+		transition: transform 0.15s ease;
+	}
+
+	/* reveal sub-dot + stub on nav hover or when active */
+	nav:hover .toc-sub .toc-dot {
+		transform: scale(1);
+	}
+
+	nav:hover .toc-sub .toc-dot::before,
+	.toc-sub.active .toc-dot::before {
+		transform: translateY(-50%) scaleX(1);
+	}
+
+	nav:hover .toc-sub.read .toc-dot {
+		background: hsl(var(--theme-text) / 0.25);
+	}
+
+	.toc-sub.active .toc-dot {
+		background: hsl(var(--theme-accent) / 1);
+		transform: scale(1.1);
+		transform-origin: center;
+		box-shadow: 0 0 0 3px hsl(var(--theme-accent) / 0.15);
+	}
+
+	.toc-sub.active .toc-dot::before {
+		background: hsl(var(--theme-accent) / 0.3);
+	}
+
+	.toc-sub:hover .toc-dot {
+		background: hsl(var(--theme-text) / 0.35);
 	}
 </style>
 
