@@ -46,6 +46,23 @@ function cleanFileName(fileName) {
     .replace(/^_+|_+$/g, "");
 }
 
+/**
+ * Return a unique name by appending _2, _3, etc. if baseName is already taken.
+ * Mutates usedNames by adding the returned name.
+ */
+function deduplicateName(baseName, usedNames) {
+  let name = baseName;
+  if (usedNames.has(name)) {
+    let suffix = 2;
+    while (usedNames.has(`${baseName}_${suffix}`)) {
+      suffix++;
+    }
+    name = `${baseName}_${suffix}`;
+  }
+  usedNames.add(name);
+  return name;
+}
+
 function checkFfmpeg() {
   const result = spawnSync("ffmpeg", ["-version"]);
   if (result.error) {
@@ -114,16 +131,35 @@ function getExistingCounts(postPath) {
   return { imageCount, videoCount };
 }
 
-async function processImages(files, sourceDir, imgDir, slug, startCounter) {
+async function processImages(files, sourceDir, imgDir, slug, startCounter, existingFiles = new Set()) {
+  // Deduplicate within the batch only — usedNames starts empty so that
+  // files already imported (whose names match existing files) aren't
+  // treated as collisions and re-imported with a suffix.
+  const usedNames = new Set();
+
+  const fileInfos = files.map(file => {
+    const ext = path.extname(file).toLowerCase();
+    const baseName = cleanFileName(file);
+    const uniqueName = deduplicateName(baseName, usedNames);
+    const isHeic = ext === ".heic";
+    const targetFile = `${uniqueName}${isHeic ? ".jpg" : ext}`;
+    return { file, uniqueName, targetFile, isHeic, renamed: uniqueName !== baseName };
+  });
+
+  const renamedCount = fileInfos.filter(f => f.renamed).length;
+  if (renamedCount > 0) {
+    console.log(`  ⚠️  ${renamedCount} file(s) renamed to avoid name collisions`);
+  }
+
   let importStatements = "";
   let mediaUsage = "";
   let counter = startCounter;
+  let newCount = 0;
 
-  for (const file of files) {
-    const ext = path.extname(file).toLowerCase();
-    const cleanName = cleanFileName(file);
-    const isHeic = ext === ".heic";
-    const targetFile = `${cleanName}${isHeic ? ".jpg" : ext}`;
+  for (const { file, uniqueName, targetFile, isHeic } of fileInfos) {
+    // Skip files whose target already exists on disk
+    if (existingFiles.has(targetFile)) continue;
+
     const targetPath = path.join(imgDir, targetFile);
 
     if (isHeic) {
@@ -139,31 +175,52 @@ async function processImages(files, sourceDir, imgDir, slug, startCounter) {
       fs.copyFileSync(path.join(sourceDir, file), targetPath);
     }
 
-    importStatements += `import ${cleanName} from '@/assets/img/${slug}/${targetFile}';\n`;
+    importStatements += `import ${uniqueName} from '@/assets/img/${slug}/${targetFile}';\n`;
     mediaUsage += `
 <CaptionedImage
-    src={${cleanName}}
+    src={${uniqueName}}
     alt="Image ${counter}"
     caption="Image ${counter} - Description needed"
 />\n\n`;
     counter++;
+    newCount++;
   }
 
-  return { importStatements, mediaUsage, count: files.length };
+  return { importStatements, mediaUsage, count: newCount };
 }
 
-function processVideos(files, sourceDir, slug, startCounter) {
-  let mediaUsage = "";
-  let counter = startCounter;
+function processVideos(files, sourceDir, slug, startCounter, existingVideoFiles = new Set()) {
   const videosDir = path.join("public", "assets", "img", slug);
   fs.mkdirSync(videosDir, { recursive: true });
 
-  for (const file of files) {
+  // Deduplicate within the batch only — usedNames starts empty so that
+  // files already imported (whose names match existing files) aren't
+  // treated as collisions and re-imported with a suffix.
+  const usedNames = new Set();
+
+  const fileInfos = files.map(file => {
     const ext = path.extname(file).toLowerCase();
-    const cleanName = cleanFileName(file);
+    const baseName = cleanFileName(file);
+    const uniqueName = deduplicateName(baseName, usedNames);
     const isMovFile = ext === ".mov";
-    const targetFile = `${cleanName}${isMovFile ? ".mp4" : ext}`;
+    const targetFile = `${uniqueName}${isMovFile ? ".mp4" : ext}`;
+    return { file, uniqueName, targetFile, isMovFile, renamed: uniqueName !== baseName };
+  });
+
+  const renamedCount = fileInfos.filter(f => f.renamed).length;
+  if (renamedCount > 0) {
+    console.log(`  ⚠️  ${renamedCount} video(s) renamed to avoid name collisions`);
+  }
+
+  let mediaUsage = "";
+  let counter = startCounter;
+  let newCount = 0;
+
+  for (const { file, targetFile, isMovFile } of fileInfos) {
     const targetPath = path.join(videosDir, targetFile);
+
+    // Skip files whose target already exists on disk
+    if (existingVideoFiles.has(targetFile)) continue;
 
     if (isMovFile) {
       console.log(`  Converting ${file} to MP4...`);
@@ -191,9 +248,10 @@ function processVideos(files, sourceDir, slug, startCounter) {
     comment="Video ${counter} - Description needed"
 />\n\n`;
     counter++;
+    newCount++;
   }
 
-  return { mediaUsage, count: counter - startCounter };
+  return { mediaUsage, count: newCount };
 }
 
 async function createPost(slug, sourceDir, imgDir) {
@@ -264,61 +322,53 @@ async function updatePost(slug, sourceDir, imgDir, existingPostPath) {
 
   fs.mkdirSync(imgDir, { recursive: true });
 
-  const existingFiles = getExistingImages(imgDir);
+  const existingImageFiles = getExistingImages(imgDir);
+  const videosDir = path.join("public", "assets", "img", slug);
+  const existingVideoFiles = fs.existsSync(videosDir)
+    ? new Set(fs.readdirSync(videosDir))
+    : new Set();
+
   const allFiles = fs.readdirSync(sourceDir);
-
-  // Filter to supported media, then filter out already-imported files
-  const imageFiles = allFiles.filter((f) => {
-    if (!IMAGE_EXTS.includes(path.extname(f).toLowerCase())) return false;
-    const cleanName = cleanFileName(f);
-    const ext = path.extname(f).toLowerCase();
-    const targetFile = `${cleanName}${ext === ".heic" ? ".jpg" : ext}`;
-    return !existingFiles.has(targetFile);
-  }).sort();
-
-  const videoFiles = allFiles.filter((f) => {
-    if (!VIDEO_EXTS.includes(path.extname(f).toLowerCase())) return false;
-    const videosDir = path.join("public", "assets", "img", slug);
-    const cleanName = cleanFileName(f);
-    const ext = path.extname(f).toLowerCase();
-    const targetFile = `${cleanName}${ext === ".mov" ? ".mp4" : ext}`;
-    const targetPath = path.join(videosDir, targetFile);
-    return !fs.existsSync(targetPath);
-  }).sort();
-
-  if (imageFiles.length === 0 && videoFiles.length === 0) {
-    console.log("\n✅ No new files to add. Post is up to date.");
-    process.exit(0);
-  }
-
-  console.log(`  Found ${imageFiles.length} new image(s) and ${videoFiles.length} new video(s)`);
+  const imageFiles = allFiles.filter((f) => IMAGE_EXTS.includes(path.extname(f).toLowerCase())).sort();
+  const videoFiles = allFiles.filter((f) => VIDEO_EXTS.includes(path.extname(f).toLowerCase())).sort();
 
   const { imageCount, videoCount } = getExistingCounts(existingPostPath);
   let newImportStatements = "";
   let componentUsage = "";
 
-  // Process new images
-  if (imageFiles.length > 0) {
-    const imgResult = await processImages(imageFiles, sourceDir, imgDir, slug, imageCount + 1);
+  // processImages handles deduplication and skip-existing internally
+  const imgResult = await processImages(imageFiles, sourceDir, imgDir, slug, imageCount + 1, existingImageFiles);
+  if (imgResult.count > 0) {
     newImportStatements += imgResult.importStatements;
     componentUsage += imgResult.mediaUsage;
     console.log(`  ✅ Added ${imgResult.count} new images`);
   }
 
-  // Process new videos
+  // processVideos handles deduplication and skip-existing internally
+  let vidCount = 0;
   if (videoFiles.length > 0) {
     if (!checkFfmpeg()) process.exit(1);
 
     // Ensure BlogVideo import exists in post
-    const postContent = fs.readFileSync(existingPostPath, "utf-8");
-    if (!postContent.includes("BlogVideo")) {
+    const postContentForCheck = fs.readFileSync(existingPostPath, "utf-8");
+    if (!postContentForCheck.includes("BlogVideo")) {
       newImportStatements += `import BlogVideo from '@/components/BlogVideo.astro';\n`;
     }
 
-    const vidResult = processVideos(videoFiles, sourceDir, slug, videoCount + 1);
-    componentUsage += vidResult.mediaUsage;
-    console.log(`  ✅ Added ${vidResult.count} new videos`);
+    const vidResult = processVideos(videoFiles, sourceDir, slug, videoCount + 1, existingVideoFiles);
+    vidCount = vidResult.count;
+    if (vidCount > 0) {
+      componentUsage += vidResult.mediaUsage;
+      console.log(`  ✅ Added ${vidCount} new videos`);
+    }
   }
+
+  if (imgResult.count === 0 && vidCount === 0) {
+    console.log("\n✅ No new files to add. Post is up to date.");
+    process.exit(0);
+  }
+
+  console.log(`  Found ${imgResult.count} new image(s) and ${vidCount} new video(s)`);
 
   // Insert new imports at the import block (not end of file)
   const postContent = fs.readFileSync(existingPostPath, "utf-8");
