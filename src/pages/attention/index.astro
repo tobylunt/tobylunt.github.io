@@ -4668,6 +4668,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Hide tooltip and clear row hover if visible
     if (tooltip) { tooltip.style.opacity = "0"; tooltip.style.transform = ""; }
+    for (var ti = 0; ti < 3; ti++) { if (tooltips14[ti]) tooltips14[ti].style.opacity = "0"; }
     clearRowHover();
 
     // Reset shared label styles to defaults before layout recomputation
@@ -4853,6 +4854,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ═══ HEATMAP INTERACTION (Steps 13, 14 & 16) ═══
   var tooltip = null;
+  var tooltips14 = [null, null, null]; // per-head tooltips for step 14
 
   var hoveredRow = -1;
 
@@ -4937,27 +4939,31 @@ document.addEventListener("DOMContentLoaded", function () {
       setRowHover(r);
 
       if (currentStep === 14) {
-        // Multi-head tooltip
-        var contentMax = findMaxAttended(ATTN_WEIGHTS, r);
-        var prevMax = findMaxAttended(PREV_TOKEN_WEIGHTS, r);
-        var syntaxMax = findMaxAttended(SYNTAX_WEIGHTS, r);
-        tooltip.textContent = '\u201C' + TOKENS[r].text + '\u201D \u2192 content: ' + TOKENS[contentMax.col].text + '(' + contentMax.val.toFixed(2) + '), previous: ' + TOKENS[prevMax.col].text + '(' + prevMax.val.toFixed(2) + '), syntax: ' + TOKENS[syntaxMax.col].text + '(' + syntaxMax.val.toFixed(2) + ')';
+        // Per-head tooltips — one below each matrix
+        var headWeights = [PREV_TOKEN_WEIGHTS, ATTN_WEIGHTS, SYNTAX_WEIGHTS];
+        var headCellPools = [scoreCells, attnCells, altCells];
+        for (var hi = 0; hi < 3; hi++) {
+          if (!tooltips14[hi]) {
+            tooltips14[hi] = el("div", "attn-heat-tooltip");
+            viz.appendChild(tooltips14[hi]);
+          }
+          var hMax = findMaxAttended(headWeights[hi], r);
+          tooltips14[hi].textContent = '\u201C' + TOKENS[r].text + '\u201D \u2192 \u201C' + TOKENS[hMax.col].text + '\u201D (' + hMax.val.toFixed(2) + ')';
+          var hFirst = headCellPools[hi][0][0];
+          var hLast = headCellPools[hi][T - 1][T - 1];
+          var hLeft = parseFloat(hFirst.style.left);
+          var hRight = parseFloat(hLast.style.left) + parseFloat(hLast.style.width);
+          var hBottom = parseFloat(hLast.style.top) + parseFloat(hLast.style.height);
+          tooltips14[hi].style.left = (hLeft + (hRight - hLeft) / 2) + "px";
+          tooltips14[hi].style.top = (hBottom + 28) + "px";
+          tooltips14[hi].style.transform = "translateX(-50%)";
+          tooltips14[hi].style.opacity = "1";
+        }
       } else {
         var maxInfo = findMaxAttended(ATTN_WEIGHTS, r);
         tooltip.textContent = '\u201C' + TOKENS[r].text + '\u201D attends most to \u201C' + TOKENS[maxInfo.col].text + '\u201D (' + maxInfo.val.toFixed(2) + ')';
-      }
 
-      // Position tooltip centered below the matrix area
-      if (currentStep === 14) {
-        // Bounding box as union of all 3 matrices (scoreCells=left, altCells=right)
-        var firstCell = scoreCells[0][0];
-        var lastCell = altCells[T - 1][T - 1];
-        var matLeft = parseFloat(firstCell.style.left);
-        var matRight = parseFloat(lastCell.style.left) + parseFloat(lastCell.style.width);
-        var matBottom = parseFloat(lastCell.style.top) + parseFloat(lastCell.style.height);
-        tooltip.style.left = (matLeft + (matRight - matLeft) / 2) + "px";
-        tooltip.style.top = (matBottom + 8) + "px";
-      } else {
+        // Position tooltip centered below the matrix area
         var lastCell = attnCells[T - 1][T - 1];
         var firstCell = attnCells[0][0];
         var matLeft = parseFloat(firstCell.style.left);
@@ -4965,9 +4971,9 @@ document.addEventListener("DOMContentLoaded", function () {
         var matBottom = parseFloat(lastCell.style.top) + parseFloat(lastCell.style.height);
         tooltip.style.left = (matLeft + (matRight - matLeft) / 2) + "px";
         tooltip.style.top = (matBottom + 8) + "px";
+        tooltip.style.transform = "translateX(-50%)";
+        tooltip.style.opacity = "1";
       }
-      tooltip.style.transform = "translateX(-50%)";
-      tooltip.style.opacity = "1";
     } else {
       // Per-cell highlight for value weighting step (step 16)
       cell.classList.add("attn-cell-hover");
@@ -5001,6 +5007,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (mx < matLeft || mx > matRight || my < matTop || my > matBottom) {
       clearRowHover();
       if (tooltip) tooltip.style.opacity = "0";
+      for (var ti = 0; ti < 3; ti++) { if (tooltips14[ti]) tooltips14[ti].style.opacity = "0"; }
     } else {
       // Update hovered row based on y position within matrix
       var gap = CELL_GAP;
@@ -5010,11 +5017,12 @@ document.addEventListener("DOMContentLoaded", function () {
         setRowHover(rowIdx);
         // Update tooltip for new row
         if (currentStep === 14) {
-          var contentMax = findMaxAttended(ATTN_WEIGHTS, rowIdx);
-          var prevMax = findMaxAttended(PREV_TOKEN_WEIGHTS, rowIdx);
-          var syntaxMax = findMaxAttended(SYNTAX_WEIGHTS, rowIdx);
-          if (tooltip) {
-            tooltip.textContent = '\u201C' + TOKENS[rowIdx].text + '\u201D \u2192 content: ' + TOKENS[contentMax.col].text + '(' + contentMax.val.toFixed(2) + '), previous: ' + TOKENS[prevMax.col].text + '(' + prevMax.val.toFixed(2) + '), syntax: ' + TOKENS[syntaxMax.col].text + '(' + syntaxMax.val.toFixed(2) + ')';
+          var headWeights = [PREV_TOKEN_WEIGHTS, ATTN_WEIGHTS, SYNTAX_WEIGHTS];
+          for (var hi = 0; hi < 3; hi++) {
+            if (tooltips14[hi]) {
+              var hMax = findMaxAttended(headWeights[hi], rowIdx);
+              tooltips14[hi].textContent = '\u201C' + TOKENS[rowIdx].text + '\u201D \u2192 \u201C' + TOKENS[hMax.col].text + '\u201D (' + hMax.val.toFixed(2) + ')';
+            }
           }
         } else {
           var maxInfo = findMaxAttended(ATTN_WEIGHTS, rowIdx);
@@ -5032,6 +5040,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!e.relatedTarget || !viz.contains(e.relatedTarget)) {
         clearRowHover();
         if (tooltip) tooltip.style.opacity = "0";
+        for (var ti = 0; ti < 3; ti++) { if (tooltips14[ti]) tooltips14[ti].style.opacity = "0"; }
       }
     } else {
       var cell = e.target.closest("[data-row]");
