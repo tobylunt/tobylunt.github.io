@@ -3,11 +3,13 @@ title: "Finishing planking"
 description: "Spiling, rolling bevels, swell testing, and steaming twisted planks into the tuck to close up Ariadne's hull."
 publishDate: "2024-08-10"
 tags: ["ariadne"]
-draft: true
+draft: false
 ---
 import CaptionedImage from '@/components/CaptionedImage.astro';
 import BlogVideo from '@/components/BlogVideo.astro';
 
+import spiling from '@/assets/img/finishing-planking/spiling.jpg';
+import plank_shapes from '@/assets/img/finishing-planking/plank-shapes.jpg';
 import img_a34217c3_0a0b_4e28_b800_5ae682b01f59 from '@/assets/img/finishing-planking/img_a34217c3_0a0b_4e28_b800_5ae682b01f59.jpeg';
 import img_e70818f_3629_42e1_97c6_e8516420aa9f from '@/assets/img/finishing-planking/img_e70818f_3629_42e1_97c6_e8516420aa9f.jpeg';
 import img_d0c54421_79bd_459c_ba8a_c84ee2bd2020 from '@/assets/img/finishing-planking/img_d0c54421_79bd_459c_ba8a_c84ee2bd2020.jpeg';
@@ -60,40 +62,83 @@ import img_2682 from '@/assets/img/finishing-planking/img_2682.jpeg';
 import img_7829 from '@/assets/img/finishing-planking/img_7829.jpeg';
 import img_9013 from '@/assets/img/finishing-planking/img_9013.jpeg';
 
-Planking a hull is one of those jobs that sounds straightforward — you're just nailing boards to a frame — but the reality is that every plank is a unique three-dimensional puzzle. Each one has to be spiled to shape, beveled to match its neighbors, and often twisted or bent to follow the hull's compound curves. And in the tuck at the stern, where the planks converge sharply, the geometry gets genuinely wild.
+Planking a hull is one of those jobs that initiall seems straightforward, but really isn't. It looks like you're just attaching a rectangular board to the frames behind it! But the reality is that every plank is a unique three-dimensional puzzle. Each one has to be spiled to shape, beveled to match its neighbors, and often twisted or bent to follow the hull's compound curves. And in the curviest parts of the boat, the geometry gets genuinely wild.
 
 <CaptionedImage
     src={img_2668}
     alt="Ferry lit up at night in fog on the water"
-    caption="The night ferry through the fog. Late nights at the boatyard meant catching the last ferry home."
+    caption="The night ferry through the fog. #art"
 />
 
 {/* <CaptionedImage
-    src={img_b390367_1d1d_4007_99ea_cc8e8d6df11c}
-    alt="Panoramic view of the hull from below showing new planking progress"
-    caption="The hull from below, showing the progress. New planks are the lighter wood; the original planking is the darker red-painted wood below."
-/> */}
-
-<CaptionedImage
-    src={img_a34217c3_0a0b_4e28_b800_5ae682b01f59}
-    alt="Person standing next to the hull showing new planking installed"
-    caption="New planks in place from the sheer down. Each one was individually spiled, beveled, and fitted before fastening."
-/>
+        src={img_b390367_1d1d_4007_99ea_cc8e8d6df11c}
+        alt="Panoramic view of the hull from below showing new planking progress"
+        caption="The hull from below, showing the progress. New planks are the lighter wood; the original planking is the darker red-painted wood below."
+    /> */}
 
 <CaptionedImage
     src={img_7829}
     alt="Completed stern planking viewed from below, showing new mahogany planks alongside original hull"
-    caption="The completed stern from below. New mahogany planks fill in the upper hull, blending into the original planking below."
+    caption="The starboard side, shuttered. New mahogany planks fill in the gaping holes below the waterline that we had become so accustomed to."
 />
+
+## Swell testing
+
+A carvel-planked hull relies on the wood swelling when it hits the water to close up the seams between planks. But how much will it swell? And how tight do the seams need to be on land so they close up properly in the water? How precisely matched do the bevels really need to be? Obviously the correct answer is "do it perfectly, then you don't need to worry" but we wanted to get a sense of our tolerances before taking on the rest of the planking work.
+
+We built a test rig — a small section of planking with controlled gaps of different widths and types — and sank it in a buddy's pond to find out.
+
+<CaptionedImage
+    src={img_2226}
+    alt="Swell test rig: small planking section with spacers, viewed from above"
+    caption="The swell test rig before submersion. Multiple plank sections with different gap widths between them."
+/>
+
+<CaptionedImage
+    src={img_2227}
+    alt="Swell test rig with bevel readings and gap measurements written on each station"
+    caption="The same rig with measurements and descriptions in sharpie. Bevel mismatches, short gaps, long gaps - we wanted to know how much each variable affected the swell."
+/>
+
+<CaptionedImage
+    src={img_2228}
+    alt="Swell test rig submerged in pond, weighted with a rock"
+    caption="The rig in the bond. We added a big rock to keeps it submerged. Now we wait."
+/>
+
+After a few days in the pond, all but the largest offenders had closed up nicely. We'd still shoot for perfect, but this result was encouraging.
+
 
 ## Spiling
 
-Spiling is how you transfer the shape of the hull onto a flat plank. You can't just hold a board up to the hull and trace — the curves are three-dimensional and the plank stock is flat. Instead, you clamp a thin spiling batten to the frames where the plank will go, then use dividers to transfer a series of reference points from the hull's edge onto the batten. Back at the bench, you reverse the process to draw the plank's true shape onto the stock.
+<CaptionedImage
+    src={spiling}
+    alt="Illustration of spiling process showing batten on plank stock with dividers"
+    caption="The spiling process: a thin batten is clamped where the plank will go, and dividers transfer the edge shape onto the batten as arcs. Back at the bench (shown), the arcs are reversed onto the plank stock to lay out the true shape."
+/>
+
+Spiling is how you transfer the shape of a plank from the boat to a flat board to be shaped. You can't just hold a board up to the hull and trace — the curves are three-dimensional and the plank stock is flat and rigid. Instead, you clamp a thin spiling batten to the frames where the plank will go, then use dividers to transfer a series of reference points from the hull's edge onto the batten. Back at the bench, you reverse the process to draw the plank's true shape onto the stock. Easy, right?\
+
+Like many things in boatbuilding, the devil is in the details. You must end up with a plank outline that is EXACTLY correct, or you will have leaks. You need to be mindful of plank thicknesses and bevels, whether you're templating the inside or outside face of the plank, and many other things. But at the end of the day it's really just kindergarten skills executed at a high level. Draw a line. Cut to the line. 
+
+<CaptionedImage
+    src={img_8278}
+    alt="Long spiling board made of door skin with a plywood hood end template hot-glued to the end, held against the hull"
+    caption="The spiling board — a long strip of door skin plywood nailed to the frames."
+/>
+
+We found that spiling alone wasn't accurate enough for the hood ends — where the planks land in the centerline timber rabbets. With a long, slender boat such as this, the geometry is too tight and the tolerances too small to spile properly. So we pre-templated the hood ends separately: a full-size template cut from thin plywood, then hot-glued to the end of the spiling board (made from door skin). This gave us the exact shape at the ends.
+
+<CaptionedImage
+    src={img_8279}
+    alt="Spiling board and hood end template viewed from inside the hull"
+    caption="A better view of a hood end template. A full-size plywood template for the very end was pre-fitted then hot-glued onto the spiling board, giving a precise fit where the plank lands on the aftertimber or the stem."
+/>
 
 <CaptionedImage
     src={img_2266}
     alt="Hand marking spiling points on a plank with a pencil"
-    caption="Transferring spiling marks onto plank stock. The divider points from the batten are walked onto the new wood to lay out the plank's true shape."
+    caption="Connecting the spiled points on the plank stock with a flexible batten."
 />
 
 <CaptionedImage
@@ -103,41 +148,21 @@ Spiling is how you transfer the shape of the hull onto a flat plank. You can't j
 />
 
 {/* <CaptionedImage
-    src={img_2268}
-    alt="Circular saw on plank, alternate angle"
-    caption="Circular saw on plank, alternate angle."
-/> */}
-
-We found that spiling alone wasn't accurate enough for the hood ends — where the planks land on the stem or sternpost. The geometry is too tight and the tolerances too small. So we pre-templated the hood ends separately: a full-size template cut from thin plywood, then hot-glued to the end of the spiling board (made from door skin). This gave us the exact shape at the ends where it mattered most.
-
-<CaptionedImage
-    src={img_8278}
-    alt="Long spiling board made of door skin with a plywood hood end template hot-glued to the end, held against the hull"
-    caption="The spiling board — a long strip of door skin — with a full-size plywood template hot-glued at the hood end. We found that spiling the ends was too inaccurate, so we pre-templated them for a precise fit where the plank lands on the sternpost."
-/>
-
-<CaptionedImage
-    src={img_8279}
-    alt="Spiling board and hood end template viewed from inside the hull"
-    caption="The same setup from inside. The plywood template captures the exact shape of the hood end, while the door skin spiling board carries the shape information for the rest of the plank's length."
-/>
+        src={img_2268}
+        alt="Circular saw on plank, alternate angle"
+        caption="Circular saw on plank, alternate angle."
+    /> */}
 
 ## Rolling bevels
 
-The planks don't meet their neighbors at a right angle — the bevel changes continuously along the length of the plank as the hull curvature shifts from station to station. This is a rolling bevel, and getting it right is what makes the seams between planks tight.
+The planks don't meet their neighbors at a right angle. The bevel changes continuously along the length of the plank as the hull curvature shifts from station to station. This is called a rolling bevel, and if you don't get it right, the boat looks (are we picking up on a theme?).
 
-We measured the bevel at each frame station using a bevel gauge, then wrote the readings directly on the plank. These readings become a roadmap: at station 22 the bevel is one angle, at station 30 it's another, and everything in between has to transition smoothly.
+We measured the bevel at each frame station using a bevel gauge, then wrote the readings on a piece of scrap for quick reference. These readings directed our final hand planing of the plank edge: at station 22 the bevel is one angle, at station 30 it's another, and everything in between has to transition smoothly. The human eye and the tips of the fingers were the final judges of the fairness of these bevel transitions. They are incredibly sensitive instruments.
 
 <CaptionedImage
     src={img_2281}
     alt="Scrap plywood with station-by-station bevel readings written in marker"
     caption="Station-by-station bevel readings written on scrap plywood and kept at the planing station for reference. Each number is a frame station, each angle mark shows the bevel to cut at that point. This is the roadmap for shaping."
-/>
-
-<CaptionedImage
-    src={img_fc66c1e_87a9_4663_82d2_69291d764c0d_preview}
-    alt="Squaring up a plank seam with a rabbet plane on the hull"
-    caption="Squaring up a plank seam with a rabbet plane. When planking top-down, the bottom edge of every plank is square — the rolling bevels are only on the top edge. This plank was the hardest and weirdest one, so we had to add this extra step to get a clean seam."
 />
 
 The bevels are cut by hand with planes on a two-vise workbench — the plank is clamped on edge and you work the bevel in progressively, checking against your readings as you go.
@@ -149,22 +174,22 @@ The bevels are cut by hand with planes on a two-vise workbench — the plank is 
 />
 
 <CaptionedImage
-    src={img_2282}
-    alt="Person at the two-vise workbench planing a bevel on a plank"
-    caption="Planing the rolling bevel. You work station by station, checking each section against the bevel gauge readings written on the wood."
+    src={img_c_ba96_fbc950a712fc_preview}
+    alt="Person sighting down the edge of a plank on the workbench to check the bevel"
+    caption="Checking the bevel. Your eye is still the best tool for checking whether the bevel transitions smoothly from one station to the next."
 />
 
 <CaptionedImage
-    src={img_c_ba96_fbc950a712fc_preview}
-    alt="Person sighting down the edge of a plank on the workbench to check the bevel"
-    caption="Sighting down the bevel. Your eye is still the best tool for checking whether the bevel transitions smoothly from one station to the next."
+    src={img_fc66c1e_87a9_4663_82d2_69291d764c0d_preview}
+    alt="Squaring up a plank seam with a rabbet plane on the hull"
+    caption="Squaring up a plank seam with a rabbet plane. When planking top-down, the bottom edge of every plank is square — the rolling bevels are only applied to the top edge to match the mating plank above. This plank was the hardest and weirdest one. We had to add this extra step to make both the top and bottom edges 90 degrees for the garboard."
 />
 
 {/* <CaptionedImage
-    src={img_da68cadd_9d55_4b26_a022_0b817e0f92b0_preview}
-    alt="Plank on workbench showing bevel work"
-    caption="Plank on workbench showing bevel work."
-/> */}
+        src={img_da68cadd_9d55_4b26_a022_0b817e0f92b0_preview}
+        alt="Plank on workbench showing bevel work"
+        caption="Plank on workbench showing bevel work."
+    /> */}
 
 {/* <CaptionedImage
     src={img_2270}
@@ -172,14 +197,14 @@ The bevels are cut by hand with planes on a two-vise workbench — the plank is 
     caption="Hand planes on workbench with plank."
 /> */}
 
-## Matching floor timber camber
+## Matching camber
 
-The inside face of each plank has to match the outside camber of the floor timbers it lands on. If the plank is flat on the inside and the floor timber is curved, you get a gap — the plank only contacts the timber at the edges, and the fasteners can't pull it tight. So you hollow the inside face of the plank to match.
+There's another degree of freedom we haven't talked about yet. The inside face of each plank has to match the outside camber of the floor timbers and frames it lands on. If the plank is flat on the inside and the floor timber is curved, you get a gap — the plank only contacts the timber at the edges, and the fasteners can't pull it tight. Or the fasteners pull the plank in so hard that it cracks down the middle. So you shape the inside face of the plank to match, either convex or concave. This is done by hand.
 
 <CaptionedImage
     src={img_c1fb44c_aa50_4611_b882_e300d86bf9b5_preview}
     alt="Cross-section template held against hull showing floor timber camber profile"
-    caption="A cross-section template taken at one frame station, labeled 'P38' with 'Floor' and 'Garboard' marked. The curves show the profile the plank's inside face needs to match — the concavity of the floor timber and the transition to the garboard."
+    caption="A cross-section template taken from the port side of station 38. Planks seams marked. The curve shows the convex profile the plank's inside face needs to have."
 />
 
 <CaptionedImage
@@ -202,7 +227,7 @@ The inside face of each plank has to match the outside camber of the floor timbe
 
 ## Fitting planks
 
-Getting a plank to its final fit is an iterative process: hang it on the hull, check where it bears and where it gaps, take it down, adjust, repeat. Wedges are essential — they force the plank tight against its neighbor and hold it in position while you assess the fit. Without them you can't see where the problems are.
+Getting a plank to its final fit is an iterative process: hang it on the hull, check where it bears and where it gaps, take it down, adjust, repeat. Wedges are essential — they force the plank tight against its neighbor and hold it in position while you assess the fit or fasten it down. The bendiest and twistiest planks needed a decent amount of persuasion. 
 
 <CaptionedImage
     src={img_e70818f_3629_42e1_97c6_e8516420aa9f}
@@ -213,7 +238,7 @@ Getting a plank to its final fit is an iterative process: hang it on the hull, c
 <CaptionedImage
     src={img_cc51ea73_dc34_431c_91ba_6c87e8cf97c5_preview}
     alt="New planks fitted on the hull with wedges visible at frame locations"
-    caption="New planks fitted with wedges at each frame. The wedges apply pressure across the full length of the plank, showing the seam quality everywhere at once."
+    caption="New planks fitted and fastened. You can see wedges yet to be removed - they were used to apply upwards pressure during fastening across the full length of the plank."
 />
 
 {/* <CaptionedImage
@@ -234,59 +259,23 @@ Getting a plank to its final fit is an iterative process: hang it on the hull, c
     caption="Plank seam from below."
 /> */}
 
-## The swell test
-
-A carvel-planked hull relies on the wood swelling when it hits the water to close up the seams between planks. But how much will it swell? And how tight do the seams need to be on land so they close up properly in the water without becoming too tight and buckling?
-
-We built a test rig — a small section of planking with controlled gaps of different widths — and sank it in a buddy's pond to find out.
-
-<CaptionedImage
-    src={img_2226}
-    alt="Swell test rig: small planking section with spacers, viewed from above"
-    caption="The swell test rig before submersion. Multiple plank sections with different gap widths between them, held together with spacers. Each gap is a data point."
-/>
-
-<CaptionedImage
-    src={img_2227}
-    alt="Swell test rig with bevel readings and gap measurements written on each station"
-    caption="The same rig with measurements written on each section — gap widths, wood species, and grain orientation. We wanted to know how much each variable affected the swell."
-/>
-
-<CaptionedImage
-    src={img_2228}
-    alt="Swell test rig submerged in pond, weighted with a rock"
-    caption="The rig submerged. A rock keeps it on the bottom. Now we wait."
-/>
-
-<CaptionedImage
-    src={img_2229}
-    alt="Person standing at pond edge at night, holding a strap connected to the submerged test rig"
-    caption="Checking on the test rig after dark. The headlamp-and-pond-at-midnight look is peak boatbuilding."
-/>
-
-{/* <CaptionedImage
-    src={img_2230}
-    alt="Swell test rig in pond, alternate angle"
-    caption="Swell test rig in pond, alternate angle."
-/> */}
-
-{/* <CaptionedImage
-    src={img_2231}
-    alt="Swell test rig in pond, third angle"
-    caption="Swell test rig in pond, third angle."
-/> */}
-
 ## The tuck
 
-The stern is where planking gets hard. The planks converge sharply as they wrap around the hull's tuck — the concave area under the counter where the shape transitions from the broad midship sections to the narrow sternpost. The planks fan together, the bevels change dramatically, and some planks need serious twist to follow the hull.
+The tuck is where planking gets particularly tough. The planks bend and twist sharply as they wrap around the hull's wineglass shape. (The tuck is where the stem of the wineglass meets the bowl). Bevels go insane and plank shapes can end up looking unsettlingly strange.
+
+<CaptionedImage
+    src={plank_shapes}
+    alt="Illustration of sheerstrake and garboard strake plank shapes"
+    caption="From Wooden Boat. Plank shapes can look bizarre when laid flat even if the spiling was done right."
+/>
 
 <CaptionedImage
     src={img_2284}
     alt="New planks converging sharply at the stern tuck"
-    caption="The planks converging at the tuck. Each plank fans in toward the sternpost, and the angles between them change rapidly. This is where the geometry gets serious."
+    caption="Planking at the tuck. Each plank twists a ton as it moves aft toward the sternpost, and the angles between them change rapidly."
 />
 
-For one plank right in the tuck, we had to cut twist directly into the stock — the plank needed to change its plane of rotation along its length. We cut the twist on the bandsaw, then steamed the plank to twist it even further for installation.
+For one plank right in the tuck, we had to cut twist directly into the stock — the plank needed to change its plane of rotation along its length so severely at such a small feather edge that we didn't think we could get it to twist enough. We cut the twist in with hand planes, then steamed the plank to twist it even further for installation.
 
 <CaptionedImage
     src={img_2674}
@@ -329,12 +318,6 @@ For one plank right in the tuck, we had to cut twist directly into the stock —
     caption="Stern planking with sealant, third angle."
 /> */}
 
-<CaptionedImage
-    src={img_2276}
-    alt="Can of Dolfinite Natural Bedding Compound"
-    caption="Dolfinite — the bedding compound of choice. It never fully cures, staying flexible enough to accommodate wood movement while keeping water out of the seams."
-/>
-
 {/* <CaptionedImage
     src={img_d0c54421_79bd_459c_ba8a_c84ee2bd2020}
     alt="Person with supplies near hull"
@@ -365,48 +348,23 @@ For one plank right in the tuck, we had to cut twist directly into the stock —
     caption="Wider stern view."
 /> */}
 
-## Progress
+## All closed up!
 
 <CaptionedImage
     src={img_8277}
     alt="Wide shot of person working on the hull planking"
-    caption="Working the hull. Each plank is a small victory — spiled, beveled, fitted, and fastened. The new wood gradually filling in what was once open frames."
+    caption="Working the hull. Incredibly gratifying to see new wood gradually filling in what was once open space."
 />
 
-{/* Moved to Spiling section */}
-
-{/* <CaptionedImage
-    src={img_8278_preview}
-    alt="Stern area, preview"
-    caption="Stern area, preview."
-/> */}
-
-{/* <CaptionedImage
-    src={img_8279_preview}
-    alt="Stern interior, preview"
-    caption="Stern interior, preview."
-/> */}
-
-{/* <CaptionedImage
-    src={img_8280_preview}
-    alt="Plank gap detail, preview"
-    caption="Plank gap detail, preview."
-/> */}
-
-{/* <CaptionedImage
-    src={img_8280}
-    alt="Close-up of plank gap"
-    caption="Close-up of plank gap."
-/> */}
 
 <CaptionedImage
     src={img_9013}
     alt="Two people working together on the stern planking"
-    caption="Two-person job. One holds, one fastens — most of the planking went on this way."
+    caption="A view of the finished planking from the stern."
 />
 
 <CaptionedImage
     src={img_2682}
     alt="Completed stern view showing new planking with red lead visible at the tuck"
-    caption="The finished stern. New planks sweep down to the tuck, where the red lead is still visible in the seams. A long way from open frames."
+    caption="The starboard side."
 />
