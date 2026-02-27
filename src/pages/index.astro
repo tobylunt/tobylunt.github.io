@@ -10,24 +10,19 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS);
 
 const cactusTech: { desc: string; href: string; title: string }[] = [
   {
-    desc: "Very fine-grained data visualization engine. I keep coming back to D3.",
+    desc: "Very fine-grained data visualization engine. I keep coming back to D3, especially now with coding agents!",
     href: "https://github.com/vercel/satori",
     title: "D3",
   },
   {
-    desc: "LLM prompt management, metrics, traces, and a solid API.",
-    href: "https://www.langchain.com/",
-    title: "LangChain and LangSmith",
+    desc: "Agent harnesses. Delegation, control loops, on top of prompt management, metrics, traces, etc.",
+    href: "https://www.langchain.com/langgraph",
+    title: "LangGraph",
   },
   {
     desc: "Heirloom quality woodworking tools.",
     href: "https://www.lie-nielsen.com/",
     title: "Lie-Nielsen Toolworks",
-  },
-  {
-    desc: "Powerful slippy maps and spatial data representation. Nice SDK.",
-    href: "https://docs.mapbox.com/mapbox-gl-js/api/",
-    title: "Mapbox GL JS",
   },
 ];
 ---
@@ -40,16 +35,12 @@ const cactusTech: { desc: string; href: string; title: string }[] = [
       <a class="cactus-link" href="http://www.devdatalab.org/" target="_blank"
         >Development Data Lab</a
       >, where we help solve major social problems in developing countries using novel datasets. I
-      lead data engineering, data science, geospatial, and visualization at DDL.
+      lead the Data Team at DDL, including all data science, data engineering, geospatial analysis, visualization and more.
     </p>
     <p class="mb-4">
       My past lives include being a line cook at a fancy restaurant and a Fulbrighter to Ethiopia,
       where I worked on agricultural development projects alongside smallholder farmers. I also
       build furniture, restore old sailboats, and I really like maps.
-    </p>
-    <p class="mb-4">
-      This site is intended to be a landing page and a means for sharing my hobbies, interests, and
-      side projects.
     </p>
     <SocialList />
   </section>
