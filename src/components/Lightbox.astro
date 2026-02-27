@@ -13,52 +13,64 @@
       const images = document.querySelectorAll("a[data-pswp]");
       const videos = document.querySelectorAll("video.video-player");
 
-      // Convert videos to lightbox items
-      const videoItems: PhotoSwipeItem[] = Array.from(videos).map((video) => {
-        const width = parseInt(video.getAttribute("width") || "0");
-        const height = parseInt(video.getAttribute("height") || "0");
+      // Build a unified list sorted by document order
+      const allElements: { element: Element; type: "image" | "video" }[] = [
+        ...Array.from(images).map((el) => ({ element: el, type: "image" as const })),
+        ...Array.from(videos).map((el) => ({ element: el, type: "video" as const })),
+      ].sort((a, b) =>
+        a.element.compareDocumentPosition(b.element) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1,
+      );
 
+      const allItems: PhotoSwipeItem[] = allElements.map(({ element, type }) => {
+        if (type === "video") {
+          const video = element as HTMLVideoElement;
+          // Use actual video dimensions (from preload="metadata"), fall back to attributes
+          const nativeW = video.videoWidth || parseInt(video.getAttribute("width") || "720");
+          const nativeH = video.videoHeight || parseInt(video.getAttribute("height") || "480");
+          const pad = 40; // PhotoSwipe padding (20px each side)
+          const captionSpace = 60; // room for caption below video
+          const maxW = window.innerWidth - pad;
+          const maxH = window.innerHeight - pad - captionSpace;
+          const scale = Math.min(maxW / nativeW, maxH / nativeH, 1);
+          const fitW = Math.round(nativeW * scale);
+          const fitH = Math.round(nativeH * scale);
+          return {
+            html: `<div class="pswp__video-wrapper">
+              <video
+                controls
+                class="pswp__video"
+                playsinline
+                preload="none"
+                style="width:${fitW}px;height:${fitH}px"
+              >
+                <source src="${video.querySelector("source")?.src}" type="video/mp4">
+              </video>
+            </div>`,
+            width: fitW,
+            height: fitH,
+            caption:
+              video.closest(".video-container")?.querySelector(".video-comment")?.textContent || "",
+          };
+        }
+        const img = element as HTMLAnchorElement;
         return {
-          element: video,
-          html: `<video 
-            controls 
-            class="pswp__video"
-            playsinline
-            preload="none"
-            width="${width}"
-            height="${height}"
-            style="width: ${width}px; height: ${height}px;"
-          >
-            <source src="${video.querySelector("source")?.src}" type="video/mp4">
-          </video>`,
-          width,
-          height,
-          caption:
-            video.closest(".video-container")?.querySelector(".video-comment")?.textContent || "",
+          src: img.getAttribute("href") || "",
+          width: parseInt(img.getAttribute("data-width") || "0"),
+          height: parseInt(img.getAttribute("data-height") || "0"),
+          alt: img.getAttribute("data-caption") || "",
+          caption: img.getAttribute("data-caption") || "",
         };
       });
 
-      // Convert images to lightbox items
-      const imageItems: PhotoSwipeItem[] = Array.from(images).map((img) => ({
-        src: img.getAttribute("href") || "",
-        width: parseInt(img.getAttribute("data-width") || "0"),
-        height: parseInt(img.getAttribute("data-height") || "0"),
-        alt: img.getAttribute("data-caption") || "",
-        caption: img.getAttribute("data-caption") || "",
-      }));
-
-      // Combine all items
-      const allItems: PhotoSwipeItem[] = [...imageItems, ...videoItems];
-
-      // Add click handlers to both images and videos
-      [...images, ...videos].forEach((item, index) => {
-        item.addEventListener("click", (e) => {
+      // Add click handlers in document order
+      allElements.forEach(({ element }, index) => {
+        element.addEventListener("click", (e) => {
           e.preventDefault();
 
           const pswp = new PhotoSwipe({
             dataSource: allItems,
             index,
-            bgOpacity: 0.9,
+            bgOpacity: 1,
             padding: { top: 20, bottom: 20, left: 20, right: 20 },
           } as PhotoSwipeOptions);
 
@@ -72,14 +84,16 @@
               html: "Caption text",
               onInit: (el) => {
                 el.style.position = "absolute";
-                el.style.bottom = "20px";
+                el.style.bottom = "15px";
                 el.style.left = "50%";
                 el.style.transform = "translateX(-50%)";
                 el.style.zIndex = "1500";
-                el.style.background = "rgba(0, 0, 0, 0.8)";
+                el.style.color = "#fff";
+                el.style.background = "rgba(0, 0, 0, 0.85)";
                 el.style.padding = "8px 16px";
                 el.style.borderRadius = "4px";
                 el.style.maxWidth = "80%";
+                el.style.pointerEvents = "none";
 
                 pswp.on("change", () => {
                   const caption = pswp.currSlide?.data?.caption;
@@ -91,23 +105,11 @@
             });
           });
 
-          // Handle video cleanup
-          let prevVideo: HTMLVideoElement | null = null;
+          // Pause videos when navigating away from them
           pswp.on("change", () => {
-            // Pause and hide previous video if it exists
-            if (prevVideo instanceof HTMLVideoElement) {
-              prevVideo.pause();
-              prevVideo.style.display = "none";
-            }
-
-            // Get and show current video if exists
-            const currSlideContent = pswp.currSlide?.content?.element;
-            if (currSlideContent) {
-              const videoElement = currSlideContent.querySelector("video");
-              if (videoElement instanceof HTMLVideoElement) {
-                prevVideo = videoElement;
-                videoElement.style.display = "block";
-              }
+            const container = pswp.element;
+            if (container) {
+              container.querySelectorAll("video").forEach((v) => v.pause());
             }
           });
 
@@ -127,7 +129,18 @@
   }
 </script>
 
-<style>
+<style is:global>
+  /* Force light-on-dark text in the lightbox regardless of site theme */
+  .pswp {
+    --pswp-icon-color: #fff;
+    --pswp-icon-color-secondary: #000;
+    color: #fff;
+  }
+
+  .pswp__counter {
+    color: #fff;
+  }
+
   .pswp__custom-caption {
     color: #fff;
     font-size: 16px;
@@ -147,31 +160,19 @@
     opacity: 1;
   }
 
-  .pswp__content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  .pswp__video-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
   .pswp__video {
-    position: relative;
-    width: auto !important;
-    height: auto !important;
     max-width: 90vw;
-    max-height: 80vh;
-    margin: auto;
-  }
-
-  /* Prevent size changes on control appearance */
-  .pswp__video::-webkit-media-controls-panel {
-    display: flex !important;
-    opacity: 1 !important;
+    max-height: 85vh;
+    width: auto;
+    height: auto;
   }
 </style>
 
