@@ -15,7 +15,7 @@
     "cleanup-post": "node scripts/cleanup-post.js"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.6",
+    "@astrojs/check": "^0.9.8",
     "@astrojs/mdx": "4.3.13",
     "@astrojs/rss": "4.0.15",
     "@astrojs/sitemap": "3.7.0",
@@ -36,7 +36,7 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.4",
+    "@astrojs/check": "^0.9.8",
     "@eslint/markdown": "^7.5.1",
     "@iconify-json/mdi": "^1.2.3",
     "@pagefind/default-ui": "^1.4.0",
